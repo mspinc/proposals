@@ -5,7 +5,7 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: Build & Run
+  - name: Build & Run DB
     task:
       jobs:
         - name: docker build
@@ -16,10 +16,12 @@ blocks:
           commands:
             - sem-service start postgres 10
             - sem-service status postgres
-        - name: docker run
-          commands:
-            - 'docker run -d -p 3000:3000 proposals'
-            - 'wget http://localhost:3000'
+      secrets:
+        - name: Proposals DB Credentials
+        - name: Proposals Seed Keys
+      env_vars: []
+  - name: Run the Container
+    task:
       secrets:
         - name: Proposals DB Credentials
         - name: Proposals Seed Keys
@@ -36,3 +38,8 @@ blocks:
           value: '587'
         - name: EMAIL_STARTTLS
           value: 'true'
+      jobs:
+        - name: Run Proposals
+          commands:
+            - 'docker run -d -p 3000:3000 proposals'
+            - 'wget http://localhost:3000'
