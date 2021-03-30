@@ -5,10 +5,29 @@ agent:
     type: e1-standard-2
     os_image: ubuntu1804
 blocks:
-  - name: Build
+  - name: Build & Run
     task:
       jobs:
         - name: docker build
           commands:
             - checkout
             - docker build -t proposals .
+        - name: docker run
+          commands:
+            - 'docker run -d -p 3000:3000 proposals'
+            - 'wget http://localhost:3000'
+      secrets:
+        - name: DB_USER
+      env_vars:
+        - name: RAILS_ENV
+          value: development
+        - name: YARN_ENV
+          value: development
+        - name: RAILS_SERVE_STATIC_FILES
+          value: 'true'
+        - name: EMAIL_SERVER
+          value: mail.example.com
+        - name: EMAIL_PORT
+          value: '587'
+        - name: EMAIL_STARTTLS
+          value: 'true'
