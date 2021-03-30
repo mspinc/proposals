@@ -12,6 +12,10 @@ blocks:
           commands:
             - checkout
             - docker build -t proposals .
+        - name: run postgresql
+          commands:
+            - sem-service start postgres 10
+            - sem-service status postgres
         - name: docker run
           commands:
             - 'docker run -d -p 3000:3000 proposals'
