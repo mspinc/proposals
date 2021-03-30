@@ -17,7 +17,8 @@ blocks:
             - 'docker run -d -p 3000:3000 proposals'
             - 'wget http://localhost:3000'
       secrets:
-        - name: DB_USER
+        - name: Proposals DB Credentials
+        - name: Proposals Seed Keys
       env_vars:
         - name: RAILS_ENV
           value: development
