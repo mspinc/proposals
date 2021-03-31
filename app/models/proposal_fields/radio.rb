@@ -1,0 +1,1 @@
+class Radio < ProposalField; end

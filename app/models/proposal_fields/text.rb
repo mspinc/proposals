@@ -1,0 +1,1 @@
+class Text < ProposalField; end
