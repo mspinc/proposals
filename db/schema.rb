@@ -18,25 +18,10 @@ ActiveRecord::Schema.define(version: 2021_03_31_065148) do
   create_table "ams_subjects", force: :cascade do |t|
     t.string "code"
     t.string "title"
-    t.bigint "birs_subject_id", null: false
+    t.bigint "subject_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["birs_subject_id"], name: "index_ams_subjects_on_birs_subject_id"
-  end
-
-  create_table "birs_subjects", force: :cascade do |t|
-    t.string "code"
-    t.string "title"
-    t.bigint "category_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["category_id"], name: "index_birs_subjects_on_category_id"
-  end
-
-  create_table "categories", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.index ["subject_id"], name: "index_ams_subjects_on_subject_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -88,12 +73,27 @@ ActiveRecord::Schema.define(version: 2021_03_31_065148) do
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"
   end
 
-  add_foreign_key "ams_subjects", "birs_subjects"
-  add_foreign_key "birs_subjects", "categories"
+  create_table "subject_categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string "code"
+    t.string "title"
+    t.bigint "subject_category_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["subject_category_id"], name: "index_subjects_on_subject_category_id"
+  end
+
+  add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "proposal_fields", "proposal_forms"
   add_foreign_key "proposal_forms", "proposal_types"
   add_foreign_key "proposal_type_locations", "locations"
   add_foreign_key "proposal_type_locations", "proposal_types"
   add_foreign_key "proposals", "locations"
   add_foreign_key "proposals", "proposal_types"
+  add_foreign_key "subjects", "subject_categories"
 end

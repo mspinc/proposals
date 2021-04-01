@@ -1,1 +1,4 @@
-class Text < ProposalField; end
+module ProposalFields
+  class Text < ProposalField
+  end
+end

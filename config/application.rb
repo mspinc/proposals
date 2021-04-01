@@ -10,7 +10,6 @@ module Proposals
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
-    config.autoload_paths += Dir[Rails.root.join('app', 'models', 'proposal_fields')]
 
     # Configuration for the application, engines, and railties goes here.
     #

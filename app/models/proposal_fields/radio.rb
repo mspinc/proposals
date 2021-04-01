@@ -1,1 +1,4 @@
-class Radio < ProposalField; end
+module ProposalFields
+  class Radio < ::ProposalField
+  end
+end

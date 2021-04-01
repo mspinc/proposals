@@ -1,3 +1,3 @@
 class AmsSubject < ApplicationRecord
-  belongs_to :birs_subject
+  belongs_to :subject
 end
