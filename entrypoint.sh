@@ -46,7 +46,8 @@ echo
 echo "Installing latest bundler..."
 /usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
 
-if [ ! -e /usr/local/rvm/gems/rails-6.1.3.gem ]; then
+
+if [ ! -e /usr/local/rvm/gems/rails-6.1.3.1.gem ]; then
   echo
   echo "Installing Rails..."
   /usr/local/rvm/bin/rvm-exec 2.7.2 gem install rails -v 6.1.3
@@ -76,16 +77,16 @@ fi
 if [ -e /home/app/proposals/db/migrate ]; then
   echo
   echo "Running migrations..."
-  su - app -c "cd /home/app/proposals; rake db:migrate RAILS_ENV=development"
-  su - app -c "cd /home/app/proposals; rake db:migrate RAILS_ENV=test"
+  su - app -c "cd /home/app/proposals; DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
+  su - app -c "cd /home/app/proposals; DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
 else
   echo
   echo "Prepare database..."
-  su - app -c "cd /home/app/proposals; bundle exec rake db:prepare"
+  su - app -c "cd /home/app/proposals; RAILS_ENV=development DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:create"
+  su - app -c "cd /home/app/proposals; RAILS_ENV=test DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:create"
 fi
 
-echo
-echo "Checking for WebPacker..."
+
 if [ ! -e /home/app/proposals/bin/webpack ]; then
   echo "Installing webpacker..."
   su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec rails webpacker:install"
@@ -97,20 +98,23 @@ if [ ! -e /home/app/proposals/bin/webpack ]; then
   echo
 fi
 
+
 echo
 echo "Changing /home/app/proposals file ownership to app user..."
 chown app:app -R /home/app/proposals
 
 echo
 echo "Compiling Assets..."
-su - app -c "cd /home/app/proposals; yarn install" # --latest"
+chmod 755 /home/app/proposals/node_modules
+fsu - app -c "cd /home/app/proposals; yarn install" # --latest"
 su - app -c "cd /home/app/proposals; yarn upgrade"
 su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
 su - app -c "cd /home/app/proposals; yarn"
 
-echo
-echo "Launching webpack-dev-server..."
-su - app -c "ruby /home/app/proposals/bin/webpack-dev-server &"
+# echo
+# echo "Launching webpack-dev-server..."
+# su - app -c "ruby /home/app/proposals/bin/webpack-dev-server &"
+
 echo
 echo "Starting web server..."
 bundle exec passenger start
