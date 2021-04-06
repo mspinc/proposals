@@ -1,3 +1,19 @@
-<div class="container" data-controller="submit-proposals">
-  new proposal
+<div class="container mt-5" data-controller="submit-proposals">
+  <%=  link_to " Guidelines for Proposals", guidelines_path, class: 'btn btn-primary float-end' %>
+  <%= form_with url: submit_proposals_path, class: 'row g-3' do  |f| %>
+    <fieldset>
+      <legend>Basic</legend>
+      <div class="col-lg-8">
+       <div class="form-group">
+        <%= f.label :location %>
+        <%= select_tag "location", options_for_select(Location.all.map {|l| [l.name, l.id]}), :include_blank => 'Select Location', data: { target: 'submit-proposals.locationId',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control' %>
+       </div>
+       <div class="form-group my-3">
+        <%= f.label :proposal_types %>
+        <%= select_tag "location", options_for_select([]), data: { target: 'submit-proposals.proposalTypes', action: 'change->submit-proposals#handlProposalTypeChange'}, disabled: true, class: 'form-control' %>
+       </div>
+      </fieldset>
+     <div data-submit-proposals-target='form'></div>
+    </div>
+  <%end%>
 </div>
