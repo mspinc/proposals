@@ -5,3 +5,12 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+unless Person.find_by(email: 'john.doe@gmail.com')
+  Person.create!(first_name: 'John', last_name: 'Doe', email: 'john.doe@gmail.com', affiliation: 'BIRS',
+                 deceased: false, retired: true, biography: 'Banff International Research Station')
+end
+
+Dir[File.join(Rails.root, 'db', 'seeds', '*.rb')].sort.each do |seed|
+  load seed
+end
