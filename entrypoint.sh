@@ -64,7 +64,7 @@ fi
 
 echo
 echo "Bundle update..."
-su - app -c "cd /home/app/products; bundle update"
+su - app -c "cd /home/app/proposals; bundle update"
 
 root_owned_files=`find /usr/local/rvm/gems -user root -print`
 if [ -z "$root_owned_files" ]; then
@@ -73,7 +73,7 @@ if [ -z "$root_owned_files" ]; then
   chown app:app -R /usr/local/rvm/gems
 fi
 
-if [ -e /home/app/products/db/migrate ]; then
+if [ -e /home/app/proposals/db/migrate ]; then
   echo
   echo "Running migrations..."
   su - app -c "cd /home/app/proposals; rake db:migrate RAILS_ENV=development"
