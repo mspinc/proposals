@@ -26,16 +26,12 @@ if [ ! -e /usr/local/rvm/gems/ruby-2.7.2 ]; then
   /usr/local/rvm/bin/rvm gemset use ruby-2.7.2@global
   /usr/local/rvm/bin/rvm cleanup all
   /usr/local/rvm/bin/rvm reload
-
-  echo
-  echo "Installing latest bundler..."
-  /usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
-
-  echo
-  echo "Installing Rails..."
-  /usr/local/rvm/bin/rvm-exec 2.7.2 gem install rails
 fi
 
+echo
+echo "Ruby version:"
+ruby -v
+echo
 
 echo
 echo "Node version:"
@@ -46,6 +42,17 @@ echo "Yarn version:"
 yarn --version
 
 
+echo
+echo "Installing latest bundler..."
+/usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
+
+
+if [ ! -e /usr/local/rvm/gems/rails-6.1.3.1.gem ]; then
+  echo
+  echo "Installing Rails..."
+  /usr/local/rvm/bin/rvm-exec 2.7.2 gem install rails -v 6.1.3
+fi
+
 if [ ! -e /home/app/proposals/bin ]; then
   echo
   echo "Starting new rails app..."
@@ -54,31 +61,32 @@ if [ ! -e /home/app/proposals/bin ]; then
   echo
   echo "Bundle install..."
   su - app -c "cd /home/app/proposals; bundle install"
-
-  echo
-  echo "Prepare database..."
-  su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec rake db:prepare"
-  su - app -c "cd /home/app/proposals; RAILS_ENV=test bundle exec rake db:prepare"
 fi
-
-
-# when updating Rails
-# echo
-# echo "Bundle update rails..."
-# su - app -c "cd /home/app/proposals; bundle update rails"
-
 
 echo
 echo "Bundle update..."
-su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle update"
+su - app -c "cd /home/app/proposals; bundle update"
 
-echo
-echo "Running migrations..."
-su - app -c "cd /home/app/proposals; rake db:migrate RAILS_ENV=development"
-su - app -c "cd /home/app/proposals; rake db:migrate RAILS_ENV=test"
+root_owned_files=`find /usr/local/rvm/gems -user root -print`
+if [ -z "$root_owned_files" ]; then
+  echo
+  echo "Changing gems to non-root file permissions..."
+  chown app:app -R /usr/local/rvm/gems
+fi
 
-echo
-echo "Checking for WebPacker..."
+if [ -e /home/app/proposals/db/migrate ]; then
+  echo
+  echo "Running migrations..."
+  su - app -c "cd /home/app/proposals; DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
+  su - app -c "cd /home/app/proposals; DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
+else
+  echo
+  echo "Prepare database..."
+  su - app -c "cd /home/app/proposals; RAILS_ENV=development DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:create"
+  su - app -c "cd /home/app/proposals; RAILS_ENV=test DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:create"
+fi
+
+
 if [ ! -e /home/app/proposals/bin/webpack ]; then
   echo "Installing webpacker..."
   su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec rails webpacker:install"
@@ -90,31 +98,23 @@ if [ ! -e /home/app/proposals/bin/webpack ]; then
   echo
 fi
 
-if [ $(ls -l /usr/local/rvm/gems | tail -1 | awk '{ print $3 }') != 'app']
-then
-  echo
-  echo "Changing to non-root file permissions..."
-  chown app:app -R /usr/local/rvm/gems
-fi
 
-if [ ! -e /home/app/proposals/tmp ]; then
- mkdir /home/app/proposals/tmp
-fi
-if [ ! -e /home/app/proposals/vendor/cache ]; then
-  mkdir -p /home/app/proposals/vendor/cache
-fi
+echo
+echo "Changing /home/app/proposals file ownership to app user..."
 chown app:app -R /home/app/proposals
 
 echo
 echo "Compiling Assets..."
-su - app -c "cd /home/app/proposals; yarn install" # --latest"
+chmod 755 /home/app/proposals/node_modules
+fsu - app -c "cd /home/app/proposals; yarn install" # --latest"
 su - app -c "cd /home/app/proposals; yarn upgrade"
 su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
 su - app -c "cd /home/app/proposals; yarn"
 
-echo
-echo "Launching webpack-dev-server..."
-su - app -c "ruby /home/app/proposals/bin/webpack-dev-server &"
+# echo
+# echo "Launching webpack-dev-server..."
+# su - app -c "ruby /home/app/proposals/bin/webpack-dev-server &"
+
 echo
 echo "Starting web server..."
 bundle exec passenger start

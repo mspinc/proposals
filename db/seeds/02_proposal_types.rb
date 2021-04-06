@@ -1,13 +1,12 @@
-location = Location.find_or_create_by!(name: 'Canada')
+location = Location.find_or_create_by!(name: 'BIRS')
 
-location.proposal_types.find_or_create_by!(name: '2D workshop')
-location.proposal_types.find_or_create_by!(name: '3D workshop')
-location.proposal_types.find_or_create_by!(name: '5D workshop')
-location.proposal_types.find_or_create_by!(name: 'Research in teams')
+location.proposal_types.find_or_create_by!(name: '5 Day Workshop')
+location.proposal_types.find_or_create_by!(name: '2 Day Workshop')
+location.proposal_types.find_or_create_by!(name: 'Research In Teams')
 location.proposal_types.find_or_create_by!(name: 'Focussed Research Group')
+location.proposal_types.find_or_create_by!(name: 'Summer School')
 
-location = Location.find_or_create_by!(name: 'New york')
+location = Location.find_or_create_by!(name: 'CMO')
 
-location.proposal_types.find_or_create_by!(name: '2D workshop')
-location.proposal_types.find_or_create_by!(name: '3D workshop')
-location.proposal_types.find_or_create_by!(name: '5D workshop')
+location.proposal_types.find_or_create_by!(name: '5 Day Workshop')
+location.proposal_types.find_or_create_by!(name: 'Summer School')
