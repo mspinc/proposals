@@ -82,8 +82,8 @@ if [ -e /home/app/proposals/db/migrate ]; then
 else
   echo
   echo "Prepare database..."
-  su - app -c "cd /home/app/proposals; RAILS_ENV=development DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:create"
-  su - app -c "cd /home/app/proposals; RAILS_ENV=test DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:create"
+  su - app -c "cd /home/app/proposals; RAILS_ENV=development DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:prepare"
+  su - app -c "cd /home/app/proposals; RAILS_ENV=test DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:prepare"
 fi
 
 
@@ -106,7 +106,7 @@ chown app:app -R /home/app/proposals
 echo
 echo "Compiling Assets..."
 chmod 755 /home/app/proposals/node_modules
-fsu - app -c "cd /home/app/proposals; yarn install" # --latest"
+su - app -c "cd /home/app/proposals; yarn install" # --latest"
 su - app -c "cd /home/app/proposals; yarn upgrade"
 su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
 su - app -c "cd /home/app/proposals; yarn"
