@@ -1,0 +1,26 @@
+require:
+  - rubocop-rails
+  - rubocop-performance
+
+AllCops:
+  NewCops: enable
+  Include:
+    - 'app/controllers/**/*'
+    - 'app/models/**/*'
+    - 'app/helpers/**/*'
+    - 'app/jobs/**/*'
+    - 'app/channels/**/*'
+    - 'app/views/**/*'
+    - 'spec/**/*.rb'
+  TargetRubyVersion: 2.7
+  SuggestExtensions: false
+
+Rails:
+  Enabled: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/BlockComments:
+  Enabled: false
+Style/StringLiterals:
+  Enabled: false

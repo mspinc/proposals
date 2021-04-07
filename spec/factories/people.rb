@@ -12,7 +12,7 @@ FactoryBot.define do
     f.last_name
     f.email
     f.affiliation { Faker::University.name }
-    #f.url { Faker::Internet.url }
+    # f.url { Faker::Internet.url }
     # f.areas_of_expertise { Faker::Lorem.words(4).join(', ') }
     f.biography { Faker::Lorem.paragraph }
     f.retired { %w[true false].sample }

@@ -2,7 +2,7 @@ ProposalType.all.each do |proposal_type|
   proposal_type.proposal_forms.create!(status: :draft)
 end
 
-location = Location.find_or_create_by!(name: 'Canada')  
+location = Location.find_or_create_by!(name: 'Canada')
 ProposalForm.all.each do |proposal_form|
   proposal_form.proposal_fields.find_or_create_by!(type: 'ProposalFields::Radio',
                                                   statement: "#{proposal_form.proposal_type.name} Is this organizer an early career researcher within 10 years of their doctoral degree?")
