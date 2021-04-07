@@ -3,7 +3,8 @@
 # and/or database is stored on host-mounted volumes.
 #
 # Create data volumes like this:
-# docker run -v /var/lib/postgresql/data --name poposals_data postgres:13.1 echo 'Proposals data'
+# docker run -v /var/lib/postgresql/data --name poposals_data \
+#    postgres:13.1 echo 'Proposals data'
 #
 # docker run -v /usr/local/rvm/gems -v /home/app/proposals/vendor/cache \
 #    -v /home/app/proposas/node_nodules \\
@@ -24,7 +25,6 @@ services:
     container_name: proposals_db
     volumes:
       - ./db/pg-init:/docker-entrypoint-initdb.d
-    volumes:
       - poposals_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postges
