@@ -54,7 +54,7 @@ namespace :subject do
       { code: 'SS', title: 'Summer Schools' },
     ]
 
-    #TODO find or create SubjectCategory and assign accordingly
+    # TODO: find or create SubjectCategory and assign accordingly
     category = SubjectCategory.find_or_create_by!(name: 'Science')
     subject_codes.each do |subject|
       Subject.create(code: subject[:code], title: subject[:title], subject_category: category)
