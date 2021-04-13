@@ -87,6 +87,21 @@ ActiveRecord::Schema.define(version: 2021_04_09_101031) do
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"
   end
 
+  create_table "role_privileges", force: :cascade do |t|
+    t.bigint "role_id", null: false
+    t.string "privilege_name"
+    t.string "permission_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["role_id"], name: "index_role_privileges_on_role_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "subject_categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
