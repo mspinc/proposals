@@ -1,3 +1,3 @@
 class SubmitProposalsController < ApplicationController
-  def new;  end
+  def new; end
 end

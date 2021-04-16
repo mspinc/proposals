@@ -8,7 +8,7 @@ RSpec.describe Proposal, type: :model do
   end
 
   describe 'associations' do
-    it { should belong_to(:location) }
+    it { should have_many(:locations).through(:proposal_locations) }
     it { should belong_to(:proposal_type) }
   end
 end

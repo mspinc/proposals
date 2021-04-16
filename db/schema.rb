@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_14_075350) do
+ActiveRecord::Schema.define(version: 2021_04_16_050829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(version: 2021_04_14_075350) do
     t.string "code"
     t.string "city"
     t.string "country"
+  end
+
+  create_table "organizers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "role_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["role_id"], name: "index_organizers_on_role_id"
+    t.index ["user_id"], name: "index_organizers_on_user_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -112,6 +121,15 @@ ActiveRecord::Schema.define(version: 2021_04_14_075350) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "staffs", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "role_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["role_id"], name: "index_staffs_on_role_id"
+    t.index ["user_id"], name: "index_staffs_on_user_id"
+  end
+
   create_table "subject_categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -150,6 +168,8 @@ ActiveRecord::Schema.define(version: 2021_04_14_075350) do
   end
 
   add_foreign_key "ams_subjects", "subjects"
+  add_foreign_key "organizers", "roles"
+  add_foreign_key "organizers", "users"
   add_foreign_key "proposal_fields", "proposal_forms"
   add_foreign_key "proposal_forms", "proposal_types"
   add_foreign_key "proposal_locations", "locations"
@@ -158,6 +178,8 @@ ActiveRecord::Schema.define(version: 2021_04_14_075350) do
   add_foreign_key "proposal_type_locations", "proposal_types"
   add_foreign_key "proposals", "proposal_types"
   add_foreign_key "role_privileges", "roles"
+  add_foreign_key "staffs", "roles"
+  add_foreign_key "staffs", "users"
   add_foreign_key "subjects", "subject_categories"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
