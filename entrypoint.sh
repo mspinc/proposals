@@ -88,12 +88,11 @@ fi
 
 
 if [ ! -e /home/app/proposals/bin/webpack ]; then
-  echo "Installing webpacker..."
+  echo "Installing Webacker..."
   su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec rails webpacker:install"
-  su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec yarn add --dev webpack-dev-server"
   echo
-  echo "Installing Stimulus..."
-  su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec yarn add stimulus"
+  echo "Turbo install..."
+  su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec rails turbo:install"
   echo "Done!"
   echo
 fi
@@ -108,12 +107,12 @@ echo "Compiling Assets..."
 chmod 755 /home/app/proposals/node_modules
 su - app -c "cd /home/app/proposals; yarn install" # --latest"
 su - app -c "cd /home/app/proposals; yarn upgrade"
-su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
+# su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
 su - app -c "cd /home/app/proposals; yarn"
 
-# echo
-# echo "Launching webpack-dev-server..."
-# su - app -c "ruby /home/app/proposals/bin/webpack-dev-server &"
+echo
+echo "Launching webpack-dev-server..."
+su - app -c "ruby /home/app/proposals/bin/webpack-dev-server &"
 
 echo
 echo "Starting web server..."

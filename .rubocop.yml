@@ -11,6 +11,7 @@ AllCops:
     - 'app/jobs/**/*'
     - 'app/channels/**/*'
     - 'spec/**/*.rb'
+    - 'Gemfile'
   TargetRubyVersion: 2.7
   SuggestExtensions: false
 
