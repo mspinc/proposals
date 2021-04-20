@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_050829) do
+ActiveRecord::Schema.define(version: 2021_04_16_050802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,10 +35,11 @@ ActiveRecord::Schema.define(version: 2021_04_16_050829) do
 
   create_table "organizers", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "role_id", null: false
+    t.bigint "proposal_id", null: false
+    t.integer "organizer_type"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["role_id"], name: "index_organizers_on_role_id"
+    t.index ["proposal_id"], name: "index_organizers_on_proposal_id"
     t.index ["user_id"], name: "index_organizers_on_user_id"
   end
 
@@ -121,15 +122,6 @@ ActiveRecord::Schema.define(version: 2021_04_16_050829) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  create_table "staffs", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "role_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["role_id"], name: "index_staffs_on_role_id"
-    t.index ["user_id"], name: "index_staffs_on_user_id"
-  end
-
   create_table "subject_categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -161,14 +153,19 @@ ActiveRecord::Schema.define(version: 2021_04_16_050829) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "confirmation_sent_at"
+    t.string "unconfirmed_email"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "ams_subjects", "subjects"
-  add_foreign_key "organizers", "roles"
+  add_foreign_key "organizers", "proposals"
   add_foreign_key "organizers", "users"
   add_foreign_key "proposal_fields", "proposal_forms"
   add_foreign_key "proposal_forms", "proposal_types"
@@ -178,8 +175,6 @@ ActiveRecord::Schema.define(version: 2021_04_16_050829) do
   add_foreign_key "proposal_type_locations", "proposal_types"
   add_foreign_key "proposals", "proposal_types"
   add_foreign_key "role_privileges", "roles"
-  add_foreign_key "staffs", "roles"
-  add_foreign_key "staffs", "users"
   add_foreign_key "subjects", "subject_categories"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
