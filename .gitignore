@@ -43,3 +43,11 @@ yarn-debug.log*
 docker-compose.yml
 .DS_Store
 coverage
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+spec/examples.txt

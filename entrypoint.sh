@@ -31,7 +31,6 @@ fi
 echo
 echo "Ruby version:"
 ruby -v
-echo
 
 echo
 echo "Node version:"
@@ -88,7 +87,7 @@ fi
 
 
 if [ ! -e /home/app/proposals/bin/webpack ]; then
-  echo "Installing Webacker..."
+  echo "Installing Webpacker..."
   su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec rails webpacker:install"
   echo
   echo "Turbo install..."
@@ -97,7 +96,6 @@ if [ ! -e /home/app/proposals/bin/webpack ]; then
   echo
 fi
 
-
 echo
 echo "Changing /home/app/proposals file ownership to app user..."
 chown app:app -R /home/app/proposals
@@ -105,14 +103,15 @@ chown app:app -R /home/app/proposals
 echo
 echo "Compiling Assets..."
 chmod 755 /home/app/proposals/node_modules
-su - app -c "cd /home/app/proposals; yarn install" # --latest"
-su - app -c "cd /home/app/proposals; yarn upgrade"
-# su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
+# su - app -c "cd /home/app/proposals; yarn add webpack-cli@3.3.11 --dev"
+su - app -c "cd /home/app/proposals; yarn install"
+# su - app -c "cd /home/app/proposals; yarn upgrade"
+su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
 su - app -c "cd /home/app/proposals; yarn"
 
 echo
 echo "Launching webpack-dev-server..."
-su - app -c "ruby /home/app/proposals/bin/webpack-dev-server &"
+su - app -c "cd /home/app/proposals; RAILS_ENV=development bundle exec bin/webpack-dev-server &"
 
 echo
 echo "Starting web server..."
