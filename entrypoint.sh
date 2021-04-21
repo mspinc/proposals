@@ -62,9 +62,9 @@ if [ ! -e /home/app/proposals/bin ]; then
   su - app -c "cd /home/app/proposals; bundle install"
 fi
 
-# echo
-# echo "Bundle update..."
-# su - app -c "cd /home/app/proposals; bundle update"
+echo
+echo "Bundle update..."
+su - app -c "cd /home/app/proposals; bundle update"
 
 root_owned_files=`find /usr/local/rvm/gems -user root -print`
 if [ -z "$root_owned_files" ]; then
