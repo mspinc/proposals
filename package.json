@@ -10,13 +10,16 @@
     "@rails/webpacker": "5.2.1",
     "bootstrap": "5.0.0-beta2",
     "sass": "^1.32.11",
-    "sass-loader": "^11.0.1",
+    "sass-loader": "^10.1.1",
     "stimulus": "^2.0.0"
   },
   "version": "0.1.0",
   "devDependencies": {
-    "webpack-dev-server": "^3.11.2",
-    "webpack": "^5.2.1"
+    "webpack-cli": "3.3.11",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "scripts": {
+    "startdev": "webpack serve --mode development --env development --hot --port 3000"
   },
   "resolutions": {
     "@popperjs/core": "^2.9.2"
