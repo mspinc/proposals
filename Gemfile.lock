@@ -100,6 +100,10 @@ GEM
     ffi (1.15.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    hotwire-rails (0.1.3)
+      rails (>= 6.0.0)
+      stimulus-rails
+      turbo-rails
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     jbuilder (2.11.2)
@@ -187,7 +191,7 @@ GEM
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
     rspec-support (3.10.2)
-    rubocop (1.12.1)
+    rubocop (1.13.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -244,9 +248,8 @@ GEM
       rails (>= 6.0.0)
     thor (1.1.0)
     tilt (2.0.10)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
+    turbo-rails (0.5.9)
+      rails (>= 6.0.0)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.0.0)
@@ -284,6 +287,7 @@ DEPENDENCIES
   devise
   factory_bot_rails
   faker
+  hotwire-rails
   jbuilder (~> 2.7)
   listen (~> 3.3)
   pg
@@ -298,9 +302,7 @@ DEPENDENCIES
   shoulda-matchers (~> 4.0)
   simplecov
   spring
-  stimulus-rails
-  turbolinks (~> 5)
-  tzinfo-data
+  turbo-rails
   web-console (>= 4.1.0)
   webdrivers
   webpacker (~> 5.0)
