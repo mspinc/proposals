@@ -1,0 +1,25 @@
+<%= render partial: 'layouts/sidebar' %>
+<div class="main-content" id="panel">
+  <p id="notice"><%= notice %></p>
+  <div class="container-fluid mt-4">
+    <p id="notice"><%= notice %></p>
+    <p>
+      <span class="fs-5">Name:</span>
+      <%= @location.name %>
+    </p>
+    <p>
+      <span class="fs-5">Code:</span>
+      <%= @location.code %>
+    </p>
+    <p>
+      <span class="fs-5">City:</span>
+      <%= @location.city %>
+    </p>
+    <p>
+      <span class="fs-5">Country:</span>
+      <%= @location.country %>
+    </p>
+    <%= link_to 'Edit', edit_location_path(@location), class:'btn btn-sm btn-primary' %> |
+    <%= link_to 'Back', locations_path, class:'btn btn-sm btn-primary' %>
+  </div>
+</div>
