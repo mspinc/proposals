@@ -61,6 +61,9 @@ RUN chmod 755 /sbin/entrypoint.sh
 RUN mkdir -p /etc/my_init.d
 RUN ln -s /sbin/entrypoint.sh /etc/my_init.d/entrypoint.sh
 RUN echo 'export PATH=./bin:$PATH:/usr/local/rvm/rubies/ruby-2.7.2/bin' >> /root/.bashrc
+RUN echo 'export PATH=./bin:$PATH:/usr/local/rvm/rubies/ruby-2.7.2/bin' >> /home/app/.bashrc
 RUN echo 'alias rspec="bundle exec rspec"' >> /root/.bashrc
+RUN echo 'alias rspec="bundle exec rspec"' >> /home/app/.bashrc
 RUN echo 'alias restart="passenger-config restart-app /home/app/proposals"' >> /root/.bashrc
+RUN echo 'alias restart="passenger-config restart-app /home/app/proposals"' >> /home/app/.bashrc
 ENTRYPOINT ["/sbin/entrypoint.sh"]
