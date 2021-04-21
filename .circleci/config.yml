@@ -1,33 +1,21 @@
 version: 2.1
-
-executors:
-  ruby:
+jobs:
+  build:
     docker:
-      - image: 'circleci/ruby:2.7.2-node-browsers'
-  ruby_with_db:
-    docker:
-      - image: 'circleci/ruby:2.7.2-node-browsers'
-      - image: 'circleci/postgres:12.1-alpine-ram'
-    environment:
-      DATABASE_URL: 'postgres://postgres:postgres@127.0.0.1:5432'
-orbs:
-  rails: medpeer/rails@1.2.0
-
-workflows:
-  rspec:
-    jobs:
-      - rails/rb-deps:
-          executor: ruby
-      - rails/js-deps:
-          executor: ruby
-      - rails/assets:
-          executor: ruby
-          requires:
-            - rails/rb-deps
-            - rails/js-deps
-      - rails/rspec:
-          db-port: '5432'
-          executor: ruby_with_db
-          parallelism: 4
-          requires:
-            - rails/assets
+      - image: birs/proposals:04.21
+      - image: postgres:13.1
+    steps:
+      - checkout
+      - run:
+          name: Wait for Postgres
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1
+      - run:
+          name: Run container
+          command: docker-compose -f docker-compose-ci.yml up -d
