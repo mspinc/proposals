@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13.1
+    container_name: proposals_db
+    environment:
+      - POSTGRES_USER=postgres
+      - PSQL_TRUST_LOCALNET=true
+      - DB_PORT=5433
+      - DB_NAME=proposals_production,proposals_development,proposals_test
+
+  web:
+    build: .
+    container_name: proposals
+    command: /sbin/entrypoint.sh
+    ports:
+      - '80:80'
+    links:
+      - db
+    environment:
+      - RAILS_ENV=development
+      - YARN_ENV=development
+      - RAILS_SERVE_STATIC_FILES=true
+      - APPLICATION_HOST=localhost
+      - APPLICATION_PROTOCOL=http
