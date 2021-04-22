@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_050802) do
+ActiveRecord::Schema.define(version: 2021_04_22_101604) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 2021_04_16_050802) do
     t.boolean "retired"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
   end
 
   create_table "proposal_fields", force: :cascade do |t|
@@ -82,6 +83,17 @@ ActiveRecord::Schema.define(version: 2021_04_16_050802) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["location_id"], name: "index_proposal_locations_on_location_id"
     t.index ["proposal_id"], name: "index_proposal_locations_on_proposal_id"
+  end
+
+  create_table "proposal_roles", force: :cascade do |t|
+    t.bigint "proposal_id", null: false
+    t.bigint "role_id", null: false
+    t.bigint "people_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["people_id"], name: "index_proposal_roles_on_people_id"
+    t.index ["proposal_id"], name: "index_proposal_roles_on_proposal_id"
+    t.index ["role_id"], name: "index_proposal_roles_on_role_id"
   end
 
   create_table "proposal_type_locations", force: :cascade do |t|
@@ -171,6 +183,9 @@ ActiveRecord::Schema.define(version: 2021_04_16_050802) do
   add_foreign_key "proposal_forms", "proposal_types"
   add_foreign_key "proposal_locations", "locations"
   add_foreign_key "proposal_locations", "proposals"
+  add_foreign_key "proposal_roles", "people", column: "people_id"
+  add_foreign_key "proposal_roles", "proposals"
+  add_foreign_key "proposal_roles", "roles"
   add_foreign_key "proposal_type_locations", "locations"
   add_foreign_key "proposal_type_locations", "proposal_types"
   add_foreign_key "proposals", "proposal_types"
