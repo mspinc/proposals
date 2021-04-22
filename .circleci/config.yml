@@ -8,8 +8,8 @@ jobs:
      - run: 
 
      # deploy the image
-     - run:|
-        TAG=circle-${CIRCLE_BUILD_NUM}
-        docker build -t birs/proposals:$TAG .
+     - run: | 
+        VERSION=$CIRCLE_BUILD_NUM
+        docker build -t birs/proposals:circle-$VERSION .
         echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
-        docker push birs/proposals:circle
+        docker push birs/proposals:circle-$VERSION
