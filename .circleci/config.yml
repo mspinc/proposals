@@ -17,11 +17,11 @@ jobs:
     steps:
       - checkout
       - run:
-        name: Install docker-compose
-        command: |
-          curl -L https://github.com/docker/compose/releases/download/1.25.3/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
-          chmod +x ~/docker-compose
-          sudo mv ~/docker-compose /usr/local/bin/docker-compose
+          name: Install docker-compose
+          command: |
+            curl -L https://github.com/docker/compose/releases/download/1.29.1/docker-compose-Linux-x86_64 > ~/docker-compose
+            chmod +x ~/docker-compose
+            sudo mv ~/docker-compose /usr/local/bin/docker-compose
       - run:
           name: Run container
           command: docker-compose -f docker-compose-ci.yml up -d
