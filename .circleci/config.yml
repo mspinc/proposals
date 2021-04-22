@@ -1,21 +1,12 @@
-version: 2.1
+version: 2
 jobs:
-  build:
-    docker:
-      - image: birs/proposals:04.21
-      - image: postgres:13.1
-    steps:
-      - checkout
-      - run:
-          name: Wait for Postgres
-          command: |
-            for i in `seq 1 10`;
-            do
-              nc -z localhost 5432 && echo Success && exit 0
-              echo -n .
-              sleep 1
-            done
-            echo Failed waiting for Postgress && exit 1
-      - run:
-          name: Run container
-          command: docker-compose -f docker-compose-ci.yml up -d
+ build:
+   machine: true
+   steps:
+     - checkout
+     # build the application image
+     - run: docker build -t birs/proposals:circle .
+
+     # deploy the image
+     - run: docker push birs/proposals:circle
+     
