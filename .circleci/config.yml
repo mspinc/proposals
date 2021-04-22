@@ -1,13 +1,21 @@
-version: 2
+version: 2.1
 jobs:
- build:
-   machine: true
-   steps:
-     - checkout
-
-     # deploy the image
-     - run: | 
-        VERSION=$CIRCLE_BUILD_NUM
-        docker build -t birs/proposals:circle-$VERSION .
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
-        docker push birs/proposals:circle-$VERSION
+  build:
+    docker:
+      - image: birs/proposals:circle-59
+      - image: postgres:13.1
+    steps:
+      - checkout
+      - run:
+          name: Wait for Postgres
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1
+      - run:
+          name: Run container
+          command: docker-compose -f docker-compose-ci.yml up -d
