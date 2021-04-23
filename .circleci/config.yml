@@ -1,17 +1,129 @@
-version: 2
-# build a new image
+version: 2.1
 jobs:
-  build:
+  build_image:
     machine: true
     steps:
       - checkout
 
       - run:
-          name: Build the container
-          command: docker build -t birs/proposals:circle-3 .
+          name: Build the image
+          command: docker build -t birs/proposals:$IMAGE_TAG .
 
       - run:
           name: Send to DockerHub
           command: |
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
-            docker push birs/proposals:circle-3
+            docker push birs/proposals:$IMAGE_TAG
+
+  startup_and_test:
+    docker:
+      - image: birs/proposals:$IMAGE_TAG
+        environment:
+          PG_HOST: localhost
+          PG_USER: $DB_USER
+          RAILS_ENV: test
+          RACK_ENV: test
+      - image: 'circleci/postgres:13.1-alpine-ram'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: Copy code to app home
+          command: tar cvf - --exclude=".git" . | tar xf - -C /home/app/proposals/
+      - run:
+          name: Wait for database
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1
+      - run:
+          name: Setup database
+          command: |
+            cd /home/app/proposals/db/pg-init
+            sed s/DB_USER/$DB_USER/g db-init.sql | sed s/DB_PASS/$DB_PASS/g > setup.sql
+            PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U postgres < setup.sql
+            rm setup.sql
+      - run:
+          name: Run migrations
+          command: |
+            echo "127.0.0.1 db" >> /etc/hosts
+            cd /home/app/proposals
+            DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development
+            DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
+      - run:
+          name: Bundle Update
+          command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle update
+      - run:
+          name: Compile Assets
+          command: |
+            cd /home/app/proposals
+            RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace
+      - run:
+          name: Update permissions
+          command: chown -R app:app /home/app/proposals
+      - run:
+          name: Run the tests
+          command: cd /home/app/proposals; bundle exec rspec
+
+  deploy_to_staging:
+    docker:
+      - image: birs/proposals:$IMAGE_TAG
+        environment:
+          PG_HOST: localhost
+          PG_USER: $DB_USER
+          RAILS_ENV: development
+          RACK_ENV: development
+      - image: 'circleci/postgres:13.1-alpine-ram'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      steps:
+        - checkout
+        - run:
+            name: Run Capistrano
+            command: bundle exec cap staging deploy
+
+  deploy_to_production:
+    docker:
+      - image: birs/proposals:$IMAGE_TAG
+        environment:
+          PG_HOST: localhost
+          PG_USER: $DB_USER
+          RAILS_ENV: production
+          RACK_ENV: production
+      - image: 'circleci/postgres:13.1-alpine-ram'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+      steps:
+        - checkout
+        - run:
+            name: Run Capistrano
+            command: bundle exec cap production deploy
+
+workflows:
+  version: 2
+  build_new_image:
+    jobs:
+      - build_image
+        filters:
+          tags:
+            only: /new-image/
+
+  test_development_branch:
+    jobs:
+      - startup_and_test
+        filters:
+          branches:
+            only:
+              - development
+
+  deploy_to_staging:
+    jobs:
+      - deploy_to_staging
