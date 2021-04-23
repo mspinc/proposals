@@ -50,5 +50,8 @@ jobs:
             cd /home/app/proposals
             RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace
       - run:
+          name: Update permissions
+          command: chown -R app:app /home/app/proposals
+      - run:
           name: Run the tests
           command: cd /home/app/proposals; bundle exec rspec
