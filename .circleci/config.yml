@@ -11,13 +11,12 @@ jobs:
       - image: postgres:13.1
         environment:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ""
-          POSTGRES_HOST_AUTH_METHOD: trust
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     steps:
       - checkout
       - run:
           name: Copy code to app home
-          command: tar cvf - . | tar xf - -C /home/app/proposals/
+          command: tar cvf - --exclude=".*" . | tar xf - -C /home/app/proposals/
       - run:
           name: Wait for database
           command: |
