@@ -88,10 +88,10 @@ ActiveRecord::Schema.define(version: 2021_04_22_101604) do
   create_table "proposal_roles", force: :cascade do |t|
     t.bigint "proposal_id", null: false
     t.bigint "role_id", null: false
-    t.bigint "people_id", null: false
+    t.bigint "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["people_id"], name: "index_proposal_roles_on_people_id"
+    t.index ["person_id"], name: "index_proposal_roles_on_person_id"
     t.index ["proposal_id"], name: "index_proposal_roles_on_proposal_id"
     t.index ["role_id"], name: "index_proposal_roles_on_role_id"
   end
@@ -183,7 +183,7 @@ ActiveRecord::Schema.define(version: 2021_04_22_101604) do
   add_foreign_key "proposal_forms", "proposal_types"
   add_foreign_key "proposal_locations", "locations"
   add_foreign_key "proposal_locations", "proposals"
-  add_foreign_key "proposal_roles", "people", column: "people_id"
+  add_foreign_key "proposal_roles", "people"
   add_foreign_key "proposal_roles", "proposals"
   add_foreign_key "proposal_roles", "roles"
   add_foreign_key "proposal_type_locations", "locations"

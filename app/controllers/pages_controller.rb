@@ -1,3 +1,3 @@
 class PagesController < ApplicationController
-  def guidlines; end
+  def guidelines; end
 end
