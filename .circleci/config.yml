@@ -22,15 +22,22 @@ jobs:
             curl -L https://github.com/docker/compose/releases/download/1.29.1/docker-compose-Linux-x86_64 > /tmp/docker-compose-Linux-x86_64
             curl -L https://github.com/docker/compose/releases/download/1.29.1/docker-compose-Linux-x86_64.sha256 > /tmp/docker-compose-Linux-x86_64.sha256
             set +e
+            dir=`pwd`
             cd /tmp
             check=`sha256sum -c /tmp/docker-compose-Linux-x86_64.sha256 | awk -F': ' '{ print $2 }'`
             if [ $check != "OK" ]; then
               echo "Docker-compose checksum failed!"
               circleci-agent step halt
             fi
+            cd $dir
             set -e
             chmod +x /tmp/docker-compose-Linux-x86_64
             mv /tmp/docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
       - run:
           name: Run container
-          command: docker-compose -f docker-compose-ci.yml up -d
+          command: |
+            echo "Current dir:"
+            pwd
+            echo "Dir listing:"
+            ls -la
+            docker-compose -f docker-compose-ci.yml up -d
