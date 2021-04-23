@@ -1,13 +1,15 @@
 version: 2
 jobs:
- build:
-   machine: true
-   steps:
-     - checkout
+  build:
+    machine: true
+      steps:
+        - checkout
 
-     # deploy the image
-     - run: |
-        VERSION=$CIRCLE_BUILD_NUM
-        docker build -t birs/proposals:circle-$VERSION .
-        echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
-        docker push birs/proposals:circle-$VERSION
+        - run:
+          name: Build the container
+          command: docker build -t birs/proposals:circle-1 .
+
+        - run:
+          name: Send to DockerHub
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push birs/proposals:circle-1
