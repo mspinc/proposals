@@ -16,16 +16,13 @@ jobs:
           POSTGRES_DB: proposals_test
           POSTGRES_HOST_AUTH_METHOD: trust
     steps:
-      - run:
-          name: Add Db to Hosts
-          command: echo "127.0.0.1 localhost db" >> /etc/hosts
       - checkout
       - run:
           name: Copy code to app home
           command: tar cvf - . | tar xf - -C /home/app/proposals/
       - run:
           name: Setup database
-          command: psql -h db -U $POSTGRES_USER < /home/app/proposals/db/pg-init/db-init.sql
+          command: psql -h localhost -U $POSTGRES_USER < /home/app/proposals/db/pg-init/db-init.sql
       - run:
           name: Bundle Update
           command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle update
