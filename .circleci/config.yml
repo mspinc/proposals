@@ -18,7 +18,7 @@ jobs:
       - checkout
       - run:
           name: Add Db to Hosts
-          command: echo "db localhost" >> /etc/hosts
+          command: echo "127.0.0.1 localhost db" >> /etc/hosts
       - run:
           name: Move project
           command: cd ~; mkdir -p /home/app; mv project /home/app/proposals; cd /home/app/proposals
