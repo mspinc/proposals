@@ -4,6 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'cancancan'
+gem 'devise'
 gem 'hotwire-rails'
 gem 'jbuilder', '~> 2.7'
 gem 'pg'
@@ -34,4 +36,5 @@ group :test do
   gem 'selenium-webdriver'
   gem 'simplecov'
   gem 'webdrivers'
+  gem 'shoulda-matchers', '~> 4.0'
 end
