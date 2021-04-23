@@ -31,6 +31,7 @@ jobs:
       - run:
           name: Create databases
           command: |
+            cd /home/app/proposals
             RAILS_ENV=development DB_USER=POSTGRES_USER DB_PASS=POSTGRES_PASSWORD rake db:create
             RAILS_ENV=test DB_USER=POSTGRES_USER DB_PASS=POSTGRES_PASSWORD rake db:create
       - run:
