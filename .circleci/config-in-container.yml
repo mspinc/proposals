@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: birs/proposals:circle-1
+      - image: birs/proposals:circle-2
         environment:
           PG_HOST: localhost
           PG_USER: $POSTGRES_USER
@@ -24,18 +24,10 @@ jobs:
           command: tar cvf - . | tar xf - -C /home/app/proposals/
       - run:
           name: Setup database
-          command: |
-            apt update && apt install --yes postgresql-client
-            psql < /home/app/proposals/db/pg-init/db-init.sql
+          command: psql < /home/app/proposals/db/pg-init/db-init.sql
       - run:
           name: Bundle Update
           command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle update
-      - run:
-          name: Prepare databases
-          command: |
-            cd /home/app/proposals
-            RAILS_ENV=development DB_USER=$POSTGRES_USER DB_PASS=$POSTGRES_PASSWORD rake db:prepare
-            RAILS_ENV=test DB_USER=$POSTGRES_USER DB_PASS=$POSTGRES_PASSWORD rake db:prepare
       - run:
           name: Run migrations
           command: |
@@ -49,4 +41,4 @@ jobs:
             RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace
       - run:
           name: Start Webserver
-          command: cd /home/app/proposals; bundle exec passenger start
+          command: cd /home/app/proposals; bundle exec passenger start --port 80
