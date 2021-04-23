@@ -35,11 +35,9 @@ jobs:
             PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U postgres < setup.sql
             rm setup.sql
       - run:
-          name: Add db to hosts
-          command: echo "127.0.0.1 db" >> /etc/hosts
-      - run:
           name: Run migrations
           command: |
+            echo "127.0.0.1 db" >> /etc/hosts
             cd /home/app/proposals
             DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development
             DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
