@@ -40,8 +40,8 @@ jobs:
           name: Run migrations
           command: |
             cd /home/app/proposals
-            DB_USER=$POSTGRES_USER DB_PASS=$POSTGRES_PASSWORD rake db:migrate RAILS_ENV=development
-            DB_USER=$POSTGRES_USER DB_PASS=$POSTGRES_PASSWORD rake db:migrate RAILS_ENV=test
+            DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development
+            DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
       - run:
           name: Bundle Update
           command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle update
