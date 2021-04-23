@@ -23,7 +23,7 @@ jobs:
           PG_USER: $DB_USER
           RAILS_ENV: test
           RACK_ENV: test
-      - image: 'circleci/postgres:13.1-alpine-ram'
+      - image: 'circleci/postgres:12.1-alpine-ram'
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: $POSTGRES_PASSWORD
@@ -79,7 +79,7 @@ jobs:
           PG_USER: $DB_USER
           RAILS_ENV: development
           RACK_ENV: development
-      - image: 'circleci/postgres:13.1-alpine-ram'
+      - image: 'circleci/postgres:12.1-alpine-ram'
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: $POSTGRES_PASSWORD
@@ -97,7 +97,7 @@ jobs:
           PG_USER: $DB_USER
           RAILS_ENV: production
           RACK_ENV: production
-      - image: 'circleci/postgres:13.1-alpine-ram'
+      - image: 'circleci/postgres:12.1-alpine-ram'
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: $POSTGRES_PASSWORD
@@ -114,7 +114,7 @@ workflows:
       - build_image:
         filters:
           tags:
-            only: /new-image/
+            only: /^new-image/
 
   test_development_branch:
     jobs:
