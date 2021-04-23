@@ -1,4 +1,5 @@
 version: 2
+# build a new image
 jobs:
   build:
     machine: true
