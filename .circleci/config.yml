@@ -6,25 +6,32 @@ jobs:
         environment:
           PG_HOST: localhost
           PG_USER: $POSTGRES_USER
-          PG_PASSWORD: $POSTGRES_PASSWORD
           RAILS_ENV: test
           RACK_ENV: test
       - image: postgres:13.1
         environment:
           POSTGRES_USER: $POSTGRES_USER
-          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
-          POSTGRES_DB: $POSTGRES_DB
+          POSTGRES_PASSWORD: ""
+          POSTGRES_DB: proposals_test
+          POSTGRES_HOST_AUTH_METHOD: trust
     steps:
-      - run:
-          name: Add Db to Hosts
-          command: echo "127.0.0.1 localhost db" >> /etc/hosts
       - checkout
       - run:
           name: Copy code to app home
           command: tar cvf - . | tar xf - -C /home/app/proposals/
       - run:
+          name: Wait for database
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1
+      - run:
           name: Setup database
-          command: psql < /home/app/proposals/db/pg-init/db-init.sql
+          command: psql -h localhost < /home/app/proposals/db/pg-init/db-init.sql
       - run:
           name: Bundle Update
           command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle update
