@@ -21,7 +21,7 @@ RUN apt-get update -qq && apt-get dist-upgrade --yes && \
   -o Dpkg::Options::="--force-confold"
 
 RUN apt-get install --yes tzdata udev locales curl git gnupg ca-certificates \
-    libpq-dev wget libxrender1 libxext6 libsodium23 libsodium-dev nc
+    libpq-dev wget libxrender1 libxext6 libsodium23 libsodium-dev netcat
 
 # NodeJS 10
 RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh

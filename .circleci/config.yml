@@ -2,14 +2,15 @@ version: 2
 jobs:
   build:
     machine: true
-      steps:
-        - checkout
+    steps:
+      - checkout
 
-        - run:
+      - run:
           name: Build the container
           command: docker build -t birs/proposals:circle-1 .
 
-        - run:
+      - run:
           name: Send to DockerHub
+          command: |
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push birs/proposals:circle-1
