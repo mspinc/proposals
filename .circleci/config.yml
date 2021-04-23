@@ -30,7 +30,7 @@ jobs:
             fi
             set -e
             chmod +x /tmp/docker-compose-Linux-x86_64
-            sudo mv /tmp/docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
+            mv /tmp/docker-compose-Linux-x86_64 /usr/local/bin/docker-compose
       - run:
           name: Run container
           command: docker-compose -f docker-compose-ci.yml up -d
