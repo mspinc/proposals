@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-RSpec.describe ProposalLocation, type: :model do
+RSpec.describe ProposalRole, type: :model do
   describe 'validations' do
     it 'has valid factory' do
-      expect(build(:proposal_location)).to be_valid
+      expect(build(:proposal_role)).to be_valid
     end
   end
 
   describe 'associations' do
+    it { should belong_to(:role) }
     it { should belong_to(:proposal) }
-    it { should belong_to(:location) }
   end
 end

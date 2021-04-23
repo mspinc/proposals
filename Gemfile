@@ -34,7 +34,7 @@ group :test do
   gem 'rubocop-performance'
   gem 'rubocop-rspec'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 4.0'
   gem 'simplecov'
   gem 'webdrivers'
-  gem 'shoulda-matchers', '~> 4.0'
 end
