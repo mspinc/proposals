@@ -5,12 +5,12 @@ jobs:
       - image: birs/proposals:circle-2
         environment:
           PG_HOST: localhost
-          PG_USER: $POSTGRES_USER
+          PG_USER: $DB_USER
           RAILS_ENV: test
           RACK_ENV: test
       - image: postgres:13.1
         environment:
-          POSTGRES_USER: $POSTGRES_USER
+          POSTGRES_USER: postgres 
           POSTGRES_PASSWORD: ""
           POSTGRES_DB: proposals_test
           POSTGRES_HOST_AUTH_METHOD: trust
@@ -31,7 +31,7 @@ jobs:
             echo Failed waiting for Postgress && exit 1
       - run:
           name: Setup database
-          command: psql -h localhost < /home/app/proposals/db/pg-init/db-init.sql
+          command: psql -h localhost -U postgres < /home/app/proposals/db/pg-init/db-init.sql
       - run:
           name: Bundle Update
           command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle update
