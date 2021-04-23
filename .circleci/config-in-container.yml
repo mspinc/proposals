@@ -2,7 +2,7 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: birs/proposals:circle-2
+      - image: birs/proposals:circle-3
         environment:
           PG_HOST: localhost
           PG_USER: $DB_USER

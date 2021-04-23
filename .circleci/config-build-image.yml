@@ -7,10 +7,10 @@ jobs:
 
       - run:
           name: Build the container
-          command: docker build -t birs/proposals:circle-2 .
+          command: docker build -t birs/proposals:circle-3 .
 
       - run:
           name: Send to DockerHub
           command: |
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
-            docker push birs/proposals:circle-2
+            docker push birs/proposals:circle-3
