@@ -21,7 +21,14 @@ jobs:
           command: tar cvf - . | tar xf - -C /home/app/proposals/
       - run:
           name: Wait for database
-          command: dockerize -wait tcp://localhost:5432 -timeout 1m
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1  
       - run:
           name: Setup database
           command: psql -h localhost -U $POSTGRES_USER < /home/app/proposals/db/pg-init/db-init.sql
