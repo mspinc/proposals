@@ -20,6 +20,20 @@ jobs:
           name: Add Db to Hosts
           command: echo "db localhost" >> /etc/hosts
       - run:
+          name: Move project
+          command: cd ~; mkdir -p /home/app; mv project /home/app/proposals; cd /home/app/proposals
+      - run:
+          name: Install Bundler
+          command: /usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
+      - run:
+          name: Bundle Install
+          command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle install
+      - run:
+          name: Create databases
+          command: |
+            RAILS_ENV=development DB_USER=POSTGRES_USER DB_PASS=POSTGRES_PASSWORD rake db:create
+            RAILS_ENV=test DB_USER=POSTGRES_USER DB_PASS=POSTGRES_PASSWORD rake db:create
+      - run:
           name: run entrypoint script
           command: /sbin/entrypoint.sh
  
