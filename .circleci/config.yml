@@ -24,7 +24,7 @@ jobs:
           command: tar cvf - . | tar xf - -C /home/app/proposals/
       - run:
           name: Setup database
-          command: psql < /home/app/proposals/db/pg-init/db-init.sql
+          command: psql -h db -U $POSTGRES_USER < /home/app/proposals/db/pg-init/db-init.sql
       - run:
           name: Bundle Update
           command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle update
