@@ -17,11 +17,9 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Install docker & docker-compose
-          command: |
-            apt apt-get update -qq
-            apt install --yes docker docker-compose
+          name: Add Db to Hosts
+          command: echo "db localhost" >> /etc/hosts
       - run:
-          name: Run container
-          command: |
-            docker-compose -f docker-compose-ci.yml up -d
+          name: run entrypoint script
+          command: /sbin/entrypoint.sh
+ 
