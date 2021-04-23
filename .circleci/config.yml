@@ -19,8 +19,8 @@ jobs:
       - run:
           name: Install docker-compose
           command: |
-            curl -L https://github.com/docker/compose/releases/download/1.29.1/docker-compose-Linux-x86_64 > /tmp/docker-compose-Linux-x86_64
-            curl -L https://github.com/docker/compose/releases/download/1.29.1/docker-compose-Linux-x86_64.sha256 > /tmp/docker-compose-Linux-x86_64.sha256
+            curl -L https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64 > /tmp/docker-compose-Linux-x86_64
+            curl -L https://github.com/docker/compose/releases/download/1.25.5/docker-compose-Linux-x86_64.sha256 > /tmp/docker-compose-Linux-x86_64.sha256
             set +e
             dir=`pwd`
             cd /tmp
