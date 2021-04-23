@@ -21,8 +21,7 @@ jobs:
           command: |
             curl -L https://github.com/docker/compose/releases/download/1.29.1/docker-compose-Linux-x86_64 > /tmp/docker-compose-Linux-x86_64
             curl -L https://github.com/docker/compose/releases/download/1.29.1/docker-compose-Linux-x86_64.sha256 > /tmp/ddocker-compose-Linux-x86_64.sha256
-            cd /tmp; 
-            check=`sha256sum -c docker-compose-Linux-x86_64.sha256 | awk -F': ' '{ print $2 }'`
+            check=`sha256sum -c /tmp/docker-compose-Linux-x86_64.sha256 | awk -F': ' '{ print $2 }'`
             if [ $check ne "OK" ]; then
               echo "Docker-compose checksum failed!"
               circleci-agent step halt
