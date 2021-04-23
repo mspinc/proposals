@@ -115,27 +115,26 @@ workflows:
         filters:
           tags:
             only: /^new-image/
+          branches:
+            ignore: /.*/
 
   test_development_branch:
     jobs:
       - startup_and_test:
         filters:
           branches:
-            only:
-              - development
+            only: development
 
   deploy_to_staging:
     jobs:
       - deploy_to_staging:
         filters:
           branches:
-            only:
-              - main
+            only: main
 
   deploy_to_production:
     jobs:
       - deploy_to_production:
         filters:
           branches:
-            only:
-              - releases
+            only: releases
