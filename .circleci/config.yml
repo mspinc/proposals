@@ -111,27 +111,27 @@ workflows:
   build_new_image:
     jobs:
       - build_image:
-        filters:
-          tags:
-            only: /\bDockerfile\b/
+          filters:
+            tags:
+              only: /\bDockerfile\b/
 
   run_tests:
     jobs:
       - startup_and_test:
-        filters:
-          branches:
-            only: development
+          filters:
+            branches:
+              only: development
 
   deploy_to_staging:
     jobs:
       - deploy_to_staging:
-        filters:
-          branches:
-            only: main
+          filters:
+            branches:
+              only: main
 
   deploy_to_production:
     jobs:
       - deploy_to_production:
-        filters:
-          branches:
-            only: releases
+          filters:
+            branches:
+              only: releases
