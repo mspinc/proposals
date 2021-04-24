@@ -17,3 +17,4 @@ See [the wiki](https://github.com/birs-math/proposals/wiki) for the developing s
 
 5. ```docker exec -it proposals bash``` to get a shell.
 
+
