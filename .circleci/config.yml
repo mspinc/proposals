@@ -1,14 +1,29 @@
 version: 2.1
 jobs:
-  build:
+  build_image:
+    machine: true
+    steps:
+      - checkout
+
+      - run:
+          name: Build the image
+          command: docker build -t birs/proposals:$IMAGE_TAG .
+
+      - run:
+          name: Send to DockerHub
+          command: |
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push birs/proposals:$IMAGE_TAG
+
+  startup_and_test:
     docker:
-      - image: birs/proposals:circle-3
+      - image: birs/proposals:$IMAGE_TAG
         environment:
           PG_HOST: localhost
           PG_USER: $DB_USER
           RAILS_ENV: test
           RACK_ENV: test
-      - image: postgres:13.1
+      - image: 'circleci/postgres:12.1-alpine-ram'
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: $POSTGRES_PASSWORD
@@ -55,3 +70,68 @@ jobs:
       - run:
           name: Run the tests
           command: cd /home/app/proposals; bundle exec rspec
+
+  deploy_to_staging:
+    docker:
+      - image: birs/proposals:$IMAGE_TAG
+        environment:
+          PG_HOST: localhost
+          PG_USER: $DB_USER
+          RAILS_ENV: development
+          RACK_ENV: development
+      - image: 'circleci/postgres:12.1-alpine-ram'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: Run Capistrano
+          command: bundle exec cap staging deploy
+
+  deploy_to_production:
+    docker:
+      - image: birs/proposals:$IMAGE_TAG
+        environment:
+          PG_HOST: localhost
+          PG_USER: $DB_USER
+          RAILS_ENV: production
+          RACK_ENV: production
+      - image: 'circleci/postgres:12.1-alpine-ram'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: Run Capistrano
+          command: bundle exec cap production deploy
+
+workflows:
+  build_new_image:
+    jobs:
+      - build_image:
+          filters:
+            tags:
+              only: /new_image/
+
+  run_tests:
+    jobs:
+      - startup_and_test:
+          filters:
+            branches:
+              only: development
+
+  deploy_to_staging:
+    jobs:
+      - deploy_to_staging:
+          filters:
+            branches:
+              only: main
+
+  deploy_to_production:
+    jobs:
+      - deploy_to_production:
+          filters:
+            branches:
+              only: releases
