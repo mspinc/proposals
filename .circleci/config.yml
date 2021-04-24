@@ -113,7 +113,7 @@ workflows:
       - build_image:
           filters:
             tags:
-              only: /\bDockerfile\b/
+              only: /^Dockerfile.*/
 
   run_tests:
     jobs:
