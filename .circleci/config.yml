@@ -113,7 +113,9 @@ workflows:
       - build_image:
           filters:
             tags:
-              only: /(Dockerfile)/
+              only: /.*Dockerfile.*/
+            branches:
+              ignore: /.*/
 
   run_tests:
     jobs:
