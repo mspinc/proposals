@@ -22,7 +22,7 @@ RUN apt-get update -qq && apt-get dist-upgrade --yes && \
 
 RUN apt-get install --yes tzdata udev locales curl git gnupg ca-certificates \
     libpq-dev wget libxrender1 libxext6 libsodium23 libsodium-dev netcat \
-    postgresql-client
+    postgresql-client shared-mime-info
 
 # NodeJS 10
 RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
