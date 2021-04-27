@@ -39,8 +39,6 @@ ENV LANG en_CA.utf8
 ENV LANGUAGE en_CA:en
 ENV LC_ALL en_CA.utf8
 
-
-
 # Container uses 999 for docker user
 RUN /usr/sbin/usermod -u 999 app
 
