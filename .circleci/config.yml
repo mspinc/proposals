@@ -125,8 +125,6 @@ workflows:
   deploy_to_staging:
     jobs:
       - deploy_to_staging:
-        - requires:
-          - startup_and_test
           filters:
             branches:
               only: main
@@ -134,8 +132,6 @@ workflows:
   deploy_to_production:
     jobs:
       - deploy_to_production:
-        requires:
-          - hold
           filters:
             branches:
               only: releases
