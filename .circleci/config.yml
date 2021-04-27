@@ -7,17 +7,17 @@ jobs:
 
       - run:
           name: Build the image
-          command: docker build -t birs/proposals:$IMAGE_TAG .
+          command: docker build -t birs/proposals:latest .
 
       - run:
           name: Send to DockerHub
           command: |
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
-            docker push birs/proposals:$IMAGE_TAG
+            docker push birs/proposals:latest
 
   startup_and_test:
     docker:
-      - image: birs/proposals:$IMAGE_TAG
+      - image: birs/proposals:latest
         environment:
           PG_HOST: localhost
           PG_USER: $DB_USER
@@ -73,7 +73,7 @@ jobs:
 
   deploy_to_staging:
     docker:
-      - image: birs/proposals:$IMAGE_TAG
+      - image: birs/proposals:latest
         environment:
           PG_HOST: localhost
           PG_USER: $DB_USER
@@ -91,7 +91,7 @@ jobs:
 
   deploy_to_production:
     docker:
-      - image: birs/proposals:$IMAGE_TAG
+      - image: birs/proposals:latest
         environment:
           PG_HOST: localhost
           PG_USER: $DB_USER
