@@ -40,6 +40,9 @@ echo
 echo "Yarn version:"
 yarn --version
 
+echo
+echo "Changing /home/app/proposals file ownership to app user..."
+chown app:app -R /home/app/proposals
 
 echo
 echo "Installing latest bundler..."
@@ -49,7 +52,7 @@ echo "Installing latest bundler..."
 if [ ! -e /usr/local/rvm/gems/rails-6.1.3.1.gem ]; then
   echo
   echo "Installing Rails..."
-  /usr/local/rvm/bin/rvm-exec 2.7.2 gem install rails -v 6.1.3
+  su - app -c "cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 gem install rails -v 6.1.3"
 fi
 
 if [ ! -e /home/app/proposals/bin ]; then
@@ -96,9 +99,6 @@ if [ ! -e /home/app/proposals/bin/webpack ]; then
   echo
 fi
 
-echo
-echo "Changing /home/app/proposals file ownership to app user..."
-chown app:app -R /home/app/proposals
 
 echo
 echo "Compiling Assets..."

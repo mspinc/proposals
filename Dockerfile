@@ -22,7 +22,7 @@ RUN apt-get update -qq && apt-get dist-upgrade --yes && \
 
 RUN apt-get install --yes tzdata udev locales curl git gnupg ca-certificates \
     libpq-dev wget libxrender1 libxext6 libsodium23 libsodium-dev netcat \
-    postgresql-client
+    postgresql-client shared-mime-info
 
 # NodeJS 10
 RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
@@ -38,8 +38,6 @@ RUN locale-gen en_CA.utf8
 ENV LANG en_CA.utf8
 ENV LANGUAGE en_CA:en
 ENV LC_ALL en_CA.utf8
-
-
 
 # Container uses 999 for docker user
 RUN /usr/sbin/usermod -u 999 app
