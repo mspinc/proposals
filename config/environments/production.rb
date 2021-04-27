@@ -117,4 +117,25 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  # Use SSL
+  config.force_ssl = true
+  config.to_prepare { Devise::SessionsController.force_ssl }
+  config.to_prepare { Devise::RegistrationsController.force_ssl }
+  config.to_prepare { Devise::PasswordsController.force_ssl }
+
+  # Production URL
+  config.action_mailer.default_url_options = {
+    protocol: 'https',
+    host: ENV['APPLICATION_HOST']
+  }
+
+  ## SMTP Settings
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.smtp_settings = {
+    address:              ENV['EMAIL_SERVER'],
+    port:                 ENV['EMAIL_PORT'],
+    enable_starttls_auto: ENV['EMAIL_STARTTLS']
+  }
 end
