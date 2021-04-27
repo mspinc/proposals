@@ -1,0 +1,9 @@
+<%= form_for form, url: 'proposal_fields' do |f| %>
+  <div class="form-group">
+    <%= f.label :statement %>
+    <%= f.text_field :statement, class:'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.submit %>
+  </div>
+<% end %>
