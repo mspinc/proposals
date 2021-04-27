@@ -79,8 +79,9 @@ fi
 if [ -e /home/app/proposals/db/migrate ]; then
   echo
   echo "Running migrations..."
-  su - app -c "cd /home/app/proposals; DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
-  su - app -c "cd /home/app/proposals; DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=$SECRET_KEY_BASE DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=$SECRET_KEY_BASE DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=$SECRET_KEY_BASE DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
 else
   echo
   echo "Prepare database..."
