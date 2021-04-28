@@ -60,9 +60,6 @@ jobs:
             DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development
             DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
       - run:
-          name: Bundle Update
-          command: cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 bundle update
-      - run:
           name: Compile Assets
           command: |
             cd /home/app/proposals

@@ -79,35 +79,30 @@ fi
 if [ -e /home/app/proposals/db/migrate ]; then
   echo
   echo "Running migrations..."
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=$SECRET_KEY_BASE DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=$SECRET_KEY_BASE DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=$SECRET_KEY_BASE DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
 fi
 
-
-if [ ! -e /home/app/proposals/bin/webpack ]; then
-  echo "Installing Webpacker..."
-  su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec rails webpacker:install"
-  echo
-  echo "Turbo install..."
-  su - app -c "cd /home/app/proposals; RAILS_ENV=production SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec rails turbo:install"
-  echo "Done!"
-  echo
-fi
+echo "Installing Webpacker..."
+su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rails webpacker:install"
+echo
+echo "Turbo install..."
+su - app -c "cd /home/app/proposals; RAILS_ENV=production SECRET_KEY_BASE=token bundle exec rails turbo:install"
+echo "Done!"
+echo
 
 
 echo
 echo "Compiling Assets..."
 chmod 755 /home/app/proposals/node_modules
-# su - app -c "cd /home/app/proposals; yarn add webpack-cli@3.3.11 --dev"
 su - app -c "cd /home/app/proposals; yarn install"
-# su - app -c "cd /home/app/proposals; yarn upgrade"
-su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec rake assets:precompile --trace"
+su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
 su - app -c "cd /home/app/proposals; yarn"
 
 echo
 echo "Launching webpack-dev-server..."
-su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=$SECRET_KEY_BASE bundle exec bin/webpack-dev-server &"
+su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec bin/webpack-dev-server &"
 
 echo
 echo "Starting web server..."
