@@ -57,8 +57,8 @@ jobs:
           command: |
             echo "127.0.0.1 db" >> /etc/hosts
             cd /home/app/proposals
-            DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development
-            DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
+            SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development
+            SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
       - run:
           name: Compile Assets
           command: |
