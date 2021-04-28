@@ -1,8 +1,8 @@
 <div class="main-content" id="panel" data-controller="proposal-form">
   <div class="container-fluid mt-4" data-proposal-form-target="proposalFormId">
     <p> status: <%= @proposal_form.status %></p>
-    <% if !@proposal_form.draft? %>
-      <%= link_to 'Publish Form', edit_proposal_form_path(@proposal_form) ,class: 'btn btn-sm btn-primary' %>
+    <% if @proposal_form.draft? %>
+      <%= link_to 'Publish Form', proposal_form_path(@proposal_form), method: :put ,class: 'btn btn-sm btn-primary' %>
       <div class="col-12 d-flex align-self-center justify-content-end position-relative" >
         <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-action="click->proposal-form#toggleProposalFieldsPanel">Add Form Field</a>
         <section class="fields-panel hidden" data-proposal-form-target='proposalFieldsPanel' data-proposal-form-visible-value="false">

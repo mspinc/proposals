@@ -1,13 +1,15 @@
 class ProposalFormsController < ApplicationController
-  before_action :set_proposal_form, only: %i[edit]
-  def index; end
+  before_action :set_proposal_form, only: %i[edit update]
 
   def new
     @proposal_form = ProposalForm.new
   end
 
-  def edit
+  def edit; end
+
+  def update
     @proposal_form.update(status: 'active')
+    redirect_to edit_proposal_form_path(@proposal_form)
   end
 
   def create

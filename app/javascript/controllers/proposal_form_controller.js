@@ -15,7 +15,7 @@ export default class extends Controller {
 
   fetchField(evt) {
     var dataset = evt.currentTarget.dataset
-    fetch(`/proposal_forms/${dataset.id}/proposal_fields/field_type?field_type=${dataset.field}`)
+    fetch(`/proposal_forms/${dataset.id}/proposal_fields/new?field_type=${dataset.field}`)
       .then(response => response.text())
       .then(data => {
         this.proposalFieldTarget.innerHTML = data
