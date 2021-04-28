@@ -7,6 +7,7 @@ gem 'bcrypt_pbkdf'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'cancancan'
 gem 'devise'
+gem 'devise-encryptable'
 gem 'ed25519'
 gem 'hotwire-rails'
 gem 'jbuilder', '~> 2.7'
