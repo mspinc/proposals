@@ -8,6 +8,13 @@ Rails.application.routes.draw do
   get :guidelines, to: 'pages#guidelines'
 
   resources :dashboards
+  resources :proposal_forms do
+    resources :proposal_fields do
+    collection do
+      get :field_type
+    end
+  end
+  end
   resources :submit_proposals
   resources :proposal_types do
     member do 

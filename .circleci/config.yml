@@ -15,7 +15,7 @@ jobs:
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push birs/proposals:$IMAGE_TAG
 
-  startup_and_test:
+  run_tests:
     docker:
       - image: birs/proposals:$IMAGE_TAG
         environment:
@@ -112,12 +112,12 @@ workflows:
     jobs:
       - build_image:
           filters:
-            tags:
-              only: /new_image/
+            branches:
+              only: new_images
 
   run_tests:
     jobs:
-      - startup_and_test:
+      - run_tests:
           filters:
             branches:
               only: development
