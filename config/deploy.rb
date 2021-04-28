@@ -51,21 +51,20 @@ namespace :deploy do
     end
   end
 
-  task :build do
+  task :cleanup do
     on roles(:app) do
-      execute "docker stop proposals && sleep 5"
-      execute "docker rm proposals && sleep 2"
-      execute "cd #{release_path} && docker-compose build"
+      execute "docker stop proposals && docker stop proposals_db && sleep 5"
+      execute "docker rm proposals && docker rm proposals_db && sleep 2"
     end
   end
 
-  task :restart do
+  task :run do
     on roles(:app) do
       execute "cd #{release_path} && docker-compose up -d"
     end
   end
 
   after :publishing, 'deploy:copyfiles'
-  after :publishing, 'deploy:build'
-  after :publishing, 'deploy:restart'
+  after :publishing, 'deploy:cleanup'
+  after :publishing, 'deploy:run'
 end

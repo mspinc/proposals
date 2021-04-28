@@ -15,7 +15,7 @@ jobs:
             echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
             docker push birs/proposals:latest
 
-  startup_and_test:
+  run_tests:
     docker:
       - image: birs/proposals:latest
         environment:
@@ -32,6 +32,9 @@ jobs:
       - run:
           name: Copy code to app home
           command: tar cvf - --exclude=".git" . | tar xf - -C /home/app/proposals/
+      - run:
+          name: Bundle install
+          command: cd /home/app/proposals; bundle install
       - run:
           name: Wait for database
           command: |
@@ -112,12 +115,12 @@ workflows:
     jobs:
       - build_image:
           filters:
-            tags:
-              only: /new_image/
+            branches:
+              only: new_images
 
   run_tests:
     jobs:
-      - startup_and_test:
+      - run_tests:
           filters:
             branches:
               only: development
