@@ -85,9 +85,12 @@ jobs:
           POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "9f:15:4c:07:65:8b:14:ca:f3:68:01:0a:cf:dd:67:95"
       - run:
           name: Run Capistrano
-          command: bundle exec cap staging deploy
+          command: cd /home/app/proposals; bundle exec cap staging deploy
 
   deploy_to_production:
     docker:
@@ -124,7 +127,12 @@ workflows:
 
   deploy_to_staging:
     jobs:
+      - run_tests
+      - build_image
       - deploy_to_staging:
+          requires:
+            - build_image
+            - run_tests
           filters:
             branches:
               only: main
