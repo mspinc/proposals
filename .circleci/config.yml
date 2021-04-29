@@ -118,7 +118,7 @@ workflows:
             branches:
               only: new_images
 
-  run_tests:
+  run_the_tests:
     jobs:
       - run_tests:
           filters:
@@ -127,11 +127,18 @@ workflows:
 
   deploy_to_staging:
     jobs:
-      - run_tests
-      - build_image
-      - deploy_to_staging:
+      - build_image:
+          filters:
+            branches:
+              only: main
+      - run_tests:
           requires:
             - build_image
+          filters:
+            branches:
+              only: main
+      - deploy_to_staging:
+          requires:
             - run_tests
           filters:
             branches:
