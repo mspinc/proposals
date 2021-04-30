@@ -1,4 +1,7 @@
 module ProposalFields
-  class Text < ProposalField
+  class Text < ApplicationRecord
+  	self.table_name = 'proposal_fields_texts'
+  	
+  	has_many :proposal_fields, as: :fieldable
   end
 end

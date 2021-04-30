@@ -34,10 +34,10 @@ class ProposalFieldsController < ApplicationController
   end
 
   def radio_type_params
-    params.require(:proposal_fields_radio).permit(:statement, :location_id)
+    params.require(:proposal_fields_radio).permit(:statement, :location_id, :index)
   end
 
   def text_type_params
-    params.require(:proposal_fields_text).permit(:statement, :location_id)
+    params.require(:proposal_fields_text).permit(:statement, :location_id, :index)
   end
 end

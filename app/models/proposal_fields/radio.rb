@@ -1,4 +1,7 @@
 module ProposalFields
-  class Radio < ::ProposalField
+  class Radio < ApplicationRecord
+    self.table_name = 'proposal_fields_radios'
+    
+    has_many :proposal_fields, as: :fieldable
   end
 end
