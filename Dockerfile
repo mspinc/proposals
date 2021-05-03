@@ -21,7 +21,8 @@ RUN apt-get update -qq && apt-get dist-upgrade --yes && \
   -o Dpkg::Options::="--force-confold"
 
 RUN apt-get install --yes tzdata udev locales curl git gnupg ca-certificates \
-    libpq-dev wget libxrender1 libxext6 libsodium23 libsodium-dev
+    libpq-dev wget libxrender1 libxext6 libsodium23 libsodium-dev netcat \
+    postgresql-client shared-mime-info
 
 # NodeJS 10
 RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
@@ -38,8 +39,6 @@ ENV LANG en_CA.utf8
 ENV LANGUAGE en_CA:en
 ENV LC_ALL en_CA.utf8
 
-
-
 # Container uses 999 for docker user
 RUN /usr/sbin/usermod -u 999 app
 
@@ -49,12 +48,16 @@ ENV APP_HOME /home/app/proposals
 # disabled because we mount host directory in $APP_HOME
 ADD . $APP_HOME
 WORKDIR $APP_HOME
-#RUN rm docker-compose.yml
-#RUN rm Dockerfile
-#RUN touch config/app.yml
-#RUN chown app -R ./
-RUN echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
+RUN /usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
+RUN bundle install
+RUN RAILS_ENV=development bundle exec cap install
+RUN RAILS_ENV=development bundle exec rails webpacker:install
+RUN RAILS_ENV=development bundle exec rails turbo:install
+RUN yarn install
+RUN chown app:app -R /usr/local/rvm/gems
+RUN chown app:app -R /home/app/proposals
 
+RUN echo "disable-ipv6" >> ~/.gnupg/dirmngr.conf
 EXPOSE 80 443
 ADD entrypoint.sh /sbin/
 RUN chmod 755 /sbin/entrypoint.sh

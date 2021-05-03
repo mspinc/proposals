@@ -3,7 +3,12 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.2'
 
+gem 'bcrypt_pbkdf'
 gem 'bootsnap', '>= 1.4.4', require: false
+gem 'cancancan'
+gem 'devise'
+gem 'devise-encryptable'
+gem 'ed25519'
 gem 'hotwire-rails'
 gem 'jbuilder', '~> 2.7'
 gem 'pg'
@@ -19,6 +24,8 @@ group :development, :test do
 end
 
 group :development do
+  gem "capistrano", "~> 3.16", require: false
+  gem "capistrano-rails", "~> 1.6", require: false
   gem 'listen', '~> 3.3'
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'rubocop-rails'
@@ -32,6 +39,7 @@ group :test do
   gem 'rubocop-performance'
   gem 'rubocop-rspec'
   gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 4.0'
   gem 'simplecov'
   gem 'webdrivers'
 end

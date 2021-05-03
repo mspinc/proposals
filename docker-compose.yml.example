@@ -6,12 +6,9 @@
 # docker run -v /var/lib/postgresql/data --name poposals_data \
 #    postgres:13.1 echo 'Proposals data'
 #
-# docker run -v /usr/local/rvm/gems -v /home/app/proposals/vendor/cache \
-#    -v /home/app/proposas/node_nodules \\
-#    --name rubygems6 "phusion/passenger-ruby27:1.0.12" echo 'Ruby gems'
-#
-# docker run -v /home/app/proposals/node_modules --name proposals_node \
-#    "phusion/passenger-ruby27:1.0.12" echo 'Proposals node_modules'
+# docker run -v /home/app/proposals/node_modules \
+#            -v /home/app/proposals/vendor/cache --name proposals_cache \
+#            "phusion/passenger-ruby27:1.0.12" echo 'Proposals node_modules'
 #
 # Be sure to update all of the usernames, passwords, and keys with secure ones!
 # Generate secure strings using:
@@ -42,11 +39,8 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - ./:/home/app/proposals
-      - ./entrypoint.sh:/sbin/entrypoint.sh
-      - rubygems6:/usr/local/rvm/gems
-      - rubygems6:/home/app/proposals/vendor/cache
-      - rubygems6:/home/app/proposals/node_modules
+      - proposals_cache:/home/app/proposals/vendor/cache
+      - proposals_cache:/home/app/proposals/node_modules
     links:
       - db
     environment:

@@ -1,12 +1,26 @@
 Rails.application.routes.draw do
+  resources :locations
+  devise_for :users, controllers: { sessions: 'users/sessions' }
+  devise_scope :user do
+    root to: 'users/sessions#new'
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
-  root to: 'sessions#sign_in'
-  get :sign_up, to: 'sessions#sign_up'
   get :guidelines, to: 'pages#guidelines'
 
   resources :dashboards
+  resources :proposal_forms do
+    resources :proposal_fields do
+    collection do
+      get :field_type
+    end
+  end
+  end
   resources :submit_proposals
-  resources :proposal_types
+  resources :proposal_types do
+    member do 
+      get :location_based_fields
+    end
+  end
   resources :locations do
     member do
       get :proposal_types

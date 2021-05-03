@@ -1,0 +1,149 @@
+version: 2.1
+jobs:
+  build_image:
+    machine: true
+    steps:
+      - checkout
+
+      - run:
+          name: Build the image
+          command: docker build -t birs/proposals:latest .
+
+      - run:
+          name: Send to DockerHub
+          command: |
+            echo $DOCKER_PASSWORD | docker login -u $DOCKER_LOGIN --password-stdin
+            docker push birs/proposals:latest
+
+  run_tests:
+    docker:
+      - image: birs/proposals:latest
+        environment:
+          PG_HOST: localhost
+          PG_USER: $DB_USER
+          RAILS_ENV: test
+          RACK_ENV: test
+      - image: 'circleci/postgres:12.1-alpine-ram'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: Copy code to app home
+          command: tar cvf - --exclude=".git" . | tar xf - -C /home/app/proposals/
+      - run:
+          name: Bundle install
+          command: cd /home/app/proposals; bundle install
+      - run:
+          name: Wait for database
+          command: |
+            for i in `seq 1 10`;
+            do
+              nc -z localhost 5432 && echo Success && exit 0
+              echo -n .
+              sleep 1
+            done
+            echo Failed waiting for Postgress && exit 1
+      - run:
+          name: Setup database
+          command: |
+            cd /home/app/proposals/db/pg-init
+            sed s/DB_USER/$DB_USER/g db-init.sql | sed s/DB_PASS/$DB_PASS/g > setup.sql
+            PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U postgres < setup.sql
+            rm setup.sql
+      - run:
+          name: Run migrations
+          command: |
+            echo "127.0.0.1 db" >> /etc/hosts
+            cd /home/app/proposals
+            SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development
+            SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
+      - run:
+          name: Compile Assets
+          command: |
+            cd /home/app/proposals
+            RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace
+      - run:
+          name: Update permissions
+          command: chown -R app:app /home/app/proposals
+      - run:
+          name: Run the tests
+          command: cd /home/app/proposals; bundle exec rspec
+
+  deploy_to_staging:
+    docker:
+      - image: birs/proposals:latest
+        environment:
+          PG_HOST: localhost
+          PG_USER: $DB_USER
+          RAILS_ENV: development
+          RACK_ENV: development
+      - image: 'circleci/postgres:12.1-alpine-ram'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    steps:
+      - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "9f:15:4c:07:65:8b:14:ca:f3:68:01:0a:cf:dd:67:95"
+      - run:
+          name: Run Capistrano
+          command: cd /home/app/proposals; bundle exec cap staging deploy
+
+  deploy_to_production:
+    docker:
+      - image: birs/proposals:latest
+        environment:
+          PG_HOST: localhost
+          PG_USER: $DB_USER
+          RAILS_ENV: production
+          RACK_ENV: production
+      - image: 'circleci/postgres:12.1-alpine-ram'
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: Run Capistrano
+          command: bundle exec cap production deploy
+
+workflows:
+  build_new_image:
+    jobs:
+      - build_image:
+          filters:
+            branches:
+              only: new_images
+
+  run_the_tests:
+    jobs:
+      - run_tests
+
+  deploy_to_staging:
+    jobs:
+      - build_image:
+          filters:
+            branches:
+              only: main
+      - run_tests:
+          requires:
+            - build_image
+          filters:
+            branches:
+              only: main
+      - deploy_to_staging:
+          requires:
+            - run_tests
+          filters:
+            branches:
+              only: main
+
+  deploy_to_production:
+    jobs:
+      - deploy_to_production:
+          filters:
+            branches:
+              only: releases
