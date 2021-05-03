@@ -120,10 +120,7 @@ workflows:
 
   run_the_tests:
     jobs:
-      - run_tests:
-          filters:
-            branches:
-              only: development
+      - run_tests
 
   deploy_to_staging:
     jobs:

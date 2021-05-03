@@ -1,7 +1,7 @@
 <fieldset>
   <legend>Proposal fields</legend>
     <% proposal_fields&.each do |field| %>
-      <% if field.type.eql?('ProposalFields::Text') %>
+      <% if field.fieldable.eql?('ProposalFields::Text') %>
         <%= render  partial: 'proposal_fields/text', locals: { filed: field } %>
       <% else %>
         <%=  render partial: 'proposal_fields/radio', locals: { filed: field } %>
