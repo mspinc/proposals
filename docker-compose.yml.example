@@ -3,12 +3,9 @@
 # and/or database is stored on host-mounted volumes.
 #
 # Create data volumes like this:
-# docker run -v /var/lib/postgresql/data --name poposals_data \
-#    postgres:13.1 echo 'Proposals data'
+# docker volume create --name=proposals_data --label proposals_database
 #
-# docker run -v /home/app/proposals/node_modules \
-#            -v /home/app/proposals/vendor/cache --name proposals_cache \
-#            "phusion/passenger-ruby27:1.0.12" echo 'Proposals node_modules'
+# docker volume create --name=proposals_cache --label proposals_cache
 #
 # Be sure to update all of the usernames, passwords, and keys with secure ones!
 # Generate secure strings using:
@@ -61,12 +58,11 @@ services:
       - EMAIL_PORT=587
       - EMAIL_STARTTLS=true
 
-# adding labels allows pruning of unused system volumes with:
-# docker volume prune --filter 'label!=proposals_volume'"
+
 volumes:
-  poposals_data:
-    labels:
-      proposals_volume: ""
-  rubygems6:
-    labels:
-      proposals_volume: ""
+  proposals_data:
+    external:
+      name: "proposals_data"
+  proposals_cache:
+    external:
+      name: "proposals_cache"

@@ -19,8 +19,16 @@ gem 'webpacker', '~> 5.0'
 
 group :development, :test do
   gem 'byebug'
+  gem 'capybara', '>= 3.26'
   gem 'factory_bot_rails'
+  gem 'faker'
   gem 'rspec-rails', '~> 4.1.0'
+  gem 'rubocop-performance'
+  gem 'rubocop-rspec'
+  gem 'selenium-webdriver'
+  gem 'shoulda-matchers', '~> 4.0'
+  gem 'simplecov'
+  gem 'webdrivers'
 end
 
 group :development do
@@ -33,13 +41,3 @@ group :development do
   gem 'web-console', '>= 4.1.0'
 end
 
-group :test do
-  gem 'capybara', '>= 3.26'
-  gem 'faker'
-  gem 'rubocop-performance'
-  gem 'rubocop-rspec'
-  gem 'selenium-webdriver'
-  gem 'shoulda-matchers', '~> 4.0'
-  gem 'simplecov'
-  gem 'webdrivers'
-end
