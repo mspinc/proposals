@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_22_101604) do
+ActiveRecord::Schema.define(version: 2021_05_03_095454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,15 @@ ActiveRecord::Schema.define(version: 2021_04_22_101604) do
     t.string "code"
     t.string "city"
     t.string "country"
+  end
+
+  create_table "options", force: :cascade do |t|
+    t.string "text"
+    t.string "optionable_type"
+    t.bigint "optionable_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable"
   end
 
   create_table "organizers", force: :cascade do |t|
@@ -59,13 +68,41 @@ ActiveRecord::Schema.define(version: 2021_04_22_101604) do
   end
 
   create_table "proposal_fields", force: :cascade do |t|
-    t.string "type"
     t.string "statement"
     t.bigint "proposal_form_id", null: false
     t.integer "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "index"
+    t.text "description"
+    t.bigint "fieldable_id"
+    t.string "fieldable_type"
+    t.index ["fieldable_type", "fieldable_id"], name: "index_proposal_fields_on_fieldable_type_and_fieldable_id"
     t.index ["proposal_form_id"], name: "index_proposal_fields_on_proposal_form_id"
+  end
+
+  create_table "proposal_fields_multi_choices", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "proposal_fields_radios", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "proposal_fields_single_choices", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "proposal_fields_texts", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "proposal_forms", force: :cascade do |t|

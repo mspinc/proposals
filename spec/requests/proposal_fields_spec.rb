@@ -12,11 +12,11 @@ RSpec.describe "/proposal_forms/:id/proposal_fields", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      let(:params) { { statement: 'Radio Type Field' } }
+      let(:params) { { statement: 'Radio Type Field', index: 0, description: 'some description' } }
       it "creates a new proposal field" do
         expect do
           post proposal_form_proposal_fields_url(proposal_form_id: proposal_form.id, type: 'Radio'),
-               params: { proposal_fields_radio: params }
+               params: { proposal_field: params }
         end.to change(ProposalField, :count).by(1)
       end
     end
