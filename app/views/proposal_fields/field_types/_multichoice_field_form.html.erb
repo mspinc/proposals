@@ -1,0 +1,21 @@
+<%= form_for field, url: 'proposal_fields?type=MultiChoice' do |f| %>
+  <div class="form-group">
+    <%= f.label :statement %>
+    <%= f.text_field :statement, class:'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :location %>
+    <%= f.select :location_id, proposal_type_locations(@proposal_form.proposal_type),{:include_blank => 'Select location is this field is location based'} ,class:'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.label :description %>
+    <%=f.text_area(:description, size: '3x5', class:'form-control') %>
+  </div>
+  <div class="form-group">
+    <%= f.label :index %>
+    <%= f.number_field :index, class:'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= f.submit 'submit', class: 'btn btn-sm btn-primary' %>
+  </div>
+<% end %>

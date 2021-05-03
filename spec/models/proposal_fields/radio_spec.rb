@@ -1,5 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe ProposalFields::Radio, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'validations' do
+    it 'has valid factory' do
+      expect(build(:proposal_fields_radio)).to be_valid
+    end
+  end
+
+  describe 'associations' do
+    it { should have_many(:proposal_fields) }
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_142954) do
+ActiveRecord::Schema.define(version: 2021_05_03_095454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,12 +34,12 @@ ActiveRecord::Schema.define(version: 2021_04_30_142954) do
   end
 
   create_table "options", force: :cascade do |t|
-    t.bigint "proposal_field_id", null: false
-    t.integer "index"
-    t.text "text"
+    t.string "text"
+    t.string "optionable_type"
+    t.bigint "optionable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["proposal_field_id"], name: "index_options_on_proposal_field_id"
+    t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable"
   end
 
   create_table "organizers", force: :cascade do |t|
@@ -214,7 +214,6 @@ ActiveRecord::Schema.define(version: 2021_04_30_142954) do
   end
 
   add_foreign_key "ams_subjects", "subjects"
-  add_foreign_key "options", "proposal_fields"
   add_foreign_key "organizers", "proposals"
   add_foreign_key "organizers", "users"
   add_foreign_key "proposal_fields", "proposal_forms"
