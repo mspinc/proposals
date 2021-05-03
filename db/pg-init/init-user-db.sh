@@ -14,7 +14,7 @@ fi
 echo
 echo "Setting up database user $DB_USER and proposals databases..."
 echo
-psql -U "$POSTGRES_USER" -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASS';"
+psql -U "$POSTGRES_USER" -c "CREATE USER $DB_USER WITH ENCRYPTED PASSWORD '$DB_PASS' CREATEDB;"
 echo
 
 for db in proposals_test proposals_development proposals_production

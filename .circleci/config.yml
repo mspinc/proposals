@@ -120,7 +120,10 @@ workflows:
 
   run_the_tests:
     jobs:
-      - run_tests
+      - run_tests:
+          filters:
+            branches:
+              ignore: /main|releases/
 
   deploy_to_staging:
     jobs:

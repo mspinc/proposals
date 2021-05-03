@@ -61,13 +61,13 @@ if [ ! -e /home/app/proposals/bin ]; then
   su - app -c "cd /home/app; rails new proposals"
 fi
 
-echo
-echo "Bundle install..."
-su - app -c "cd /home/app/proposals; bundle install"
-
 # echo
-# echo "Bundle update..."
-# su - app -c "cd /home/app/proposals; bundle update"
+# echo "Bundle install..."
+# su - app -c "cd /home/app/proposals; bundle install"
+
+echo
+echo "Bundle update..."
+su - app -c "cd /home/app/proposals; bundle update"
 
 root_owned_files=`find /usr/local/rvm/gems -user root -print`
 if [ -z "$root_owned_files" ]; then
@@ -101,8 +101,12 @@ su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token
 su - app -c "cd /home/app/proposals; yarn"
 
 echo
-echo "Launching webpack-dev-server..."
-su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec bin/webpack-dev-server &"
+echo "Updating file permissions..."
+chown app:app -R /home/app/proposals
+
+# echo
+# echo "Launching webpack-dev-server..."
+# su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec bin/webpack-dev-server &"
 
 echo
 echo "Starting web server..."
