@@ -1,37 +1,58 @@
 <%= render 'layouts/sidebar' %>
-
-<div class="main-content" id="panel">
-<p id="notice"><%= notice %></p>
-  <div class="container-fluid mt-4">
-    <h2>Proposal Forms</h2>
-    <div class="card mt-5">
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead class="thead-light">
-            <tr>
-            <th>Proposal Type</th>
-            <th>Status</th>
-            <th colspan="3"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @proposal_forms.each do |proposal_form| %>
-            <tr>
-              <td><%= proposal_form.proposal_type.name %></td>
-              <td><%= proposal_form.status %></td>
-              <td>
-                <%= link_to "Show", proposal_form_path(proposal_form), class: 'btn-sm btn btn-success' %>
-                <% if proposal_form.draft? %>
-                  <%= link_to "Edit", edit_proposal_form_path(proposal_form), class: 'btn-sm btn btn-primary' %>
-                <% end %>
-
-                <%= link_to "Delete", proposal_form, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-sm btn btn-danger' %>
-              </td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Proposal Forms
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %> </a></li>
+          <li class="breadcrumb-item active" aria-current="page">Proposal Forms</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            </h6>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Proposal Type</th>
+                <th>Location </th>
+                <th>Status</th>
+                <th>Created at</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @proposal_forms.each do |proposal_form| %>
+              <tr>
+                <td><%= proposal_form.proposal_type.name %></td>
+                <td>
+                  <% proposal_form.proposal_type.locations.each do |loc| %>
+                   <%= loc.name %><br>
+                  <% end %>
+                </td>
+                <td> <%= proposal_form.status %></td>
+                <td><%= proposal_form.created_at.to_date %></td>
+                <td class="table-action">
+                  <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>'.html_safe, proposal_form_path(proposal_form) %>
+                  <% if proposal_form.draft? %>
+                   <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_form_path(proposal_form) %>
+                  <% end %>
+                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_form_path(proposal_form), method: :delete ,
+                    data: {confirm: "Are you sure you want to delete #{proposal_form.proposal_type.name}?"} %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</main>

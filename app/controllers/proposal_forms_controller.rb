@@ -5,6 +5,10 @@ class ProposalFormsController < ApplicationController
     @proposal_forms = ProposalForm.all
   end
 
+  def index
+    @proposal_forms = ProposalForm.all
+  end
+
   def new
     @proposal_form = ProposalForm.new
   end
