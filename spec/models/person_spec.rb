@@ -7,12 +7,12 @@ RSpec.describe Person, type: :model do
     end
 
     it 'requires a firstname' do
-      p = build(:person, first_name: '')
+      p = build(:person, firstname: '')
       expect(p.valid?).to be_falsey
     end
 
     it 'requires a lastname' do
-      p = build(:person, last_name: '')
+      p = build(:person, lastname: '')
       expect(p.valid?).to be_falsey
     end
 

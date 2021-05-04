@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :location do
     city { Faker::Address.city }
     country { Faker::Address.country }
-    code { Faker::Address.country_code }
-    name { Faker::Address.full_address }
+    code { ('A'..'Z').to_a.shuffle[0,4].join }
+    name { Faker::University.name }
   end
 end
