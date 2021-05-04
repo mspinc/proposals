@@ -4,13 +4,13 @@ class ProposalFieldsController < ApplicationController
   def new
     type = "ProposalFields::#{params[:field_type]}".safe_constantize.new
     @proposal_field = @proposal_form.proposal_fields.new(fieldable: type)
-    @options = type.options.build if params[:field_type] == 'MultiChoice' || params[:field_type] == 'SingleChoice'
     render partial: 'proposal_fields/fields_form',
            locals: { proposal_field: @proposal_field, proposal_form: @proposal_form }
   end
 
   def create
     @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new
+    options if params[:type] == 'SingleChoice' || params[:type] == 'MultiChoice'
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)
     @proposal_field.fieldable = @fieldable
     if @proposal_field.save
@@ -28,5 +28,9 @@ class ProposalFieldsController < ApplicationController
 
   def set_proposal_form
     @proposal_form = ProposalForm.find(params[:proposal_form_id])
+  end
+  
+  def options
+    @fieldable.options = params[:proposal_field][:options]
   end
 end
