@@ -3,12 +3,12 @@
   <div class="container-fluid">
     <div class="header">
       <h1 class="header-title">
-        Project Types
+        Tables
       </h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="dashboard-default.html">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Proposal Types</a></li>
+          <li class="breadcrumb-item"><a href="#">Proposal Forms</a></li>
           <li class="breadcrumb-item active" aria-current="page">Tables</li>
         </ol>
       </nav>
@@ -24,21 +24,26 @@
           <table class="table">
             <thead>
               <tr>
-                <th style="width:40%;">Name</th>
+                <th style="width:40%;">Proposal Type</th>
+                <th style="width:25%">Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <% @proposal_types.each do |proposal|%>                     
-              <tr>
-                <td><%= proposal.name %></td>
-                <td class="table-action">
-                  <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_type_path(proposal) %>
-                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_type_path(proposal), method: :delete ,
-                    data: {confirm: "Are you sure you want to delete #{proposal.name}?"} %>
-                </td>
-              </tr>
+              <% @proposal_forms.each do |proposal_form| %>
+                
+              
+                <tr>
+                  <td><%= proposal_form.proposal_type.name %></td>
+                   <td> <%= proposal_form.status %></td>
+                  <td class="table-action">
+                    <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_form_path(proposal_form) %>
+                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_form_path(proposal_form), method: :delete ,
+                    data: {confirm: "Are you sure you want to delete #{proposal_form.proposal_type.name}?"} %>
+                  </td>
+                </tr>
               <% end %>
+              
             </tbody>
           </table>
         </div>

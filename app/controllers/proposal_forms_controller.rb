@@ -1,6 +1,10 @@
 class ProposalFormsController < ApplicationController
   before_action :set_proposal_form, only: %i[edit update]
 
+  def index
+    @proposal_forms = ProposalForm.all
+  end
+
   def new
     @proposal_form = ProposalForm.new
   end
