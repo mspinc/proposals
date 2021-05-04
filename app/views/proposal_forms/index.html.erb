@@ -1,37 +1,54 @@
 <%= render 'layouts/sidebar' %>
 
-<div class="main-content" id="panel">
-<p id="notice"><%= notice %></p>
-  <div class="container-fluid mt-4">
-    <h2>Proposal Forms</h2>
-    <div class="card mt-5">
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead class="thead-light">
-            <tr>
-            <th>Proposal Type</th>
-            <th>Status</th>
-            <th colspan="3"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @proposal_forms.each do |proposal_form| %>
-            <tr>
-              <td><%= proposal_form.proposal_type.name %></td>
-              <td><%= proposal_form.status %></td>
-              <td>
-                <%= link_to "Show", proposal_form_path(proposal_form), class: 'btn-sm btn btn-success' %>
-                <% if proposal_form.draft? %>
-                  <%= link_to "Edit", edit_proposal_form_path(proposal_form), class: 'btn-sm btn btn-primary' %>
-                <% end %>
-
-                <%= link_to "Delete", proposal_form, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-sm btn btn-danger' %>
-              </td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Tables
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="dashboard-default.html">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="#">Proposal Forms</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Tables</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Basic Table</h5>
+            <h6 class="card-subtitle text-muted">Using the most basic table markup, here’s how .table-based tables look in Bootstrap.
+            </h6>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:40%;">Proposal Type</th>
+                <th style="width:25%">Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @proposal_forms.each do |proposal_form| %>
+                
+              
+                <tr>
+                  <td><%= proposal_form.proposal_type.name %></td>
+                   <td> <%= proposal_form.status %></td>
+                  <td class="table-action">
+                    <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_form_path(proposal_form) %>
+                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_form_path(proposal_form), method: :delete ,
+                    data: {confirm: "Are you sure you want to delete #{proposal_form.proposal_type.name}?"} %>
+                  </td>
+                </tr>
+              <% end %>
+              
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</main>

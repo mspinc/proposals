@@ -1,33 +1,59 @@
-<div class="main-content" id="panel" data-controller="proposal-form">
-  <div class="container-fluid mt-4" data-proposal-form-target="proposalFormId">
-    <p> status: <%= @proposal_form.status %></p>
-    <% if @proposal_form.draft? %>
-      <%= link_to 'Publish Form', proposal_form_path(@proposal_form), method: :put ,class: 'btn btn-sm btn-primary' %>
-      <div class="col-12 d-flex align-self-center justify-content-end position-relative" >
-        <a href="javascript:void(0)" class="btn btn-sm btn-primary" data-action="click->proposal-form#toggleProposalFieldsPanel">Add Form Field</a>
-        <section class="fields-panel hidden" data-proposal-form-target='proposalFieldsPanel' data-proposal-form-visible-value="false">
-          <% ProposalField::FIELD_TYPES.each do |field_type| %>
-            <a href="javascript:void(0);" class="btn btn-sm btn-secondary" data-action="click->proposal-form#fetchField click->proposal-form#toggleProposalFieldsPanel" data-field="<%= field_type %>" data-id="<%= @proposal_form.id %>"><%= field_type %></a>
-          <% end %>
-        </section>
-      </div>
-    <% end %>
-    <div class="row mt-5">
-      <div class="col-7">
-        <h2>List of proposal fields</h2>
-          <ol>
-            <% @proposal_form&.proposal_fields.each do |field| %>
-              <li><%= field.statement %></li>
-              <% if field.fieldable_type.in?(%w[ProposalFields::SingleChoice ProposalFields::MultiChoice ProposalFields::Radio]) %>
-              options: 
-                <%= options(field.fieldable) %>
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Edit Proposal Form 
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %></a></li>
+          <li class="breadcrumb-item"> <%= link_to "Proposal Forms", proposal_forms_path %></li>
+          <li class="breadcrumb-item active" aria-current="page">Edit</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12 ">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title"></h5>
+        </div>
+        <div class="card-body">
+
+
+          <div id="panel" data-controller="proposal-form">
+            <div class="container-fluid" data-proposal-form-target="proposalFormId">
+              <p> status: <%= @proposal_form.status %></p>
+              <% if @proposal_form.draft? %>
+                <%= link_to 'Publish Form', proposal_form_path(@proposal_form), method: :put ,class: 'btn btn-primary' %>
+                <div class="col-12 d-flex align-self-center justify-content-end position-relative" >
+                  <a href="javascript:void(0)" class="btn btn-primary" data-action="click->proposal-form#toggleProposalFieldsPanel">Add Form Field</a>
+                  <section class="fields-panel hidden" data-proposal-form-target='proposalFieldsPanel' data-proposal-form-visible-value="false">
+                    <% ProposalField::FIELD_TYPES.each do |field_type| %>
+                      <a href="javascript:void(0);" class="btn btn-secondary" data-action="click->proposal-form#fetchField click->proposal-form#toggleProposalFieldsPanel" data-field="<%= field_type %>" data-id="<%= @proposal_form.id %>"><%= field_type %></a>
+                    <% end %>
+                  </section>
+                </div>
               <% end %>
-            <% end %>
-          </ol>
-      </div>
-      <div class="col-5">
-        <div data-proposal-form-target="proposalField"></div>
+              <div class="row mt-5">
+                <div class="col-7">
+                  <h2>List of proposal fields</h2>
+                    <ol>
+                      <% @proposal_form&.proposal_fields.each do |field| %>
+                        <li><%= field.statement %></li> 
+                      <% end %>
+                    </ol>
+
+                  <%= link_to "Back", proposal_types_path, class:'btn btn-primary' %>
+                </div>
+                <div class="col-5">
+                  <div data-proposal-form-target="proposalField"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</main>
+
