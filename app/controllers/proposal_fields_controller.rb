@@ -2,15 +2,17 @@ class ProposalFieldsController < ApplicationController
   before_action :set_proposal_form, only: %i[new create]
 
   def new
-    type = "ProposalFields::#{params[:field_type]}".constantize
-    @proposal_field = @proposal_form.proposal_fields.new(type: type)
+    type = "ProposalFields::#{params[:field_type]}".safe_constantize.new
+    @proposal_field = @proposal_form.proposal_fields.new(fieldable: type)
     render partial: 'proposal_fields/fields_form',
            locals: { proposal_field: @proposal_field, proposal_form: @proposal_form }
   end
 
   def create
+    @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new
+    options if params[:type] == 'SingleChoice' || params[:type] == 'MultiChoice'
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)
-    @proposal_field.type = "ProposalFields::#{params[:type]}"
+    @proposal_field.fieldable = @fieldable
     if @proposal_field.save
       redirect_to edit_proposal_form_path(@proposal_form), notice: "Field was successfully created."
     else
@@ -21,23 +23,14 @@ class ProposalFieldsController < ApplicationController
   private
 
   def proposal_field_params
-    case params[:type]
-    when 'Radio'
-      radio_type_params
-    when 'Text'
-      text_type_params
-    end
+    params.require(:proposal_field).permit(:index, :description, :location_id, :statement)
   end
 
   def set_proposal_form
     @proposal_form = ProposalForm.find(params[:proposal_form_id])
   end
-
-  def radio_type_params
-    params.require(:proposal_fields_radio).permit(:statement, :location_id)
-  end
-
-  def text_type_params
-    params.require(:proposal_fields_text).permit(:statement, :location_id)
+  
+  def options
+    @fieldable.options = params[:proposal_field][:options]
   end
 end

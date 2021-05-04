@@ -24,4 +24,11 @@ RSpec.describe Location, type: :model do
     location = build(:location, city: '')
     expect(location.valid?).to be_falsey
   end
+
+  describe 'associations' do
+    it { should have_many(:proposal_types).through(:proposal_type_locations) }
+    it { should have_many(:proposal_types).through(:proposal_type_locations) }
+    it { should have_many(:proposals).through(:proposal_locations) }
+    it { should have_many(:proposal_fields) }
+  end
 end

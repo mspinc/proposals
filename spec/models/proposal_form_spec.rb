@@ -7,6 +7,10 @@ RSpec.describe ProposalForm, type: :model do
     end
   end
 
+  describe 'status' do
+    it 'is either draft or active'
+  end
+
   describe 'associations' do
     it { should belong_to(:proposal_type) }
     it { should have_many(:proposal_fields) }

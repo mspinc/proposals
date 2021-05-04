@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = ['proposalFieldsPanel', 'proposalField']
+  static targets = ['proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow']
   static values = { visible: Boolean, field: String }
 
   connect () {

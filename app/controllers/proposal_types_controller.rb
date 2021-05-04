@@ -29,8 +29,8 @@ class ProposalTypesController < ApplicationController
   end
 
   def show
-    form = @proposal_type.proposal_forms.last
-    @proposal_fields = form&.proposal_fields
+    form = @proposal_type.proposal_forms&.where(status: :active)&.last
+    @proposal_fields = form&.proposal_fields&.where(location_id: nil)
     render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_fields }
   end
 

@@ -1,0 +1,16 @@
+<%= render 'layouts/sidebar' %>
+
+<div class="main-content" id="panel">
+  <div class="container-fluid mt-4">
+    <h2>Proposal Form</h2>
+    <p>Status: <%= @proposal_form.status %></p>
+     <div>
+        <h2>Proposal fields</h2>
+          <ol>
+            <% @proposal_form.proposal_fields.each do |field| %>
+              <li><%= field.statement %></li>
+            <% end %>
+          </ol>
+      </div>
+  </div>
+</div>

@@ -37,8 +37,9 @@
                   <td><%= proposal_form.proposal_type.name %></td>
                    <td> <%= proposal_form.status %></td>
                   <td class="table-action">
+                    <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>'.html_safe, proposal_form_path(proposal_form) %>
                     <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_form_path(proposal_form) %>
-                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_form_path(proposal_form), method: :delete ,
+                    <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_form_path(proposal_form), method: :delete ,
                     data: {confirm: "Are you sure you want to delete #{proposal_form.proposal_type.name}?"} %>
                   </td>
                 </tr>

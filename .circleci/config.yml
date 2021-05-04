@@ -123,7 +123,7 @@ workflows:
       - run_tests:
           filters:
             branches:
-              only: development
+              ignore: /main|releases/
 
   deploy_to_staging:
     jobs:

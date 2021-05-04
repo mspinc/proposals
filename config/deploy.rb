@@ -60,6 +60,7 @@ namespace :deploy do
 
   task :run do
     on roles(:app) do
+      execute "docker pull birs/proposals:latest"
       execute "cd #{release_path} && docker-compose up -d"
     end
   end
