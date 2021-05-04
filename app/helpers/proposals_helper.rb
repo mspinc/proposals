@@ -1,6 +1,6 @@
 module ProposalsHelper
   def proposal_types
-    ProposalType.all.map { |pt| [pt.name, pt.id] }
+    ProposalType.active_forms.map { |pt| [pt.name, pt.id] }
   end
 
   def locations
