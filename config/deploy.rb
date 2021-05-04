@@ -45,7 +45,6 @@ namespace :deploy do
     on roles(:app) do
       execute "cp #{shared_path}/root/* #{release_path}/"
       execute "cp -R #{shared_path}/public/* #{release_path}/"
-      #execute "cp #{shared_path}/config/initializers/devise.rb #{release_path}/config/initializers/"
       # execute "rsync -aLv #{shared_path}/lib/ #{release_path}/lib/"
       # execute "rsync -aLv #{shared_path}/app/ #{release_path}/app/"
     end
@@ -53,13 +52,14 @@ namespace :deploy do
 
   task :cleanup do
     on roles(:app) do
-      execute "docker stop proposals && docker stop proposals_db && sleep 5"
-      execute "docker rm proposals && docker rm proposals_db && sleep 2"
+      execute "docker stop proposals && sleep 5"
+      execute "docker rm proposals && sleep 2"
     end
   end
 
   task :run do
     on roles(:app) do
+      execute "docker start proposals_db"
       execute "docker pull birs/proposals:latest"
       execute "cd #{release_path} && docker-compose up -d"
     end
