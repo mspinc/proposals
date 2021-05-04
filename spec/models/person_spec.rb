@@ -21,6 +21,7 @@ RSpec.describe Person, type: :model do
       expect(p.valid?).to be_falsey
     end
   end
+
   describe 'associations' do
     it { should belong_to(:user).optional(true) }
     it { should have_many(:proposals).through(:proposal_roles) }
