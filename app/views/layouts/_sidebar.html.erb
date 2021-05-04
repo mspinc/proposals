@@ -20,12 +20,28 @@
         <i class="align-middle me-2 fas fa-fw fa-home"></i> <span class="align-middle">Dashboards</span>
         </a>
         <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-          <li class="sidebar-item"> <%= link_to "Proposal Types", proposal_types_path , class:'sidebar-link'%>
-          <li class="sidebar-item"> <%= link_to "Proposal Forms", proposal_forms_path, class:'sidebar-link' %>
-          <li class="sidebar-item"> <%= link_to "Locations", locations_path, class:'sidebar-link' %>
-            <a class="sidebar-link" href="dashboard-analytics.html">Analytics</a>
+
+          <li class="sidebar-item">
+            <%= link_to locations_path, class: "sidebar-link" do %>
+              <i class="far fa-compass"></i>
+              <span class="nav-link-text">Locations</span>
+            <% end %>
           </li>
-          <li class="sidebar-item"><a class="sidebar-link" href="dashboard-e-commerce.html">E-commerce</a></li>
+
+          <li class="sidebar-item">
+            <%= link_to proposal_types_path, class: "sidebar-link" do %>
+              <i class="fas fa-share-alt-square"></i>
+              <span class="nav-link-text">Proposal Types</span>
+            <% end %>
+          </li>
+
+          <li class="sidebar-item">
+            <%= link_to proposal_forms_path, class: "sidebar-link" do %>
+              <i class="far fa-file-alt"></i>
+              <span class="nav-link-text">Proposal Forms</span>
+            <% end %>
+          </li>
+
         </ul>
       </li>
       <li class="sidebar-item">
@@ -44,7 +60,7 @@
 
 
       <li class="sidebar-item">
-        <%= link_to destroy_user_session_path, :method => :delete, class: 'sidebar-link' do %>
+        <%= link_to destroy_user_session_path, :method => :delete, class: "sidebar-link" do %>
           <i class="fas fa-sign-out-alt"></i>
           <span class="nav-link-text">Log out</span>
         <% end %>
