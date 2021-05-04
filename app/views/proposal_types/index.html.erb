@@ -1,34 +1,48 @@
-<%= render partial: 'layouts/sidebar' %>
-
-<div class="main-content" id="panel">
-  <div class="container-fluid mt-4">
-    <h2>Proposal Types</h2>
-    <%= link_to "Create proposal type", new_proposal_type_path, class: 'btn btn-sm btn-primary float-end' %>
-    <div class="card mt-5">
-      <div class="table-responsive">
-        <table class="table table-bordered">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col">Name</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @proposal_types.each do |proposal_type| %>
-            <tr>
-              <td>
-                <%=  proposal_type.name %>
-              </td>
-              <td>
-                <%= link_to "Edit", edit_proposal_type_path(proposal_type), class: 'btn-sm btn btn-primary' %>
-                <%= link_to "Delete", proposal_type_path(proposal_type), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn-sm btn btn-danger' %>
-                <%= link_to 'Proposal form', proposal_forms_url(proposal_type: proposal_type.id), class: 'btn-sm btn btn-primary', method: :post %>
-              </td>
-            </tr>
-            <% end %>
-          </tbody>
-        </table>
+<%= render 'layouts/sidebar' %>
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Project Types
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="dashboard-default.html">Dashboard</a></li>
+          <li class="breadcrumb-item"><a href="#">Proposal Types</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Tables</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title">Basic Table</h5>
+            <h6 class="card-subtitle text-muted">Using the most basic table markup, here’s how .table-based tables look in Bootstrap.
+            </h6>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:40%;">Name</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @proposal_types.each do |proposal|%>                     
+              <tr>
+                <td><%= proposal.name %></td>
+                <td class="table-action">
+                  <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_type_path(proposal) %>
+                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_type_path(proposal), method: :delete ,
+                    data: {confirm: "Are you sure you want to delete #{proposal.name}?"} %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</main>
