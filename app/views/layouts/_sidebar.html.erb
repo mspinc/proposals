@@ -20,35 +20,25 @@
         <i class="align-middle me-2 fas fa-fw fa-home"></i> <span class="align-middle">Dashboards</span>
         </a>
         <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-          <li class="nav-item">
-            <a class="nav-link" href="/proposal_types">
-              <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Proposal Types</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/proposal_forms">
-              <i class="ni ni-planet text-orange"></i>
-              <span class="nav-link-text">Proposal Forms</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/locations">
-              <i class="ni ni-pin-3 text-primary"></i>
+          <li class="sidebar-item">
+            <%= link_to locations_path, class: "sidebar-link" do %>
+              <i class="far fa-compass"></i>
               <span class="nav-link-text">Locations</span>
-            </a>
+            <% end %>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/guidelines">
-              <i class="ni ni-notification-70 text-orange"></i>
-              <span class="nav-link-text">Guidelines</span>
-            </a>
+
+          <li class="sidebar-item">
+            <%= link_to proposal_types_path, class: "sidebar-link" do %>
+              <i class="fas fa-share-alt-square"></i>
+              <span class="nav-link-text">Proposal Types</span>
+            <% end %>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="ni ni-single-02 text-yellow"></i>
-              <span class="nav-link-text">Profile</span>
-            </a>
+
+          <li class="sidebar-item">
+            <%= link_to proposal_forms_path, class: "sidebar-link" do %>
+              <i class="far fa-file-alt"></i>
+              <span class="nav-link-text">Proposal Forms</span>
+            <% end %>
           </li>
         </ul>
       </li>
@@ -66,9 +56,8 @@
         </ul>
       </li>
 
-
       <li class="sidebar-item">
-        <%= link_to destroy_user_session_path, :method => :delete, class: 'sidebar-link' do %>
+        <%= link_to destroy_user_session_path, :method => :delete, class: "sidebar-link" do %>
           <i class="fas fa-sign-out-alt"></i>
           <span class="nav-link-text">Log out</span>
         <% end %>
