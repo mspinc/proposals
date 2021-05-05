@@ -17,7 +17,11 @@
         <h2>List of proposal fields</h2>
           <ol>
             <% @proposal_form&.proposal_fields.each do |field| %>
-              <li><%= field.statement %></li> 
+              <li><%= field.statement %></li>
+              <% if field.fieldable_type.in?(['ProposalFields::SingleChoice', 'ProposalFields::MultiChoice']) %>
+              options: 
+                <%= options(field.fieldable) %>
+              <% end %>
             <% end %>
           </ol>
       </div>

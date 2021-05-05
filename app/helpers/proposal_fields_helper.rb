@@ -8,11 +8,18 @@ module ProposalFieldsHelper
       []
     else
       options = []
-      text_value = %w[value text]
-      field.options.each do |k, v|
-        options.push(v) if text_value.include?(k)
+      field.options.each do |option|
+        options.push([option.last["text"], option.last["value"]])
       end
-      [options]
+      options
     end
+  end
+
+  def options(field)
+    opt = []
+    field.options.each do |option|
+      opt.push(option.last['text'])
+    end
+    opt
   end
 end
