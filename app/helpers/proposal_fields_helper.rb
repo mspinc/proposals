@@ -16,10 +16,14 @@ module ProposalFieldsHelper
   end
 
   def options(field)
-    opt = []
-    field.options.each do |option|
-      opt.push(option.last['text'])
+    if field.options == "{}"
+      []
+    else
+      opt = []
+      field.options.each do |option|
+        opt.push(option.last['text'])
+      end
+      opt
     end
-    opt
   end
 end

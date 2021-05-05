@@ -18,7 +18,7 @@
           <ol>
             <% @proposal_form&.proposal_fields.each do |field| %>
               <li><%= field.statement %></li>
-              <% if field.fieldable_type.in?(['ProposalFields::SingleChoice', 'ProposalFields::MultiChoice']) %>
+              <% if field.fieldable_type.in?(%w[ProposalFields::SingleChoice ProposalFields::MultiChoice ProposalFields::Radio]) %>
               options: 
                 <%= options(field.fieldable) %>
               <% end %>

@@ -8,19 +8,23 @@ export default class extends Controller {
   }
 
   handleLocationChange() {
-    let locations = [...event.target.selectedOptions].map(opt => opt.value)
-    fetch(`/proposal_types/${this.proposalTypesTarget.value}/location_based_fields?ids=${locations}`)
-      .then(response => response.text())
-      .then(html => {
-        this.locationSpecificQuestionsTarget.innerHTML = html
-      });
+    if(this.proposalTypesTarget.value) {
+      let locations = [...event.target.selectedOptions].map(opt => opt.value)
+      fetch(`/proposal_types/${this.proposalTypesTarget.value}/location_based_fields?ids=${locations}`)
+        .then(response => response.text())
+        .then(html => {
+          this.locationSpecificQuestionsTarget.innerHTML = html
+        });
+    }
   }
 
   handlProposalTypeChange() {
-    fetch(`/proposal_types/${this.proposalTypesTarget.value}.html`)
-      .then(response => response.text())
-      .then(html => {
-        this.typeSpecificQuestionsTarget.innerHTML = html
-      });
+    if(this.proposalTypesTarget.value) {
+      fetch(`/proposal_types/${this.proposalTypesTarget.value}.html`)
+        .then(response => response.text())
+        .then(html => {
+          this.typeSpecificQuestionsTarget.innerHTML = html
+        });
+    }
   }
 }
