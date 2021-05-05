@@ -1,35 +1,32 @@
 <main class="content">
-<div class="container-fluid">
-<div class="header">
-  <h1 class="header-title">
-    Edit Proposal Form 
-  </h1>
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="dashboard-default.html">Dashboard</a></li>
-      <li class="breadcrumb-item"><a href="#">Proposal Types</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Tables</li>
-    </ol>
-  </nav>
-</div>
-<div class="col-12 col-xl-6">
-  <div class="card">
-    <div class="card-header">
-      <h5 class="card-title">Edit Proposal Form</h5>
-      <h6 class="card-subtitle text-muted">Default Bootstrap form layout.</h6>
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Edit Proposal Form 
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %></a></li>
+          <li class="breadcrumb-item"> <%= link_to "Proposal Forms", proposal_forms_path %></li>
+          <li class="breadcrumb-item active" aria-current="page">Edit Proposal</li>
+        </ol>
+      </nav>
     </div>
-    <div class="card-body">
-      <%= form_for @proposal_form do |f| %>
-      <div class="mb-3">
-        <%= f.label :name , class: 'form-label' %>
-        <%= f.text_field :name %>
+    <div class="col-12 col-xl-6">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title"></h5>
+        </div>
+        <div class="card-body">
+          <%= form_for @proposal_form do |f| %>
+          <div class="mb-3">
+            <%= f.label :Status , class: 'form-label' %>
+            <%= f.text_field :status %>
+          </div>
+          <%= f.submit @proposal_form.new_record? ? "Create Proposal Form" : "Update Proposal Form", class:  'btn btn-primary' %>
+          <% end %>
+        </div>
       </div>
-      <div class="mb-3">
-        <%= f.label :Status , class: 'form-label' %>
-        <%= f.text_field :name %>
-      </div>
-      <%= f.submit @proposal_form.new_record? ? "Create Proposal Form" : "Update Proposal Form", class:  'btn btn-primary' %>
-      <% end %>
     </div>
   </div>
-</div>
+</main>
