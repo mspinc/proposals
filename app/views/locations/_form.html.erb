@@ -1,40 +1,59 @@
-<div class="main-content" id="panel">
-  <div class="container-fluid mt-4">
-    <h2>Location</h2>
-    <div class="row">
-      <div class="col-8">
-        <%= form_with(model: location) do |form| %>
-        <% if location.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(location.errors.count, "error") %> prohibited this location from being saved:</h2>
-          <ul>
-            <% location.errors.each do |error| %>
-            <li><%= error.full_message %></li>
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Location Form
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "Dashboard", dashboards_path %></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= link_to "Locations", locations_path %> </li>
+          <% if @location.name %>
+          <li class="breadcrumb-item active" aria-current="page">Edit</li>
+          <% else %>
+          <li class="breadcrumb-item active" aria-current="page">New Location</li>
+          <% end %>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="card-title"><%= @location.name %></h5>
+        </div>
+        <div class="card-body">
+          <%= form_for @location do |f| %>
+            <% if location.errors.any? %>
+              <div >
+                <h2><%= pluralize(location.errors.count, "error") %> prohibited this location from being saved:</h2>
+                <ul>
+                  <% location.errors.each do |error| %>
+                  <li><%= error.full_message %></li>
+                  <% end %>
+                </ul>
+              </div>
             <% end %>
-          </ul>
+            <div class="mb-3">
+              <%= f.label :Name , class: 'form-label' %><br>
+              <%= f.text_field :name %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :Code , class: 'form-label' %><br>
+              <%= f.text_field :code %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :City , class: 'form-label' %><br>
+              <%= f.text_field :city %>
+            </div>
+            <div class="mb-3">
+              <%= f.label :Country , class: 'form-label' %><br>
+              <%= f.text_field :country %>
+            </div>
+            <%= f.submit @location.new_record? ? "Create New Location" : "Update Location", class:  'btn btn-primary' %>
+            <%= link_to "Back", locations_path, class: 'btn btn-primary' %>
+          <% end %>
         </div>
-        <% end %>
-        <div class="form-group">
-          <%= form.label :name %>
-          <%= form.text_field :name, class:'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= form.label :code %>
-          <%= form.text_field :code, class:'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= form.label :city %>
-          <%= form.text_field :city, class:'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= form.label :country %>
-          <%= form.text_field :country, class:'form-control' %>
-        </div>
-        <div class="form-group">
-          <%= form.submit class:'btn btn-primary btn-sm' %>
-        </div>
-        <% end %>
       </div>
     </div>
   </div>
-</div>
+</main>
