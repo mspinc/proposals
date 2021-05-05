@@ -5,6 +5,7 @@ export default class extends Controller {
 
   connect() {
     this.handlProposalTypeChange()
+    this.fetchProposalTypeLocations()
   }
 
   handleLocationChange() {
@@ -25,6 +26,24 @@ export default class extends Controller {
         .then(html => {
           this.typeSpecificQuestionsTarget.innerHTML = html
         });
+    }
+  }
+
+  fetchProposalTypeLocations () {
+    if(this.proposalTypesTarget.value) {
+      fetch(`/proposal_types/${this.proposalTypesTarget.value}/proposal_type_locations.json`)
+        .then(res => res.json())
+        .then(data => {
+          const selectBox = this.locationIdTarget;
+          var _this = this
+          selectBox.innerHTML = '';
+          data.forEach(item => {
+            const opt = document.createElement('option');
+            opt.value = item.id;
+            opt.innerHTML = item.name;
+            selectBox.appendChild(opt);
+          });
+        })
     }
   }
 }

@@ -1,5 +1,5 @@
 class ProposalTypesController < ApplicationController
-  before_action :set_proposal_type, only: %i[show location_based_fields destroy update edit]
+  before_action :set_proposal_type, only: %i[show location_based_fields destroy update edit proposal_type_locations]
 
   def index
     @proposal_types = ProposalType.all
@@ -43,6 +43,10 @@ class ProposalTypesController < ApplicationController
     form = @proposal_type.proposal_forms.last
     @proposal_fields = form&.proposal_fields&.where(location_id: params[:ids].split(","))
     render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_fields }
+  end
+
+  def proposal_type_locations
+    render json: @proposal_type.locations
   end
 
   private
