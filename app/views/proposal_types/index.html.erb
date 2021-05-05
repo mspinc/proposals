@@ -7,9 +7,8 @@
       </h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="dashboard-default.html">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="#">Proposal Types</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Tables</li>
+          <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %> </li>
+          <li class="breadcrumb-item active" aria-current="page">Proposal Types</li>
         </ol>
       </nav>
     </div>
@@ -17,9 +16,7 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h5 class="card-title">Basic Table</h5>
-            <h6 class="card-subtitle text-muted">Using the most basic table markup, here’s how .table-based tables look in Bootstrap.
-            </h6>
+            <%= link_to "Create Proposal Type", new_proposal_type_path, class: 'btn btn-primary' %>
           </div>
           <table class="table">
             <thead>
@@ -29,13 +26,14 @@
               </tr>
             </thead>
             <tbody>
-              <% @proposal_types.each do |proposal|%>                     
+              <% @proposal_types.each do |proposal_type|%>                     
               <tr>
-                <td><%= proposal.name %></td>
+                <td><%= proposal_type.name %></td>
                 <td class="table-action">
-                  <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_type_path(proposal) %>
-                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_type_path(proposal), method: :delete ,
-                    data: {confirm: "Are you sure you want to delete #{proposal.name}?"} %>
+                  <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_type_path(proposal_type) %>
+                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_type_path(proposal_type), method: :delete ,
+                    data: {confirm: "Are you sure you want to delete #{proposal_type.name}?"} %>
+                  <%= link_to 'Proposal form',  proposal_forms_url(proposal_type: proposal_type.id ), class: 'btn btn-outline-primary', method: :post %>
                 </td>
               </tr>
               <% end %>
