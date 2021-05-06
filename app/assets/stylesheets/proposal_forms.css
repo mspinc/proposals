@@ -6,7 +6,6 @@
   background: #fff;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.16);
   border-radius: 6px;
-  display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   position: absolute;

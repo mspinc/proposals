@@ -2,16 +2,16 @@
   <div class="container-fluid">
     <div class="header">
       <h1 class="header-title">
-        Edit Project Type
+        Edit Proposal Type
       </h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %> </li>
           <li class="breadcrumb-item"> <%= link_to "Proposal Types", proposal_types_path %> </li>
-          <% if @proposal_type.id %>
-            <li class="breadcrumb-item active" aria-current="page">Edit</li>
+          <% if @proposal_type.new_record? %>
+            <li class="breadcrumb-item active" aria-current="page">New</li>
           <% else %>
-             <li class="breadcrumb-item active" aria-current="page">New Form</li>
+             <li class="breadcrumb-item active" aria-current="page">Edit</li>
           <% end %>
         </ol>
       </nav>

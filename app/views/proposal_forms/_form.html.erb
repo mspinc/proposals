@@ -8,23 +8,51 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %></a></li>
           <li class="breadcrumb-item"> <%= link_to "Proposal Forms", proposal_forms_path %></li>
-          <li class="breadcrumb-item active" aria-current="page">Edit Proposal</li>
+          <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
       </nav>
     </div>
-    <div class="col-12 col-xl-6">
+    <div class="col-12 ">
       <div class="card">
-        <div class="card-header">
-          <h5 class="card-title"></h5>
-        </div>
         <div class="card-body">
-          <%= form_for @proposal_form do |f| %>
-          <div class="mb-3">
-            <%= f.label :Status , class: 'form-label' %>
-            <%= f.text_field :status %>
+          <div id="panel" data-controller="proposal-form">
+            <div class="container-fluid" data-proposal-form-target="proposalFormId">
+              <p> status: <%= @proposal_form.status %></p>
+              <% if @proposal_form.draft? %>
+              <%= link_to 'Publish Form', proposal_form_path(@proposal_form), method: :put ,class: 'btn btn-primary' %>
+              <div class="col-12 d-flex align-self-center justify-content-end position-relative" >
+                <a href="javascript:void(0)" class="btn btn-primary" data-action="click->proposal-form#toggleProposalFieldsPanel">Add Form Field</a>
+                <section class="fields-panel hidden" data-proposal-form-target='proposalFieldsPanel' data-proposal-form-visible-value="false">
+                  <% ProposalField::FIELD_TYPES.each do |field_type| %>
+                  <a href="javascript:void(0);" class="btn btn-light " data-action="click->proposal-form#fetchField click->proposal-form#toggleProposalFieldsPanel" data-field="<%= field_type %>" data-id="<%= @proposal_form.id %>"><%= field_type %></a>
+                  <% end %>
+                </section>
+              </div>
+              <% end %>
+              <div class="row">
+                <div class="col-7">
+                  <div class="header">List of proposal fields</div>
+                    <% @proposal_form&.proposal_fields.each do |field| %>
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col mt-0">
+                              <h5 class="card-title"><%= field.statement %></h5>
+                            </div>
+                            <div class="col-auto">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="col-5">
+                    <div data-proposal-form-target="proposalField"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <%= f.submit @proposal_form.new_record? ? "Create Proposal Form" : "Update Proposal Form", class:  'btn btn-primary' %>
-          <% end %>
         </div>
       </div>
     </div>
