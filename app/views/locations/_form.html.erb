@@ -8,10 +8,10 @@
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><%= link_to "Dashboard", dashboards_path %></li>
           <li class="breadcrumb-item active" aria-current="page"><%= link_to "Locations", locations_path %> </li>
-          <% if @location.name %>
-          <li class="breadcrumb-item active" aria-current="page">Edit</li>
+          <% if @location.new_record? %>
+          <li class="breadcrumb-item active" aria-current="page">New</li>
           <% else %>
-          <li class="breadcrumb-item active" aria-current="page">New Location</li>
+          <li class="breadcrumb-item active" aria-current="page">Edit</li>
           <% end %>
         </ol>
       </nav>

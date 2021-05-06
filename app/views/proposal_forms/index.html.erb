@@ -29,11 +29,6 @@
             </thead>
             <tbody>
               <% @proposal_forms.each do |proposal_form| %>
-                <tr>
-                  <td><%= proposal_form.proposal_type.name %></td>
-                   <td> <%= proposal_form.status %></td>
-                  <td class="table-action">
-                    <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_form_path(proposal_form) %>
               <tr>
                 <td><%= proposal_form.proposal_type.name %></td>
                 <td> <%= proposal_form.status %></td>
