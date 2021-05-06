@@ -7,8 +7,14 @@ RSpec.describe ProposalForm, type: :model do
     end
   end
 
-  describe 'status' do
-    it 'is either draft or active'
+  describe 'with active status' do
+    let(:proposal_form) { create(:proposal_form, status: :active) }
+    it { expect(proposal_form.status).to eq('active') }
+  end
+
+  describe 'with draft status' do
+    let(:proposal_form) { create(:proposal_form, status: :draft) }
+    it { expect(proposal_form.status).to eq('draft') }
   end
 
   describe 'associations' do

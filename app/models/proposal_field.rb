@@ -1,4 +1,5 @@
 class ProposalField < ApplicationRecord
+  validates :statement, presence: true
   belongs_to :proposal_form
   belongs_to :location, optional: true
   belongs_to :fieldable, polymorphic: true
