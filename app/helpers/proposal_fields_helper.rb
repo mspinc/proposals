@@ -26,4 +26,10 @@ module ProposalFieldsHelper
       opt
     end
   end
+
+  def options_for_field(field)
+    if field.fieldable_type.in?(%w[ProposalFields::SingleChoice ProposalFields::MultiChoice ProposalFields::Radio])
+      options(field.fieldable)
+    end
+  end
 end

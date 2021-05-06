@@ -63,6 +63,17 @@ RSpec.describe "/proposal_types", type: :request do
         expect(proposal_type.reload.name).to eq('5 Day Workshop')
       end
     end
+
+    context "with invalid parameters" do
+      let(:proposal_type_params) { { name: ' ' } }
+
+      before do
+        patch proposal_type_url(proposal_type), params: { proposal_type: proposal_type_params }
+      end
+      it "renders a successful response (i.e. to display the 'edit' template)" do
+        expect(response).to have_http_status(200)
+      end
+    end
   end
 
   describe "DELETE /destroy" do
@@ -70,5 +81,24 @@ RSpec.describe "/proposal_types", type: :request do
       delete proposal_type_url(proposal_type.id)
     end
     it { expect(ProposalType.all.count).to eq(0) }
+  end
+
+  describe "GET /proposal_type_locations" do
+    before do
+      locations = create_list(:location, 4)
+      proposal_type.locations << locations
+      get proposal_type_locations_proposal_type_url(proposal_type)
+    end
+    it 'returns list of locations' do
+      expect(JSON.parse(response.body).length).to eq(4)
+    end
+  end
+
+  describe "GET /location_based_fields" do
+    before do
+      create(:proposal_form, status: :active)
+      get location_based_fields_proposal_type_url(proposal_type)
+    end
+    it { expect(response).to have_http_status(:ok) }
   end
 end
