@@ -31,13 +31,14 @@
               <% end %>
               <div class="row">
                 <div class="col-7">
-                  <div class="header">List of proposal fields</div>
+                  <div class="header"><h1>List of proposal fields</h1></div>
                     <% @proposal_form&.proposal_fields.each do |field| %>
                       <div class="card">
                         <div class="card-body">
                           <div class="row">
                             <div class="col mt-0">
                               <h5 class="card-title"><%= field.statement %></h5>
+                              Options: <%= options_for_field(field) %>
                             </div>
                             <div class="col-auto">
                             </div>
