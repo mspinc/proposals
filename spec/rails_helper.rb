@@ -41,6 +41,7 @@ RSpec.configure do |config|
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
+  config.include Devise::Test::IntegrationHelpers, type: :request
   config.include(Shoulda::Matchers::ActiveModel, type: :model)
   config.include(Shoulda::Matchers::ActiveRecord, type: :model)
   # RSpec Rails can automatically mix in different behaviours to your tests

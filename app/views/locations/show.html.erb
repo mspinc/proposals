@@ -1,25 +1,44 @@
 <%= render partial: 'layouts/sidebar' %>
-<div class="main-content" id="panel">
-  <p id="notice"><%= notice %></p>
-  <div class="container-fluid mt-4">
-    <p id="notice"><%= notice %></p>
-    <p>
-      <span class="fs-5">Name:</span>
-      <%= @location.name %>
-    </p>
-    <p>
-      <span class="fs-5">Code:</span>
-      <%= @location.code %>
-    </p>
-    <p>
-      <span class="fs-5">City:</span>
-      <%= @location.city %>
-    </p>
-    <p>
-      <span class="fs-5">Country:</span>
-      <%= @location.country %>
-    </p>
-    <%= link_to 'Edit', edit_location_path(@location), class:'btn btn-sm btn-primary' %> |
-    <%= link_to 'Back', locations_path, class:'btn btn-sm btn-primary' %>
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Locations
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %> </li>
+          <li class="breadcrumb-item"> <%= link_to "Locations", locations_path %> </li>
+          <li class="breadcrumb-item active" aria-current="page"><%= @location.name %></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="card-title"><%= @location.name %></h5>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">Name:  <%= @location.name %> </label>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Code:  <%= @location.code %> </label>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">City:  <%= @location.city %> </label>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Country:  <%= @location.country %> </label>
+            </div>
+            <div class="mb-3">
+              <%= link_to "Edit", edit_location_path, class: 'btn btn-primary' %> | 
+              <%= link_to "Back", locations_path, class: 'btn btn-primary' %> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</main>

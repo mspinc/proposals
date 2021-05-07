@@ -1,16 +1,52 @@
 <%= render 'layouts/sidebar' %>
-
-<div class="main-content" id="panel">
-  <div class="container-fluid mt-4">
-    <h2>Proposal Form</h2>
-    <p>Status: <%= @proposal_form.status %></p>
-     <div>
-        <h2>Proposal fields</h2>
-          <ol>
-            <% @proposal_form.proposal_fields.each do |field| %>
-              <li><%= field.statement %></li>
-            <% end %>
-          </ol>
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Proposal Form 
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %></a></li>
+          <li class="breadcrumb-item"> <%= link_to "Proposal Forms", proposal_forms_path %></li>
+          <li class="breadcrumb-item active" aria-current="page"> <%= @proposal_form.proposal_type.name %></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-12 ">
+      <div class="card">
+        <div class="card-body">
+          <div id="panel" data-controller="proposal-form">
+            <div data-proposal-form-target="proposalFormId">
+              <h2> Status: <%= @proposal_form.status %></h2>
+            </div>              
+            <div class="row">
+              <div class="col-7">
+                <div class="header"><h1>List of proposal fields</h1></div>
+                  <% @proposal_form&.proposal_fields.each do |field| %>
+                    <div class="card">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col mt-0">
+                            <h5 class="card-title"><%= field.statement %></h5>
+                              Options: <%= options_for_field(field) %>
+                          </div>
+                          <div class="col-auto">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+                <div class="col-5">
+                  <div data-proposal-form-target="proposalField"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+    </div>
   </div>
-</div>
+</main>

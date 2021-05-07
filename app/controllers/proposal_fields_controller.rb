@@ -14,6 +14,7 @@ class ProposalFieldsController < ApplicationController
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)
     @proposal_field.fieldable = @fieldable
     if @proposal_field.save
+      @proposal_form.update(updated_by: current_user)
       redirect_to edit_proposal_form_path(@proposal_form), notice: "Field was successfully created."
     else
       redirect_to edit_proposal_form_path(@proposal_form), alert: @proposal_form.errors
