@@ -1,4 +1,5 @@
 <%= render 'layouts/sidebar' %>
+
 <main class="content">
   <div class="container-fluid">
     <div class="header">
@@ -25,6 +26,8 @@
                 <th>Location </th>
                 <th>Status</th>
                 <th>Created at</th>
+                <th>Created by</th>
+                <th>Updated by</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -37,8 +40,10 @@
                    <%= loc.name %><br>
                   <% end %>
                 </td>
-                <td> <%= proposal_form.status %></td>
+                <td><%= proposal_form.status %></td>
                 <td><%= proposal_form.created_at.to_date %></td>
+                <td><%= proposal_form.created_by&.email %></td>
+                <td><%= proposal_form.updated_by&.email %></td>
                 <td class="table-action">
                   <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>'.html_safe, proposal_form_path(proposal_form) %>
                   <% if proposal_form.draft? %>
