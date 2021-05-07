@@ -15,40 +15,53 @@
       <li class="sidebar-header">
         Main
       </li>
-      <li class="sidebar-item">
-        <a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
-        <i class="align-middle me-2 fas fa-fw fa-home"></i> <span class="align-middle">Dashboards</span>
-        </a>
-        <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-          <li class="sidebar-item">
-            <%= link_to locations_path, class: "sidebar-link" do %>
-              <i class="far fa-compass"></i>
-              <span class="nav-link-text">Locations</span>
-            <% end %>
-          </li>
+      <% if current_user&.staff_member? %>
+        <li class="sidebar-item">
+          <a data-bs-target="#dashboards" data-bs-toggle="collapse" class="sidebar-link collapsed">
+          <i class="align-middle me-2 fas fa-fw fa-home"></i> <span class="align-middle">Dashboards</span>
+          </a>
+          <ul id="dashboards" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+            <li class="sidebar-item">
+              <%= link_to locations_path, class: "sidebar-link" do %>
+                <i class="far fa-compass"></i>
+                <span class="nav-link-text">Locations</span>
+              <% end %>
+            </li>
+            <li class="sidebar-item">
+              <%= link_to proposal_types_path, class: "sidebar-link" do %>
+                <i class="fas fa-share-alt-square"></i>
+                <span class="nav-link-text">Proposal Types</span>
+              <% end %>
+            </li>
+            <li class="sidebar-item">
+              <%= link_to proposal_forms_path, class: "sidebar-link" do %>
+                <i class="far fa-file-alt"></i>
+                <span class="nav-link-text">Proposal Forms</span>
+              <% end %>
+            </li>
+          </ul>
+        </li>
 
-          <li class="sidebar-item">
-            <%= link_to proposal_types_path, class: "sidebar-link" do %>
-              <i class="fas fa-share-alt-square"></i>
-              <span class="nav-link-text">Proposal Types</span>
-            <% end %>
-          </li>
-
-          <li class="sidebar-item">
-            <%= link_to proposal_forms_path, class: "sidebar-link" do %>
-              <i class="far fa-file-alt"></i>
-              <span class="nav-link-text">Proposal Forms</span>
-            <% end %>
-          </li>
-
-        </ul>
-      </li>
+      <% else %>
+        <li class="sidebar-item">
+          <a data-bs-target="#proposals" data-bs-toggle="collapse" class="sidebar-link collapsed">
+          <i class="align-middle me-2 fas fa-fw fa-file"></i> <span class="align-middle">Proposals</span>
+          </a>
+          <ul id="proposals" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
+            <li class="sidebar-item">
+              <%= link_to new_submit_proposal_path, class: "sidebar-link" do %>
+                <i class="fas fa-book"></i> Submit Proposal
+              <% end %>
+            </li>
+          </ul>
+        </li>
+      <% end %>
+      
       <li class="sidebar-item">
         <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
         <i class="align-middle me-2 fas fa-fw fa-file"></i> <span class="align-middle">Pages</span>
         </a>
         <ul id="pages" class="sidebar-dropdown list-unstyled collapse " data-bs-parent="#sidebar">
-
           <li class="sidebar-item">
             <%= link_to guidelines_path, class: "sidebar-link" do %>
               <i class="fas fa-book"></i> Proposal Guidelines
@@ -56,8 +69,6 @@
           </li>
         </ul>
       </li>
-
-
       <li class="sidebar-item">
         <%= link_to destroy_user_session_path, :method => :delete, class: "sidebar-link" do %>
           <i class="fas fa-sign-out-alt"></i>

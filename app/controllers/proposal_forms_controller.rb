@@ -18,12 +18,14 @@ class ProposalFormsController < ApplicationController
   def show; end
 
   def update
-    @proposal_form.update(status: 'active')
+    @proposal_form.update(status: 'active', updated_by: current_user)
     redirect_to edit_proposal_form_path(@proposal_form)
   end
 
   def create
     @proposal_form = ProposalForm.new(status: 'draft', proposal_type_id: params[:proposal_type])
+    @proposal_form.created_by = current_user
+    @proposal_form.updated_by = current_user
     @proposal_form.save
     redirect_to edit_proposal_form_path(@proposal_form)
   end
