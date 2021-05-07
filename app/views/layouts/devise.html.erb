@@ -9,11 +9,8 @@
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
-
-  <body class="theme-blue">
-    <div class="wrapper">
-      <%= yield %>
-    </div>
+    
+    <%= yield %>
+    
     <%= javascript_pack_tag 'app', media: 'all', 'data-turbolinks-track': 'reload' %>
-  </body>
 </html>
