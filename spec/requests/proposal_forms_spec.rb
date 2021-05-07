@@ -17,6 +17,15 @@ RSpec.describe "/proposal_forms", type: :request do
     it { expect(response).to have_http_status(:ok) }
   end
 
+  describe "POST /create" do
+    let(:proposal_type) { create(:proposal_type) }
+    it "creates a new proposal_form" do
+      expect do
+        post proposal_forms_url(proposal_type: proposal_type)
+      end.to change(ProposalForm, :count).by(1)
+    end
+  end
+
   describe "GET /show" do
     before do
       get proposal_form_url(proposal_form)

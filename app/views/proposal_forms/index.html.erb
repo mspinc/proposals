@@ -22,10 +22,12 @@
           <table class="table">
             <thead>
               <tr>
-                <th style="width:40%;">Proposal Type</th>
-                <th style="width:25%">Status</th>
-                <th>Updated by</th>
+                <th>Proposal Type</th>
+                <th>Location </th>
+                <th>Status</th>
+                <th>Created at</th>
                 <th>Created by</th>
+                <th>Updated by</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -33,10 +35,15 @@
               <% @proposal_forms.each do |proposal_form| %>
               <tr>
                 <td><%= proposal_form.proposal_type.name %></td>
-                <td> <%= proposal_form.status %></td>
+                <td>
+                  <% proposal_form.proposal_type.locations.each do |loc| %>
+                   <%= loc.name %><br>
+                  <% end %>
+                </td>
+                <td><%= proposal_form.status %></td>
+                <td><%= proposal_form.created_at.to_date %></td>
                 <td><%= proposal_form.created_by&.email %></td>
                 <td><%= proposal_form.updated_by&.email %></td>
-
                 <td class="table-action">
                   <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>'.html_safe, proposal_form_path(proposal_form) %>
                   <% if proposal_form.draft? %>

@@ -1,32 +1,48 @@
 <%= render partial: 'layouts/sidebar' %>
-
-<div class="main-content" id="panel">
-  <div class="container-fluid mt--6">
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Proposals
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+           <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %> </a></li>
+          <li class="breadcrumb-item active" aria-current="page">Proposals</li>
+          <li class="breadcrumb-item active" aria-current="page">Submit</li>
+        </ol>
+      </nav>
+    </div>
     <div class="row">
-      <div data-controller="submit-proposals">
-        <%=  link_to " Guidelines for Proposals", guidelines_path, class: 'btn btn-primary float-end' %>
-        <%= form_with url: submit_proposals_path, class: 'row g-3' do  |f| %>
-        <fieldset class="mt-8">
-          <legend>Basic</legend>
-          <div class="col-lg-8">
-            <div class="form-group my-3">
-              <%= f.label :proposal_types %>
-              <%= select_tag "location", options_for_select(proposal_types), data: {target: 'submit-proposals.proposalTypes', action: 'change->submit-proposals#handlProposalTypeChange'}, class: 'form-control' %>
-            </div>
-            <div data-submit-proposals-target='typeSpecificQuestions'></div>
-            <div class="form-group">
-              <%= f.label :location %>
-              <%= select_tag "location", options_for_select([]), :include_blank => 'Select Location', data: { target: 'submit-proposals.locationId',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control', multiple: true %>
-            </div>
-            <div data-submit-proposals-target='locationSpecificQuestions'></div>
-         <div class="form-group">
-           <%= f.submit 'Submit', class:'btn btn-primary btn-sm' %>
-         </div>
-        </fieldset>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div data-controller="submit-proposals">  
+                <%= form_with url: submit_proposals_path do  |f| %>
+                  <fieldset class="mt-8"></fieldset>
+                    <legend>Basic</legend>
+                    <div class="col-lg-8">
+                      <div class="mb-3">
+                        <%= f.label :proposal_types , class: 'form-label' %>
+                        <%= select_tag "location", options_for_select(proposal_types), data: {target: 'submit-proposals.proposalTypes', action: 'change->submit-proposals#handlProposalTypeChange'}, class: 'form-control' %>
+                      </div>
+                      <div data-submit-proposals-target='typeSpecificQuestions'></div>
+                        <div class="mb-3">
+                          <%= f.label :location , class: 'form-label'%>
+                          <%= select_tag "location", options_for_select([]), :include_blank => 'Select Location', data: { target: 'submit-proposals.locationId',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control', multiple: true %>
+                        </div>
+                        <div data-submit-proposals-target='locationSpecificQuestions'></div>
+                        <div class="form-group">
+                          <%= f.submit 'Submit', class:'btn btn-primary' %>
+                        </div>
+                      </div>
+                    <%end%>
+                  </div>
+                </div>
+              </div>
+          </div>
         </div>
-        <%end%>
-
       </div>
     </div>
   </div>
-</div>
+</main>

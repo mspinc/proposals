@@ -22,20 +22,20 @@
           <table class="table">
             <thead>
               <tr>
-                <th style="width:25%;">Name</th>
-                <th style="width:10%;">Code</th>
-                <th style="width:25%;">City</th>
-                <th style="width:25%">Country</th>
+                <th>Name</th>
+                <th>Code</th>
+                <th>City</th>
+                <th>Country</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              <% @locations.each do |location|%> 
+              <% @locations.each do |location|%>
               <tr>
-                <td class="d-none d-md-table-cell"> <%= location.name %> </td>
-                <td class="d-none d-md-table-cell"> <%=location.code %> </td>
-                <td class="d-none d-md-table-cell"> <%=location.city %> </td>
-                <td class="d-none d-md-table-cell"> <%=location.country %> </td>
+                <td> <%= location.name %> </td>
+                <td> <%=location.code %> </td>
+                <td> <%=location.city %> </td>
+                <td> <%=location.country %> </td>
                 <td class="table-action">
                   <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>'.html_safe, location_path(location) %>
                   <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_location_path(location) %>

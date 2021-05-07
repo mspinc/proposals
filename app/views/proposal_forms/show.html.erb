@@ -17,19 +17,19 @@
       <div class="card">
         <div class="card-body">
           <div id="panel" data-controller="proposal-form">
-            <div class="container-fluid" data-proposal-form-target="proposalFormId">
-              <p> Status: <%= @proposal_form.status %></p>
-              
+            <div data-proposal-form-target="proposalFormId">
+              <h2> Status: <%= @proposal_form.status %></h2>
             </div>              
             <div class="row">
               <div class="col-7">
-                <div class="header">List of proposal fields</div>
+                <div class="header"><h1>List of proposal fields</h1></div>
                   <% @proposal_form&.proposal_fields.each do |field| %>
                     <div class="card">
                       <div class="card-body">
                         <div class="row">
                           <div class="col mt-0">
                             <h5 class="card-title"><%= field.statement %></h5>
+                              Options: <%= options_for_field(field) %>
                           </div>
                           <div class="col-auto">
                           </div>
@@ -50,4 +50,3 @@
     </div>
   </div>
 </main>
-

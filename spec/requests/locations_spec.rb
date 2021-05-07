@@ -32,10 +32,12 @@ RSpec.describe "/locations", type: :request do
   end
 
   describe "POST /create" do
-    let(:location_params) { { name:    'Banff International Research Station',
-                              code:    'BIRS',
-                              city:    'Banff',
-                              country: 'Canada' } }
+    let(:location_params) do
+      { name: 'Banff International Research Station',
+        code: 'BIRS',
+        city: 'Banff',
+        country: 'Canada' }
+    end
     context "with valid parameters" do
       it "creates a new Location" do
         expect do
@@ -55,10 +57,12 @@ RSpec.describe "/locations", type: :request do
   end
 
   describe "PATCH /update" do
-    let(:location_params) { { name:    'Banff International Research Station',
-                              code:    'BIRS',
-                              city:    'Banff',
-                              country: 'Canada' } }
+    let(:location_params) do
+      { name: 'Banff International Research Station',
+        code: 'BIRS',
+        city: 'Banff',
+        country: 'Canada' }
+    end
 
     context "with valid parameters" do
       before do
@@ -66,6 +70,16 @@ RSpec.describe "/locations", type: :request do
       end
       it "updates the requested Location" do
         expect(location.reload.country).to eq('Canada')
+      end
+    end
+
+    context "with invalid parameters" do
+      before do
+        params = location_params.merge(city: '')
+        patch location_url(location), params: { location: params }
+      end
+      it "does not update Location" do
+        expect(response).to have_http_status(422)
       end
     end
   end
