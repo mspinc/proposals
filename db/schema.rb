@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_07_064254) do
+ActiveRecord::Schema.define(version: 2021_05_07_113313) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -104,7 +104,11 @@ ActiveRecord::Schema.define(version: 2021_05_07_064254) do
     t.bigint "proposal_type_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "created_by_id"
+    t.bigint "updated_by_id"
+    t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
+    t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
   end
 
   create_table "proposal_locations", force: :cascade do |t|
@@ -210,6 +214,8 @@ ActiveRecord::Schema.define(version: 2021_05_07_064254) do
   add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "proposal_fields", "proposal_forms"
   add_foreign_key "proposal_forms", "proposal_types"
+  add_foreign_key "proposal_forms", "users", column: "created_by_id"
+  add_foreign_key "proposal_forms", "users", column: "updated_by_id"
   add_foreign_key "proposal_locations", "locations"
   add_foreign_key "proposal_locations", "proposals"
   add_foreign_key "proposal_roles", "people"
