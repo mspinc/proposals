@@ -10,5 +10,7 @@ RSpec.describe ProposalType, type: :model do
   describe 'associations' do
     it { should have_many(:proposals).dependent(:destroy) }
     it { should have_many(:proposal_forms).dependent(:destroy) }
+    it { should have_many(:proposal_type_locations).dependent(:destroy) }
+    it { should have_many(:locations).through(:proposal_type_locations) }
   end
 end

@@ -8,8 +8,10 @@ RSpec.describe Proposal, type: :model do
   end
 
   describe 'associations' do
+    it { should have_many(:proposal_locations).dependent(:destroy) }
     it { should have_many(:locations).through(:proposal_locations) }
-    it { should have_many(:people).through(:proposal_roles) }
     it { should belong_to(:proposal_type) }
+    it { should have_many(:proposal_roles).dependent(:destroy) }
+    it { should have_many(:people).through(:proposal_roles) }
   end
 end

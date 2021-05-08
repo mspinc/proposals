@@ -32,8 +32,13 @@ RSpec.describe "/locations", type: :request do
   end
 
   describe "POST /create" do
+    let(:location_params) do
+      { name: 'Banff International Research Station',
+        code: 'BIRS',
+        city: 'Banff',
+        country: 'Canada' }
+    end
     context "with valid parameters" do
-      let(:location_params) { { name: 'Canada', code: 'CA', city: 'Vancouver', country: 'North America' } }
       it "creates a new Location" do
         expect do
           post locations_url, params: { location: location_params }
@@ -42,25 +47,41 @@ RSpec.describe "/locations", type: :request do
     end
 
     context "with invalid parameters" do
-      let(:location_params) { { name: 'Canada', code: '', city: '', country: 'North America' } }
-
       it "does not create a new Location" do
         expect do
-          post locations_url, params: { location: location_params }
+          params = location_params.merge(city: '')
+          post locations_url, params: { location: params }
         end.to change(Location, :count).by(0)
       end
     end
   end
 
   describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:location_params) { { name: 'Canada', code: 'CA', city: 'Vancouver', country: 'North America' } }
+    let(:location_params) do
+      { name: 'Banff International Research Station',
+        code: 'BIRS',
+        city: 'Banff',
+        country: 'Canada' }
+    end
 
+    context "with valid parameters" do
       before do
         patch location_url(location), params: { location: location_params }
       end
+
       it "updates the requested Location" do
-        expect(location.reload.name).to eq('Canada')
+        expect(location.reload.country).to eq('Canada')
+      end
+    end
+
+    context "with invalid parameters" do
+      before do
+        params = location_params.merge(city: '')
+        patch location_url(location), params: { location: params }
+      end
+
+      it "does not update Location" do
+        expect(response).to have_http_status(422)
       end
     end
   end
@@ -69,6 +90,7 @@ RSpec.describe "/locations", type: :request do
     before do
       delete location_url(location.id)
     end
+
     it { expect(Location.all.count).to eq(0) }
   end
 end

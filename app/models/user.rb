@@ -6,6 +6,29 @@ class User < ApplicationRecord
 
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
-  has_one :organizer
   has_one :person
+
+
+  after_create :assign_role
+
+  def assign_role
+    domain = email.split('@').last
+    if domain  == 'birs.ca'
+      self.roles << staff_role
+    end
+  end
+
+  def staff_role
+    Role.find_or_create_by!(name: 'Staff')
+  end
+
+  def staff_member?
+    staff = Role.find_by(name: 'Staff')
+    roles.include?(staff)
+  end
+
+  def fullname
+    return 'Unknown User' if person.nil?
+    person.firstname + ' ' + person.lastname
+  end
 end

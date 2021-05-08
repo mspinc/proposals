@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :locations
   devise_for :users, controllers: { sessions: 'users/sessions' }
   devise_scope :user do
     root to: 'users/sessions#new'
@@ -17,8 +16,9 @@ Rails.application.routes.draw do
   end
   resources :submit_proposals
   resources :proposal_types do
-    member do 
+    member do
       get :location_based_fields
+      get :proposal_type_locations
     end
   end
   resources :locations do

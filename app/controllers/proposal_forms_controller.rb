@@ -5,23 +5,35 @@ class ProposalFormsController < ApplicationController
     @proposal_forms = ProposalForm.all
   end
 
+  def index
+    @proposal_forms = ProposalForm.all
+  end
+
   def new
     @proposal_form = ProposalForm.new
   end
 
   def edit; end
 
-  def show; end
+  def show
+    redirect_to :index if @proposal_form.nil?
+  end
 
   def update
-    @proposal_form.update(status: 'active')
+    @proposal_form.update(status: 'active', updated_by: current_user)
     redirect_to edit_proposal_form_path(@proposal_form)
   end
 
   def create
     @proposal_form = ProposalForm.new(status: 'draft', proposal_type_id: params[:proposal_type])
-    @proposal_form.save
-    redirect_to edit_proposal_form_path(@proposal_form)
+    @proposal_form.created_by = current_user
+    @proposal_form.updated_by = current_user
+
+    if @proposal_form.save
+      redirect_to edit_proposal_form_path(@proposal_form)
+    else
+      render :new, error: 'Error saving proposal'
+    end
   end
 
   def destroy
