@@ -16,10 +16,10 @@ RSpec.describe User, type: :model do
   end
 
   describe 'when created' do
-    let(:staff_user) { create(:user, email: 'staff.user@birs.com') }
+    let(:staff_user) { create(:user, email: 'staff.user@birs.ca') }
     let(:user) { create(:user) }
 
-    it 'assigns staff role to user having domain birs.com' do
+    it 'assigns staff role to user having domain birs.ca' do
       expect(staff_user.roles.first.name).to eq('Staff')
     end
 
@@ -29,7 +29,7 @@ RSpec.describe User, type: :model do
   end
 
   describe '#staff_memeber?' do
-    let(:staff_user) { create(:user, email: 'staff.user@birs.com') }
+    let(:staff_user) { create(:user, email: 'staff.user@birs.ca') }
 
     it 'returns true if user has role staff' do
       expect(staff_user.staff_member?).to be_truthy

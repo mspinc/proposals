@@ -68,6 +68,7 @@ RSpec.describe "/locations", type: :request do
       before do
         patch location_url(location), params: { location: location_params }
       end
+
       it "updates the requested Location" do
         expect(location.reload.country).to eq('Canada')
       end
@@ -78,6 +79,7 @@ RSpec.describe "/locations", type: :request do
         params = location_params.merge(city: '')
         patch location_url(location), params: { location: params }
       end
+
       it "does not update Location" do
         expect(response).to have_http_status(422)
       end
@@ -88,6 +90,7 @@ RSpec.describe "/locations", type: :request do
     before do
       delete location_url(location.id)
     end
+
     it { expect(Location.all.count).to eq(0) }
   end
 end

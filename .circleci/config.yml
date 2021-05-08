@@ -8,6 +8,7 @@ jobs:
       - run:
           name: Build the image
           command: docker build -t birs/proposals:latest .
+          no_output_timeout: 30m
 
       - run:
           name: Send to DockerHub
@@ -64,6 +65,7 @@ jobs:
           command: |
             cd /home/app/proposals
             RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace
+          no_output_timeout: 30m
       - run:
           name: Update permissions
           command: chown -R app:app /home/app/proposals

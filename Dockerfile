@@ -52,6 +52,7 @@ RUN /usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
 RUN bundle install
 RUN RAILS_ENV=development bundle exec cap install
 RUN RAILS_ENV=development bundle exec rails webpacker:install
+RUN RAILS_ENV=development bundle exec rails yarn install
 RUN RAILS_ENV=development bundle exec rails turbo:install
 RUN yarn install
 RUN chown app:app -R /usr/local/rvm/gems

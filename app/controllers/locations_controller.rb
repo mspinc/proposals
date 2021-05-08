@@ -33,7 +33,8 @@ class LocationsController < ApplicationController
         format.html { redirect_to @location, notice: "Location was successfully updated." }
         format.json { render :show, status: :ok, location: @location }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+        format.html { render :edit, status: :unprocessable_entity,
+                                     error: "Unable to update location." }
         format.json { render json: @location.errors, status: :unprocessable_entity }
       end
     end

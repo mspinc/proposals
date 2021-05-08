@@ -19,7 +19,10 @@ RSpec.describe "/proposal_forms", type: :request do
 
   describe "POST /create" do
     let(:proposal_type) { create(:proposal_type) }
+
     it "creates a new proposal_form" do
+      authenticate_for_controllers
+
       expect do
         post proposal_forms_url(proposal_type: proposal_type)
       end.to change(ProposalForm, :count).by(1)
@@ -30,6 +33,7 @@ RSpec.describe "/proposal_forms", type: :request do
     before do
       get proposal_form_url(proposal_form)
     end
+
     it { expect(response).to have_http_status(:ok) }
   end
 
@@ -42,8 +46,10 @@ RSpec.describe "/proposal_forms", type: :request do
 
   describe "PATCH /update" do
     before do
+      authenticate_for_controllers
       patch proposal_form_url(proposal_form)
     end
+
     it "updates the status to active" do
       expect(proposal_form.reload.status).to eq('active')
     end
@@ -53,6 +59,7 @@ RSpec.describe "/proposal_forms", type: :request do
     before do
       delete proposal_form_url(proposal_form.id)
     end
+
     it { expect(ProposalForm.all.count).to eq(0) }
   end
 end

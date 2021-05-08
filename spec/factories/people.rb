@@ -15,7 +15,7 @@ FactoryBot.define do
     f.url { Faker::Internet.url }
     f.research_areas { Faker::Lorem.words(number: 4).join(', ') }
     f.biography { Faker::Lorem.paragraph }
-    f.retired { %w[true false].sample }
-    f.deceased { %w[true false].sample }
+    f.retired { false }
+    f.deceased { false }
   end
 end
