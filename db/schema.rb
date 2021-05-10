@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_07_113313) do
+ActiveRecord::Schema.define(version: 2021_05_10_091818) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,16 @@ ActiveRecord::Schema.define(version: 2021_05_07_113313) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["subject_id"], name: "index_ams_subjects_on_subject_id"
+  end
+
+  create_table "answers", force: :cascade do |t|
+    t.bigint "proposal_field_id", null: false
+    t.bigint "proposal_id", null: false
+    t.string "answer"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["proposal_field_id"], name: "index_answers_on_proposal_field_id"
+    t.index ["proposal_id"], name: "index_answers_on_proposal_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -106,6 +116,7 @@ ActiveRecord::Schema.define(version: 2021_05_07_113313) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
+    t.string "title"
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
@@ -151,6 +162,7 @@ ActiveRecord::Schema.define(version: 2021_05_07_113313) do
     t.jsonb "submission"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status"
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"
   end
 
@@ -212,6 +224,8 @@ ActiveRecord::Schema.define(version: 2021_05_07_113313) do
   end
 
   add_foreign_key "ams_subjects", "subjects"
+  add_foreign_key "answers", "proposal_fields"
+  add_foreign_key "answers", "proposals"
   add_foreign_key "proposal_fields", "proposal_forms"
   add_foreign_key "proposal_forms", "proposal_types"
   add_foreign_key "proposal_forms", "users", column: "created_by_id"
