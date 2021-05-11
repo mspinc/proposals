@@ -19,12 +19,21 @@ RSpec.describe "/proposal_forms", type: :request do
 
   describe "POST /create" do
     let(:proposal_type) { create(:proposal_type) }
+    let(:params) do 
+      {
+        proposal_form: {
+          title: 'Proposal Form',
+          status: 'draft',
+          proposal_type_id: proposal_type.id
+        }
+      }
+    end
 
     it "creates a new proposal_form" do
       authenticate_for_controllers
 
       expect do
-        post proposal_forms_url(proposal_type: proposal_type)
+        post proposal_forms_url, params: params
       end.to change(ProposalForm, :count).by(1)
     end
   end
