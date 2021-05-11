@@ -11,6 +11,9 @@ Rails.application.routes.draw do
   resources :dashboards
   resources :proposals
   resources :proposal_forms do
+    member do
+      post :clone
+    end
     resources :proposal_fields do
     collection do
       get :field_type

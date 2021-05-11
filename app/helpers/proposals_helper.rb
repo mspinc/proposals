@@ -6,7 +6,11 @@ module ProposalsHelper
   def locations
     Location.all.map { |loc| [loc.name, loc.id] }
   end
-
+  
+  def all_proposal_types
+    ProposalType.all.map { |pt| [pt.name, pt.id] }
+  end
+  
   def common_proposal_fields(proposal_type)
     proposal_form = proposal_type.proposal_forms&.where(status: :active)&.last
     proposal_form&.proposal_fields&.where(location_id: nil)
