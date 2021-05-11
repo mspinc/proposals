@@ -1,5 +1,10 @@
 class ProposalsController < ApplicationController
   before_action :set_proposal, only: %w[edit]
+  
+  def index
+    @proposals = current_user&.person&.proposals
+  end
+
   def new
     @proposal = Proposal.new
   end

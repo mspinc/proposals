@@ -1,4 +1,4 @@
 <div class="form-group mb-4">
   <label for="statement"><%= field.statement %></label>
-  <%= select_tag "Option", options_for_select(proposal_field_options(field.fieldable)), class: 'form-control', multiple: true %>
+  <%= select_tag "Option", options_for_select(proposal_field_options(field.fieldable)), class: 'form-control', multiple: true, name: field.id %>
 </div>

@@ -10,13 +10,6 @@ RSpec.describe "/proposal_types", type: :request do
     it { expect(response).to have_http_status(:ok) }
   end
 
-  describe "GET /show" do
-    before do
-      get proposal_type_url(proposal_type)
-    end
-    it { expect(response).to have_http_status(:ok) }
-  end
-
   describe "GET /new" do
     it "renders a successful response" do
       get new_proposal_type_url
@@ -95,9 +88,11 @@ RSpec.describe "/proposal_types", type: :request do
   end
 
   describe "GET /location_based_fields" do
+    let(:proposal_form) { create(:proposal_form, status: :active, proposal_type: proposal_type) }
+    let(:proposal_field) {create(:proposal_field, :radio_field, :location_based, proposal_form: proposal_form, )}
     before do
-      create(:proposal_form, status: :active)
-      get location_based_fields_proposal_type_url(proposal_type)
+      proposal_field
+      get location_based_fields_proposal_type_url(proposal_type, ids: [proposal_field.location.id])
     end
     it { expect(response).to have_http_status(:ok) }
   end

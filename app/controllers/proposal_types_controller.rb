@@ -28,20 +28,14 @@ class ProposalTypesController < ApplicationController
     end
   end
 
-  def show
-    form = @proposal_type.proposal_forms&.where(status: :active)&.last
-    @proposal_fields = form&.proposal_fields&.where(location_id: nil)
-    render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_fields }
-  end
-
   def destroy
     @proposal_type.destroy
     redirect_to proposal_types_path
   end
 
   def location_based_fields
-    form = @proposal_type.proposal_forms.last
-    @proposal_fields = form&.proposal_fields&.where(location_id: params[:ids].split(","))
+    form = @proposal_type.proposal_forms.where(status: :active).last
+    @proposal_fields = form.proposal_fields.where(location_id: params[:ids].split(","))
     render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_fields }
   end
 
