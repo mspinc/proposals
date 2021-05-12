@@ -25,7 +25,7 @@ RUN apt-get install --yes tzdata udev locales curl git gnupg ca-certificates \
     postgresql-client shared-mime-info
 
 # NodeJS 10
-RUN curl -sL https://deb.nodesource.com/setup_10.x -o nodesource_setup.sh
+RUN curl -sL https://deb.nodesource.com/setup_lts.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt install --yes nodejs yarn
 

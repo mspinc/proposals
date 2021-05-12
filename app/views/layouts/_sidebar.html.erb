@@ -9,7 +9,7 @@
     <div class="sidebar-user">
       <%= image_tag 'avatar.jpg', class:"img-fluid rounded-circle mb-2", alt:"Linda Miller" %>
       <div class="fw-bold"></div>
-      <small><%= current_user.fullname %></small>
+      <small><%= current_user&.fullname %></small>
     </div>
     <ul class="sidebar-nav">
       <li class="sidebar-header">
@@ -37,6 +37,11 @@
               <%= link_to proposal_forms_path, class: "sidebar-link" do %>
                 <i class="far fa-file-alt"></i>
                 <span class="nav-link-text">Proposal Forms</span>
+              <% end %>
+            </li>
+            <li class="sidebar-item">
+              <%= link_to new_submit_proposal_path, class: "sidebar-link" do %>
+                <i class="fas fa-book"></i> Proposal Submission
               <% end %>
             </li>
           </ul>
