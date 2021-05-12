@@ -35,4 +35,13 @@ RSpec.describe User, type: :model do
       expect(staff_user.staff_member?).to be_truthy
     end
   end
+
+  describe '#fullname' do
+    let(:user) { create(:user) }
+    let(:fullname) { user.person.firstname+' '+user.person.lastname }
+    
+    it 'returns fullname of user' do
+      expect(user.fullname).to eq(fullname)
+    end
+  end
 end
