@@ -26,4 +26,14 @@ RSpec.describe ProposalsHelper, type: :helper do
       expect(locations).to match_array(locations_list.pluck(:name, :id))
     end
   end
+
+  describe "#common_proposal_fields" do
+    let(:p_type) { create(:proposal_type) }
+    let(:p_form) { create(:proposal_form, proposal_type: p_type, status: :active)}
+    let(:fields) { create(:proposal_field, :radio_field, proposal_form: p_form) }
+    it "returns proposal fields" do
+      fields
+      expect(common_proposal_fields(p_type)).to eq([fields])
+    end
+  end
 end

@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :answer do
-    proposal_field { nil }
-    proposal { nil }
+  	answer { Faker::Lorem.sentence }
+    association :proposal, factory: :proposal, strategy: :create
+    association :proposal_field, factory: :proposal_field, strategy: :create
   end
 end

@@ -1,5 +1,6 @@
 class ProposalsController < ApplicationController
-  before_action :set_proposal, only: %w[edit]
+  before_action :set_proposal, only: %w[edit destroy]
+  before_action :authenticate_user!
   
   def index
     @proposals = current_user&.person&.proposals
@@ -19,6 +20,14 @@ class ProposalsController < ApplicationController
   end
 
   def edit; end
+
+  def destroy
+    @proposal.destroy
+    respond_to do |format|
+      format.html { redirect_to proposals_url, notice: "Proposal was successfully destroyed." }
+      format.json { head :no_content }
+    end
+  end
 
   private
 

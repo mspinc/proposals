@@ -35,4 +35,47 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
       expect(options_for_field(single_choice_field)).to match_array([])
     end
   end
+
+  describe "#multichoice_answer" do
+    let(:proposal) { create(:proposal) }
+
+    let(:field) { create(:proposal_field, :multi_choice_field) }
+
+    
+    let(:proposal) { create(:proposal) }
+    let(:proposal) { create(:proposal) }
+
+    let(:field) { create(:proposal_field, :multi_choice_field) }
+
+    
+    let(:field) { create(:proposal_field, :multi_choice_field) }
+
+    context 'when multichoice filed has answer' do
+      let(:answer) { create(:answer, proposal: proposal, proposal_field: field, answer: "[\"YES\"]") }
+      it 'returns option' do
+        answer
+        expect(multichoice_answer(field, proposal)).to match_array('YES')
+      end
+    end
+
+    context 'when multichoice filed has no answer' do
+      let(:answer) { build(:answer, proposal: proposal, proposal_field: field, answer: '') }
+
+      it 'returns nil' do
+        answer
+        expect(multichoice_answer(field, proposal)).to eq(nil)
+      end
+    end
+  end
+
+  describe '#location_in_answers' do
+    let(:proposal) { create(:proposal) }
+    let(:field) { create(:proposal_field, :multi_choice_field, :location_based) }
+    let(:answer) { create(:answer, proposal: proposal, proposal_field: field, answer: "[\"YES\"]") }
+    
+    it 'returns location ids for proposal fields' do
+      answer
+      expect(location_in_answers(proposal)).to match_array([field.location.id])
+    end
+  end
 end
