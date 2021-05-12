@@ -115,27 +115,27 @@ jobs:
 workflows:
   build_new_image:
     jobs:
-      - build_image:
+      - run_tests:
           filters:
             branches:
-              only: new_images
+              only: new_image
+      - build_image:
+          requires:
+            - run_tests
+          filters:
+            branches:
+              only: new_image
 
   run_the_tests:
     jobs:
       - run_tests:
           filters:
             branches:
-              ignore: /main|releases/
+              ignore: /main|releases|new_image/
 
   deploy_to_staging:
     jobs:
-      - build_image:
-          filters:
-            branches:
-              only: main
       - run_tests:
-          requires:
-            - build_image
           filters:
             branches:
               only: main
