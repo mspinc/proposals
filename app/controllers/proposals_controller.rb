@@ -16,6 +16,8 @@ class ProposalsController < ApplicationController
     if @proposal.save
       @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
       redirect_to edit_proposal_path(@proposal)
+    else
+      render :new
     end
   end
 

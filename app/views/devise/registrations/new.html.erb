@@ -17,11 +17,11 @@
               <div class="m-sm-4">
                 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
                 <div class="mb-3">
-                  <label>First Name</label>
+                  <label>Given Name</label>
                   <%= text_field_tag :firstname, nil, autofocus: true, class:'form-control' %>
                 </div>
                 <div class="mb-3">
-                  <label>Last Name</label>
+                  <label>Family Name</label>
                   <%= text_field_tag :lastname, nil, class:'form-control' %>
                 </div>
                 <div class="mb-3">
