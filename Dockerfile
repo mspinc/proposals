@@ -20,14 +20,14 @@ RUN apt-get update -qq && apt-get dist-upgrade --yes && \
   && apt-get upgrade --fix-missing --yes --allow-remove-essential \
   -o Dpkg::Options::="--force-confold"
 
-RUN apt-get install --yes tzdata udev locales curl git gnupg ca-certificates \
-    libpq-dev wget libxrender1 libxext6 libsodium23 libsodium-dev netcat \
-    postgresql-client shared-mime-info
+RUN apt-get install --yes --fix-missing tzdata locales curl git gnupg \
+    ca-certificates libpq-dev wget libxrender1 libxext6 libsodium23 \
+    libsodium-dev netcat postgresql-client shared-mime-info
 
 # NodeJS 10
 RUN curl -sL https://deb.nodesource.com/setup_lts.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
-RUN apt install --yes nodejs yarn
+RUN apt install --yes --fix-missing nodejs yarn
 
 # Cleanup
 RUN apt-get clean && apt-get autoremove --yes \
