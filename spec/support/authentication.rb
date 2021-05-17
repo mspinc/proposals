@@ -1,4 +1,3 @@
-
 def authenticate_user(person = nil, role = 'Staff')
   person ||= FactoryBot.create(:person)
   @person = person

@@ -11,9 +11,10 @@ module Users
     # end
 
     # POST /resource
-    # def create
-    #   super
-    # end
+    def create
+      super
+      resource.create_person!(firstname: params[:firstname], lastname: params[:lastname], email: resource.email)
+    end
 
     # GET /resource/edit
     # def edit
