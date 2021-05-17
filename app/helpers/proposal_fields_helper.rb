@@ -32,4 +32,23 @@ module ProposalFieldsHelper
       options(field.fieldable)
     end
   end
+
+  def answer(field, proposal)
+    Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.answer
+  end
+
+  def multichoice_answer(field, proposal)
+    answer = Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.answer
+    if answer
+      JSON.parse(answer)
+    else
+      answer
+    end
+  end
+
+  def location_in_answers(proposal)
+    ids = proposal.answers.pluck(:proposal_field_id)
+    proposal_fields = ProposalField.find ids
+    proposal_fields.pluck(:location_id).compact.uniq
+  end
 end
