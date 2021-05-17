@@ -93,20 +93,25 @@ echo "Done!"
 echo
 
 
-echo
-echo "Compiling Assets..."
-chmod 755 /home/app/proposals/node_modules
-su - app -c "cd /home/app/proposals; yarn install"
-su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
-su - app -c "cd /home/app/proposals; yarn"
+if [ "$CIRCLECI" != 1 ] && [ "$CIRCLECI" != "1" ]
+then
+  echo
+  echo "Compiling Assets..."
+  chmod 755 /home/app/proposals/node_modules
+  su - app -c "cd /home/app/proposals; yarn install"
+  su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
+  su - app -c "cd /home/app/proposals; yarn"
+fi
 
 echo
 echo "Updating file permissions..."
 chown app:app -R /home/app/proposals
 
-# echo
-# echo "Launching webpack-dev-server..."
-# su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec bin/webpack-dev-server &"
+if [ "$APPLICATION_HOST" = "localhost" ]
+  echo
+  echo "Launching webpack-dev-server..."
+  su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec bin/webpack-dev-server &"
+fi
 
 echo
 echo "Starting web server..."
