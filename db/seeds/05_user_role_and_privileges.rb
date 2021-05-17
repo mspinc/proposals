@@ -1,7 +1,7 @@
 Role.find_or_create_by!(name: 'Admin')
 Role.find_or_create_by!(name: 'Staff')
-Role.find_or_create_by!(name: 'Reviewers')
-Role.find_or_create_by!(name: 'Organizers')
+Role.find_or_create_by!(name: 'Reviewer')
+Role.find_or_create_by!(name: 'Organizer')
 
 unless User.find_by(email: 'admin@proposals.com')
    User.create!(email: 'admin@proposals.com', password: 'W!cOp123')

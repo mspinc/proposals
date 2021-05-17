@@ -2,7 +2,7 @@
   <label class="form-label" for="statement"><%= field.statement %></label>
   <% proposal_field_options(field.fieldable).each do |text,value| %>
     <div>
-      <input type="radio" name="radio" value="<%= value %>">
+      <input type="radio" name="<%= field.id %>" value="<%= value %>" <%= answer(field, @proposal) == value ? 'checked' : '' %>>
       <span><%= text %></span>
     </div>
   <% end %>
