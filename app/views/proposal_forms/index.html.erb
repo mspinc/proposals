@@ -1,5 +1,3 @@
-<%= render 'layouts/sidebar' %>
-
 <main class="content">
   <div class="container-fluid">
     <div class="header">
@@ -45,11 +43,11 @@
                 <td><%= proposal_form.created_by&.email %></td>
                 <td><%= proposal_form.updated_by&.email %></td>
                 <td class="table-action">
-                  <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>'.html_safe, proposal_form_path(proposal_form) %>
+                  <%= link_to '<i class="align-middle fas fa-fw fa-eye" data-toggle="tooltip" title="See"></i>'.html_safe, proposal_form_path(proposal_form) %>
                   <% if proposal_form.draft? %>
-                   <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, edit_proposal_form_path(proposal_form) %>
+                   <%= link_to '<i class="align-middle fas fa-fw fa-pen" data-toggle="tooltip" title="Edit"></i>'.html_safe, edit_proposal_form_path(proposal_form) %>
                   <% end %>
-                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>'.html_safe, proposal_form_path(proposal_form), method: :delete ,
+                  <%= link_to '<i class="align-middle fas fa-fw fa-trash" data-toggle="tooltip" title="Delete"></i>'.html_safe, proposal_form_path(proposal_form), method: :delete ,
                     data: {confirm: "Are you sure you want to delete #{proposal_form.proposal_type.name}?"} %>
                 </td>
               </tr>
