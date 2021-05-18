@@ -39,11 +39,6 @@
                 <span class="nav-link-text">Proposal Forms</span>
               <% end %>
             </li>
-            <li class="sidebar-item">
-              <%= link_to new_submit_proposal_path, class: "sidebar-link" do %>
-                <i class="fas fa-book"></i> Proposal Submission
-              <% end %>
-            </li>
           </ul>
         </li>
 
@@ -52,15 +47,13 @@
           <a data-bs-target="#proposals" data-bs-toggle="collapse" class="sidebar-link collapsed">
           <i class="align-middle me-2 fas fa-fw fa-file"></i> <span class="align-middle">Proposals</span>
           </a>
-
           <ul id="proposals" class="sidebar-dropdown list-unstyled collapse <%= proposal_menu %>" data-bs-parent="#sidebar">
-            <li class="sidebar-item <%= active_menu(new_submit_proposal_path) %>">
-              <%= link_to new_submit_proposal_path, class: "sidebar-link" do %>
+            <li class="sidebar-item <%= active_menu(new_proposal_path) %>">
+              <%= link_to new_proposal_path, class: "sidebar-link" do %>
                 <i class="fas fa-book"></i> Submit Proposal
               <% end %>
             </li>
-
-            <li class="sidebar-item">
+            <li class="sidebar-item <%= active_menu(proposals_path) %>">
               <%= link_to proposals_path, class: "sidebar-link" do %>
                 <i class="fas fa-book"></i> Proposals
               <% end %>
