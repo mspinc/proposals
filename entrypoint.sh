@@ -93,15 +93,12 @@ echo "Done!"
 echo
 
 
-if [ "$CIRCLECI" != 1 ] && [ "$CIRCLECI" != "1" ]
-then
-  echo
-  echo "Compiling Assets..."
-  chmod 755 /home/app/proposals/node_modules
-  su - app -c "cd /home/app/proposals; yarn install"
-  su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
-  su - app -c "cd /home/app/proposals; yarn"
-fi
+echo
+echo "Compiling Assets..."
+chmod 755 /home/app/proposals/node_modules
+su - app -c "cd /home/app/proposals; yarn install"
+su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
+su - app -c "cd /home/app/proposals; yarn"
 
 echo
 echo "Updating file permissions..."

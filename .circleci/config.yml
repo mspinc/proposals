@@ -61,12 +61,6 @@ jobs:
             SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development
             SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
       - run:
-          name: Compile Assets
-          command: |
-            cd /home/app/proposals
-            RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace
-          no_output_timeout: 30m
-      - run:
           name: Update permissions
           command: chown -R app:app /home/app/proposals
       - run:
