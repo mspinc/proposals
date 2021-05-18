@@ -14,11 +14,11 @@ module ApplicationHelper
   end
 
   def proposal_menu
-    return 'show' if request.path.in?(['/proposal_forms/new', '/submit_proposals/new'])
+    return 'show' if request.path.in?(['/proposal_forms/new', '/proposals/new', '/proposals'])
   end
 
   def proposal_list
-    return 'active' if request.path.in?(['/proposal_forms/new', '/submit_proposals/new'])
+    return 'active' if request.path.in?(['/proposal_forms/new', '/proposals/new', '/proposals'])
   end
 
   def pages_menu
