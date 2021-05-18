@@ -1,4 +1,7 @@
 <div class="form-group mb-3">
   <label for="statement"><%= field.statement %></label>
+  <p class="collapsible collapsed" style="font-style: italic;">
+    <%= field.description %> <%= link_to "Learn More", guidelines_path %>
+  </p>
   <%= select_tag "Option", options_for_select(proposal_field_options(field.fieldable), answer(field, @proposal)), class: 'form-control', name: field.id %>
 </div>
