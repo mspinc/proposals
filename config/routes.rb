@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     end
     resources :proposal_fields do
     collection do
-      get :field_type
+      get :latex_text
     end
   end
   end

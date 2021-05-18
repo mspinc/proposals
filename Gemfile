@@ -16,6 +16,7 @@ gem 'rails', '~> 6.1.3'
 gem 'sass-rails', '>= 6'
 gem 'turbo-rails'
 gem 'webpacker', '~> 5.0'
+gem 'rails-latex'
 
 group :development, :test do
   gem 'byebug'

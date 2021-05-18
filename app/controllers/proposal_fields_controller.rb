@@ -21,6 +21,8 @@ class ProposalFieldsController < ApplicationController
     end
   end
 
+  def latex_text;  end
+
   private
 
   def proposal_field_params

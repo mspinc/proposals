@@ -28,4 +28,8 @@ module ApplicationHelper
   def pages_list
     return 'active' if request.path.in?(['/guidelines'])
   end
+
+  def lesc(text)
+    LatexToPdf.escape_latex(text)
+  end
 end
