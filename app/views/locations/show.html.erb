@@ -20,16 +20,20 @@
           </div>
           <div class="card-body">
             <div class="mb-3">
-              <label class="form-label">Name:  <%= @location.name %> </label>
+              <label class="form-label">Name: </label>
+              <label class="form-label" id="location_name"> <%= @location.name %> </label>
             </div>
             <div class="mb-3">
-              <label class="form-label">Code:  <%= @location.code %> </label>
+              <label class="form-label">Code: </label>
+              <label class="form-label" id="location_code"> <%= @location.code %> </label>
             </div>
             <div class="mb-3">
-              <label class="form-label">City:  <%= @location.city %> </label>
+              <label class="form-label">City: </label>
+              <label class="form-label" id="location_city"> <%= @location.city %> </label>
             </div>
             <div class="mb-3">
-              <label class="form-label">Country:  <%= @location.country %> </label>
+              <label class="form-label">Country: </label>
+              <label class="form-label" id="location_country"> <%= @location.country %> </label>
             </div>
             <div class="mb-3">
               <%= link_to "Edit", edit_location_path, class: 'btn btn-primary' %> | 
