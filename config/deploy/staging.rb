@@ -8,7 +8,7 @@
 # server "db.example.com", user: "deploy", roles: %w{db}
 server "nigel.birs.ca", user: "proposals", roles: %w{app db web}
 set :branch, 'development'
-
+set :deploy_to, "/data/proposals-staging"
 
 # role-based syntax
 # ==================

@@ -6,8 +6,9 @@
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
-
-
+server "garibaldi.birs.ca", user: "proposals", roles: %w{app db web}
+set :branch, 'releases'
+set :deploy_to, "/data/proposals"
 
 # role-based syntax
 # ==================

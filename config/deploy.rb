@@ -8,7 +8,7 @@ set :repo_url, "https://github.com/birs-math/proposals.git"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/data/proposals-staging"
+#set :deploy_to
 
 # Default value for :format is :airbrussh.
 set :format, :pretty
