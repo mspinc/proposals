@@ -104,7 +104,7 @@ echo
 echo "Updating file permissions..."
 chown app:app -R /home/app/proposals
 
-if [ "$APPLICATION_HOST" = "localhost" ]
+if [ "$APPLICATION_HOST" = "localhost" ]; then
   echo
   echo "Launching webpack-dev-server..."
   su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec bin/webpack-dev-server &"

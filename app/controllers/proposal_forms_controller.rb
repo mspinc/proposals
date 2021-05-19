@@ -43,8 +43,7 @@ class ProposalFormsController < ApplicationController
   end
 
   def clone
-    proposal_form = @proposal_form.dup
-    proposal_form.proposal_fields << @proposal_form.proposal_fields
+    proposal_form = @proposal_form.deep_clone include: :proposal_fields
     proposal_form.status = 'draft'
     proposal_form.save
     redirect_to edit_proposal_form_path(proposal_form)

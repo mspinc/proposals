@@ -61,7 +61,8 @@ namespace :deploy do
     on roles(:app) do
       execute "docker start proposals_db"
       execute "docker pull birs/proposals:latest"
-      timestamp = Time.new.in_time_zone("Pacific Time (US & Canada)").strftime('%Y-%m-%d %H:%M %Z')
+      ENV['TZ']='PDT'
+      timestamp = Time.new.strftime('%Y-%m-%d %H:%M %Z')
       execute "sed -i \"s/TIMESTAMP/#{timestamp}/g\" #{release_path}/app/views/layouts/_sidebar.html.erb"
       execute "cd #{release_path} && docker-compose up -d"
     end

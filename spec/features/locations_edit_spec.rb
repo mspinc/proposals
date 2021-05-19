@@ -27,11 +27,7 @@ RSpec.feature "Locations edit", type: :feature do
     fill_in 'location_code', with: 'NN'
     fill_in 'location_city', with: 'New City'
     fill_in 'location_country', with: 'New Country'
-
     click_button 'Update Location'
-
-    # flash messages need to be re-implemented in new theme
-    # expect(page).to have_text('Location was successfully updated')
     updated_location = Location.find(@location.id)
     expect(updated_location.name).to eq('New Name')
     expect(updated_location.code).to eq('NN')

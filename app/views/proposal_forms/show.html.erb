@@ -17,7 +17,8 @@
         <div class="card-body">
           <div id="panel" data-controller="proposal-form">
             <div data-proposal-form-target="proposalFormId">
-              <h2> Status: <%= @proposal_form.status %></h2>
+              <h2> Status: </h2>
+              <h2 id="proposal_status"> <%= @proposal_form.status %></h2>
             </div>              
             <div class="row">
               <div class="col-7">
@@ -27,7 +28,7 @@
                       <div class="card-body">
                         <div class="row">
                           <div class="col mt-0">
-                            <h5 class="card-title"><%= field.statement %></h5>
+                            <h5 class="card-title" id="field_statement"><%= field.statement %></h5>
                               Options: <%= options_for_field(field) %>
                           </div>
                           <div class="col-auto">
