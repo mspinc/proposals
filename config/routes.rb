@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: { sessions: 'users/sessions',
-    registrations: 'users/registrations'
-   }
+                                    registrations: 'users/registrations' }
   devise_scope :user do
     root to: 'users/sessions#new'
   end
@@ -9,16 +8,20 @@ Rails.application.routes.draw do
   get :guidelines, to: 'pages#guidelines'
 
   resources :dashboards
-  resources :proposals
+  resources :proposals do
+    collection do
+      get :text
+    end
+  end
   resources :proposal_forms do
     member do
       post :clone
     end
     resources :proposal_fields do
-    collection do
-      get :latex_text
+      collection do
+        post :latex_text
+      end
     end
-  end
   end
   resources :submit_proposals
   resources :proposal_types do
