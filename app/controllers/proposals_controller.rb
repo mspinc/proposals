@@ -23,6 +23,10 @@ class ProposalsController < ApplicationController
 
   def edit; end
 
+  def text
+    @text = session[:latex_text]
+  end
+
   def destroy
     @proposal.destroy
     respond_to do |format|
