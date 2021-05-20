@@ -69,13 +69,12 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
   end
 
   describe '#location_in_answers' do
-    let(:proposal) { create(:proposal) }
-    let(:field) { create(:proposal_field, :multi_choice_field, :location_based) }
-    let(:answer) { create(:answer, proposal: proposal, proposal_field: field, answer: "[\"YES\"]") }
+    let(:locations) { create_list(:location, 4)}
+    let(:proposal_type) { create(:proposal_type, locations: locations)}
+    let(:proposal) { create(:proposal, proposal_type: proposal_type) }
     
     it 'returns location ids for proposal fields' do
-      answer
-      expect(location_in_answers(proposal)).to match_array([field.location.id])
+      expect(location_in_answers(proposal)).to match_array(proposal.locations.map(&:id))
     end
   end
 end
