@@ -1,0 +1,6 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\begin{document}
+<%= yield %>
+\end{document}

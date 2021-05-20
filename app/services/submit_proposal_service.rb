@@ -7,7 +7,7 @@ class SubmitProposalService
     @params = params
   end
 
-  def save_answers
+  def save_answers    
     ids = proposal_form.proposal_fields.pluck(:id)
     ids.each do |id|
       value = params[id.to_s]
@@ -15,6 +15,7 @@ class SubmitProposalService
 
       create_or_update(id, value)
     end
+    proposal_locations
     proposal.update(status: :active) if params[:commit] == 'Publish'
   end
 
@@ -25,5 +26,9 @@ class SubmitProposalService
     else
       Answer.create(answer: value, proposal: proposal, proposal_field_id: id)
     end
+  end
+
+  def proposal_locations
+    proposal.locations = Location.where(id: params[:location_ids])
   end
 end
