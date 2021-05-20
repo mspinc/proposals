@@ -47,8 +47,6 @@ module ProposalFieldsHelper
   end
 
   def location_in_answers(proposal)
-    ids = proposal.answers.pluck(:proposal_field_id)
-    proposal_fields = ProposalField.find ids
-    proposal_fields.pluck(:location_id).compact.uniq
+    proposal.locations.pluck(:id)
   end
 end
