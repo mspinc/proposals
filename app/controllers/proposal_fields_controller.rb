@@ -21,6 +21,10 @@ class ProposalFieldsController < ApplicationController
     end
   end
 
+  def latex_text
+    session[:latex_text] = params[:text]
+  end
+
   private
 
   def proposal_field_params

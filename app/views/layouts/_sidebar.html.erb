@@ -82,7 +82,7 @@
       </li>
     </ul>
 
-    <% if true || ENV['APPLICATION_HOST']&.include?('staging') %>
+    <% if ENV['APPLICATION_HOST']&.include?('staging') %>
     <div class="sidebar-nav">
       <div class="sidebar-user">Deployed: TIMESTAMP</div>
     </div>
