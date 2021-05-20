@@ -34,10 +34,14 @@ module ProposalFieldsHelper
   end
 
   def answer(field, proposal)
+    return unless proposal
+
     Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.answer
   end
 
   def multichoice_answer(field, proposal)
+    return unless proposal
+
     answer = Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.answer
     if answer
       JSON.parse(answer)
