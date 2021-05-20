@@ -110,6 +110,10 @@ if [ "$APPLICATION_HOST" = "localhost" ]; then
   su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec bin/webpack-dev-server &"
 fi
 
+if [ "$STAGING_SERVER" ]; then
+  rake staging:release_tag
+fi
+
 echo
 echo "Starting web server..."
 bundle exec passenger start

@@ -61,13 +61,12 @@ namespace :deploy do
     on roles(:app) do
       execute "docker start proposals_db"
       execute "docker pull birs/proposals:latest"
-      execute "timestamp=`date \"+%Y-%m-%d %H:%M %Z\"`; sed -i \"s/TIMESTAMP/$timestamp/g\" #{release_path}/app/views/layouts/_sidebar.html.erb"
       execute "cd #{release_path} && docker-compose up -d"
     end
   end
 
   after :publishing, 'deploy:copyfiles'
-  after :publishing, 'deploy:cleanup'
+  #after :publishing, 'deploy:cleanup'
   after :publishing, 'deploy:run'
 end
 
