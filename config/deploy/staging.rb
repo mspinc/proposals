@@ -6,9 +6,11 @@
 # server "example.com", user: "deploy", roles: %w{app db web}, my_property: :my_value
 # server "example.com", user: "deploy", roles: %w{app web}, other_property: :other_value
 # server "db.example.com", user: "deploy", roles: %w{db}
-server "nigel.birs.ca", user: "proposals", roles: %w{app db web}
-set :branch, 'development'
-set :deploy_to, "/data/proposals-staging"
+
+server ENV['STAGING_SERVER'], user: ENV['STAGING_USER'], roles: %w{all}
+set :deploy_to, ENV['STAGING_PATH']
+
+set :branch, 'releases'
 
 # role-based syntax
 # ==================

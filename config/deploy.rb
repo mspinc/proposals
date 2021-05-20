@@ -40,7 +40,7 @@ set :keep_releases, 5
 
 
 namespace :deploy do
-  desc "Build Docker image"
+  desc "deploy the app"
   task :copyfiles do
     on roles(:app) do
       execute "cp #{shared_path}/root/* #{release_path}/"
@@ -51,7 +51,7 @@ namespace :deploy do
   end
 
   task :cleanup do
-    on roles(:app) do
+    on roles(:app), :on_error => :continue do
       execute "docker stop proposals && sleep 5"
       execute "docker rm proposals && sleep 2"
     end
@@ -70,3 +70,5 @@ namespace :deploy do
   after :publishing, 'deploy:cleanup'
   after :publishing, 'deploy:run'
 end
+
+
