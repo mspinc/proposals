@@ -1,7 +1,7 @@
 <div class="form-group mb-4">
   <label class="form-label" for="statement"><%= field.statement %></label>
   <p class="collapsible collapsed" style="font-style: italic;">
-    <%= field.description %> <%= link_to "Learn More", guidelines_path %>
+    <%= field.description %> <%= link_to "Learn More", guidelines_path, target: '_blank' %>
   </p>
   <% proposal_field_options(field.fieldable).each do |text,value| %>
     <div>

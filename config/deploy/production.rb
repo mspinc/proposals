@@ -8,6 +8,12 @@
 # server "db.example.com", user: "deploy", roles: %w{db}
 
 
+server ENV['PRODUCTION_SERVER'], user: ENV['PRODUCTION_USER'], roles: %w{all}
+set :user, ENV['PRODUCTION_USER']
+set :deploy_to, ENV['PRODUCTION_PATH']
+set :remote_script, ENV['REMOTE_DEPLOY']
+
+set :branch, 'releases'
 
 # role-based syntax
 # ==================

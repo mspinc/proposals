@@ -17,6 +17,7 @@ gem 'sass-rails', '>= 6'
 gem 'turbo-rails'
 gem 'webpacker', '~> 5.0'
 gem 'rails-latex'
+gem 'deep_cloneable', '~> 3.1.0'
 
 group :development, :test do
   gem 'byebug'

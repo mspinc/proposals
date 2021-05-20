@@ -103,8 +103,14 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Bundle install
+          command: bundle install
+      - add_ssh_keys:
+          fingerprints:
+            - "11:dc:ba:15:ec:d0:88:66:a5:fc:f3:11:bb:3e:7b:46"
+      - run:
           name: Run Capistrano
-          command: bundle exec cap production deploy
+          command: bundle exec cap production deploy:remote
 
 workflows:
   build_new_image:

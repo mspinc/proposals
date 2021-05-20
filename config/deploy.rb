@@ -8,7 +8,7 @@ set :repo_url, "https://github.com/birs-math/proposals.git"
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/data/proposals-staging"
+#set :deploy_to
 
 # Default value for :format is :airbrussh.
 set :format, :pretty
@@ -40,7 +40,7 @@ set :keep_releases, 5
 
 
 namespace :deploy do
-  desc "Build Docker image"
+  desc "deploy the app"
   task :copyfiles do
     on roles(:app) do
       execute "cp #{shared_path}/root/* #{release_path}/"
@@ -51,7 +51,7 @@ namespace :deploy do
   end
 
   task :cleanup do
-    on roles(:app) do
+    on roles(:app), :on_error => :continue do
       execute "docker stop proposals && sleep 5"
       execute "docker rm proposals && sleep 2"
     end
@@ -61,14 +61,13 @@ namespace :deploy do
     on roles(:app) do
       execute "docker start proposals_db"
       execute "docker pull birs/proposals:latest"
-      ENV['TZ']='PDT'
-      timestamp = Time.new.strftime('%Y-%m-%d %H:%M %Z')
-      execute "sed -i \"s/TIMESTAMP/#{timestamp}/g\" #{release_path}/app/views/layouts/_sidebar.html.erb"
       execute "cd #{release_path} && docker-compose up -d"
     end
   end
 
   after :publishing, 'deploy:copyfiles'
-  after :publishing, 'deploy:cleanup'
+  #after :publishing, 'deploy:cleanup'
   after :publishing, 'deploy:run'
 end
+
+
