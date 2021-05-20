@@ -49,25 +49,19 @@
               <% unless @proposal_form.new_record?  %>
                 <div class="row">
                   <div class="col-7">
-                    <div class="header"><h1>List of proposal fields</h1></div>
-                      <% @proposal_form&.proposal_fields.each do |field| %>
-                        <div class="card cursor-pointer">
-                          <div class="card-body">
-                            <div class="row">
-                              <div class="col mt-0">
-                                <h5 class="card-title"><%= field.statement %></h5>
-                                Options: <%= options_for_field(field) %>
-                              </div>
-                              <div class="col-auto">
-                              </div>
-                            </div>
+                    <div class="card cursor-pointer">
+                      <div class="card-body">
+                        <div class="row">
+                          <div class="col mt-0">
+                            <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_form&.proposal_fields } %>
                           </div>
+                          <div class="col-auto"></div>
                         </div>
-                      <% end %>
+                      </div>
                     </div>
-                    <div class="col-5">
-                      <div data-proposal-form-target="proposalField"></div>
-                    </div>
+                  </div>
+                  <div class="col-5">
+                    <div data-proposal-form-target="proposalField"></div>
                   </div>
                 </div>
               <% end %>
