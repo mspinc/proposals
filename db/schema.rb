@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_10_091818) do
+ActiveRecord::Schema.define(version: 2021_05_21_104523) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,7 +74,7 @@ ActiveRecord::Schema.define(version: 2021_05_10_091818) do
     t.integer "location_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.integer "index"
+    t.integer "position"
     t.text "description"
     t.bigint "fieldable_id"
     t.string "fieldable_type"
