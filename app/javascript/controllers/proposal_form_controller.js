@@ -4,10 +4,6 @@ export default class extends Controller {
   static targets = ['proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow']
   static values = { visible: Boolean, field: String, index: Number  }
 
-  connect () {
-    console.log('Hello')
-  }
-
   toggleProposalFieldsPanel () {
     this.visibleValue = !this.visibleValue
     this.proposalFieldsPanelTarget.classList.toggle("hidden", !this.visibleValue)
@@ -19,6 +15,17 @@ export default class extends Controller {
       .then(response => response.text())
       .then(data => {
         this.proposalFieldTarget.innerHTML = data
+      })
+  }
+
+  editField(evt) {
+    var dataset = evt.currentTarget.dataset
+    fetch(`/proposal_forms/${dataset.proposalFormId}/proposal_fields/${dataset.fieldId}/edit`)
+      .then(response => response.text())
+      .then(data => {
+        this.proposalFieldTarget.innerHTML = data
+        let action = document.getElementsByClassName('edit_proposal_field')[0].action.split('?')
+        document.getElementsByClassName('edit_proposal_field')[0].action = `proposal_fields/${dataset.fieldId}?${action[1]}`
       })
   }
 
