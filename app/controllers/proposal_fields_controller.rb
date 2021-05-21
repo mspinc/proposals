@@ -1,5 +1,6 @@
 class ProposalFieldsController < ApplicationController
-  before_action :set_proposal_form, only: %i[new create]
+  before_action :set_proposal_form, only: %i[new create edit update]
+  before_action :set_proposal_field, only: %i[edit update]
 
   def new
     type = "ProposalFields::#{params[:field_type]}".safe_constantize.new
@@ -25,6 +26,20 @@ class ProposalFieldsController < ApplicationController
     session[:latex_text] = params[:text]
   end
 
+  def edit
+    render partial: 'proposal_fields/fields_form',
+           locals: { proposal_field: @proposal_field, proposal_form: @proposal_form }
+  end
+
+  def update
+    if @proposal_field.update(proposal_field_params)
+      @proposal_form.update(updated_by: current_user)
+      redirect_to edit_proposal_form_path(@proposal_form), notice: "Field was successfully updated."
+    else
+      redirect_to edit_proposal_form_path(@proposal_form), alert: @proposal_form.errors
+    end
+  end
+
   private
 
   def proposal_field_params
@@ -33,6 +48,10 @@ class ProposalFieldsController < ApplicationController
 
   def set_proposal_form
     @proposal_form = ProposalForm.find(params[:proposal_form_id])
+  end
+
+  def set_proposal_field
+    @proposal_field = ProposalField.find_by(id: params[:id])
   end
 
   def options

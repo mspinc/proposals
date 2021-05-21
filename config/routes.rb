@@ -16,6 +16,8 @@ Rails.application.routes.draw do
   resources :proposal_forms do
     member do
       post :clone
+      delete :proposal_field
+      get :proposal_field_edit
     end
     resources :proposal_fields do
       collection do
