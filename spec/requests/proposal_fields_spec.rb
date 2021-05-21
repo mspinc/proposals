@@ -12,7 +12,7 @@ RSpec.describe "/proposal_forms/:id/proposal_fields", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      let(:params) { { statement: 'Radio Type Field', index: 0, description: 'some description' } }
+      let(:params) { { statement: 'Radio Type Field', position: 1, description: 'some description' } }
       it "creates a new proposal field" do
         expect do
           post proposal_form_proposal_fields_url(proposal_form_id: proposal_form.id, type: 'Radio'),
@@ -22,7 +22,7 @@ RSpec.describe "/proposal_forms/:id/proposal_fields", type: :request do
     end
 
     context "with invalid parameters" do
-      let(:params) { { statement: ' ', index: 0, description: 'some description' } }
+      let(:params) { { statement: ' ', position: 1, description: 'some description' } }
       it "creates a new proposal field" do
         expect do
           post proposal_form_proposal_fields_url(proposal_form_id: proposal_form.id, type: 'Radio'),

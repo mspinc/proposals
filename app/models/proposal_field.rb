@@ -4,8 +4,7 @@ class ProposalField < ApplicationRecord
   belongs_to :location, optional: true
   belongs_to :fieldable, polymorphic: true
   has_one :answer, dependent: :destroy
+  acts_as_list scope: :proposal_form
 
   FIELD_TYPES = %w[Radio Text SingleChoice MultiChoice].freeze
-
-  default_scope { order(index: :asc) }
 end

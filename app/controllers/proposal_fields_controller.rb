@@ -14,7 +14,7 @@ class ProposalFieldsController < ApplicationController
     options if params[:type].in?(%w[SingleChoice MultiChoice Radio])
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)
     @proposal_field.fieldable = @fieldable
-    if @proposal_field.save
+    if @proposal_field.insert_at(@proposal_field.position)
       @proposal_form.update(updated_by: current_user)
       redirect_to edit_proposal_form_path(@proposal_form), notice: "Field was successfully created."
     else
@@ -43,7 +43,7 @@ class ProposalFieldsController < ApplicationController
   private
 
   def proposal_field_params
-    params.require(:proposal_field).permit(:index, :description, :location_id, :statement)
+    params.require(:proposal_field).permit(:position, :description, :location_id, :statement)
   end
 
   def set_proposal_form

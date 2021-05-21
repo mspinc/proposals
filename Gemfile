@@ -18,6 +18,7 @@ gem 'turbo-rails'
 gem 'webpacker', '~> 5.0'
 gem 'rails-latex'
 gem 'deep_cloneable', '~> 3.1.0'
+gem 'acts_as_list'
 
 group :development, :test do
   gem 'byebug'
