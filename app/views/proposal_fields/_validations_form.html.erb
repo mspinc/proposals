@@ -1,0 +1,27 @@
+<div data-proposal-form-target="addValidation">
+  <label for="validations">Add Validations</label><br>  
+  <%= f.fields_for :validations do |field| %>
+   <div data-proposal-form-target="validationRow">
+     <div class="row">
+      <div class="form-group col-5 mb-2">
+      <%= field.label :type %>
+      <%= field.select :type, options_for_select(validation_types), {:include_blank => 'Validation Type'}, class: 'form-control', name: 'proposal_field[validations][0][type]' %>
+    </div>
+    <div class="form-group col-5 mb-2">
+      <%= field.label :value %>
+      <%= field.text_field :value , class: 'form-control', name: 'proposal_field[validations][0][value]' %>
+    </div>
+    
+    <div class="form-group col-10 mb-2">
+      <%= field.label :error_message %>
+      <%= field.text_field :error_message , class: 'form-control', name: 'proposal_field[validations][0][error_message]' %>
+    </div>
+
+    <div class="align-items-center mt-2 col-1 d-flex justify-content-center">
+      <%= image_tag 'delete.svg', size: '25x25', data: {action: 'click->proposal-form#deleteValidation'} %>
+    </div>
+     </div>
+   </div>
+  <% end %>
+</div>
+<span class="btn btn-sm btn-primary my-2" data-action="click->proposal-form#handleAddValidations" data-proposal-form-value="validationCounter">Add Validation</span>

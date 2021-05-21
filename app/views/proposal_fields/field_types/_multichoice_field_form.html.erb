@@ -16,6 +16,8 @@
     <%= f.number_field :position, class:'form-control' %>
   </div>
   <%= render partial: 'options_form', locals: { f: f } %>
+  <%= render partial: 'validations_form', locals: {f: f} %>
+  
   <div class="form-group">
     <%= f.submit 'submit', class: 'btn btn-primary' %>
   </div>
