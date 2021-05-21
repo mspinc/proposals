@@ -19,7 +19,7 @@ RSpec.describe "/proposal_forms", type: :request do
 
   describe "POST /create" do
     let(:proposal_type) { create(:proposal_type) }
-    let(:params) do 
+    let(:params) do
       {
         proposal_form: {
           title: 'Proposal Form',
@@ -54,7 +54,7 @@ RSpec.describe "/proposal_forms", type: :request do
   end
 
   describe "PATCH /update" do
-    let(:params) do { proposal_form: {status: 'active'}} end
+    let(:params) { { proposal_form: { status: 'active' } } }
     before do
       authenticate_for_controllers
       patch proposal_form_url(proposal_form, params: params)
@@ -63,7 +63,7 @@ RSpec.describe "/proposal_forms", type: :request do
     it "updates the status to active" do
       expect(proposal_form.reload.status).to eq('active')
     end
-    it {expect(proposal_form.reload.updated_by).to eq(@user)}
+    it { expect(proposal_form.reload.updated_by).to eq(@user) }
   end
 
   describe "DELETE /destroy" do

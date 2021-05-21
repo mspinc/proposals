@@ -3,7 +3,7 @@ class ProposalField < ApplicationRecord
   belongs_to :proposal_form
   belongs_to :location, optional: true
   belongs_to :fieldable, polymorphic: true
-  has_one :answer
+  has_one :answer, dependent: :destroy
 
   FIELD_TYPES = %w[Radio Text SingleChoice MultiChoice].freeze
 
