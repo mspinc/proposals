@@ -1,5 +1,5 @@
 class ProposalFormsController < ApplicationController
-  before_action :set_proposal_form, only: %i[edit update show destroy clone]
+  before_action :set_proposal_form, only: %i[edit update show destroy clone proposal_field]
 
   def index
     @proposal_forms = ProposalForm.all
@@ -40,6 +40,12 @@ class ProposalFormsController < ApplicationController
       format.html { redirect_to proposal_forms_url, notice: "Proposal form was successfully destroyed." }
       format.json { head :no_content }
     end
+  end
+
+  def proposal_field
+    @proposal_field = ProposalField.find_by(id: params[:field_id])
+    @proposal_field.destroy
+    redirect_to edit_proposal_form_path(@proposal_form)
   end
 
   def clone
