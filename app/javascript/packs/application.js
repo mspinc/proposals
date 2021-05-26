@@ -12,12 +12,6 @@ import "channels"
 import "controllers"
 import "jquery"
 
-
 window.Turbo = Turbo
 Rails.start()
 ActiveStorage.start();
-
-
-$(document).on('click', '.collapsible', function () {
-  $(this).toggleClass('collapsed');
-});
