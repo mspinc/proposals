@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     collection do
       get :text
     end
+    resources :invites
   end
   resources :proposal_forms do
     member do

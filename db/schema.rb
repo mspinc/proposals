@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_21_104523) do
+ActiveRecord::Schema.define(version: 2021_05_26_102911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -32,6 +32,21 @@ ActiveRecord::Schema.define(version: 2021_05_21_104523) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["proposal_field_id"], name: "index_answers_on_proposal_field_id"
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
+  end
+
+  create_table "invites", force: :cascade do |t|
+    t.string "firstname"
+    t.string "lastname"
+    t.string "email"
+    t.string "invited_as"
+    t.integer "status", default: 0
+    t.integer "response", default: 0
+    t.bigint "proposal_id", null: false
+    t.bigint "person_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["person_id"], name: "index_invites_on_person_id"
+    t.index ["proposal_id"], name: "index_invites_on_proposal_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -226,6 +241,8 @@ ActiveRecord::Schema.define(version: 2021_05_21_104523) do
   add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "answers", "proposal_fields"
   add_foreign_key "answers", "proposals"
+  add_foreign_key "invites", "people"
+  add_foreign_key "invites", "proposals"
   add_foreign_key "proposal_fields", "proposal_forms"
   add_foreign_key "proposal_forms", "proposal_types"
   add_foreign_key "proposal_forms", "users", column: "created_by_id"

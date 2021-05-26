@@ -12,7 +12,7 @@ RSpec.feature "Proposal_Form index", type: :feature do
       proposal_form.proposal_type.locations.each do |loc|
         expect(page).to have_text(loc.name)
       end
-      
+
       expect(page).to have_text(proposal_form.status)
       expect(page).to have_text(proposal_form.created_at.to_date)
       expect(page).to have_text(proposal_form.created_by.email)
@@ -33,16 +33,9 @@ RSpec.feature "Proposal_Form index", type: :feature do
     end
   end
 
-
   scenario "there is a link to proposal_form_#edit" do
     ProposalForm.all.each do |proposal_form|
-      if proposal_form.status == 'draft'
-        expect(page).to have_link(href: edit_proposal_form_path(proposal_form))
-      end
+      expect(page).to have_link(href: edit_proposal_form_path(proposal_form)) if proposal_form.status == 'draft'
     end
-  end  
-
-
-  
-
+  end
 end

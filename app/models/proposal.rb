@@ -5,6 +5,7 @@ class Proposal < ApplicationRecord
   has_many :proposal_roles, dependent: :destroy
   has_many :people, through: :proposal_roles
   has_many :answers, dependent: :destroy
+  has_many :invites
 
   enum status: { draft: 0, active: 1 }
 end

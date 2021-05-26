@@ -20,6 +20,8 @@
             data-submit-proposals-proposal-value="<%= @proposal.id %>"
               >  
               <h2>You'r submitting proposal for <%= @proposal.proposal_type.name %></h2>
+              <%= link_to 'Invites', proposal_invites_path(@proposal), class:'btn btn-primary' %>
+              <%= link_to 'New invite', new_proposal_invite_path(@proposal), class:'btn btn-primary' %>
                 <%= form_with url: submit_proposals_path(proposal: @proposal.id) do  |f| %>
                   <div class="col-lg-8 mt-5">
                     <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal.proposal_type) } %>
