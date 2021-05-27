@@ -10,19 +10,11 @@
   <p class="comment" style="font-style: italic;">
     <%= field.description %> 
     <% if field.description.length > 140 %>
-      <a href=<%= field.guideline_link %>>
+      <a href="<%= field.guideline_link %>" target="_blank">
         Learn More
       </a>
     <% end %>
   </p>
   <%= select_tag "Option", options_for_select(proposal_field_options(field.fieldable), answer(field, @proposal)), class: 'form-control', name: field.id %>
 </div>
-<script type="text/javascript">
-  $(document).ready(function() {
-    $(".comment").shorten({
-  "showChars" : 140,
-  "moreText"  : '<i class="align-middle me-2 fas fa-fw fa-arrow-down"></i>',
-  "lessText"  : '<i class="align-middle me-2 fas fa-fw fa-arrow-up"></i>'
-});
-});
-</script>
+

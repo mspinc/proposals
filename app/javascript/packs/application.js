@@ -11,6 +11,8 @@ import "bootstrap"
 import "channels"
 import "controllers"
 import "jquery"
+import "./common"
+import "./proposal_form"
 
 window.Turbo = Turbo
 Rails.start()
