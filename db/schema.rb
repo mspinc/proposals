@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2021_05_26_102911) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "ams_subjects", force: :cascade do |t|
@@ -34,7 +35,7 @@ ActiveRecord::Schema.define(version: 2021_05_26_102911) do
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
   end
 
-  create_table "invites", force: :cascade do |t|
+  create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "firstname"
     t.string "lastname"
     t.string "email"

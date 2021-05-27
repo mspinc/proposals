@@ -1,0 +1,21 @@
+Dear <%= @person&.fullname %>:
+===============================================
+
+We [organizer_names] are in the process of putting together a proposal for
+a <%= @proposal.proposal_type.name %> titled <%= @invite.proposal.proposal_type.name %> for submission to the Banff
+International Research Station. If successful, the program will take place
+sometime during the calendar year [year_no], and could run at any of the
+following locations <%= @proposal.locations.pluck(:name) %>.
+
+Would you in principle be interested in attending such a workshop, if the
+proposal is accepted and the program dates suit your schedule? Knowing your
+response would help the organizing committee and the BIRS review committee
+gauge the appeal of our proposed event to the wider mathematical community.
+
+Kindly indicate your response by [deadline_date] at the link below:
+
+<%= link_to 'Click here', proposal_invite_url(@proposal,@invite) %>
+
+Thank you for considering our request!
+
+[The organizing committee]

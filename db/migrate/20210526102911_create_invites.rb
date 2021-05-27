@@ -1,6 +1,6 @@
 class CreateInvites < ActiveRecord::Migration[6.1]
   def change
-    create_table :invites do |t|
+    create_table :invites, id: :uuid do |t|
       t.string :firstname
       t.string :lastname
       t.string :email

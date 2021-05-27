@@ -7,7 +7,8 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><%= link_to "Dashboard", dashboards_path %> </a></li>
-          <li class="breadcrumb-item active" aria-current="page">Proposals</li>
+          <li class="breadcrumb-item active" aria-current="page"><%= link_to "Proposals", proposals_path %></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= link_to "Invites", proposal_invites_path %></li>
         </ol>
       </nav>
     </div>
@@ -15,6 +16,9 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
+            <div class="col-12 d-flex align-self-center justify-content-end position-relative" >
+              <%= link_to 'New invite', new_proposal_invite_path(@proposal), class:'btn btn-primary' %>
+            </div>
             <table class="table">
               <thead>
                 <tr>
@@ -23,7 +27,7 @@
                   <th>Email</th>
                   <th>Invited As</th>
                   <th>Status</th>
-                  <th>Response</th>
+                  <th>Invitation Status</th>
                 </tr>
               </thead>
               <tbody>

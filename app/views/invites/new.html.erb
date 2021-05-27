@@ -7,7 +7,9 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
            <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %> </a></li>
-          <li class="breadcrumb-item active" aria-current="page">Proposals</li>
+          <li class="breadcrumb-item active" aria-current="page"><%= link_to "Proposals", proposals_path %></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= link_to @proposal.proposal_type.name, edit_proposal_path(@proposal) %></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= link_to "Invites", proposal_invites_path %></li>
           <li class="breadcrumb-item active" aria-current="page">New</li>
         </ol>
       </nav>
@@ -32,7 +34,7 @@
                 </div>
                 <div>
                   <label>Invite As</label>
-                  <%= f.select(:invited_as, options_for_select([['Select One:', ''], ['Participant', 'Participant'], ['Co-organiser', 'Co-organiser']]), {}, {class: "form-control"}) %>
+                  <%= f.select(:invited_as, options_for_select([['Co-organizer', 'Co-organizer'], ['Participant', 'Participant']]), {}, {class: "form-control"}) %>
                 </div>
                 <div class="text-center mt-3">
                   <%= f.submit "Send", class: 'btn btn-lg btn-primary' %>

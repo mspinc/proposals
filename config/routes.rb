@@ -12,8 +12,13 @@ Rails.application.routes.draw do
     collection do
       get :text
     end
-    resources :invites
+    resources :invites do
+      member do
+        post :inviter_response
+      end
+    end
   end
+  
   resources :proposal_forms do
     member do
       post :clone
