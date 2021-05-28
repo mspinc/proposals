@@ -7,7 +7,7 @@
     <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
       <div class="d-table-cell align-middle">
         <div class="text-center mt-4">
-          <h1 class="h2">Welcome back, Linda</h1>
+          <h1 class="h2">Welcome to BIRS Proposals</h1>
           <p class="lead">
             Sign in to your account to continue
           </p>
@@ -16,31 +16,37 @@
           <div class="card-body">
             <div class="m-sm-4">
               <div class="text-center">
-                <%= image_tag "avatar.jpg", size: '132x132', class: 'img-fluid rounded-circle', alt: 'Linda' %>
+                <%= image_tag "logo.png", class: 'img-fluid mb-4', alt: 'logo' %>
                 <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-                <div class="mb-3">
-                  <label>Email</label>
-                  <%= f.email_field :email, class:"form-control",placeholder: "Email", autofocus: true, autocomplete: "email" %>
+                <div class="text-start">
+                  <label>Email:</label>
+                  <%= f.email_field :email, class:"form-control",placeholder: "Your Email Address", autofocus: true, autocomplete: "email" %>
                 </div>
-                <div class="mb-3">
-                  <label>Password</label>
-                  <%= f.password_field :password, class:"form-control",placeholder: "Password", autocomplete: "current-password" %>
-                  <small>
-                  <%= link_to "Forgot password?", new_password_path(resource_name) %>
-                  </small>
+                <div class="text-start mt-4">
+                  <label>Password:</label>
+                  <%= f.password_field :password, class:"form-control",placeholder: "Your Password", autocomplete: "current-password" %>
+                  <div class="text-end">
+                    <small>
+                    <%= link_to "Forgot password?", new_password_path(resource_name) %>
+                    </small>
+                  </div>
                 </div>
                 <% if devise_mapping.rememberable? %>
-                <div class="form-check align-items-center">
+                <div class="form-check text-start">
                   <%= f.check_box :remember_me, class:"form-check-input", id: "customControlInline", value: 'remember-me', name: 'remember-me', checked: true %>
                   <label class="form-check-label text-small" for="customControlInline">Remember me next time</label>
                 </div>
                 <% end %>
-                <div class="text-center mt-3">
+                <div class="text-start mt-3">
                   <%= f.submit "Sign in", class:"btn btn-lg btn-primary" %>
                 </div>
                 <% end %>
               </div>
-                <%= link_to "Create an account", new_registration_path(resource_name) %><br />
+              <div class="text-end">
+                <small>
+                  <%= link_to "Create an account", new_registration_path(resource_name) %>
+                </small>
+              </div>
             </div>
           </div>
         </div>

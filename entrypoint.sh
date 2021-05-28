@@ -40,19 +40,19 @@ echo
 echo "Yarn version:"
 yarn --version
 
-echo
-echo "Changing /home/app/proposals file ownership to app user..."
-chown app:app -R /home/app/proposals
+# echo
+# echo "Changing /home/app/proposals file ownership to app user..."
+# chown app:app -R /home/app/proposals
 
 echo
 echo "Installing latest bundler..."
-/usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
+/usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler -v '~> 2.2.18'
 
 
-if [ ! -e /usr/local/rvm/gems/rails-6.1.3.1.gem ]; then
+if [ ! -e /usr/local/rvm/gems/ruby-2.7.2/gems/rails-6.1.3.2 ]; then
   echo
-  echo "Installing Rails..."
-  su - app -c "cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 gem install rails -v 6.1.3"
+  echo "Installing Rails 6.1.3.2..."
+  su - app -c "cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 gem install rails -v 6.1.3.2"
 fi
 
 if [ ! -e /home/app/proposals/bin ]; then
@@ -62,43 +62,57 @@ if [ ! -e /home/app/proposals/bin ]; then
 fi
 
 # echo
+# echo "Deleting vendor/cache..."
+# rm -rf /home/app/proposals/vendor/cache/*
+
+# echo
 # echo "Bundle install..."
-# su - app -c "cd /home/app/proposals; bundle install"
+# su - app -c "cd /home/app/proposals; bundle _2.2.18_ install"
 
-echo
-echo "Bundle update..."
-su - app -c "cd /home/app/proposals; bundle update"
+# echo
+# echo "Bundle update..."
+# su - app -c "cd /home/app/proposals; bundle _2.2.18_ update"
 
-root_owned_files=`find /usr/local/rvm/gems -user root -print`
-if [ -z "$root_owned_files" ]; then
-  echo
-  echo "Changing gems to non-root file permissions..."
-  chown app:app -R /usr/local/rvm/gems
-fi
+# root_owned_files=`find /usr/local/rvm/gems -user root -print`
+# if [ -z "$root_owned_files" ]; then
+#   echo
+#   echo "Changing gems to non-root file permissions..."
+#   chown app:app -R /usr/local/rvm/gems
+# fi
 
-if [ -e /home/app/proposals/db/migrate ]; then
-  echo
-  echo "Running migrations..."
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
-fi
+# if [ -e /home/app/proposals/db/migrate ]; then
+#   echo
+#   echo "Running migrations..."
+#   su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
+#   su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
+#   su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
+# fi
 
-echo "Installing Webpacker..."
-su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rails webpacker:install"
-echo
-echo "Turbo install..."
-su - app -c "cd /home/app/proposals; RAILS_ENV=production SECRET_KEY_BASE=token bundle exec rails turbo:install"
-echo "Done!"
-echo
+# echo "Installing Webpacker..."
+# su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rails webpacker:install"
+
+# echo
+# echo "Turbo install..."
+# su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rails turbo:install"
+# echo "Done!"
+# echo
 
 
 echo
 echo "Compiling Assets..."
 chmod 755 /home/app/proposals/node_modules
 su - app -c "cd /home/app/proposals; yarn install"
-su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
-su - app -c "cd /home/app/proposals; yarn"
+# if [ $RAILS_ENV = "production" ]; then
+  su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
+  su - app -c "cd /home/app/proposals; yarn"
+# else
+#   echo
+#   echo "Starting webpack --verbose --profile..."
+#   su - app -c "cd /home/app/proposals; bin/webpack --verbose --profile"
+# fi
+
+echo
+echo "Done compiling assets!"
 
 echo
 echo "Updating file permissions..."
