@@ -1,6 +1,9 @@
 FactoryBot.define do
   factory :validation do
-    type { 1 }
+    validation_type { 'mandatory' }
     value { "MyString" }
+    error_message { 'This field is required'}
+
+    association :proposal_field, factory: :proposal_field
   end
 end
