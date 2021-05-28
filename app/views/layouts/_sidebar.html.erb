@@ -39,9 +39,14 @@
                 <span class="nav-link-text">Proposal Forms</span>
               <% end %>
             </li>
+            <li class="sidebar-item <%= active_menu(feedbacks_path) %>">
+              <%= link_to feedbacks_path, class: "sidebar-link" do %>
+                <i class="far fa-file-alt"></i>
+                <span class="nav-link-text">Feedbacks</span>
+              <% end %>
+            </li>
           </ul>
         </li>
-
       <% else %>
         <li class="sidebar-item <%= proposal_list %>">
           <a data-bs-target="#proposals" data-bs-toggle="collapse" class="sidebar-link collapsed">
@@ -61,7 +66,6 @@
           </ul>
         </li>
       <% end %>
-
       <li class="sidebar-item <%= pages_list %>">
         <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
         <i class="align-middle me-2 fas fa-fw fa-file"></i> <span class="align-middle">Pages</span>
@@ -74,14 +78,21 @@
           </li>
         </ul>
       </li>
+      <% if !current_user&.staff_member? %>
+        <li class="sidebar-item <%= feedback_menu %>">
+          <%= link_to new_feedback_path , class: "sidebar-link" do %>
+            <i class="far fa-file-alt ms-1"></i>
+            <span class="nav-link-text">Feedback</span>
+          <% end %>
+        </li>
+      <% end %>
       <li class="sidebar-item">
         <%= link_to destroy_user_session_path, :method => :delete, class: "sidebar-link" do %>
-          <i class="fas fa-sign-out-alt"></i>
+          <i class="fas fa-sign-out-alt ms-1"></i>
           <span class="nav-link-text">Log out</span>
         <% end %>
       </li>
     </ul>
-
     <% if ENV['APPLICATION_HOST']&.include?('staging') %>
     <div class="sidebar-nav">
       <div class="sidebar-user">Deployed: TIMESTAMP</div>
