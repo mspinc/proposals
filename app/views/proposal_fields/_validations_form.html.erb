@@ -7,11 +7,11 @@
       <%= field.label :type %>
       <%= field.select :type, options_for_select(validation_types), {:include_blank => 'Validation Type'}, class: 'form-control', name: 'proposal_field[validations][0][type]' %>
     </div>
-    <div class="form-group col-5 mb-2">
+   <!--  <div class="form-group col-5 mb-2">
       <%= field.label :value %>
       <%= field.text_field :value , class: 'form-control', name: 'proposal_field[validations][0][value]' %>
     </div>
-    
+     -->
     <div class="form-group col-10 mb-2">
       <%= field.label :error_message %>
       <%= field.text_field :error_message , class: 'form-control', name: 'proposal_field[validations][0][error_message]' %>

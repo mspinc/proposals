@@ -17,4 +17,12 @@
       <span><%= text %></span>
     </div>
   <% end %>
+
+  <% if @publish %>
+    <ul>
+      <% validations(field, @proposal).each do |val| %>
+        <li style="color: red"><%= val %></li>
+      <% end %>
+    </ul>
+  <% end %>
 </div>
