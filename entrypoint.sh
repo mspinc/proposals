@@ -40,9 +40,9 @@ echo
 echo "Yarn version:"
 yarn --version
 
-# echo
-# echo "Changing /home/app/proposals file ownership to app user..."
-# chown app:app -R /home/app/proposals
+echo
+echo "Changing /home/app/proposals file ownership to app user..."
+chown app:app -R /home/app/proposals
 
 echo
 echo "Installing latest bundler..."
@@ -61,41 +61,41 @@ if [ ! -e /home/app/proposals/bin ]; then
   su - app -c "cd /home/app; rails new proposals"
 fi
 
-# echo
-# echo "Deleting vendor/cache..."
-# rm -rf /home/app/proposals/vendor/cache/*
+echo
+echo "Deleting vendor/cache..."
+rm -rf /home/app/proposals/vendor/cache/*
 
-# echo
-# echo "Bundle install..."
-# su - app -c "cd /home/app/proposals; bundle _2.2.18_ install"
+echo
+echo "Bundle install..."
+su - app -c "cd /home/app/proposals; bundle _2.2.18_ install"
 
-# echo
-# echo "Bundle update..."
-# su - app -c "cd /home/app/proposals; bundle _2.2.18_ update"
+echo
+echo "Bundle update..."
+su - app -c "cd /home/app/proposals; bundle _2.2.18_ update"
 
-# root_owned_files=`find /usr/local/rvm/gems -user root -print`
-# if [ -z "$root_owned_files" ]; then
-#   echo
-#   echo "Changing gems to non-root file permissions..."
-#   chown app:app -R /usr/local/rvm/gems
-# fi
+root_owned_files=`find /usr/local/rvm/gems -user root -print`
+if [ -z "$root_owned_files" ]; then
+  echo
+  echo "Changing gems to non-root file permissions..."
+  chown app:app -R /usr/local/rvm/gems
+fi
 
-# if [ -e /home/app/proposals/db/migrate ]; then
-#   echo
-#   echo "Running migrations..."
-#   su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
-#   su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
-#   su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
-# fi
+if [ -e /home/app/proposals/db/migrate ]; then
+  echo
+  echo "Running migrations..."
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
+fi
 
-# echo "Installing Webpacker..."
-# su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rails webpacker:install"
+echo "Installing Webpacker..."
+su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails webpacker:install"
 
-# echo
-# echo "Turbo install..."
-# su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rails turbo:install"
-# echo "Done!"
-# echo
+echo
+echo "Turbo install..."
+su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails turbo:install"
+echo "Done!"
+echo
 
 
 echo
@@ -107,8 +107,8 @@ su - app -c "cd /home/app/proposals; yarn install"
   su - app -c "cd /home/app/proposals; yarn"
 # else
 #   echo
-#   echo "Starting webpack --verbose --profile..."
-#   su - app -c "cd /home/app/proposals; bin/webpack --verbose --profile"
+#   echo "Starting webpack --verbose --progress..."
+#   su - app -c "cd /home/app/proposals; bin/webpack --verbose --progress"
 # fi
 
 echo

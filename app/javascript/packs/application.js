@@ -13,15 +13,12 @@ import "../stylesheets/application"
 import "channels"
 import "controllers"
 import "jquery"
-
-// Spark theme
-require("spark");
+import "@fortawesome/fontawesome-free/css/all"
 
 
 window.Turbo = Turbo
 Rails.start();
 ActiveStorage.start();
-
 
 $(document).on('click', '.collapsible', function () {
   $(this).toggleClass('collapsed');
