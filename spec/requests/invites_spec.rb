@@ -64,4 +64,20 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
     it { expect(response).to have_http_status(:no_content) }
     it { expect(invite.proposal.proposal_roles.last.role.name).to eq(invite.invited_as) }
   end
+
+  describe "GET /inviter_response" do
+    before do
+      get proposal_invite_path(proposal_id: proposal.id, id: invite1.id)
+    end
+
+    context 'when status is pending' do
+      let(:invite1) { create(:invite, status: 'pending') }
+      it { expect(response).to have_http_status(:ok) }
+    end
+
+    context 'when status is completed' do
+      let(:invite1) { create(:invite, status: 'completed') }
+      it { expect(response).to redirect_to(root_path) }
+    end
+  end
 end

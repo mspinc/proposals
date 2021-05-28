@@ -35,7 +35,7 @@ class ProposalTypesController < ApplicationController
 
   def location_based_fields
     @proposal = Proposal.find params[:proposal_id]
-    form = @proposal_type.proposal_forms.where(status: :active).last
+    form = ProposalForm.active_form(@proposal_type.id)
     @proposal_fields = form&.proposal_fields&.where(location_id: params[:ids].split(","))
     render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_fields }
   end

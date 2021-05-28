@@ -18,7 +18,8 @@ Rails.application.routes.draw do
       end
     end
   end
-  
+
+  resources :survey
   resources :proposal_forms do
     member do
       post :clone

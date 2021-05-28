@@ -42,7 +42,7 @@ class ProposalsController < ApplicationController
   end
 
   def organizer
-    Role.find_or_create_by!(name: 'Organizer')
+    Role.find_or_create_by!(name: 'lead_organizer')
   end
 
   def set_proposal

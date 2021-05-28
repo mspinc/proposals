@@ -2,7 +2,7 @@ Dear <%= @person&.fullname %>:
 ===============================================
 
 We [organizer_names] are in the process of putting together a proposal for
-a <%= @proposal.proposal_type.name %> titled <%= @invite.proposal.proposal_type.name %> for submission to the Banff
+a <%= @proposal.proposal_type.name %> titled "<%= ProposalForm.active_form(@proposal.proposal_type.id)&.title %>" for submission to the Banff
 International Research Station. If successful, the program will take place
 sometime during the calendar year [year_no], and could run at any of the
 following locations <%= @proposal.locations.pluck(:name) %>.

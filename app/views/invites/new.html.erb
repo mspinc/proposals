@@ -34,7 +34,7 @@
                 </div>
                 <div>
                   <label>Invite As</label>
-                  <%= f.select(:invited_as, options_for_select([['Co-organizer', 'Co-organizer'], ['Participant', 'Participant']]), {}, {class: "form-control"}) %>
+                  <%= f.select(:invited_as, options_for_select([['co_organizer', 'Co-organizer'], ['Participant', 'Participant']]), {}, {class: "form-control"}) %>
                 </div>
                 <div class="text-center mt-3">
                   <%= f.submit "Send", class: 'btn btn-lg btn-primary' %>

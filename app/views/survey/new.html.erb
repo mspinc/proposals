@@ -1,0 +1,126 @@
+<main class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="m-sm-4">
+              <div data-controller="survey">
+                <%= form_for :anything, url: '' do |f| %>
+                  <div class="col-lg-8">
+                    <div class="mb-3"> 
+                      <div>
+                        <label>Not completed</label>
+                      </div>
+                      <div>
+                        <label>1. What is your country of citizenship?</label>
+                        <%= f.select "citizenships", options_for_select(citizenship_options), {}, data: {'survey-target': 'citizenship',action: 'click->survey#handleCitizenship'}, class: "form-control", multiple: true %>
+                      </div>
+                      <text_field class="fields-panel hidden" data-survey-target='otherCitizenship' data-survey-visible-value="false"></text_field>
+                    </div>
+
+                    <div class="mb-3">
+                      <div>
+                        <label>Not completed</label>
+                      </div>
+                      <div>
+                        <label>2. Do you identify as an indigenous person?</label>
+                        <%= f.select(:gender, options_for_select([['Yes', 'Female'], ['No', 'No'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <div>
+                        <label>Not completed</label>
+                      </div>
+                      <div>
+                        <label>3. How do you describe your ethnicity?</label>
+                        <div>
+                          <label>If you are of mixed descent, please indicate this by checking off all that apply.</label>
+                        </div>
+                        <%= f.select(:gender, options_for_select([['African/Black (including African-American, African-Canadian, AfroCaribbean, etc.)', 'African/Black'], ['Arab', 'Arab'], ['East Asian', 'East Asian'], ['European/non-white', 'European/non-white'], ['European/white', 'European/white'], ['Filipina/Filipino', 'Filipina/Filipino'], ['Indigenous from within North America', 'Indigenous from within North America'], ['Indigenous from outside North America', 'Indigenous from outside North America'], ['Latin, South, or Central American', 'Latin, South, or Central American'], ['South Asian (including Indian sub-continent, Indo-Caribbean, Indo-African, Indo-Fijian, West-Indian)', 'South Asian (including Indian sub-continent, Indo-Caribbean, Indo-African, Indo-Fijian, West-Indian)'], ['Southeast Asian', 'Southeast Asian'], ['West Asian', 'West Asian'], ['Prefer Other', 'Prefer Other'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <div>
+                        <label>4. How do you describe your gender?</label>
+                        <%= f.select(:gender, options_for_select([['Female', 'Female'], ['Male', 'Male'], ['Gender Fluid and/or non-Binary Person','Gender Fluid and/or non-Binary Person'], ['Other', 'Other'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <div>
+                        <label>Not completed</label>
+                      </div>
+                      <div>
+                        <label>5. Do you identify as a member of the 2SLGBTQIA+ community?</label>
+                        <%= f.select(:disability, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <div>
+                        <label>Not completed</label>
+                      </div>
+                      <div>
+                        <label>6. Do you have a disability,impairment, or ongoing medical condition that impacts your participation in everyday life?</label>
+                        <div>
+                          <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
+                          <label>*link to appropriate section of the FAQ*</label></em>
+                        </div>
+                        <%= f.select(:disability, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <div>
+                        <label>Not completed</label>
+                      </div>
+                      <div>
+                        <label>7. Do you consider yourself to be part of anunder-represented minority in the country of your current affiliation?</label>
+                        <div>
+                          <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
+                          <label>*link to appropriate section of the FAQ*</label></em>
+                        </div>
+                        <%= f.select(:disability, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                      </div>
+                    </div>
+
+                    <div class="mb-3">
+                      <div>
+                        <label>Not completed</label>
+                      </div>
+                      <div>
+                        <label>8. Do you consider yourself to be part of anunder-represented minority in STEM?</label>
+                        <div>
+                          <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
+                          <label>*link to appropriate section of the FAQ*</label></em>
+                        </div>
+                        <%= f.select(:disability, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                      <div>
+                        <label>Not completed</label>
+                      </div>
+                      <div>
+                        <label>9. Do you consider yourself to be part of an under-represented minority in your research area?</label>
+                        <div>
+                          <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
+                          <label>*link to appropriate section of the FAQ*</label></em>
+                        </div>
+                        <%= f.select(:disability, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

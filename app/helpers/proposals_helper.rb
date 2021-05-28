@@ -12,7 +12,7 @@ module ProposalsHelper
   end
   
   def common_proposal_fields(proposal_type)
-    proposal_form = proposal_type.proposal_forms&.where(status: :active)&.last
+    proposal_form = ProposalForm.active_form(proposal_type.id)
     proposal_form&.proposal_fields&.where(location_id: nil)
   end
 end

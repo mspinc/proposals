@@ -33,6 +33,12 @@ class InvitesController < ApplicationController
   def inviter_response
     @invite.update(response: params[:response], status: 'completed')
     proposal_role unless @invite.not?
+
+    if @invite.not?
+      InviteMailer.with(invite: @invite).invite_decline.deliver_later
+    else
+      InviteMailer.with(invite: @invite).invite_acceptance.deliver_later
+    end
   end
 
   private
