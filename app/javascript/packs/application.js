@@ -11,13 +11,9 @@ import "bootstrap"
 import "channels"
 import "controllers"
 import "jquery"
-
+import "./common"
+import "./proposal_form"
 
 window.Turbo = Turbo
 Rails.start()
 ActiveStorage.start();
-
-
-$(document).on('click', '.collapsible', function () {
-  $(this).toggleClass('collapsed');
-});

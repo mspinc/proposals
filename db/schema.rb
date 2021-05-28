@@ -86,6 +86,7 @@ ActiveRecord::Schema.define(version: 2021_05_27_072743) do
     t.text "description"
     t.bigint "fieldable_id"
     t.string "fieldable_type"
+    t.string "guideline_link"
     t.index ["fieldable_type", "fieldable_id"], name: "index_proposal_fields_on_fieldable_type_and_fieldable_id"
     t.index ["proposal_form_id"], name: "index_proposal_fields_on_proposal_form_id"
   end
