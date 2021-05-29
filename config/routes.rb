@@ -3,7 +3,10 @@ Rails.application.routes.draw do
                                     registrations: 'users/registrations' }
   devise_scope :user do
     root to: 'users/sessions#new'
+    delete 'sign_out', to: 'users/sessions#destroy'
+    get 'sign_out', to: 'users/sessions#destroy'
   end
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get :guidelines, to: 'pages#guidelines'
   resources :feedbacks

@@ -7,7 +7,7 @@
   </a>
   <div class="sidebar-content">
     <div class="sidebar-user">
-      <%= image_tag 'avatar.jpg', class:"img-fluid rounded-circle mb-2", alt:"Linda Miller" %>
+
       <div class="fw-bold"></div>
       <small><%= current_user&.fullname %></small>
     </div>
@@ -87,8 +87,8 @@
         </li>
       <% end %>
       <li class="sidebar-item">
-        <%= link_to destroy_user_session_path, :method => :delete, class: "sidebar-link" do %>
-          <i class="fas fa-sign-out-alt ms-1"></i>
+        <%= link_to sign_out_path, method: :delete, class: "sidebar-link" do %>
+          <i class="fas fa-sign-out-alt"></i>
           <span class="nav-link-text">Log out</span>
         <% end %>
       </li>
