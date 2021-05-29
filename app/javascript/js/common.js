@@ -5,4 +5,6 @@ $(document).ready(function() {
     "lessText": '<i class="align-middle me-2 fas fa-fw fa-arrow-up"></i>'
   });
 });
- 
+
+
+

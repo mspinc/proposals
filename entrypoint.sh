@@ -102,14 +102,15 @@ echo
 echo "Compiling Assets..."
 chmod 755 /home/app/proposals/node_modules
 su - app -c "cd /home/app/proposals; yarn install"
-# if [ $RAILS_ENV = "production" ]; then
+
+if [ $RAILS_ENV = "production" ]; then
   su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
   su - app -c "cd /home/app/proposals; yarn"
-# else
-#   echo
-#   echo "Starting webpack --verbose --progress..."
-#   su - app -c "cd /home/app/proposals; bin/webpack --verbose --progress"
-# fi
+else
+  echo
+  echo "Running: webpack --verbose --progress..."
+  su - app -c "cd /home/app/proposals; bin/webpack --verbose --progress"
+fi
 
 echo
 echo "Done compiling assets!"

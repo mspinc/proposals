@@ -1,13 +1,10 @@
-// Install some yarn packages first:
-// yarn add datatables datatables.net-buttons daterangepicker jquery-validation moment @fortawesome/fontawesome-free"
-
 // Main
 import "./modules/bootstrap";
 // import "./modules/feather";
 // import "./modules/fullcalendar";
 import "./modules/moment";
 import "./modules/sidebar";
-// import "./modules/splash";
+import "./modules/splash";
 import "./modules/theme";
 // import "./modules/toastr";
 // import "./modules/user-agent";

@@ -13,9 +13,8 @@ import "controllers"
 import "bootstrap"
 import "jquery"
 import "@fortawesome/fontawesome-free/css/all"
+import "spark"; // vendor/assets/javascripts
 
-
-// should be per-page...
 import "../js/common";
 import "../js/proposal_form";
 
