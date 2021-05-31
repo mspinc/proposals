@@ -13,7 +13,7 @@ import "controllers"
 import "bootstrap"
 import "jquery"
 import "@fortawesome/fontawesome-free/css/all"
-import "spark"; // vendor/assets/javascripts
+import "../../vendor/assets/javascripts/spark";
 
 import "../js/common";
 import "../js/proposal_form";

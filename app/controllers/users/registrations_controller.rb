@@ -13,7 +13,7 @@ module Users
     # POST /resource
     def create
       super
-      resource.create_person!(firstname: params[:firstname], lastname: params[:lastname], email: resource.email)
+      resource.create_person!(firstname: params[:firstname], lastname: params[:lastname], email: resource.email) if resource.persisted?
     end
 
     # GET /resource/edit
