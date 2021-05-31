@@ -3,7 +3,7 @@ class SubmitProposalService
 
   def initialize(proposal, params)
     @proposal = proposal
-    @proposal_form = proposal.proposal_type.proposal_forms&.where(status: :active)&.last
+    @proposal_form = ProposalForm.active_form(proposal.proposal_type.id)
     @params = params
   end
 

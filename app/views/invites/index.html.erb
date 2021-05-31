@@ -37,8 +37,8 @@
                   <td><%= invite.lastname %></td>
                   <td><%= invite.email %></td>
                   <td><%= invite.invited_as %></td>
-                  <td><%= invite.status %></td>
-                  <td><%= invite.response %></td>
+                  <td><%= invite.status&.capitalize %></td>
+                  <td><%= invite.response&.capitalize %></td>
                 </tr>
                 <% end %>
               </tbody>

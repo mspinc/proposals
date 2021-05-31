@@ -13,39 +13,71 @@
         </ol>
       </nav>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="card">
-          <div class="card-body">
-            <div data-controller="submit-proposals"  data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
-            data-submit-proposals-proposal-value="<%= @proposal.id %>"
-              >  
-              <h2>You'r submitting proposal for <%= @proposal.proposal_type.name %></h2>
-              <div class="col-12 d-flex align-self-center justify-content-end position-relative" >
-                <%= link_to 'Invites', proposal_invites_path(@proposal), class:'btn btn-primary' %>
-              </div>
-                <%= form_with url: submit_proposals_path(proposal: @proposal.id) do  |f| %>
-                  <div class="col-lg-8 mt-5">
-                    <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal.proposal_type) } %>
-                      <div class="mb-3">
-                        <%= f.label :location , class: 'form-label'%>
-                        <%= f.select "location", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{}, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control', multiple: true, name: 'location_ids[]' %>
-                      </div>
-                      <div data-submit-proposals-target='locationSpecificQuestions'></div>
-                      <% if @proposal.draft? %>
-                        <div class="form-group">
-                          <%= f.submit 'Save as draft', class:'btn btn-primary' %>
-                          <%= f.submit 'Publish', class:'btn btn-primary' %>
-                        </div>
-                      <% end %>
+    <%= form_with(url: submit_proposals_path(proposal: @proposal.id)) do  |f| %>
+      <div class="row">
+        <div class="col-12">
+          <div class="card" style="background: #f4f7fc">
+            <div class="card-body">
+              <div data-controller="submit-proposals"  data-submit-proposals-proposal-type-id-value="<%=    @proposal.proposal_type.id %>"
+                    data-submit-proposals-proposal-value="<%= @proposal.id %>" >  
+                <div class="mb-3">
+                  <%= link_to 'Invites', proposal_invites_path(@proposal), class:'btn btn-primary' %>
+                  <% if @proposal.draft? %>
+                    <div class="float-end">
+                      <%= f.submit 'Save as draft', class:'btn btn-primary' %>
+                      <%= f.submit 'Publish', class:'btn btn-primary' %>
                     </div>
-                    <%end%>
-                  </div>
+                  <% end %>
                 </div>
+                <div data-submit-proposals-target='locationSpecificQuestions'></div>
+                </div>
+                <div class="col-12 col-lg-12">
+                  <div class="tab">
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li class="nav-item"><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab">Step 1</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#tab-2" data-bs-toggle="tab" role="tab">Step 2</a></li>
+                      <li class="nav-item"><a class="nav-link" href="#tab-3" data-bs-toggle="tab" role="tab">Step 3</a></li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane active" id="tab-1" role="tabpanel">
+                        <h4 class="tab-title"></h4>
+                        <div class="mb-3">
+                          <%= f.label :title %>
+                          <%= f.text_field :title, class: 'form-control', value: @proposal.title %>
+                        </div>
+
+                        <div class="mb-3">
+                          <label>Type of Meeting</label>
+                          <%= f.label @proposal.proposal_type.name, class: 'form-control' %>
+                        </div>
+
+                        <div class="mb-3">
+                          <%= f.label :year %>
+                          <%= f.select :year, options_for_select([['2021', '2021'], ['2022', '2022'], ['2023', '2023'], ['2024', '2024'], ['2025', '2025']], @proposal.year), {}, class: "form-control"%>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane" id="tab-2" role="tabpanel">
+                        <h4 class="tab-title">Common Fields</h4>
+                        <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal.proposal_type) } %>
+                      </div>
+                      
+                      <div class="tab-pane" id="tab-3" role="tabpanel">
+                        <h4 class="tab-title">Location Fields</h4>
+                        <div class="mb-3">
+                          <%= f.label :location , class: 'form-label'%>
+                          <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{}, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control', multiple: true, name: 'location_ids[]' %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>  
               </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    <%end%>
   </div>
 </main>
+

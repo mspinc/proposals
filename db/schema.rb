@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_27_072743) do
+ActiveRecord::Schema.define(version: 2021_05_31_123825) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -35,6 +35,14 @@ ActiveRecord::Schema.define(version: 2021_05_27_072743) do
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.string "content"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
   create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "firstname"
     t.string "lastname"
@@ -48,14 +56,6 @@ ActiveRecord::Schema.define(version: 2021_05_27_072743) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["person_id"], name: "index_invites_on_person_id"
     t.index ["proposal_id"], name: "index_invites_on_proposal_id"
-  end
-
-  create_table "feedbacks", force: :cascade do |t|
-    t.string "content"
-    t.bigint "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
   create_table "locations", force: :cascade do |t|
@@ -188,6 +188,8 @@ ActiveRecord::Schema.define(version: 2021_05_27_072743) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "status"
+    t.string "title"
+    t.string "year"
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"
   end
 
