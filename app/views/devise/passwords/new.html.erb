@@ -1,4 +1,4 @@
-<div class="splash active">
+<div class="splash">
   <div class="splash-icon"></div>
 </div>
 <main class="main h-100 w-100">
@@ -17,10 +17,10 @@
               <div class="m-sm-4">
                 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
                   <div class="mb-3">
-                    <label>Email</label>
-                    <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Enter your eamil", class:"form-control form-control-lg" %>
+                    <label class="mb-1">Email</label>
+                    <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Enter your e-mail address", class:"form-control form-control-lg" %>
                   </div>
-                  <div class="text-center mt-3">
+                  <div class="text-left mt-3">
                     <%= f.submit "Reset password", class: "btn btn-lg btn-primary" %>
                   </div>
                 <% end %>

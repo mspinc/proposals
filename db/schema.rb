@@ -34,6 +34,14 @@ ActiveRecord::Schema.define(version: 2021_05_28_110329) do
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
   end
 
+  create_table "feedbacks", force: :cascade do |t|
+    t.string "content"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
   create_table "locations", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -78,6 +86,7 @@ ActiveRecord::Schema.define(version: 2021_05_28_110329) do
     t.text "description"
     t.bigint "fieldable_id"
     t.string "fieldable_type"
+    t.string "guideline_link"
     t.index ["fieldable_type", "fieldable_id"], name: "index_proposal_fields_on_fieldable_type_and_fieldable_id"
     t.index ["proposal_form_id"], name: "index_proposal_fields_on_proposal_form_id"
   end
