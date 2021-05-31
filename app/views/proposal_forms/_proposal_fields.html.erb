@@ -7,6 +7,8 @@
         <%=  render partial: 'proposal_fields/radio', locals: { field: field } %>
       <% elsif field.fieldable_type.eql?('ProposalFields::SingleChoice') %>
         <%= render partial: 'proposal_fields/single_choice', locals: { field: field } %>
+      <% elsif field.fieldable_type.eql?('ProposalFields::Date') %>
+        <%= render partial: 'proposal_fields/date', locals: { field: field } %>
       <% else %>
         <%= render partial: 'proposal_fields/multi_choice', locals: { field: field } %>
       <% end %>

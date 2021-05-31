@@ -6,5 +6,5 @@ class ProposalField < ApplicationRecord
   has_one :answer, dependent: :destroy
   acts_as_list scope: :proposal_form
 
-  FIELD_TYPES = %w[Radio Text SingleChoice MultiChoice].freeze
+  FIELD_TYPES = %w[Date Radio Text SingleChoice MultiChoice].freeze
 end
