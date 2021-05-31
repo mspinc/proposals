@@ -41,10 +41,6 @@ echo "Yarn version:"
 yarn --version
 
 echo
-echo "Changing /home/app/proposals file ownership to app user..."
-chown app:app -R /home/app/proposals
-
-echo
 echo "Installing latest bundler..."
 /usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler -v '~> 2.2.18'
 
@@ -60,10 +56,6 @@ if [ ! -e /home/app/proposals/bin ]; then
   echo "Starting new rails app..."
   su - app -c "cd /home/app; rails new proposals"
 fi
-
-echo
-echo "Deleting vendor/cache..."
-rm -rf /home/app/proposals/vendor/cache/*
 
 echo
 echo "Bundle install..."
@@ -85,9 +77,9 @@ if [ -e /home/app/proposals/db/migrate ]; then
   echo "Running migrations..."
   cd /home/app/proposals
   SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS
-  rake db:migrate RAILS_ENV=production"
-  rake db:migrate RAILS_ENV=development"
-  rake db:migrate RAILS_ENV=test"
+  rake db:migrate RAILS_ENV=production
+  rake db:migrate RAILS_ENV=development
+  rake db:migrate RAILS_ENV=test
 fi
 
 if [ ! -e /home/app/proposals/config/webpacker.yml ]; then
@@ -118,9 +110,13 @@ fi
 echo
 echo "Done compiling assets!"
 
-echo
-echo "Updating file permissions..."
-chown app:app -R /home/app/proposals
+root_owned_files=`find /home/app/proposals -user root -print`
+if [ -z "$root_owned_files" ]; then
+  echo
+  echo "Updating file permissions..."
+  chown app:app -R /home/app/proposals
+fi
+
 
 if [ $APPLICATION_HOST = "localhost" ]; then
   echo
