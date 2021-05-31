@@ -83,20 +83,23 @@ fi
 if [ -e /home/app/proposals/db/migrate ]; then
   echo
   echo "Running migrations..."
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
+  cd /home/app/proposals
+  SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS
+  rake db:migrate RAILS_ENV=production"
+  rake db:migrate RAILS_ENV=development"
+  rake db:migrate RAILS_ENV=test"
 fi
 
-echo "Installing Webpacker..."
-su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails webpacker:install"
+if [ ! -e /home/app/proposals/config/webpacker.yml ]; then
+  echo "Installing Webpacker..."
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails webpacker:install"
 
-echo
-echo "Turbo install..."
-su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails turbo:install"
-echo "Done!"
-echo
-
+  echo
+  echo "Turbo install..."
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails turbo:install"
+  echo "Done!"
+  echo
+fi
 
 echo
 echo "Compiling Assets..."
