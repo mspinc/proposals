@@ -11,4 +11,8 @@
   </head>
 
   <%= yield %>
+  <%= render partial: 'layouts/toastr' %>
+  <% if resource.errors.any? %>
+    <%= render 'layouts/errors', errors: resource.errors %>
+   <% end %>
 </html>
