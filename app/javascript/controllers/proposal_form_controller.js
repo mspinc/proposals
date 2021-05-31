@@ -1,12 +1,28 @@
-import { Controller } from "stimulus"
+import { Controller } from "stimulus" 
 
 export default class extends Controller {
-  static targets = ['proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow']
+  static targets = ['proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow', 'contentOfButton']
   static values = { visible: Boolean, field: String, index: Number  }
 
   toggleProposalFieldsPanel () {
+    if( this.contentOfButtonTarget.innerText === 'Back' ){
+      this.visibleValue = !this.visibleValue
+      this.proposalFieldsPanelTarget.classList.toggle("hidden", !this.visibleValue)
+      this.updateText();
+    }
+
     this.visibleValue = !this.visibleValue
     this.proposalFieldsPanelTarget.classList.toggle("hidden", !this.visibleValue)
+    var dataset = event.currentTarget.dataset
+    if( dataset.field )
+      this.updateText()
+  }
+
+  updateText () {
+    if( this.contentOfButtonTarget.innerText === 'Add Form Field' )
+      this.contentOfButtonTarget.innerText = 'Back'
+    else 
+      this.contentOfButtonTarget.innerText = 'Add Form Field'
   }
 
   fetchField(evt) {

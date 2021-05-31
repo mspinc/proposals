@@ -38,7 +38,7 @@
               <% end %>
               <% if @proposal_form.id && @proposal_form.draft? %>
                 <div class="col-12 d-flex align-self-center justify-content-end position-relative" >
-                  <a href="javascript:void(0)" class="btn btn-primary" data-action="click->proposal-form#toggleProposalFieldsPanel">Add Form Field</a>
+                  <a href="javascript:void(0)" class="btn btn-primary" data-proposal-form-target="contentOfButton" data-action="click->proposal-form#toggleProposalFieldsPanel">Add Form Field</a>
                   <section class="fields-panel hidden" data-proposal-form-target='proposalFieldsPanel' data-proposal-form-visible-value="false">
                     <% ProposalField::FIELD_TYPES.each do |field_type| %>
                     <a href="javascript:void(0);" class="btn btn-light " data-action="click->proposal-form#fetchField click->proposal-form#toggleProposalFieldsPanel" data-field="<%= field_type %>" data-id="<%= @proposal_form.id %>"><%= field_type %></a>

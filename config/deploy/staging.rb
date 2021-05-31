@@ -10,7 +10,7 @@
 server ENV['STAGING_SERVER'], user: ENV['STAGING_USER'], roles: %w{all}
 set :deploy_to, ENV['STAGING_PATH']
 
-set :branch, 'releases'
+set :branch, 'main'
 
 # role-based syntax
 # ==================
