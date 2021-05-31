@@ -22,14 +22,20 @@ class ProposalFieldValidationsService
       when 'mandatory'
         @errors << val.error_message if @answer == ""
         @errors << val.error_message unless @answer
-      when 'greater'
-        @errors << val.error_message unless @answer > val.value
-      when 'less'
-        @errors << val.error_message unless @answer < val.value
-      when 'equal'
+      when 'less than (integer matcher)'
+        @errors << val.error_message unless @answer.to_i < val.value.to_i
+      when 'less than (float matcher)'
+        @errors << val.error_message unless @answer.to_f < val.value.to_f
+      when 'greater than (integer matcher)'
+        @errors << val.error_message unless @answer.to_i > val.value.to_i
+      when 'greater than (float matcher)'
+        @errors << val.error_message unless @answer.to_f > val.value.to_f
+      when 'equal (string matcher)'
         @errors << val.error_message unless @answer == val.value
-      when 'include'
-        @errors << val.error_message unless @answer.include?(val.value)
+      when 'equal (integer matcher)'
+        @errors << val.error_message unless @answer.to_i == val.value.to_i
+      when 'equal (float matcher)'
+        @errors << val.error_message unless @answer.to_f == val.value.to_f
       end
     end
   end
