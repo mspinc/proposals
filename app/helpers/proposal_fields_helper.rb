@@ -53,4 +53,8 @@ module ProposalFieldsHelper
   def location_in_answers(proposal)
     proposal.locations.pluck(:id)
   end
+
+  def proposal_field_partial(field)
+    "proposal_fields/#{field.fieldable_type.split('::').last.underscore}"
+  end
 end

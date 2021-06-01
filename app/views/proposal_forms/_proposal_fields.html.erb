@@ -1,16 +1,7 @@
 <fieldset>
   <legend>Proposal fields</legend>
     <% proposal_fields&.each do |field| %>
-      <% if field.fieldable_type.eql?('ProposalFields::Text') %>
-        <%= render  partial: 'proposal_fields/text', locals: { field: field } %>
-      <% elsif field.fieldable_type.eql?('ProposalFields::Radio') %>
-        <%=  render partial: 'proposal_fields/radio', locals: { field: field } %>
-      <% elsif field.fieldable_type.eql?('ProposalFields::SingleChoice') %>
-        <%= render partial: 'proposal_fields/single_choice', locals: { field: field } %>
-      <% elsif field.fieldable_type.eql?('ProposalFields::Date') %>
-        <%= render partial: 'proposal_fields/date', locals: { field: field } %>
-      <% else %>
-        <%= render partial: 'proposal_fields/multi_choice', locals: { field: field } %>
-      <% end %>
+      <%= render partial: proposal_field_partial(field), locals: { field: field } %>
     <% end %>
 </fieldset>
+ 
