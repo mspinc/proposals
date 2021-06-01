@@ -2,7 +2,7 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
-    # before_action :configure_sign_up_params, only: [:create]
+    before_action :configure_sign_up_params, only: [:create]
     # before_action :configure_account_update_params, only: [:update]
 
     # GET /resource/sign_up
@@ -12,9 +12,24 @@ module Users
 
     # POST /resource
     def create
+      person = Person.new(firstname: person_params[:firstname],
+                           lastname: person_params[:lastname],
+                              email: user_params[:email])
+
+      unless person.valid?
+        flash[:error] = person.errors.full_messages.join(", ")
+        build_resource(sign_up_params)
+        render :new and return
+      end
+
       super
-      resource.create_person!(firstname: params[:firstname], lastname: params[:lastname], email: resource.email) if resource.persisted?
+
+      if resource.persisted?
+        person.user = resource
+        person.save
+      end
     end
+
 
     # GET /resource/edit
     # def edit
@@ -61,5 +76,17 @@ module Users
     # def after_inactive_sign_up_path_for(resource)
     #   super(resource)
     # end
+
+    def configure_sign_up_params
+      devise_parameter_sanitizer.permit(:sign_up, keys: [:firstname, :lastname])
+    end
+
+    def person_params
+      params.permit(:firstname, :lastname)
+    end
+
+    def user_params
+      params.require(:user).permit(:email, :password, :password_confirmation)
+    end
   end
 end
