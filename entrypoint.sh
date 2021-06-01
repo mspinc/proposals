@@ -97,6 +97,7 @@ echo
 echo "Compiling Assets..."
 chmod 755 /home/app/proposals/node_modules
 su - app -c "cd /home/app/proposals; yarn install"
+su - app -c "cd /home/app/proposals; yarn add toastr"
 
 if [ $RAILS_ENV = "production" ]; then
   su - app -c "cd /home/app/proposals; RAILS_ENV=development SECRET_KEY_BASE=token bundle exec rake assets:precompile --trace"
