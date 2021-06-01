@@ -1,7 +1,7 @@
-import { Controller } from "stimulus"
+import { Controller } from "stimulus" 
 
 export default class extends Controller {
-  static targets = ['hiddenField','proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow', 'addValidation', 'validationRow']
+  static targets = ['hiddenField','proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow','contentOfButton', 'addValidation', 'validationRow']
   static values = { visible: Boolean, field: String, index: Number  , validation: Number}
 
   handleValidationChange(event){
@@ -21,8 +21,24 @@ export default class extends Controller {
   }
 
   toggleProposalFieldsPanel () {
+    if( this.contentOfButtonTarget.innerText === 'Back' ){
+      this.visibleValue = !this.visibleValue
+      this.proposalFieldsPanelTarget.classList.toggle("hidden", !this.visibleValue)
+      this.updateText();
+    }
+
     this.visibleValue = !this.visibleValue
     this.proposalFieldsPanelTarget.classList.toggle("hidden", !this.visibleValue)
+    var dataset = event.currentTarget.dataset
+    if( dataset.field )
+      this.updateText()
+  }
+
+  updateText () {
+    if( this.contentOfButtonTarget.innerText === 'Add Form Field' )
+      this.contentOfButtonTarget.innerText = 'Back'
+    else 
+      this.contentOfButtonTarget.innerText = 'Add Form Field'
   }
 
   fetchField(evt) {

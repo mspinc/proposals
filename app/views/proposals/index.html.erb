@@ -21,6 +21,7 @@
             <thead>
               <tr>
                 <th>Proposal Type</th>
+                <th>Location</th>
                 <th>Status</th>
                 <th>Created</th>
                 <th>Actions</th>
@@ -30,6 +31,11 @@
               <% @proposals&.each do |proposal| %>
               <tr>
                 <td><%= proposal.proposal_type.name %></td>
+                <td> 
+                  <% proposal.locations.each do |loc| %>
+                   <%= loc.name %><br>
+                  <% end %>
+                </td>
                 <td><%= proposal.status %></td>
                 <td><%= proposal.created_at.to_date %></td>
                 <td class="table-action">

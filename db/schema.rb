@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2021_05_28_110329) do
+ActiveRecord::Schema.define(version: 2021_05_27_072743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -92,12 +91,6 @@ ActiveRecord::Schema.define(version: 2021_05_28_110329) do
     t.index ["proposal_form_id"], name: "index_proposal_fields_on_proposal_form_id"
   end
 
-  create_table "proposal_fields_dates", force: :cascade do |t|
-    t.string "statement"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "proposal_fields_multi_choices", force: :cascade do |t|
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
@@ -130,9 +123,9 @@ ActiveRecord::Schema.define(version: 2021_05_28_110329) do
     t.bigint "proposal_type_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.string "title"
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
+    t.string "title"
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"

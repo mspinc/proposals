@@ -1,4 +1,4 @@
-<div class="splash active">
+<div class="splash">
   <div class="splash-icon"></div>
 </div>
 <main class="main h-100 w-100">
@@ -7,9 +7,9 @@
       <div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
         <div class="d-table-cell align-middle">
           <div class="text-center mt-4">
-            <h1 class="h2">Get started</h1>
+            <h1 class="h2">Create An Account</h1>
             <p class="lead">
-              Start creating the best possible user experience for you customers.
+              Please enter your name, e-mail address, and a password.
             </p>
           </div>
           <div class="card">
@@ -18,25 +18,29 @@
                 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
                 <div class="mb-3">
                   <label>Given Name</label>
-                  <%= text_field_tag :firstname, nil, autofocus: true, class:'form-control' %>
+                  <%= text_field_tag :firstname, nil, autofocus: true, class:'form-control', placeholder: 'Enter your first name' %>
                 </div>
                 <div class="mb-3">
                   <label>Family Name</label>
-                  <%= text_field_tag :lastname, nil, class:'form-control' %>
+                  <%= text_field_tag :lastname, nil, class:'form-control', placeholder: 'Enter your last name' %>
                 </div>
                 <div class="mb-3">
-                  <label>Email</label>
-                  <%= f.email_field :email, class:"form-control form-control-lg", placeholder:"Enter your email", autocomplete: "email" %>
+                  <label>E-mail</label>
+                  <%= f.email_field :email, class:"form-control form-control-lg", placeholder:"Enter your e-mail address", autocomplete: "email" %>
                 </div>
                 <div class="mb-3">
                   <label>Password</label>
-                  <%= f.password_field :password, class:"form-control form-control-lg", placeholder:"Enter password", autocomplete: "new-password" %>
+                  <%= f.password_field :password, class:"form-control form-control-lg", placeholder:"Enter a new password", autocomplete: "new-password" %>
                   <% if @minimum_password_length %>
                   <div class="text-muted font-italic">
                     <small>password strength: <span class="text-success font-weight-700"><%= @minimum_password_length %> characters minimum</span>
                     </small>
                   </div>
                   <% end %>
+                </div>
+                <div class="mb-3">
+                  <label>Confirm Password</label>
+                  <%= f.password_field :password_confirmation, class:"form-control form-control-lg", placeholder:"Re-enter the password", autocomplete: "new-password" %>
                 </div>
                 <div class="text-center mt-3">
                   <%= f.submit "Sign up", class: 'btn btn-lg btn-primary' %>

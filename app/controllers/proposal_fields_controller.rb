@@ -44,7 +44,7 @@ class ProposalFieldsController < ApplicationController
   private
 
   def proposal_field_params
-    params.require(:proposal_field).permit(:position, :description, :location_id, :statement)
+    params.require(:proposal_field).permit(:position, :description, :location_id, :statement, :guideline_link)
   end
 
   def set_proposal_form
