@@ -10,9 +10,13 @@
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <%= yield %>
-  <%= render partial: 'layouts/toastr' %>
-  <% if resource.errors.any? %>
-    <%= render 'layouts/errors', errors: resource.errors %>
-   <% end %>
+  <body class="app devise <%= controller_name %> <%= action_name %>">
+
+    <%= yield %>
+
+    <%= render partial: 'layouts/toastr' %>
+    <% if resource.errors.any? %>
+      <%= render 'layouts/errors', errors: resource.errors %>
+    <% end %>
+  </body>
 </html>
