@@ -1,7 +1,7 @@
 # See: https://github.com/phusion/passenger-docker
 # Latest image versions:
 # https://github.com/phusion/passenger-docker/blob/master/CHANGELOG.md
-FROM phusion/passenger-ruby27:1.0.12
+FROM phusion/passenger-ruby27:1.0.14
 
 ENV HOME /root
 
@@ -24,7 +24,7 @@ RUN apt-get install --yes --fix-missing tzdata locales curl git gnupg \
     ca-certificates libpq-dev wget libxrender1 libxext6 libsodium23 \
     libsodium-dev netcat postgresql-client shared-mime-info
 
-# NodeJS 10
+# NodeJS
 RUN curl -sL https://deb.nodesource.com/setup_lts.x -o nodesource_setup.sh
 RUN bash nodesource_setup.sh
 RUN apt install --yes --fix-missing nodejs yarn
@@ -48,7 +48,8 @@ ENV APP_HOME /home/app/proposals
 # disabled because we mount host directory in $APP_HOME
 ADD . $APP_HOME
 WORKDIR $APP_HOME
-RUN /usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
+RUN /usr/local/rvm/bin/rvm default use 2.7.3
+RUN /usr/local/rvm/bin/rvm-exec 2.7.3 gem install bundler
 RUN bundle install
 RUN RAILS_ENV=development bundle exec cap install
 RUN RAILS_ENV=development bundle exec rails webpacker:install
@@ -63,8 +64,8 @@ ADD entrypoint.sh /sbin/
 RUN chmod 755 /sbin/entrypoint.sh
 RUN mkdir -p /etc/my_init.d
 RUN ln -s /sbin/entrypoint.sh /etc/my_init.d/entrypoint.sh
-RUN echo 'export PATH=./bin:$PATH:/usr/local/rvm/rubies/ruby-2.7.2/bin' >> /root/.bashrc
-RUN echo 'export PATH=./bin:$PATH:/usr/local/rvm/rubies/ruby-2.7.2/bin' >> /home/app/.bashrc
+RUN echo 'export PATH=./bin:$PATH:/usr/local/rvm/rubies/ruby-2.7.3/bin' >> /root/.bashrc
+RUN echo 'export PATH=./bin:$PATH:/usr/local/rvm/rubies/ruby-2.7.3/bin' >> /home/app/.bashrc
 RUN echo 'alias rspec="bundle exec rspec"' >> /root/.bashrc
 RUN echo 'alias rspec="bundle exec rspec"' >> /home/app/.bashrc
 RUN echo 'alias restart="passenger-config restart-app /home/app/proposals"' >> /root/.bashrc
