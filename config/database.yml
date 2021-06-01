@@ -1,27 +1,26 @@
 default: &default
   adapter: postgresql
+  encoding: unicode
+  min_messages: WARNING
   pool: 5
-  timeout: 5000
-  host: <%= ENV['RDS_HOSTNAME'] || 'localhost' %>
-  port: <%= ENV['RDS_PORT'] || 5432 %>
-  username: <%= 'root' || 'proposals' %>
-  password: <%= '1234' || 'proposals' %>
-development:
-  <<: *default
-  database: proposals_development_db
-canary:
-  <<: *default
-  database: proposals_development_db
-staging:
-  <<: *default
-  database: proposals_staging_db
-test: &test
-  <<: *default
-  database: proposals_test_db
+  host: db
+  port: 5432
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASS'] %>
+
 production:
   <<: *default
-  database: <%= ENV['RDS_DB_NAME'] %>
-  username: <%= ENV['RDS_USERNAME'] %>
-  password: <%= ENV['RDS_PASSWORD'] %>
-  host: <%= ENV['RDS_HOSTNAME'] %>
-  port: <%= ENV['RDS_PORT'] %>
+  database: proposals_production
+
+development:
+  <<: *default
+  database: proposals_development
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASS'] %>
+
+test:
+  <<: *default
+  database: proposals_test
+  username: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASS'] %>
+  
