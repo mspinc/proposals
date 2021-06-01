@@ -23,7 +23,7 @@
       <div class="col-lg-6 col-md-8">
         <div class="card bg-secondary border-0">
           <div class="card-body px-lg-5 py-lg-5">
-            <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+            <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, 'data-turbo':'false' }) do |f| %>
               <div class="form-group">
                 <div class="input-group input-group-merge input-group-alternative mb-3">
                   <div class="input-group-prepend">

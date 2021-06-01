@@ -17,7 +17,7 @@
             <div class="m-sm-4">
               <div class="text-center">
                 <%= image_tag "logo.png", class: 'img-fluid mb-4', alt: 'logo' %>
-                <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+                <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {'data-turbo':'false'}) do |f| %>
                 <div class="text-start">
                   <label>Email:</label>
                   <%= f.email_field :email, class:"form-control",placeholder: "Your Email Address", autofocus: true, autocomplete: "email" %>

@@ -12,7 +12,11 @@
 
   <body class="app devise <%= controller_name %> <%= action_name %>">
 
-  <%= yield %>
+    <%= yield %>
 
+    <%= render partial: 'layouts/toastr' %>
+    <% if resource.errors.any? %>
+      <%= render 'layouts/errors', errors: resource.errors %>
+    <% end %>
   </body>
 </html>
