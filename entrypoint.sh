@@ -42,8 +42,7 @@ yarn --version
 
 echo
 echo "Installing latest bundler..."
-/usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler -v '~> 2.2.18'
-
+/usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
 
 if [ ! -e /usr/local/rvm/gems/ruby-2.7.2/gems/rails-6.1.3.2 ]; then
   echo
@@ -59,11 +58,11 @@ fi
 
 echo
 echo "Bundle install..."
-su - app -c "cd /home/app/proposals; bundle _2.2.18_ install"
+su - app -c "cd /home/app/proposals; bundle install"
 
 echo
 echo "Bundle update..."
-su - app -c "cd /home/app/proposals; bundle _2.2.18_ update"
+su - app -c "cd /home/app/proposals; bundle update"
 
 root_owned_files=`find /usr/local/rvm/gems -user root -print`
 if [ -z "$root_owned_files" ]; then
@@ -93,6 +92,11 @@ if [ ! -e /home/app/proposals/config/webpacker.yml ]; then
   echo
 fi
 
+
+echo
+echo "Updating file permissions..."
+chown app:app -R /home/app/proposals
+
 echo
 echo "Compiling Assets..."
 chmod 755 /home/app/proposals/node_modules
@@ -109,13 +113,6 @@ fi
 
 echo
 echo "Done compiling assets!"
-
-root_owned_files=`find /home/app/proposals -user root -print`
-if [ -z "$root_owned_files" ]; then
-  echo
-  echo "Updating file permissions..."
-  chown app:app -R /home/app/proposals
-fi
 
 
 if [ $APPLICATION_HOST = "localhost" ]; then
