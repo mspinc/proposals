@@ -1,8 +1,24 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = ['proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow', 'addValidation', 'validationRow']
+  static targets = ['hiddenField','proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow', 'addValidation', 'validationRow']
   static values = { visible: Boolean, field: String, index: Number  , validation: Number}
+
+  handleValidationChange(event){
+    let value = event.target.dataset.value
+    let selected_target = '' 
+    for (var i = 0; i < this.hiddenFieldTargets.length; i++) {
+      if (this.hiddenFieldTargets[i].dataset.value === value){
+        selected_target= this.hiddenFieldTargets[i]
+      }
+    }
+    if(event.target.value != "mandatory"){
+      selected_target.hidden = false
+    }
+    else{
+      selected_target.hidden = true
+    }
+  }
 
   toggleProposalFieldsPanel () {
     this.visibleValue = !this.visibleValue
@@ -41,25 +57,29 @@ export default class extends Controller {
   }
 
   handleAddValidations (event) {
+    
     this.validationValue += 1
     let clonedValidation = this.validationRowTarget.cloneNode(true)
     let child = clonedValidation.childNodes[1]
     child.childNodes[1].childNodes[3].name = `proposal_field[validations][${this.validationValue}][type]`
-    // child.childNodes[3].childNodes[3].name = `proposal_field[validations][${this.validationValue}][value]`
+    child.childNodes[3].childNodes[3].name = `proposal_field[validations][${this.validationValue}][value]`
     child.childNodes[5].childNodes[3].name = `proposal_field[validations][${this.validationValue}][error_message]`
+    child.childNodes[1].childNodes[3].dataset.value = `proposal_field[validations][${this.validationValue}][type]`
+    child.childNodes[3].dataset.value = `proposal_field[validations][${this.validationValue}][type]`
+
     this.addValidationTarget.append(clonedValidation)
     this.clearValidationValues(child)
   }
 
   clearValidationValues (node) {
     node.childNodes[1].childNodes[3].value = ''
-    // node.childNodes[3].childNodes[3].value =  ''
+    node.childNodes[3].childNodes[3].value =  ''
     node.childNodes[5].childNodes[3].value = ''
   }
 
   clearOptionValues (node) {
     node.childNodes[1].childNodes[3].value = ''
-    // node.childNodes[3].childNodes[3].value =  ''
+    node.childNodes[3].childNodes[3].value =  ''
     node.childNodes[5].childNodes[3].value = ''
   }
 
