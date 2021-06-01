@@ -13,8 +13,10 @@ import "controllers"
 import "bootstrap"
 import "jquery"
 import "@fortawesome/fontawesome-free/css/all"
+global.toastr = require("toastr")
 import "spark"; // vendor/assets/javascripts
 
+import "../stylesheets/application"
 import "../js/common";
 import "../js/proposal_form";
 
