@@ -32,16 +32,22 @@ class InvitesController < ApplicationController
 
   def inviter_response
     @invite.update(response: params[:response], status: 'completed')
-    proposal_role unless @invite.not?
+    proposal_role unless @invite.no?
+    user unless @invite.person.user
 
-    if @invite.not?
+    if @invite.no?
       InviteMailer.with(invite: @invite).invite_decline.deliver_later
     else
+      redirect_to new_survey_path
       InviteMailer.with(invite: @invite).invite_acceptance.deliver_later
     end
   end
 
   private
+
+  def user
+    user = User.create(email: @invite.person.email, password: "123456123456")
+  end
 
   def set_invite
     @invite = Invite.find(params[:id])

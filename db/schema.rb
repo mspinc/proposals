@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_31_123825) do
+ActiveRecord::Schema.define(version: 2021_06_01_115331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -33,6 +33,14 @@ ActiveRecord::Schema.define(version: 2021_05_31_123825) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["proposal_field_id"], name: "index_answers_on_proposal_field_id"
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
+  end
+
+  create_table "demographic_data", force: :cascade do |t|
+    t.jsonb "result", default: "{}", null: false
+    t.bigint "person_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["person_id"], name: "index_demographic_data_on_person_id"
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -224,6 +232,35 @@ ActiveRecord::Schema.define(version: 2021_05_31_123825) do
     t.index ["subject_category_id"], name: "index_subjects_on_subject_category_id"
   end
 
+  create_table "survey_answers", force: :cascade do |t|
+    t.string "answer"
+    t.bigint "person_id", null: false
+    t.bigint "survey_id", null: false
+    t.bigint "survey_question_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["person_id"], name: "index_survey_answers_on_person_id"
+    t.index ["survey_id"], name: "index_survey_answers_on_survey_id"
+    t.index ["survey_question_id"], name: "index_survey_answers_on_survey_question_id"
+  end
+
+  create_table "survey_questions", force: :cascade do |t|
+    t.string "statement"
+    t.jsonb "options", default: "{}", null: false
+    t.integer "select", default: 0
+    t.bigint "survey_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["survey_id"], name: "index_survey_questions_on_survey_id"
+  end
+
+  create_table "surveys", force: :cascade do |t|
+    t.string "introduction"
+    t.string "disclaimer"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.bigint "role_id", null: false
     t.bigint "user_id", null: false
@@ -253,6 +290,7 @@ ActiveRecord::Schema.define(version: 2021_05_31_123825) do
   add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "answers", "proposal_fields"
   add_foreign_key "answers", "proposals"
+  add_foreign_key "demographic_data", "people"
   add_foreign_key "invites", "people"
   add_foreign_key "invites", "proposals"
   add_foreign_key "proposal_fields", "proposal_forms"
@@ -269,6 +307,10 @@ ActiveRecord::Schema.define(version: 2021_05_31_123825) do
   add_foreign_key "proposals", "proposal_types"
   add_foreign_key "role_privileges", "roles"
   add_foreign_key "subjects", "subject_categories"
+  add_foreign_key "survey_answers", "people"
+  add_foreign_key "survey_answers", "survey_questions"
+  add_foreign_key "survey_answers", "surveys"
+  add_foreign_key "survey_questions", "surveys"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end

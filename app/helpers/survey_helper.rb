@@ -44,7 +44,7 @@ module SurveyHelper
   end
 
   def indigenous_person_options
-    indigenous = [['Yes', indigenouse_person_yes_options], %w[No No], ['Prefer not to answer', '']]
+    indigenous = [['Yes', 'Yes'], %w[No No], ['Prefer not to answer', '']]
     indigenous.map { |disp, _value| disp }
   end
 

@@ -22,7 +22,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :survey
+  resources :survey do
+    collection do
+      get :survey_questionnaire
+      post :submit_survey
+    end
+  end
   resources :proposal_forms do
     member do
       post :clone
