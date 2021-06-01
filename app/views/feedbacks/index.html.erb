@@ -2,26 +2,37 @@
   <div class="container-fluid">
     <div class="header">
       <h1 class="header-title">
-        Feedbacks
+        Feedback
       </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %> </a></li>
+          <li class="breadcrumb-item active" aria-current="page">Feedback</li>
+        </ol>
+      </nav>
     </div>
     <div class="col-12">
       <div class="card">
         <div class="card-header">
-          <h5 class="card-title">User Feedbacks</h5>
+          <h5>User Feedback</h5>
         </div>
-        <div class="card-body">
-          <% @feedbacks.each do |feedback| %>  
-            <div class="card">
-              <div class="card-header">
-                <h5 class="card-title mb-0"><%= feedback.user&.fullname%></h5>
+        <% @feedback.each do |feedback| %>  
+          <div class="card-body cursor-pointer">
+              <div class="card">
+                <div class="card-header">
+                  <h3 class="card-title mb-0"><%= feedback.user&.fullname%></h3>
+                </div>
+                <div class="card-body">
+                  <p class="card-text"><%= feedback.content %></p> 
+                </div>
               </div>
-              <div class="card-body">
-                <p class="card-text"><%= feedback.content %></p> 
-              </div>
-            </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
+        <% if @feedback.empty? %>
+          <div class="card-body">
+            <h4>No Feedback</h4>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

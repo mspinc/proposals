@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.string "email"
     t.string "invited_as"
     t.integer "status", default: 0
-    t.integer "response", default: 0
+    t.integer "response"
     t.bigint "proposal_id", null: false
     t.bigint "person_id", null: false
     t.datetime "created_at", precision: 6, null: false

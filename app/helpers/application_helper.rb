@@ -6,11 +6,11 @@ module ApplicationHelper
   end
 
   def dashboard_menu
-    return 'show' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms', '/feedbacks'])
+    return 'show' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms', '/feedback'])
   end
 
   def dashboard_list
-    return 'active' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms', '/feedbacks'])
+    return 'active' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms', '/feedback'])
   end
 
   def proposal_menu
@@ -30,7 +30,7 @@ module ApplicationHelper
   end
 
   def feedback_menu 
-    return 'active' if request.path.in?(['/feedbacks/new'])
+    return 'active' if request.path.in?(['/feedback/new'])
   end
 
   def lesc(text)

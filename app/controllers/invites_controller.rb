@@ -46,7 +46,7 @@ class InvitesController < ApplicationController
   private
 
   def user
-    user = User.create(email: @invite.person.email, password: "123456123456")
+    user = User.create(email: @invite.person.email, password: SecureRandom.hex(12))
   end
 
   def set_invite

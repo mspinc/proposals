@@ -1,12 +1,10 @@
 class InviteMailer < ApplicationMailer
-  default from: 'no-reply@birs.ca'
-
   def invite_email
     @invite = params[:invite]
     @proposal = @invite.proposal
     @person = @invite.person
 
-    mail(to: @person.email, subject: 'Invitation as a')
+    mail(to: @person.email, subject: "Invite for #{@invite.invited_as.titleize}")
   end
 
   def invite_acceptance
@@ -14,7 +12,7 @@ class InviteMailer < ApplicationMailer
     @proposal = @invite.proposal
     @person = @invite.person
 
-    mail(to: @person.email, subject: 'Acceptance Response')
+    mail(to: @person.email, subject: 'Invite Accepted')
   end
 
   def invite_decline
@@ -22,6 +20,6 @@ class InviteMailer < ApplicationMailer
     @proposal = @invite.proposal
     @person = @invite.person
 
-    mail(to: @person.email, subject: 'Decline Response')
+    mail(to: @person.email, subject: 'Invite Declined')
   end
 end

@@ -6,7 +6,7 @@ class CreateInvites < ActiveRecord::Migration[6.1]
       t.string :email
       t.string :invited_as
       t.integer :status, default: 0
-      t.integer :response, default: 0
+      t.integer :response
 
       t.references :proposal, null: false, foreign_key: true
       t.references :person, null: false, foreign_key: true
