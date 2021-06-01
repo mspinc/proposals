@@ -36,6 +36,7 @@ module ProposalFieldsHelper
   def answer(field, proposal)
     return unless proposal
 
+    proposal_field = ProposalField.find field.id
     Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.answer
   end
 
@@ -54,6 +55,10 @@ module ProposalFieldsHelper
     proposal.locations.pluck(:id)
   end
 
+  def validations(field, proposal)
+    ProposalFieldValidationsService.new(field, proposal).validations
+  end
+  
   def proposal_field_partial(field)
     "proposal_fields/#{field.fieldable_type.split('::').last.underscore}"
   end

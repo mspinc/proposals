@@ -238,6 +238,16 @@ ActiveRecord::Schema.define(version: 2021_05_28_110329) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "validations", force: :cascade do |t|
+    t.integer "validation_type"
+    t.string "value"
+    t.string "error_message"
+    t.bigint "proposal_field_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["proposal_field_id"], name: "index_validations_on_proposal_field_id"
+  end
+
   add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "answers", "proposal_fields"
   add_foreign_key "answers", "proposals"

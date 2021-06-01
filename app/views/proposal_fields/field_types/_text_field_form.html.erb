@@ -19,6 +19,7 @@
     <%= f.label :position , class: 'form-label'%>
     <%= f.number_field :position, required: true, class:'form-control' %>
   </div>
+  <%= render partial: 'validations_form', locals: {f: f} %>
   <div class="mb-3">
     <%= f.submit 'submit', class: 'btn  btn-primary' %>
   </div>

@@ -5,6 +5,7 @@ class ProposalField < ApplicationRecord
   belongs_to :fieldable, polymorphic: true
   has_one :answer, dependent: :destroy
   acts_as_list scope: :proposal_form
+  has_many :validations, dependent: :destroy
 
   FIELD_TYPES = %w[Date Radio Text SingleChoice MultiChoice].freeze
 end

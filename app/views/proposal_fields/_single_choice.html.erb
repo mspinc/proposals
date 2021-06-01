@@ -16,5 +16,11 @@
     <% end %>
   </p>
   <%= select_tag "Option", options_for_select(proposal_field_options(field.fieldable), answer(field, @proposal)), class: 'form-control', name: field.id %>
+
+  <% if @publish %>
+    <% validations(field, @proposal).each do |val| %>
+      <p style="color: red"><%= val %></p>
+    <% end %>
+  <% end %>
 </div>
 
