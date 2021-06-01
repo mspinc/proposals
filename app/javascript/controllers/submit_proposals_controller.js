@@ -9,9 +9,10 @@ export default class extends Controller {
     this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
   }
   handleLocationChange(locations) {
+    var publish = window.location.href.includes("publish")
     if(event && event.type == 'change')
       locations = [...event.target.selectedOptions].map(opt => opt.value)
-    fetch(`/proposal_types/${this.proposalTypeIdValue}/location_based_fields?ids=${locations}&proposal_id=${this.proposalValue}`)
+    fetch(`/proposal_types/${this.proposalTypeIdValue}/location_based_fields?ids=${locations}&proposal_id=${this.proposalValue},&publish=${publish}`)
       .then(response => response.text())
       .then(html => {
         this.locationSpecificQuestionsTarget.innerHTML = html

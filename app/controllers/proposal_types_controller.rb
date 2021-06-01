@@ -37,6 +37,7 @@ class ProposalTypesController < ApplicationController
     @proposal = Proposal.find params[:proposal_id]
     form = @proposal_type.proposal_forms.where(status: :active).last
     @proposal_fields = form&.proposal_fields&.where(location_id: params[:ids].split(","))
+    @publish = true if params[:publish] == 'true'
     render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_fields }
   end
 

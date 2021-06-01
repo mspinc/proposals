@@ -14,6 +14,14 @@
   </p>
 <div>
   <textarea name="<%= field.id %>" id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-submit-proposals-target="text" ><%= answer(field, @proposal) %></textarea>
+  <% if @publish %>
+    <ul>
+      <% validations(field, @proposal).each do |val| %>
+        <li style="color: red"><%= val %></li>
+      <% end %>
+    </ul>
+  <% end %>
+</div>
   <% unless current_user&.staff_member? && params[:action] == 'show' %>
     <span class="btn btn-primary my-2" data-action="click->submit-proposals#print" data-value='<%= field.id %>' >Print</span>
   <% end %>

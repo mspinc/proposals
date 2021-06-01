@@ -5,21 +5,26 @@ class SubmitProposalService
     @proposal = proposal
     @proposal_form = proposal.proposal_type.proposal_forms&.where(status: :active)&.last
     @params = params
+    @errors = []
   end
 
-  def save_answers    
+  def save_answers
     ids = proposal_form.proposal_fields.pluck(:id)
     ids.each do |id|
       value = params[id.to_s]
-      next if value.blank?
 
       create_or_update(id, value)
     end
     proposal_locations
-    proposal.update(status: :active) if params[:commit] == 'Publish'
+    proposal.update(status: :active) if @errors.flatten.count.zero? && params[:commit] == 'Publish'
   end
 
   def create_or_update(id, value)
+    if @errors.flatten.count.zero?
+      field = ProposalField.find(id)
+      @errors << ProposalFieldValidationsService.new(field, proposal).validations
+    end
+
     answer = Answer.find_by(proposal_field_id: id, proposal: proposal)
     if answer
       answer.update(answer: value)

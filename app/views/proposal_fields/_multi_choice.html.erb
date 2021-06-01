@@ -16,4 +16,12 @@
     <% end %>
   </p>
   <%= select_tag "Option", options_for_select(proposal_field_options(field.fieldable),multichoice_answer(field, @proposal)), class: 'form-control', multiple: true, name: "#{field.id}[]" %>
+
+ <% if @publish %>
+    <ul>
+    <% validations(field, @proposal).each do |val| %>
+      <li style="color: red"><%= val %></li>
+    <% end %>
+  </ul>
+  <% end %>
 </div>
