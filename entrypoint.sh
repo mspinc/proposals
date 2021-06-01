@@ -16,14 +16,14 @@ rm /etc/timezone
 rm /etc/localtime
 dpkg-reconfigure --frontend noninteractive tzdata
 
-if [ ! -e /usr/local/rvm/gems/ruby-2.7.2 ]; then
+if [ ! -e /usr/local/rvm/gems/ruby-2.7.3 ]; then
   echo
   echo "Create gemset..."
   gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
   /usr/bin/curl -sSL https://get.rvm.io | bash -s stable
-  bash -lc 'rvm --default use ruby-2.7.2'
-  /usr/local/rvm/bin/rvm gemset create ruby-2.7.2
-  /usr/local/rvm/bin/rvm gemset use ruby-2.7.2@global
+  bash -lc 'rvm --default use ruby-2.7.3'
+  /usr/local/rvm/bin/rvm gemset create ruby-2.7.3
+  /usr/local/rvm/bin/rvm gemset use ruby-2.7.3@global
   /usr/local/rvm/bin/rvm cleanup all
   /usr/local/rvm/bin/rvm reload
 fi
@@ -42,12 +42,12 @@ yarn --version
 
 echo
 echo "Installing latest bundler..."
-/usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
+/usr/local/rvm/bin/rvm-exec 2.7.3 gem install bundler
 
-if [ ! -e /usr/local/rvm/gems/ruby-2.7.2/gems/rails-6.1.3.2 ]; then
+if [ ! -e /usr/local/rvm/gems/ruby-2.7.3/gems/rails-6.1.3.2 ]; then
   echo
   echo "Installing Rails 6.1.3.2..."
-  su - app -c "cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.2 gem install rails -v 6.1.3.2"
+  su - app -c "cd /home/app/proposals; /usr/local/rvm/bin/rvm-exec 2.7.3 gem install rails -v 6.1.3.2"
 fi
 
 if [ ! -e /home/app/proposals/bin ]; then
@@ -58,11 +58,11 @@ fi
 
 echo
 echo "Bundle install..."
-su - app -c "cd /home/app/proposals; bundle install"
+su - app -c "cd /home/app/proposals; /usr/local/rvm/gems/default/bin/bundle install"
 
 echo
 echo "Bundle update..."
-su - app -c "cd /home/app/proposals; bundle update"
+su - app -c "cd /home/app/proposals; /usr/local/rvm/gems/default/bin/bundle update"
 
 root_owned_files=`find /usr/local/rvm/gems -user root -print`
 if [ -z "$root_owned_files" ]; then
