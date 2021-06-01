@@ -116,8 +116,6 @@ workflows:
   build_new_image:
     jobs:
       - build_image:
-          requires:
-            - run_tests
           filters:
             branches:
               only: new_image
