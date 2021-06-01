@@ -6,7 +6,7 @@ import "./modules/moment";
 import "./modules/sidebar";
 import "./modules/splash";
 import "./modules/theme";
-// import "./modules/toastr";
+import "./modules/toastr";
 // import "./modules/user-agent";
 
 // Pages

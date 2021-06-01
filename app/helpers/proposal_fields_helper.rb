@@ -58,4 +58,8 @@ module ProposalFieldsHelper
   def validations(field, proposal)
     ProposalFieldValidationsService.new(field, proposal).validations
   end
+  
+  def proposal_field_partial(field)
+    "proposal_fields/#{field.fieldable_type.split('::').last.underscore}"
+  end
 end

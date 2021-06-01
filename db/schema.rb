@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_27_072743) do
+ActiveRecord::Schema.define(version: 2021_05_28_110329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -89,6 +89,12 @@ ActiveRecord::Schema.define(version: 2021_05_27_072743) do
     t.string "guideline_link"
     t.index ["fieldable_type", "fieldable_id"], name: "index_proposal_fields_on_fieldable_type_and_fieldable_id"
     t.index ["proposal_form_id"], name: "index_proposal_fields_on_proposal_form_id"
+  end
+
+  create_table "proposal_fields_dates", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "proposal_fields_multi_choices", force: :cascade do |t|
