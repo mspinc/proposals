@@ -42,5 +42,6 @@ group :development do
   gem 'rubocop-rails'
   gem 'spring'
   gem 'web-console', '>= 4.1.0'
+  gem 'letter_opener'
 end
 

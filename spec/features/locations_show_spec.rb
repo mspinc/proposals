@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.feature "Locations show", type: :feature do
-  #@scenario "Locations#show feature tests..."
+  # @scenario "Locations#show feature tests..."
 
-before do
+  before do
     @location = create(:location)
     visit location_path(@location)
   end
@@ -31,5 +31,4 @@ before do
   scenario "click on back" do
     expect(page).to have_link(href: locations_path)
   end
-
 end

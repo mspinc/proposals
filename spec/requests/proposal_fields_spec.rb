@@ -23,7 +23,7 @@ RSpec.describe "/proposal_forms/:id/proposal_fields", type: :request do
 
     context "with invalid parameters" do
       let(:params) { { statement: ' ', position: 1, description: 'some description' } }
-      it "creates a new proposal field" do
+      it "does not create a new proposal field" do
         expect do
           post proposal_form_proposal_fields_url(proposal_form_id: proposal_form.id, type: 'Radio'),
                params: { proposal_field: params }

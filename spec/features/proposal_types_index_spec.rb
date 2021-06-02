@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.feature "Proposal_Types index", type: :feature do
-  
   before do
     3.times { create(:proposal_type) }
     visit proposal_types_path

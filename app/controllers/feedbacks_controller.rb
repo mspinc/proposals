@@ -2,7 +2,7 @@ class FeedbacksController < ApplicationController
   before_action :authenticate_user!
   
   def index
-    @feedbacks = Feedback.all
+    @feedback = Feedback.all
   end
 
   def new

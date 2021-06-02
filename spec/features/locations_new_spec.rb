@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature "Locations new", type: :feature do
-
- before do
+  before do
     visit new_location_path
   end
 
@@ -14,7 +13,7 @@ RSpec.feature "Locations new", type: :feature do
     expect(find_field('location_code').value).to eq(nil)
   end
 
-   scenario "there is an empty City field" do
+  scenario "there is an empty City field" do
     expect(find_field('location_city').value).to eq(nil)
   end
 
@@ -42,5 +41,4 @@ RSpec.feature "Locations new", type: :feature do
   scenario "click back button" do
     expect(page).to have_link(href: locations_path)
   end
-
 end

@@ -12,7 +12,15 @@ module ProposalsHelper
   end
   
   def common_proposal_fields(proposal_type)
-    proposal_form = proposal_type.proposal_forms&.where(status: :active)&.last
+    proposal_form = ProposalForm.active_form(proposal_type.id)
     proposal_form&.proposal_fields&.where(location_id: nil)
+  end
+
+  def proposal_roles(proposal_roles)
+    proposal_roles.joins(:role).where(person_id: current_user.person&.id).pluck('roles.name').map(&:titleize).join(', ')
+  end
+
+  def lead_organizer?(proposal_roles)
+    proposal_roles.joins(:role).where('person_id =? AND roles.name =?', current_user.person&.id, 'lead_organizer').present?
   end
 end
