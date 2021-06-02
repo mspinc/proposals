@@ -65,8 +65,11 @@ jobs:
           command: chown -R app:app /home/app/proposals
       - run:
           name: Run the tests
-          command: cd /home/app/proposals; bundle exec rspec
-
+          command: |
+            echo "127.0.0.1 db" >> /etc/hosts
+            cd /home/app/proposals
+            PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U postgres -d proposals_test -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
+            bundle exec rspec
   deploy_to_staging:
     docker:
       - image: birs/proposals:latest
