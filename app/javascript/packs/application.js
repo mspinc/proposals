@@ -13,13 +13,20 @@ import "controllers"
 import "bootstrap"
 import "jquery"
 import "@fortawesome/fontawesome-free/css/all"
+
 import "spark"; // vendor/assets/javascripts
 
+import "../stylesheets/application"
 import "../js/common";
 import "../js/proposal_form";
+
+// Toastr flash messages
+global.toastr = require("toastr")
+toastr.options.closeButton = true;
+toastr.options.preventDuplicates = true;
+toastr.options.timeOut = 0;
+toastr.options.extendedTimeOut = 0;
 
 window.Turbo = Turbo
 Rails.start();
 ActiveStorage.start();
-
-

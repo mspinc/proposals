@@ -41,13 +41,8 @@ echo "Yarn version:"
 yarn --version
 
 echo
-echo "Changing /home/app/proposals file ownership to app user..."
-chown app:app -R /home/app/proposals
-
-echo
 echo "Installing latest bundler..."
-/usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler -v '~> 2.2.18'
-
+/usr/local/rvm/bin/rvm-exec 2.7.2 gem install bundler
 
 if [ ! -e /usr/local/rvm/gems/ruby-2.7.2/gems/rails-6.1.3.2 ]; then
   echo
@@ -62,16 +57,12 @@ if [ ! -e /home/app/proposals/bin ]; then
 fi
 
 echo
-echo "Deleting vendor/cache..."
-rm -rf /home/app/proposals/vendor/cache/*
-
-echo
 echo "Bundle install..."
-su - app -c "cd /home/app/proposals; bundle _2.2.18_ install"
+su - app -c "cd /home/app/proposals; bundle install"
 
 echo
 echo "Bundle update..."
-su - app -c "cd /home/app/proposals; bundle _2.2.18_ update"
+su - app -c "cd /home/app/proposals; bundle update"
 
 root_owned_files=`find /usr/local/rvm/gems -user root -print`
 if [ -z "$root_owned_files" ]; then
@@ -83,20 +74,28 @@ fi
 if [ -e /home/app/proposals/db/migrate ]; then
   echo
   echo "Running migrations..."
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=production"
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=development"
-  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
+  cd /home/app/proposals
+  SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS
+  rake db:migrate RAILS_ENV=production
+  rake db:migrate RAILS_ENV=development
+  rake db:migrate RAILS_ENV=test
 fi
 
-echo "Installing Webpacker..."
-su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails webpacker:install"
+if [ ! -e /home/app/proposals/config/webpacker.yml ]; then
+  echo "Installing Webpacker..."
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails webpacker:install"
+
+  echo
+  echo "Turbo install..."
+  su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails turbo:install"
+  echo "Done!"
+  echo
+fi
+
 
 echo
-echo "Turbo install..."
-su - app -c "cd /home/app/proposals; SECRET_KEY_BASE=token bundle exec rails turbo:install"
-echo "Done!"
-echo
-
+echo "Updating file permissions..."
+chown app:app -R /home/app/proposals
 
 echo
 echo "Compiling Assets..."
@@ -115,9 +114,6 @@ fi
 echo
 echo "Done compiling assets!"
 
-echo
-echo "Updating file permissions..."
-chown app:app -R /home/app/proposals
 
 if [ $APPLICATION_HOST = "localhost" ]; then
   echo

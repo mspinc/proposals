@@ -115,6 +115,12 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.index ["proposal_form_id"], name: "index_proposal_fields_on_proposal_form_id"
   end
 
+  create_table "proposal_fields_dates", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "proposal_fields_multi_choices", force: :cascade do |t|
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
@@ -285,6 +291,16 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+  end
+
+  create_table "validations", force: :cascade do |t|
+    t.integer "validation_type"
+    t.string "value"
+    t.string "error_message"
+    t.bigint "proposal_field_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["proposal_field_id"], name: "index_validations_on_proposal_field_id"
   end
 
   add_foreign_key "ams_subjects", "subjects"

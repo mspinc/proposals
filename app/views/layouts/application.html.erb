@@ -17,7 +17,9 @@
   <body class="theme-blue">
     <div class="wrapper">
       <%= render 'layouts/sidebar' %>
+
       <%= yield %>
     </div>
+    <%= render partial: 'layouts/toastr' %>
   </body>
 </html>

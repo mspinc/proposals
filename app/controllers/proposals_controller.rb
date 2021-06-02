@@ -21,7 +21,9 @@ class ProposalsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    @publish = params[:publish]
+  end
 
   def text
     @text = session[:latex_text]
