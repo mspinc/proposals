@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_one :person
+  accepts_nested_attributes_for :person
   has_many :feedback
 
   after_create :assign_role
