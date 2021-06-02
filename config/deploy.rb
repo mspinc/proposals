@@ -66,7 +66,7 @@ namespace :deploy do
   end
 
   after :publishing, 'deploy:copyfiles'
-  #after :publishing, 'deploy:cleanup'
+  after :publishing, 'deploy:cleanup'
   after :publishing, 'deploy:run'
 end
 
