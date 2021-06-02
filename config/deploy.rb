@@ -50,7 +50,7 @@ namespace :deploy do
     end
   end
 
-  task :cleanup do
+  task :remove_old do
     on roles(:app), :on_error => :continue do
       execute "docker stop proposals && sleep 5"
       execute "docker rm proposals && sleep 2"
@@ -66,7 +66,7 @@ namespace :deploy do
   end
 
   after :publishing, 'deploy:copyfiles'
-  after :publishing, 'deploy:cleanup'
+  after :publishing, 'deploy:remove_old'
   after :publishing, 'deploy:run'
 end
 
