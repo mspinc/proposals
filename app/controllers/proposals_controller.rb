@@ -1,5 +1,5 @@
 class ProposalsController < ApplicationController
-  before_action :set_proposal, only: %w[edit destroy]
+  before_action :set_proposal, only: %w[edit update destroy]
   before_action :authenticate_user!
   
   def index
@@ -40,11 +40,11 @@ class ProposalsController < ApplicationController
   private
 
   def proposal_params
-    params.require(:proposal).permit(:proposal_type_id)
+    params.require(:proposal).permit(:proposal_type_id, :title, :year)
   end
 
   def organizer
-    Role.find_or_create_by!(name: 'Organizer')
+    Role.find_or_create_by!(name: 'lead_organizer')
   end
 
   def set_proposal

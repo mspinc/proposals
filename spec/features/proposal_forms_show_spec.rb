@@ -1,8 +1,7 @@
 require 'rails_helper'
 
 RSpec.feature "Proposal Form show", type: :feature do
-
-before do
+  before do
     @proposal_form = create(:proposal_form)
     visit proposal_form_path(@proposal_form)
   end

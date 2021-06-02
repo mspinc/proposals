@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Dear <%= @person&.fullname %>:</h1>
+    <p>
+      We <%= @proposal.lead_organizer&.fullname %> are in the process of putting together a proposal for
+      a <%= @proposal.proposal_type&.name %> titled "<%= @proposal.title %>" for submission to the Banff
+      International Research Station. If successful, the program will take place
+      sometime during the calendar year <%= @proposal.year %>, and could run at any of the
+      following locations <%= @proposal.locations.pluck(:name).join(', ') %>.
+    </p>
+    <p>
+      Would you in principle be interested in attending such a workshop, if the
+      proposal is accepted and the program dates suit your schedule? Knowing your
+      response would help the organizing committee and the BIRS review committee
+      gauge the appeal of our proposed event to the wider mathematical community.
+    </p>
+    <p>
+      Kindly indicate your response by [deadline_date] at the link below:
+    </p>
+    <p><%= link_to 'Click here', proposal_invite_url(@proposal,@invite) %></p>
+    <p>Thank you for considering our request!</p>
+    <p>[The organizing committee]</p>
+  </body>
+</html>

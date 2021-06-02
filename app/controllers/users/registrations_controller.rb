@@ -68,8 +68,8 @@ module Users
     # end
 
     # The path used after sign up.
-    def after_sign_up_path_for(_resource)
-      dashboards_path
+    def after_inactive_sign_up_path_for(resource)
+      new_user_confirmation_path
     end
 
     # The path used after sign up for inactive accounts.

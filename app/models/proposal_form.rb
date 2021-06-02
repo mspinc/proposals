@@ -5,4 +5,5 @@ class ProposalForm < ApplicationRecord
   belongs_to :updated_by, class_name: 'User'
   has_many :proposal_fields, -> { order(position: :asc) }, dependent: :destroy
   enum status: { draft: 0, active: 1 }
+  scope :active_form, -> (id) { where(proposal_type_id: id, status: :active)&.last }
 end

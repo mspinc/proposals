@@ -1,0 +1,25 @@
+<main class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <div class="m-sm-4">
+              <%= form_with url: inviter_response_proposal_invite_path(@proposal, @invite) do  |f| %>
+                <div class="col-lg-8">
+                  <div class="mb-3">
+                    <%= f.label 'Please show your interest' , class: 'form-label' %>
+                    <%= f.select :response, options_for_select(invite_responses, @invite.response),{}, class: 'form-control' %>
+                  </div>
+                  <div class="mb-3">
+                    <%= f.submit class:'btn btn-primary' %>
+                  </div>
+                </div>
+              <%end%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

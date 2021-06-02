@@ -26,4 +26,12 @@ RSpec.describe Person, type: :model do
     it { should belong_to(:user).optional(true) }
     it { should have_many(:proposals).through(:proposal_roles) }
   end
+
+  describe '#fullname' do
+    let(:person) { create(:person) }
+    let(:fullname) { person.firstname + ' ' + person.lastname }
+    it 'returns fullname of person' do
+      expect(person.fullname).to eq(fullname)
+    end
+  end
 end
