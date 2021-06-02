@@ -63,7 +63,7 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
     context 'when response is yes/maybe' do
       let(:params) { { response: 'yes' } }
       it { expect(invite.proposal.proposal_roles.last.role.name).to eq(invite.invited_as) }
-      it { expect(response).to redirect_to(new_survey_path) }
+      it { expect(response).to redirect_to(new_survey_path(id: invite.id)) }
     end
 
     context 'when response is no' do

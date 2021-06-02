@@ -37,10 +37,15 @@ class InvitesController < ApplicationController
 
     if @invite.no?
       InviteMailer.with(invite: @invite).invite_decline.deliver_later
+      redirect_to thanks_proposal_invites_path(@proposal)
     else
       InviteMailer.with(invite: @invite).invite_acceptance.deliver_later
-      redirect_to new_survey_path
+      redirect_to new_survey_path(id: @invite.id)
     end
+  end
+
+  def thanks
+    render layout: 'devise'
   end
 
   private

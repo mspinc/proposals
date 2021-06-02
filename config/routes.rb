@@ -19,6 +19,9 @@ Rails.application.routes.draw do
       member do
         post :inviter_response
       end
+      collection do
+        get :thanks
+      end
     end
   end
 

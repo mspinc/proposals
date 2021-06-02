@@ -29,8 +29,6 @@
                     </div>
                   <% end %>
                 </div>
-                <div data-submit-proposals-target='locationSpecificQuestions'></div>
-              </div>
               <div class="col-12 col-lg-12">
                 <div class="tab">
                   <ul class="nav nav-tabs row" role="tablist">
@@ -44,6 +42,9 @@
                       <div class="mb-3">
                         <%= f.label :title %>
                         <%= f.text_field :title, class: 'form-control', value: @proposal.title %>
+                        <% if params[:publish] && @proposal.title.blank? %>
+                          <p style="color: red">Title is required</p>
+                        <% end %>
                       </div>
 
                       <div class="mb-3">
@@ -68,7 +69,9 @@
                         <%= f.label :location , class: 'form-label'%>
                         <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{}, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control', multiple: true, name: 'location_ids[]' %>
                       </div>
+                      <div data-submit-proposals-target='locationSpecificQuestions'></div>
                     </div>
+                  </div>
                   </div>
                 </div>
               </div> 
