@@ -38,19 +38,21 @@ class InvitesController < ApplicationController
     if @invite.no?
       InviteMailer.with(invite: @invite).invite_decline.deliver_later
     else
-      redirect_to new_survey_path
       InviteMailer.with(invite: @invite).invite_acceptance.deliver_later
+      redirect_to new_survey_path
     end
   end
 
   private
 
   def person
-    @invite.person = Person.find_or_create_by!(email: @invite.email)
+    @invite.person = Person.find_or_create_by!(firstname: @invite.firstname, lastname: @invite.lastname, email: @invite.email)
   end
 
   def user
-    user = User.create(email: @invite.person.email, password: '123456123456')
+    user = User.new(email: @invite.person.email, password: '123456123456')
+    user.person = @invite.person
+    user.save
   end
 
   def set_invite

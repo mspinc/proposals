@@ -40,13 +40,15 @@
                 </td>
                 <td><%= proposal.status %></td>
                 <td><%= proposal.created_at.to_date %></td>
-                <td class="table-action">
-                  <% if proposal.draft? %>
-                   <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>Edit'.html_safe, edit_proposal_path(proposal) %>
-                  <% end %>
-                  <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>Delete'.html_safe, proposal_path(proposal), method: :delete ,
-                    data: {confirm: "Are you sure you want to delete #{proposal.proposal_type.name}?"} %>
-                </td>
+                <% if lead_organizer?(proposal.proposal_roles) %>
+                  <td class="table-action">
+                    <% if proposal.draft? %>
+                     <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>Edit'.html_safe, edit_proposal_path(proposal) %>
+                    <% end %>
+                    <%= link_to '<i class="align-middle fas fa-fw fa-trash"></i>Delete'.html_safe, proposal_path(proposal), method: :delete ,
+                      data: {confirm: "Are you sure you want to delete #{proposal.proposal_type.name}?"} %>
+                  </td>
+                <% end %>
               </tr>
               <% end %>
             </tbody>

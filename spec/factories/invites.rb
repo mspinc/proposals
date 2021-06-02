@@ -8,7 +8,7 @@ FactoryBot.define do
     
     invited_as { %w[participant coorganizer]}
     status { %w[pending completed].sample }
-    response { %w[yes maybe not].sample }
+    response { %w[yes maybe no].sample }
     association :proposal, factory: :proposal, strategy: :create
     association :person, factory: :person
   end

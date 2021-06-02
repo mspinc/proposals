@@ -42,10 +42,10 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
 
     context "with invalid parameters" do
       let(:params) do
-        { firstname: ' ',
+        { firstname: 'Handree',
           lastname: 'Tan',
           email: 'ben@tan.com',
-          invited_as: 'Participant' }
+          invited_as: ' ' }
       end
       it "does not create a new invite" do
         expect do
@@ -56,16 +56,23 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   end
 
   describe "POST /inviter_response" do
-    let(:params) { { response: 'yes' } }
     before do
       post inviter_response_proposal_invite_path(proposal_id: proposal.id, id: invite.id)
     end
 
-    it { expect(response).to have_http_status(:no_content) }
-    it { expect(invite.proposal.proposal_roles.last.role.name).to eq(invite.invited_as) }
+    context 'when response is yes/maybe' do
+      let(:params) { { response: 'yes' } }
+      it { expect(invite.proposal.proposal_roles.last.role.name).to eq(invite.invited_as) }
+      it { expect(response).to redirect_to(new_survey_path) }
+    end
+
+    context 'when response is no' do
+      let(:params) { { response: 'no' } }
+      it { expect(response).to have_http_status(:found) }
+    end
   end
 
-  describe "GET /inviter_response" do
+  describe "GET /show" do
     before do
       get proposal_invite_path(proposal_id: proposal.id, id: invite1.id)
     end

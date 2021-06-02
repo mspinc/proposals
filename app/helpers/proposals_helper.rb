@@ -17,6 +17,10 @@ module ProposalsHelper
   end
 
   def proposal_roles(proposal_roles)
-    proposal_roles.joins(:role).where(person_id: current_user&.person.id).pluck('roles.name').map(&:titleize).join(', ')
+    proposal_roles.joins(:role).where(person_id: current_user.person&.id).pluck('roles.name').map(&:titleize).join(', ')
+  end
+
+  def lead_organizer?(proposal_roles)
+    proposal_roles.joins(:role).where('person_id =? AND roles.name =?', current_user.person&.id, 'lead_organizer').present?
   end
 end
