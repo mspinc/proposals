@@ -58,7 +58,7 @@ jobs:
           command: |
             echo "127.0.0.1 db" >> /etc/hosts
             cd /home/app/proposals
-            sudo -u root SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
+            su - root -c "SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test"
       - run:
           name: Update permissions
           command: chown -R app:app /home/app/proposals
