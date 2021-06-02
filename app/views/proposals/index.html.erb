@@ -21,6 +21,7 @@
             <thead>
               <tr>
                 <th>Proposal Type</th>
+                <th>Role</th>
                 <th>Location</th>
                 <th>Status</th>
                 <th>Created</th>
@@ -31,6 +32,7 @@
               <% @proposals&.each do |proposal| %>
               <tr>
                 <td><%= proposal.proposal_type.name %></td>
+                <td><%= proposal_roles(proposal.proposal_roles) %></td>
                 <td> 
                   <% proposal.locations.each do |loc| %>
                    <%= loc.name %><br>

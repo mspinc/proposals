@@ -7,7 +7,7 @@
     <p>
       Thank you for letting us know that you will not be able to join the
       proposed workshop titled <%= @proposal.proposal_type.name %> currently under planning by
-      [organizer_names]. We hope you can join us for some other event in the
+      <%= @proposal.lead_organizer&.fullname %>. We hope you can join us for some other event in the
       future.
     </p>
     <p>Sincerely,</p>

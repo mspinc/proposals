@@ -4,7 +4,7 @@ class InvitesController < ApplicationController
   before_action :set_invite, only: %i[show inviter_response]
 
   def index
-    @invites = Invite.all
+    @invites = @proposal.invites
   end
 
   def show
@@ -20,7 +20,7 @@ class InvitesController < ApplicationController
   def create
     @invite = Invite.new(invite_params)
     @invite.proposal = @proposal
-    @invite.create_person(firstname: @invite.firstname, lastname: @invite.lastname, email: @invite.email)
+    person unless @invite.person
 
     if @invite.save
       InviteMailer.with(invite: @invite).invite_email.deliver_later
@@ -45,8 +45,12 @@ class InvitesController < ApplicationController
 
   private
 
+  def person
+    @invite.person = Person.find_or_create_by!(email: @invite.email)
+  end
+
   def user
-    user = User.create(email: @invite.person.email, password: SecureRandom.hex(12))
+    user = User.create(email: @invite.person.email, password: '123456123456')
   end
 
   def set_invite

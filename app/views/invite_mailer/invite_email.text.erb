@@ -1,11 +1,11 @@
 Dear <%= @person&.fullname %>:
 ===============================================
 
-We [organizer_names] are in the process of putting together a proposal for
-a <%= @proposal.proposal_type.name %> titled "<%= ProposalForm.active_form(@proposal.proposal_type.id)&.title %>" for submission to the Banff
+We <%= @proposal.lead_organizer&.fullname %> are in the process of putting together a proposal for
+a <%= @proposal.proposal_type.name %> titled "<%= @proposal.title %>" for submission to the Banff
 International Research Station. If successful, the program will take place
 sometime during the calendar year [year_no], and could run at any of the
-following locations <%= @proposal.locations.pluck(:name) %>.
+following locations <%= @proposal.locations.pluck(:name).join(', ') %>.
 
 Would you in principle be interested in attending such a workshop, if the
 proposal is accepted and the program dates suit your schedule? Knowing your

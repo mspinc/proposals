@@ -8,4 +8,8 @@ class Proposal < ApplicationRecord
   has_many :invites
 
   enum status: { draft: 0, active: 1 }
+
+  def lead_organizer
+  	proposal_roles.joins(:role).find_by('roles.name = ?', 'lead_organizer')&.person
+  end
 end

@@ -6,7 +6,7 @@
     <h1>Dear <%= @person&.fullname %>:</h1>
     <p>
       Thank you for indicating your interest in joining the proposed workshop
-      titled <%= @proposal.proposal_type.name %> currently under planning by [organizer_names].
+      titled <%= @proposal.proposal_type.name %> currently under planning by <%= @proposal.lead_organizer&.fullname %>.
       The organizing committee will be in touch regarding future steps if the
       proposal is successful.
     </p>
