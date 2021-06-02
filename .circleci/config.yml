@@ -57,7 +57,8 @@ jobs:
           name: Run migrations
           command: |
             echo "127.0.0.1 db" >> /etc/hosts
-            apt-get install -y sudo
+            whoami
+            apt-get update -qq && apt-get install --yes sudo
             cd /home/app/proposals
             sudo SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS rake db:migrate RAILS_ENV=test
       - run:
