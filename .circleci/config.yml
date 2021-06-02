@@ -54,6 +54,9 @@ jobs:
             PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U postgres < setup.sql
             rm setup.sql
       - run:
+          name: Enable pgcrypto extension
+          command: psql -h localhost -U root -d proposals_test -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
+      - run:
           name: Run migrations
           command: |
             echo "127.0.0.1 db" >> /etc/hosts
