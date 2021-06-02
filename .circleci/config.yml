@@ -53,9 +53,7 @@ jobs:
             sed s/DB_USER/$DB_USER/g db-init.sql | sed s/DB_PASS/$DB_PASS/g > setup.sql
             PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U postgres < setup.sql
             rm setup.sql
-      - run:
-          name: Enable pgcrypto extension
-          command: psql -h localhost -U root -d proposals_test -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
+            psql -h localhost -U postgres -d proposals_test -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
       - run:
           name: Run migrations
           command: |
