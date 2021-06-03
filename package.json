@@ -25,6 +25,7 @@
     "sass-loader": "^10.1.1",
     "select2": "^4.1.0-rc.0",
     "stimulus": "^2.0.0",
+    "stimulus-rails-nested-form": "^3.0.0",
     "tempusdominus-bootstrap-4": "^5.39.0",
     "tempusdominus-core": "^5.19.0",
     "toastr": "^2.1.4",
