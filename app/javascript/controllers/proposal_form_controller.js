@@ -25,6 +25,7 @@ export default class extends Controller {
       node.style.display = 'none'
       node.previousElementSibling.style.display = 'none'
     } else {
+      node.parentElement.classList.remove('hidden')
       node.style.display = 'block'
       node.previousElementSibling.style.display = 'block'
     }
