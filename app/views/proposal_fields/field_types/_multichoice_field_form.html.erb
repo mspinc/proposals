@@ -1,4 +1,4 @@
-<%= form_for field, url: 'proposal_fields?type=MultiChoice' do |f| %>
+<%= form_for field, data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' }, url: 'proposal_fields?type=MultiChoice' do |f| %>
   <div class="mb-3">
     <%= f.label :statement, class: 'form-label' %>
     <%= f.text_field :statement, required: true, class:'form-control' %>
@@ -20,7 +20,20 @@
     <%= f.number_field :position, required: true, class:'form-control' %>
   </div>
   <%= render partial: 'options_form', locals: { f: f } %>
-  <%= render partial: 'validations_form', locals: {f: f} %>
+  <div>
+    <template data-nested-form-target="template">
+      <%= f.fields_for :validations, Validation.new, child_index: 'NEW_RECORD' do |validation| %>
+        <%= render partial: 'validations_form', locals: {f: validation} %>
+      <% end %>
+    </template>
+    <%= f.fields_for :validations do |validation| %>
+      <%= render partial: 'validations_form', locals: {f: validation} %>
+    <% end %>
+    <div data-nested-form-target="target"></div>
+    <button type="button" class="btn btn-primary btn-sm my-2" data-action="nested-form#add">
+      Add Validation
+    </button>
+  </div>
   
   <div class="form-group">
     <%= f.submit 'submit', class: 'btn btn-primary' %>
