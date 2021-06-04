@@ -3,9 +3,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.3'
 
+gem 'acts_as_list'
 gem 'bcrypt_pbkdf'
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'cancancan'
+gem 'deep_cloneable', '~> 3.1.0'
 gem 'devise'
 gem 'devise-encryptable'
 gem 'ed25519'
@@ -13,12 +15,10 @@ gem 'hotwire-rails'
 gem 'jbuilder', '~> 2.7'
 gem 'pg'
 gem 'rails', '~> 6.1.3'
+gem 'rails-latex'
 gem 'sass-rails', '>= 6'
 gem 'turbo-rails'
 gem 'webpacker', '~> 5.0'
-gem 'rails-latex'
-gem 'deep_cloneable', '~> 3.1.0'
-gem 'acts_as_list'
 
 group :development, :test do
   gem 'byebug'

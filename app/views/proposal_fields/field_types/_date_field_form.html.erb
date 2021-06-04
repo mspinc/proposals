@@ -1,4 +1,4 @@
-<%= form_for field, url: 'proposal_fields?type=Date' do |f| %>
+<%= form_for field, data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' }, url: 'proposal_fields?type=Date' do |f| %>
   <div class="mb-3">
     <%= f.label :statement, class: 'form-label' %>
     <%= f.text_field :statement, required: true, class:'form-control' %>
