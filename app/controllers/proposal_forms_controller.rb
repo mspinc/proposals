@@ -62,6 +62,6 @@ class ProposalFormsController < ApplicationController
   end
 
   def proposal_form_params
-    params.require(:proposal_form).permit(:title, :status, :proposal_type_id).merge(updated_by: current_user)
+    params.require(:proposal_form).permit(:title, :status, :introduction ,:proposal_type_id).merge(updated_by: current_user)
   end
 end

@@ -40,6 +40,9 @@
                     <div class="tab-pane active" id="tab-1" role="tabpanel">
                       <h4 class="tab-title"></h4>
                       <div class="mb-3">
+                        <p><%= ProposalForm.active_form(@proposal.proposal_type.id)&.introduction %></p>
+                      </div>
+                      <div class="mb-3">
                         <%= f.label :title %>
                         <%= f.text_field :title, class: 'form-control', value: @proposal.title %>
                         <% if params[:publish] && @proposal.title.blank? %>
