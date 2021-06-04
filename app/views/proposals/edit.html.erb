@@ -31,10 +31,10 @@
                 </div>
               <div class="col-12 col-lg-12">
                 <div class="tab">
-                  <ul class="nav nav-tabs row" role="tablist">
-                    <li class="nav-item col-4"><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab">Step 1</a></li>
-                    <li class="nav-item col-4"><a class="nav-link" href="#tab-2" data-bs-toggle="tab" role="tab">Step 2</a></li>
-                    <li class="nav-item col-4"><a class="nav-link" href="#tab-3" data-bs-toggle="tab" role="tab">Step 3</a></li>
+                  <ul id="tabs" class="nav nav-tabs row" role="tablist">
+                    <li class="nav-item active col-4" data-target='submit-proposals.tabs'><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab" data-target='submit-proposals.tabs'>Step 1</a></li>
+                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link" href="#tab-2" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 2</a></li>
+                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a></li>
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane active" id="tab-1" role="tabpanel">
@@ -56,11 +56,18 @@
                         <%= f.label :year %>
                         <%= f.select :year, options_for_select([['2021', '2021'], ['2022', '2022'], ['2023', '2023'], ['2024', '2024'], ['2025', '2025']], @proposal.year), {}, class: "form-control"%>
                       </div>
+                      <div class="mb-5">
+                        <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                      </div>
                     </div>
 
                     <div class="tab-pane" id="tab-2" role="tabpanel">
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal.proposal_type) } %>
+                      <div class="mb-4">
+                        <button style="float: right;" id="changeTab" class="btn btn-primary mx-2" data-action='click->submit-proposals#nextTab'>Next</button>
+                         <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                       </div>
                     </div>
                     
                     <div class="tab-pane" id="tab-3" role="tabpanel">
@@ -69,7 +76,11 @@
                         <%= f.label :location , class: 'form-label'%>
                         <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{}, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control', multiple: true, name: 'location_ids[]' %>
                       </div>
+                      <div class="mb-5">
+                        <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                      </div>
                       <div data-submit-proposals-target='locationSpecificQuestions'></div>
+
                     </div>
                   </div>
                   </div>
@@ -82,4 +93,3 @@
     <%end%>
   </div>
 </main>
-
