@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_115331) do
+ActiveRecord::Schema.define(version: 2021_06_04_075950) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -35,6 +35,11 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
   end
 
+  create_table "column_to_proposals", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "demographic_data", force: :cascade do |t|
     t.jsonb "result", default: "{}", null: false
     t.bigint "person_id", null: false
@@ -57,7 +62,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.string "email"
     t.string "invited_as"
     t.integer "status", default: 0
-    t.integer "response"
+    t.integer "response", default: 0
     t.bigint "proposal_id", null: false
     t.bigint "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -156,6 +161,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
     t.string "title"
+    t.integer "version", default: 0
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"

@@ -1,4 +1,4 @@
- <div class="modal fade" id="cloneProposalForm<%= proposal_type.id %>" tabindex="-1" role="dialog" aria-hidden="true">
+ <div class="modal fade" id="cloneProposalForm<%= @proposal_type.id %>" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -6,13 +6,13 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body m-3">
-        <% proposal_type.proposal_forms.each do |proposal_form| %>
+        <% @proposal_type.proposal_forms.each do |proposal_form| %>
           <div class="card">
             <div class="card-body">
               <div class="row">
                 <div class="col mt-0 d-flex justify-content-between">
                   <p><%= proposal_form.title %></p>
-                  <%= link_to 'Clone', clone_proposal_form_path(proposal_form), class:'btn btn-pill btn-primary', method: :post %>
+                  <%= link_to 'Clone', clone_proposal_form_path(proposal_form, proposal_type_id: @proposal_type.id), class:'btn btn-pill btn-primary', method: :post %>
                 </div>
               </div>
             </div>

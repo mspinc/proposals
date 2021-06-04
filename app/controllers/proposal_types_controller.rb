@@ -1,5 +1,5 @@
 class ProposalTypesController < ApplicationController
-  before_action :set_proposal_type, only: %i[show location_based_fields destroy update edit proposal_type_locations]
+  before_action :set_proposal_type, only: %i[show location_based_fields proposal_forms destroy update edit proposal_type_locations]
 
   def index
     @proposal_types = ProposalType.all
@@ -44,6 +44,8 @@ class ProposalTypesController < ApplicationController
   def proposal_type_locations
     render json: @proposal_type.locations
   end
+
+  def proposal_forms; end
 
   private
 

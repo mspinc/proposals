@@ -7,7 +7,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %></a></li>
-          <li class="breadcrumb-item"> <%= link_to "Proposal Forms", proposal_forms_path %></li>
+          <li class="breadcrumb-item"> <%= link_to "Proposal Forms", proposal_forms_proposal_type_path(@proposal_form.proposal_type) %> </li>
           <li class="breadcrumb-item active" aria-current="page"> <%= @proposal_form.proposal_type.name %></li>
         </ol>
       </nav>
