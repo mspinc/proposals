@@ -27,7 +27,7 @@ module Users
     # end
 
     def after_sign_in_path_for(resource)
-      return proposal_forms_path if resource&.staff_member?
+      return proposal_types_path if resource&.staff_member?
       new_proposal_path
     end
   end

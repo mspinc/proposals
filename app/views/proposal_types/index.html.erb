@@ -32,7 +32,7 @@
                     <%= link_to '<i class="align-middle fas fa-fw fa-pen" data-toggle="tooltip" title="Edit"></i>Edit'.html_safe, edit_proposal_type_path(proposal_type) %>
                     <%= link_to '<i class="align-middle fas fa-fw fa-trash" data-toggle="tooltip" title="Delete" ></i>Delete'.html_safe, proposal_type_path(proposal_type), method: :delete ,
                       data: {confirm: "Are you sure you want to delete #{proposal_type.name}?"} %>
-                    <%= link_to 'Proposal forms',  proposal_forms_proposal_type_path(proposal_type), class: 'btn btn-pill btn-primary text-white'%>
+                    <%= link_to 'Proposal forms',  proposal_type_proposal_forms_path(proposal_type_id: proposal_type), class: 'btn btn-pill btn-primary text-white'%>
                   </td>
                 </tr>
               <% end %>

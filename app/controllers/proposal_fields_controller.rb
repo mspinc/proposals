@@ -16,9 +16,9 @@ class ProposalFieldsController < ApplicationController
     @proposal_field.fieldable = @fieldable
     if @proposal_field.insert_at(@proposal_field.position)
       @proposal_form.update(updated_by: current_user)
-      redirect_to edit_proposal_form_path(@proposal_form), notice: "Field was successfully created."
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), notice: "Field was successfully created."
     else
-      redirect_to edit_proposal_form_path(@proposal_form), alert: @proposal_form.errors
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), alert: @proposal_form.errors
     end
   end
 
@@ -34,9 +34,9 @@ class ProposalFieldsController < ApplicationController
   def update
     if @proposal_field.update(proposal_field_params)
       @proposal_form.update(updated_by: current_user)
-      redirect_to edit_proposal_form_path(@proposal_form), notice: "Field was successfully updated."
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), notice: "Field was successfully updated."
     else
-      redirect_to edit_proposal_form_path(@proposal_form), alert: @proposal_form.errors
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), alert: @proposal_form.errors
     end
   end
 
