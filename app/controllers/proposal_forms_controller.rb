@@ -7,36 +7,44 @@ class ProposalFormsController < ApplicationController
   end
 
   def new
+    forms = @proposal_type.proposal_forms.where(status: [:active, :draft])
+    forms.update_all(status: :inactive)
     @proposal_form = ProposalForm.new
   end
 
-  def edit; end
+  def edit
+    # if @proposal_form.active?
+    #   @proposal_form.update(status: :inactive)
+    #   form = @proposal_form.deep_clone include: :proposal_fields
+    #   form.status = :draft
+    #   form.save
+    #   redirect_to edit_proposal_type_proposal_form_path(@proposal_type, form)
+    # end
+  end
 
   def show
     redirect_to :index if @proposal_form.nil?
   end
 
   def update
-    if @proposal_form.active?
-      @proposal_form.update(status: :inactive)
-      form = @proposal_form.deep_clone include: :proposal_fields
-      form.status = :draft
-      form.version += 1
-      form.save
-      params.require(:proposal_form).delete(:status)
-      update_proposal_form(form)
+    if @proposal_form.update(proposal_form_params)
+      version = @proposal_form.version + 1
+    @proposal_form.update(version: version) if @proposal_form.active?
+      redirect_to proposal_type_proposal_form_path(@proposal_type, @proposal_form), notice: 'Proposal form was successfully updated'
     else
-      update_proposal_form(@proposal_form)
+      redirect_to edit_proposal_type_proposal_form_path, status: :unprocessable_entity,
+                    alert: "Unable to update proposal form."
     end
   end
 
   def create
     @proposal_form = ProposalForm.new(proposal_form_params)
-    forms = @proposal_form.proposal_type.proposal_forms
+    forms = @proposal_form.proposal_type.proposal_forms.where(status: [:active, :draft])
     forms.update_all(status: :inactive)
     @proposal_form.created_by = current_user
+    @proposal_form.version = highest_version
     if @proposal_form.save
-      redirect_to edit_proposal_type_proposal_form_path(@proposal_type, @proposal_form)
+      redirect_to proposal_type_proposal_forms_path, notice: 'Proposal form was successfully created!'
     else
       redirect_to new_proposal_type_proposal_form_path, alert: "Title can't be blank"
     end
@@ -49,9 +57,9 @@ class ProposalFormsController < ApplicationController
   end
 
   def clone
-    proposal_type = ProposalType.find params[:proposal_type_id]
-    proposal_type.proposal_forms.update_all(status: :inactive)
+    @proposal_type.proposal_forms.update_all(status: :inactive)
     proposal_form = @proposal_form.deep_clone include: :proposal_fields
+    proposal_form.version = highest_version
     proposal_form.status = :draft
     proposal_form.proposal_type_id = params[:proposal_type_id]
     proposal_form.save
@@ -79,5 +87,9 @@ class ProposalFormsController < ApplicationController
       redirect_to edit_proposal_type_proposal_form_path, status: :unprocessable_entity,
                     alert: "Unable to update proposal form."
     end
+  end
+
+  def highest_version
+    @proposal_type.proposal_forms.maximum(:version).to_i
   end
 end

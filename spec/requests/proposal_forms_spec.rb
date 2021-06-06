@@ -72,6 +72,6 @@ RSpec.describe "/proposal_forms", type: :request do
       post clone_proposal_type_proposal_form_path(proposal_type, proposal_form)
     end
 
-    it { expect(response).to redirect_to(edit_proposal_type_proposal_form_path(proposal_type, ProposalForm.last)) }
+    it { expect(response).to redirect_to(edit_proposal_type_proposal_form_path(proposal_type, proposal_form.id + 1)) }
   end
 end
