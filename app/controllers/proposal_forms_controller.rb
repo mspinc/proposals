@@ -13,13 +13,13 @@ class ProposalFormsController < ApplicationController
   end
 
   def edit
-    # if @proposal_form.active?
-    #   @proposal_form.update(status: :inactive)
-    #   form = @proposal_form.deep_clone include: :proposal_fields
-    #   form.status = :draft
-    #   form.save
-    #   redirect_to edit_proposal_type_proposal_form_path(@proposal_type, form)
-    # end
+    if @proposal_form.active?
+      @proposal_form.update(status: :inactive)
+      form = @proposal_form.deep_clone include: :proposal_fields
+      form.status = :draft
+      form.save
+      redirect_to edit_proposal_type_proposal_form_path(@proposal_type, form)
+    end
   end
 
   def show
