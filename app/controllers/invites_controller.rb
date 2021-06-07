@@ -19,7 +19,7 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-    if @invite.email == @proposal.people.first.email
+    if @invite.email == @proposal.lead_organizer.email
       redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot send invite to your own'
     else
       @invite.proposal = @proposal
@@ -29,7 +29,7 @@ class InvitesController < ApplicationController
         InviteMailer.with(invite: @invite).invite_email.deliver_later
         redirect_to edit_proposal_path(@proposal)
       else
-        render :new, alert: 'Error sending invite'
+        redirect_to new_proposal_invite_path(@proposal), alert: @invite.errors.full_messages
       end
     end
   end
@@ -43,7 +43,7 @@ class InvitesController < ApplicationController
       InviteMailer.with(invite: @invite).invite_decline.deliver_later
       redirect_to thanks_proposal_invites_path(@invite.proposal)
     else
-      InviteMailer.with(invite: @invite).invite_acceptance.deliver_later
+      InviteMailer.with(invite: @invite, token: @token).invite_acceptance.deliver_later
       redirect_to new_survey_path(id: @invite.id)
     end
   end
