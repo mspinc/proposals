@@ -57,7 +57,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_111249) do
     t.string "email"
     t.string "invited_as"
     t.integer "status", default: 0
-    t.integer "response", default: 0
+    t.integer "response"
     t.bigint "proposal_id", null: false
     t.bigint "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -157,6 +157,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_111249) do
     t.bigint "updated_by_id"
     t.string "title"
     t.integer "version", default: 0
+    t.text "introduction"
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
