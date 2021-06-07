@@ -18,4 +18,9 @@ class ProposalForm < ApplicationRecord
   def updated?
     updated_at > created_at
   end
+
+  def last_updated_by
+    return updated_by.fullname unless updated_by.nil?
+    created_by
+  end
 end

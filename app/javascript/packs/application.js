@@ -24,8 +24,8 @@ import "../js/proposal_form";
 global.toastr = require("toastr")
 toastr.options.closeButton = true;
 toastr.options.preventDuplicates = true;
-toastr.options.timeOut = 0;
-toastr.options.extendedTimeOut = 0;
+toastr.options.timeOut = 20000;
+toastr.options.extendedTimeOut = 40000;
 
 window.Turbo = Turbo
 Rails.start();
