@@ -31,10 +31,14 @@
                 <div class="mb-3">
                   <label>Email</label>
                   <%= f.email_field :email, class:"form-control form-control-lg", placeholder:"Enter your email", autocomplete: "email" %>
-                </div>
+                </div class="mb-3">
                 <div>
                   <label>Invite as</label>
                   <%= f.select(:invited_as, options_for_select([['Co Organizer', 'Co Organizer'], ['Participant', 'Participant']]), {}, {class: "form-control"}) %>
+                </div>
+                <div class="mb-3">
+                  <%= f.label :deadline_date %>
+                  <%= f.date_field :deadline_date,  class:"form-control" %>
                 </div>
                 <div class="text-center mt-3">
                   <%= f.submit "Send", class: 'btn btn-lg btn-primary' %>

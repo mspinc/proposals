@@ -12,10 +12,11 @@ proposal is accepted and the program dates suit your schedule? Knowing your
 response would help the organizing committee and the BIRS review committee
 gauge the appeal of our proposed event to the wider mathematical community.
 
-Kindly indicate your response by [deadline_date] at the link below:
+Kindly indicate your response by <%= @invite.deadline_date.to_date %> at the link below:
 
 <%= link_to 'Click here', proposal_invite_url(@proposal,@invite) %>
 
 Thank you for considering our request!
 
 [The organizing committee]
+

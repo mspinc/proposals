@@ -26,7 +26,7 @@ RSpec.describe "/proposal_types", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      let(:proposal_type_params) { { name: '2 Day Workshop' } }
+      let(:proposal_type_params) { { name: '2 Day Workshop', year: '2015,2016,2017'} }
       it "creates a new proposal_type" do
         expect do
           post proposal_types_url, params: { proposal_type: proposal_type_params }
@@ -47,7 +47,7 @@ RSpec.describe "/proposal_types", type: :request do
 
   describe "PATCH /update" do
     context "with valid parameters" do
-      let(:proposal_type_params) { { name: '5 Day Workshop' } }
+      let(:proposal_type_params) { { name: '5 Day Workshop', year: '2021,2022,2023' } }
 
       before do
         patch proposal_type_url(proposal_type), params: { proposal_type: proposal_type_params }
@@ -58,7 +58,7 @@ RSpec.describe "/proposal_types", type: :request do
     end
 
     context "with invalid parameters" do
-      let(:proposal_type_params) { { name: ' ' } }
+      let(:proposal_type_params) { { name: ' ', year: '2012,2013,2014' } }
 
       before do
         patch proposal_type_url(proposal_type), params: { proposal_type: proposal_type_params }

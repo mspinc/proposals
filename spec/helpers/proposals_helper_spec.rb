@@ -19,6 +19,13 @@ RSpec.describe ProposalsHelper, type: :helper do
     end
   end
 
+  describe "#proposal_type_year" do
+    let(:proposal_type) { create(:proposal_type) }
+    it "return array of year comma separated [year]" do
+      expect(proposal_type_year(proposal_type)).to match_array(["2021", "2022", "2023"])
+    end
+  end
+
   describe "#locations" do
     let(:locations_list) { create_list(:location, 4) }
     it "returns array of locations [name,id]" do
