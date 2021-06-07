@@ -10,7 +10,9 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get :guidelines, to: 'pages#guidelines'
   resources :feedbacks, path: :feedback
-  resources :dashboards
+  #resources :dashboards
+  get 'dashboards', to: 'proposal_forms#index'
+
   resources :proposals do
     collection do
       get :text

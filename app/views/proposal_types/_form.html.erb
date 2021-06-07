@@ -33,7 +33,7 @@
             <%= f.select :location_ids, locations, {}, class: 'form-control', multiple: true %>
           </div>
           <%= f.submit @proposal_type.new_record? ? "Create Proposal Type" : "Update Proposal Type", class:  'btn btn-primary' %>
-          <%= link_to "Back", proposal_types_path, class: 'btn btn-primary  '%>
+          <%= link_to "List Proposal Types", proposal_types_path, class: 'btn btn-primary  '%>
           <% end %>
         </div>
       </div>

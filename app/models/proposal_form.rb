@@ -6,4 +6,16 @@ class ProposalForm < ApplicationRecord
   has_many :proposal_fields, -> { order(position: :asc) }, dependent: :destroy
   enum status: { draft: 0, active: 1 }
   scope :active_form, -> (id) { where(proposal_type_id: id, status: :active)&.last }
+
+  def created_on
+    created_at.strftime('%Y-%m-%d %H:%M %Z')
+  end
+
+  def updated_on
+    updated_at.strftime('%Y-%m-%d %H:%M %Z')
+  end
+
+  def updated?
+    updated_at > created_at
+  end
 end

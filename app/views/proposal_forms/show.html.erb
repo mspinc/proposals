@@ -18,16 +18,23 @@
           <div id="panel" data-controller="proposal-form">
             <div data-proposal-form-target="proposalFormId">
               <h2> Status: <span id="proposal_status"> <%= @proposal_form.status %></span></h2>
+              <p>Created on <%= @proposal_form&.created_on %> by <%= @proposal_form.created_by&.fullname %><br>
+                <% if @proposal_form.updated? %>
+                 Updated on <%= @proposal_form&.updated_on %> by <%= @proposal_form.updated_by&.fullname %>
+                <% end %>
+              </p>
             </div>              
             <div class="row">
               <div class="col-7">
                 <% unless @proposal_form.new_record?  %>
-                  <div class="header"><h1><%= @proposal_form.title %></h1></div>
                     <div class="card">
+                      <div class="card-header">
+                        <h2>Title: <%= @proposal_form.title %></h2>
+                      </div>
                       <div class="card-body">
                         <div class="row">
                           <div class="col mt-0">
-                            <p><%= @proposal_form.introduction %></p>
+                            <p class="lead"><%= @proposal_form.introduction %></p>
                           </div>
                         </div>
                         <div class="row">
@@ -48,6 +55,7 @@
               </div>
             </div>
           </div>
+          <%= link_to 'Edit Proposal Form', edit_proposal_form_path(@proposal_form), class: 'btn btn-primary' unless @proposal_form.status == 'active' %>
         </div>
       </div>
     </div>

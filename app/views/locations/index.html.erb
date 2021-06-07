@@ -14,14 +14,10 @@
     <div class="row">
       <div class="col-12">
         <div class="card">
-          <div class="card-header">
-            </h6>
-            <%= link_to "New Location", new_location_path, class: 'btn btn-primary' %>
-          </div>
           <table class="table">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Location Name</th>
                 <th>Code</th>
                 <th>City</th>
                 <th>Country</th>
@@ -31,21 +27,21 @@
             <tbody>
               <% @locations.each do |location|%>
               <tr>
-                <td> <%= location.name %> </td>
+                <td> <%= link_to location.name, location_path(location) %> </td>
                 <td> <%=location.code %> </td>
                 <td> <%=location.city %> </td>
                 <td> <%=location.country %> </td>
                 <td class="table-action">
-                  <%= link_to '<i class="align-middle fas fa-fw fa-eye" data-toggle="tooltip" title="Show"></i>Show'.html_safe, location_path(location) %>
-                  <%= link_to '<i class="align-middle fas fa-fw fa-pen" data-toggle="tooltip" title="Edit"></i>Edit'.html_safe, edit_location_path(location) %>
-                  <%= link_to '<i class="align-middle fas fa-fw fa-trash" data-toggle="tooltip" title="Delete"></i>Delete'.html_safe, location_path(location), method: :delete ,
-                    data: {confirm: "Are you sure you want to delete #{location.name}?"} %>
+                  <%= link_to 'Edit', edit_location_path(location), class: 'btn btn-primary btn-sm' %>
+
+                  <%= link_to 'Delete', location_path(location), class: 'btn btn-danger btn-sm', method: :delete, data: {confirm: "Are you sure you want to delete #{location.name}?"} %>
                 </td>
               </tr>
               <% end %>
             </tbody>
           </table>
         </div>
+        <%= link_to "Add New Location", new_location_path, class: 'btn btn-primary' %>
       </div>
     </div>
   </div>
