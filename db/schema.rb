@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_04_093036) do
+ActiveRecord::Schema.define(version: 2021_06_07_082657) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -77,11 +77,12 @@ ActiveRecord::Schema.define(version: 2021_06_04_093036) do
 
   create_table "options", force: :cascade do |t|
     t.string "text"
-    t.string "optionable_type"
-    t.bigint "optionable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable"
+    t.integer "index"
+    t.string "value"
+    t.bigint "proposal_field_id", null: false
+    t.index ["proposal_field_id"], name: "index_options_on_proposal_field_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -125,21 +126,18 @@ ActiveRecord::Schema.define(version: 2021_06_04_093036) do
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "options", default: "{}"
   end
 
   create_table "proposal_fields_radios", force: :cascade do |t|
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "options", default: "{}"
   end
 
   create_table "proposal_fields_single_choices", force: :cascade do |t|
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "options", default: "{}"
   end
 
   create_table "proposal_fields_texts", force: :cascade do |t|
@@ -310,6 +308,7 @@ ActiveRecord::Schema.define(version: 2021_06_04_093036) do
   add_foreign_key "demographic_data", "people"
   add_foreign_key "invites", "people"
   add_foreign_key "invites", "proposals"
+  add_foreign_key "options", "proposal_fields"
   add_foreign_key "proposal_fields", "proposal_forms"
   add_foreign_key "proposal_forms", "proposal_types"
   add_foreign_key "proposal_forms", "users", column: "created_by_id"

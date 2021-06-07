@@ -12,26 +12,30 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
 
   describe "#proposal_field_options" do
     let(:radio_field) { create(:proposal_field, :radio_field) }
-
+    let(:option) { create(:option, proposal_field: radio_field)}
+   
     it "returns array of options value and text" do
-      expect(proposal_field_options(radio_field.fieldable)).to match_array([%w[Female F], %w[Male M]])
+      option
+      expect(proposal_field_options(radio_field)).to match_array([%w[Male M]])
     end
 
     it 'returns empty array' do
-      radio_field.fieldable.update(options: '{}')
-      expect(proposal_field_options(radio_field.fieldable)).to match_array([])
+      expect(proposal_field_options(radio_field)).to match_array([])
     end
   end
 
   describe "#options_for_field" do
     let(:single_choice_field) { create(:proposal_field, :single_choice_field) }
+    let(:option_1) { create(:option, proposal_field: single_choice_field)}
+    let(:option_2) { create(:option, proposal_field: single_choice_field, text: 'Female')}
 
     it 'returns array of option values' do
+      option_1
+      option_2
       expect(options_for_field(single_choice_field)).to match_array(%w[Female Male])
     end
 
     it 'returns empty array' do
-      single_choice_field.fieldable.update(options: '{}')
       expect(options_for_field(single_choice_field)).to match_array([])
     end
   end
