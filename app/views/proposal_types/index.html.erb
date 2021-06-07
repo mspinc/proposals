@@ -17,7 +17,8 @@
           <table class="table">
             <thead>
               <tr>
-                <th style="width:40%;">Name</th>
+                <th>Name</th>
+                <th>Locations</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -25,18 +26,15 @@
               <% @proposal_types.each do |proposal_type|%>                     
               <tr>
                 <td><%= link_to proposal_type.name, edit_proposal_type_path(proposal_type) %></td>
+                <td><%= list_proposal_locations(proposal_type) %></td>
                 <td class="table-action">
                   <%= link_to 'Edit', edit_proposal_type_path(proposal_type), class: 'btn btn-primary btn-sm' %>
 
                   <%= link_to 'Delete', proposal_type_path(proposal_type), class: 'btn btn-danger btn-sm', method: :delete, data: {confirm: "Are you sure you want to delete #{proposal_type.name}?"} %>
 
-                  <a data-toggle="tooltip" title="Clone" data-bs-toggle="modal" data-bs-target="#cloneProposalForm<%= proposal_type.id %>" href="#">
-                    <button type="button" class="btn btn-secondary btn-sm">Clone</button>
-                  </a>
                   <%= link_to 'Create New Form',  new_proposal_form_url(proposal_type: proposal_type.id ), class: 'btn btn-pill btn-success btn-sm'%>
                 </td>
               </tr>
-              <%= render partial: 'clone_proposal_form', locals: { proposal_type: proposal_type } %>
               <% end %>
             </tbody>
           </table>
