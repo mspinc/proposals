@@ -6,7 +6,7 @@ class Proposal < ApplicationRecord
   has_many :people, through: :proposal_roles
   has_many :answers, dependent: :destroy
   has_many :invites, dependent: :destroy
-
+  belongs_to :proposal_form
   enum status: { draft: 0, active: 1 }
 
   def lead_organizer

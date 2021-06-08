@@ -20,7 +20,7 @@
     <p>
       Kindly indicate your response by <%= @invite.deadline_date.to_date %> at the link below:
     </p>
-    <p><%= link_to 'Click here', proposal_invite_url(@proposal,@invite) %></p>
+    <p><%= link_to 'Click here', proposal_invite_url(@proposal,@invite, code: @invite.code) %></p>
     <p>Thank you for considering our request!</p>
     <p>[The organizing committee]</p>
   </body>

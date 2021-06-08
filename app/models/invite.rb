@@ -5,4 +5,10 @@ class Invite < ApplicationRecord
 
   belongs_to :person
   belongs_to :proposal
+
+  before_save :generate_code
+
+  def generate_code
+    self.code = SecureRandom.urlsafe_base64(37) if self.code.blank?
+  end
 end

@@ -31,20 +31,20 @@ Rails.application.routes.draw do
       post :submit_survey
     end
   end
-  resources :proposal_forms do
-    member do
-      post :clone
-      delete :proposal_field
-      get :proposal_field_edit
-    end
-    resources :proposal_fields do
-      collection do
-        post :latex_text
-      end
-    end
-  end
   resources :submit_proposals
   resources :proposal_types do
+    resources :proposal_forms do
+      member do
+        post :clone
+        delete :proposal_field
+        get :proposal_field_edit
+      end
+      resources :proposal_fields do
+        collection do
+          post :latex_text
+        end
+      end
+    end
     member do
       get :location_based_fields
       get :proposal_type_locations
