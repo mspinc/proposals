@@ -53,19 +53,19 @@ jobs:
             sed s/DB_USER/$DB_USER/g db-init.sql | sed s/DB_PASS/$DB_PASS/g > setup.sql
             PGPASSWORD=$POSTGRES_PASSWORD psql -h localhost -U postgres < setup.sql
             rm setup.sql
-            psql -h localhost -U postgres -d proposals_test -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;"
       - run:
           name: Run migrations
           command: |
             echo "127.0.0.1 db" >> /etc/hosts
+            chown -R app:app /home/app/proposals
             cd /home/app/proposals
             SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS bin/rails db:migrate RAILS_ENV=test
       - run:
-          name: Update permissions
-          command: chown -R app:app /home/app/proposals
-      - run:
           name: Run the tests
-          command: cd /home/app/proposals; bundle exec rspec
+          command: |
+            chown -R app:app /home/app/proposals
+            cd /home/app/proposals
+            bundle exec rspec
   deploy_to_staging:
     docker:
       - image: birs/proposals:latest

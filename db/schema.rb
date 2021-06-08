@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_07_100053) do
+ActiveRecord::Schema.define(version: 2021_06_08_074500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -35,11 +35,6 @@ ActiveRecord::Schema.define(version: 2021_06_07_100053) do
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
   end
 
-  create_table "column_to_proposals", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "demographic_data", force: :cascade do |t|
     t.jsonb "result", default: "{}", null: false
     t.bigint "person_id", null: false
@@ -56,13 +51,14 @@ ActiveRecord::Schema.define(version: 2021_06_07_100053) do
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
-  create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "invites", force: :cascade do |t|
     t.string "firstname"
     t.string "lastname"
     t.string "email"
     t.string "invited_as"
     t.integer "status", default: 0
-    t.integer "response", default: 0
+    t.integer "response"
+    t.string "code"
     t.bigint "proposal_id", null: false
     t.bigint "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -160,7 +156,6 @@ ActiveRecord::Schema.define(version: 2021_06_07_100053) do
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
     t.string "title"
-    t.integer "version", default: 0
     t.text "introduction"
     t.integer "version", default: 0
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
@@ -202,6 +197,8 @@ ActiveRecord::Schema.define(version: 2021_06_07_100053) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "year"
+    t.integer "participant"
+    t.integer "co_organizer"
   end
 
   create_table "proposals", force: :cascade do |t|

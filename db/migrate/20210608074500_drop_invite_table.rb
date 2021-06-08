@@ -10,6 +10,7 @@ class DropInviteTable < ActiveRecord::Migration[6.1]
       t.integer :status, default: 0
       t.integer :response
       t.string :code
+      t.datetime :deadline_date
 
       t.references :proposal, null: false, foreign_key: true
       t.references :person, null: false, foreign_key: true
