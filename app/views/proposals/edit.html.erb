@@ -64,6 +64,24 @@
                       <div class="mb-5">
                         <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
                       </div>
+                      <div class="mb-3 row">
+                        <h4>Subject Areas</h4>
+                        <div class="col-6 mt-2">
+                          <label>Subject Area</label>
+                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), {}, class: "form-control"%>
+                        </div>
+                        <div class="col-6 mt-2">
+                          <div class="mb-3">
+                            <label>AMS Subject Code 1</label>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.first&.id), {}, class: "form-control", name:'ams_subject_ids[]'%>
+                          </div>
+
+                          <div class="mb-3">
+                            <label>AMS Subject Code 2</label>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.last&.id), {}, class: "form-control", name:'ams_subject_ids[]'%>
+                          </div>
+                        </div>
+                      </div>
                     </div>
 
                     <div class="tab-pane" id="tab-2" role="tabpanel">
