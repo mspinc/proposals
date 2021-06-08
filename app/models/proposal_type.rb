@@ -6,4 +6,8 @@ class ProposalType < ApplicationRecord
   has_many :locations, through: :proposal_type_locations
 
   scope :active_forms, -> { joins(:proposal_forms).where('proposal_forms.status =?', 1).distinct }
+
+  def active_form
+    proposal_forms.where('proposal_forms.status =?', 1).last
+  end
 end
