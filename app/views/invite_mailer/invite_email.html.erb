@@ -18,7 +18,7 @@
       gauge the appeal of our proposed event to the wider mathematical community.
     </p>
     <p>
-      Kindly indicate your response by [deadline_date] at the link below:
+      Kindly indicate your response by <%= @invite.deadline_date.to_date %> at the link below:
     </p>
     <p><%= link_to 'Click here', proposal_invite_url(@proposal,@invite, code: @invite.code) %></p>
     <p>Thank you for considering our request!</p>

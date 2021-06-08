@@ -9,7 +9,8 @@ FactoryBot.define do
     invited_as { %w[participant coorganizer]}
     status { %w[pending completed].sample }
     response { %w[yes maybe no].sample }
-    code { SecureRandom.urlsafe_base64(37) }
+    deadline_date { Time.current.to_date }
+
     association :proposal, factory: :proposal, strategy: :create
     association :person, factory: :person
   end

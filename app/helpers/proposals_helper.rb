@@ -3,6 +3,10 @@ module ProposalsHelper
     ProposalType.active_forms.map { |pt| [pt.name, pt.id] }
   end
 
+  def proposal_type_year(proposal_type)
+    proposal_type.year&.split(",").map { |year| year}
+  end
+
   def locations
     Location.all.map { |loc| [loc.name, loc.id] }
   end

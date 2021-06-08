@@ -19,14 +19,18 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-    @invite.proposal = @proposal
-    person unless @invite.person
-
-    if @invite.save
-      InviteMailer.with(invite: @invite).invite_email.deliver_later
-      redirect_to edit_proposal_path(@proposal)
+    if @invite.email == @proposal.lead_organizer&.email
+      redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot send yourself an invite'
     else
-      render :new, alert: 'Error sending invite'
+      @invite.proposal = @proposal
+      person unless @invite.person
+
+      if @invite.save
+        InviteMailer.with(invite: @invite).invite_email.deliver_later
+        redirect_to edit_proposal_path(@proposal), notice: "Invitation sent to #{@invite.person.fullname}."
+      else
+        redirect_to new_proposal_invite_path(@proposal), alert: @invite.errors.full_messages
+      end
     end
   end
 
@@ -39,8 +43,8 @@ class InvitesController < ApplicationController
       InviteMailer.with(invite: @invite).invite_decline.deliver_later
       redirect_to thanks_proposal_invites_path(@invite.proposal)
     else
-      InviteMailer.with(invite: @invite).invite_acceptance.deliver_later
-      redirect_to new_survey_path(code: @invite.code)
+      InviteMailer.with(invite: @invite, token: @token).invite_acceptance.deliver_later
+      redirect_to new_survey_path(id: @invite.id)
     end
   end
 
@@ -69,7 +73,7 @@ class InvitesController < ApplicationController
   end
 
   def invite_params
-    params.require(:invite).permit(:firstname, :lastname, :email, :invited_as)
+    params.require(:invite).permit(:firstname, :lastname, :email, :invited_as, :deadline_date)
   end
 
   def proposal_role

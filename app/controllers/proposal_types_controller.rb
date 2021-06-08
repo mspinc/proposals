@@ -49,7 +49,7 @@ class ProposalTypesController < ApplicationController
   private
 
   def proposal_type_params
-    params.require(:proposal_type).permit(:name, location_ids: [])
+    params.require(:proposal_type).permit(:name, :year, location_ids: [])
   end
 
   def set_proposal_type
