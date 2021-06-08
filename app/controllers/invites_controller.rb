@@ -5,6 +5,7 @@ class InvitesController < ApplicationController
 
   def index
     @invites = @proposal.invites
+    redirect_to new_proposal_invite_path and return if @invites.blank?
   end
 
   def show
