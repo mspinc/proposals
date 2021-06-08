@@ -38,9 +38,10 @@ RSpec.describe ProposalsHelper, type: :helper do
     let(:p_type) { create(:proposal_type) }
     let(:p_form) { create(:proposal_form, proposal_type: p_type, status: :active) }
     let(:fields) { create(:proposal_field, :radio_field, proposal_form: p_form) }
+    let(:proposal) { create(:proposal, proposal_form: p_form, proposal_type: p_type) }
     it "returns proposal fields" do
       fields
-      expect(common_proposal_fields(p_type)).to eq([fields])
+      expect(common_proposal_fields(proposal)).to eq([fields])
     end
   end
 end

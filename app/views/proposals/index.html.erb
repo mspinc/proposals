@@ -20,6 +20,7 @@
           <table class="table">
             <thead>
               <tr>
+                <th>Proposal Title</th>
                 <th>Proposal Type</th>
                 <th>Role</th>
                 <th>Location</th>
@@ -31,6 +32,7 @@
             <tbody>
               <% @proposals&.each do |proposal| %>
               <tr>
+                <td><%= proposal.title %></td>
                 <td><%= proposal.proposal_type.name %></td>
                 <td><%= proposal_roles(proposal.proposal_roles) %></td>
                 <td> 

@@ -162,6 +162,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_100053) do
     t.string "title"
     t.integer "version", default: 0
     t.text "introduction"
+    t.integer "version", default: 0
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
@@ -211,6 +212,8 @@ ActiveRecord::Schema.define(version: 2021_06_07_100053) do
     t.integer "status"
     t.string "title"
     t.string "year"
+    t.bigint "proposal_form_id"
+    t.index ["proposal_form_id"], name: "index_proposals_on_proposal_form_id"
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"
   end
 
@@ -328,6 +331,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_100053) do
   add_foreign_key "proposal_roles", "roles"
   add_foreign_key "proposal_type_locations", "locations"
   add_foreign_key "proposal_type_locations", "proposal_types"
+  add_foreign_key "proposals", "proposal_forms"
   add_foreign_key "proposals", "proposal_types"
   add_foreign_key "role_privileges", "roles"
   add_foreign_key "subjects", "subject_categories"
