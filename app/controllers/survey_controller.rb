@@ -26,10 +26,10 @@ class SurveyController < ApplicationController
   end
 
   def set_invite
-    @invite = Invite.find_by(id: invite_id)
+    @invite = Invite.find_by(code: invite_code)
   end
 
-  def invite_id
-    params.permit([:id])&.[](:id)
+  def invite_code
+    params.permit([:code])&.[](:code)
   end
 end

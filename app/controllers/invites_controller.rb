@@ -40,7 +40,7 @@ class InvitesController < ApplicationController
       redirect_to thanks_proposal_invites_path(@invite.proposal)
     else
       InviteMailer.with(invite: @invite).invite_acceptance.deliver_later
-      redirect_to new_survey_path(id: @invite.id)
+      redirect_to new_survey_path(code: @invite.code)
     end
   end
 
@@ -61,7 +61,7 @@ class InvitesController < ApplicationController
   end
 
   def set_invite
-    @invite = Invite.find(params[:id])
+    @invite = Invite.find_by(code: params[:code])
   end
 
   def set_proposal
