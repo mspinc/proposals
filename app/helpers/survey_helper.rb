@@ -32,8 +32,15 @@ module SurveyHelper
                  ['Indigenous from outside North America', 'Indigenous from outside North America'],
                  ['Latin, South, or Central American', 'Latin, South, or Central American'],
                  ['South Asian (including Indian sub-continent, Indo-Caribbean, Indo-African, Indo-Fijian, West-Indian)',
-                  'South Asian'], ['Southeast Asian', 'Southeast Asian'], ['West Asian', 'West Asian'],
-                 ['Prefer Other', 'Prefer Other'], ['Prefer not to answer', '']]
+                  'South Asian'], ['Southeast Asian (including Brunei, Burma (Myanmar), Cambodia, Timor-Leste, Indonesia,
+                  Laos, Malaysia, the Philippines, Singapore, Thailand and Vietnam)', 'Southeast Asian (including Brunei,
+                  Burma (Myanm<ar), Cambodia, Timor-Leste, Indonesia, Laos, Malaysia, the Philippines, Singapore, Thailand
+                  and Vietnam)'], ['West Asian (including Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip,
+                  Georgia, Iran (Islamic Republic of), Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia,
+                  Syrian Arab Republic, Turkey, United Arab Emirates, West Bank and Yemen)', 'West Asian (including
+                  Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip, Georgia, Iran (Islamic Republic of),
+                  Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syrian Arab Republic, Turkey, United
+                  Arab Emirates, West Bank and Yemen)'],['Prefer Other', 'Prefer Other'], ['Prefer not to answer', '']]
     ethnicity.map { |disp, _value| disp }
   end
 
@@ -49,7 +56,7 @@ module SurveyHelper
   end
 
   def indigenouse_person_yes_options
-    indigenous_yes = [['First Nation', 'First Nation'], %w[Métis Métis], %w[Innuit Innuit],
+    indigenous_yes = [['First Nation', 'First Nation'], %w[Métis Métis], %w[Inuit Inuit],
                       ['Native American', 'Native American'], ['Indigenous from outside of what is now known as Canada and the United States',
                                                                'Indigenous from outside of what is now known as Canada and the United States'], ['Prefer not to answer', '']]
     indigenous_yes.map { |disp, _value| disp }

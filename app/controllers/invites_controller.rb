@@ -19,15 +19,15 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-    if @invite.email == @proposal.lead_organizer.email
-      redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot send invite to your own'
+    if @invite.email == @proposal.lead_organizer&.email
+      redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot send yourself an invite'
     else
       @invite.proposal = @proposal
       person unless @invite.person
 
       if @invite.save
         InviteMailer.with(invite: @invite).invite_email.deliver_later
-        redirect_to edit_proposal_path(@proposal)
+        redirect_to edit_proposal_path(@proposal), notice: "Invitation sent to #{@invite.person.fullname}."
       else
         redirect_to new_proposal_invite_path(@proposal), alert: @invite.errors.full_messages
       end

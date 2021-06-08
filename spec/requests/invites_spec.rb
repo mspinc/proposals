@@ -31,7 +31,8 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
         { firstname: 'Ben',
           lastname: 'Tan',
           email: 'ben@tan.com',
-          invited_as: 'Participant' }
+          invited_as: 'Participant',
+          deadline_date: Time.current.to_date }
       end
       it "creates a new invite" do
         expect do
