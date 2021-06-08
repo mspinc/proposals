@@ -1,7 +1,7 @@
-<%= form_for field, data: { controller: 'nested-form', nested_form_wrapper_selector_value: '.nested-form-wrapper' }, url: 'proposal_fields?type=Radio' do |f| %>
+<%= form_for field, data: {controller: 'nested-form nested-options', nested_form_wrapper_selector_value: '.nested-form-wrapper',nested_options_wrapper_selector_value: '.nested-options-wrapper'}, url: 'proposal_fields?type=Radio' do |f| %>
   <div class="mb-3">
     <%= f.label :statement , class: 'form-label'%>
-    <%= f.text_field :statement, required: true ,class:'form-control'%>
+    <%= f.text_field :statement, required: true, class:'form-control'%>
   </div>
   <div class="mb-3">
     <%= f.label :location, class: 'form-label' %>
@@ -19,7 +19,20 @@
     <%= f.label :position , class: 'form-label'%>
     <%= f.number_field :position, required: true, class:'form-control' %>
   </div>
-  <%= render partial: 'options_form', locals: { f: f } %>
+  <div>
+    <template data-nested-options-target="template">
+      <%= f.fields_for :options, Option.new, child_index: 'NEW_RECORD' do |opt| %>
+        <%= render partial: 'options_form', locals: { f:opt } %>
+      <% end %>
+    </template>
+   <%= f.fields_for :options do |opt| %>
+      <%= render partial: 'options_form', locals: { f:opt } %>
+    <% end %>
+    <div data-nested-options-target="target"></div>
+    <button type="button" class="btn btn-primary btn-sm my-2" data-action="nested-options#add">
+      Add option
+    </button>
+  </div>
   <div>
     <template data-nested-form-target="template">
       <%= f.fields_for :validations, Validation.new, child_index: 'NEW_RECORD' do |validation| %>

@@ -4,39 +4,31 @@ module ProposalFieldsHelper
   end
 
   def proposal_field_options(field)
-    if field.options == "{}"
-      []
-    else
-      options = []
-      field.options.each do |option|
-        options.push([option.last["text"], option.last["value"]])
-      end
-      options
+    options = []
+    field.options.each do |option|
+      options.push([option.text, option.value])
     end
+    options
   end
 
   def options(field)
-    if field.options == "{}"
-      []
-    else
-      opt = []
-      field.options.each do |option|
-        opt.push(option.last['text'])
-      end
-      opt
+    opt = []
+    field.options.each do |option|
+      opt.push(option.text)
     end
+    opt
   end
 
   def options_for_field(field)
-    if field.fieldable_type.in?(%w[ProposalFields::SingleChoice ProposalFields::MultiChoice ProposalFields::Radio])
-      options(field.fieldable)
-    end
+    return unless field.fieldable_type.in?(%w[ProposalFields::SingleChoice ProposalFields::MultiChoice
+                                              ProposalFields::Radio])
+
+    options(field)
   end
 
   def answer(field, proposal)
     return unless proposal
 
-    proposal_field = ProposalField.find field.id
     Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.answer
   end
 
@@ -58,7 +50,7 @@ module ProposalFieldsHelper
   def validations(field, proposal)
     ProposalFieldValidationsService.new(field, proposal).validations
   end
-  
+
   def proposal_field_partial(field)
     "proposal_fields/#{field.fieldable_type.split('::').last.underscore}"
   end
