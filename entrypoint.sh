@@ -95,7 +95,7 @@ fi
 
 echo
 echo "Updating file permissions..."
-chown app:app -R /home/app/proposals
+# chown app:app -R /home/app/proposals
 
 echo
 echo "Compiling Assets..."
