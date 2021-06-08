@@ -15,7 +15,7 @@
       </a>
     <% end %>
   </p>
-  <% proposal_field_options(field.fieldable).each do |text,value| %>
+  <% proposal_field_options(field).each do |text,value| %>
     <div>
       <input type="radio" name="<%= field.id %>" value="<%= value %>" <%= answer(field, @proposal) == value ? 'checked' : '' %>>
       <span><%= text %></span>
