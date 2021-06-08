@@ -12,6 +12,12 @@ class SubmitProposalsController < ApplicationController
   end
 
   def update_proposal
-    @proposal.update(title: params[:title], year: params[:year])
+    @proposal.update(proposal_params)
+  end
+
+  private
+
+  def proposal_params
+    params.permit(:title, :year)
   end
 end

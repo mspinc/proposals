@@ -13,6 +13,7 @@ class ProposalsController < ApplicationController
   def create
     @proposal = Proposal.new(proposal_params)
     @proposal.status = :draft
+    @proposal.proposal_form = ProposalForm.active_form(@proposal.proposal_type_id)
     if @proposal.save
       @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
       redirect_to edit_proposal_path(@proposal)
