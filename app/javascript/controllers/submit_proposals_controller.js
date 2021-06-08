@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
   
-  static targets = ['proposalType', 'locationSpecificQuestions', 'locationIds', 'text']
+  static targets = ['proposalType', 'locationSpecificQuestions', 'locationIds', 'text', 'tabs']
   static values = { proposalTypeId: Number, proposal: Number }
   
   connect() {
@@ -33,4 +33,32 @@ export default class extends Controller {
       }
     }
   }
+  
+  nextTab() {
+  event.preventDefault();
+  let current_tab
+  for (var i = 0; i < this.tabsTargets.length; i++) {
+    if (this.tabsTargets[i].classList.contains('active')) {
+      current_tab = this.tabsTargets[i]
+    }
+  }
+  let next = current_tab.parentElement.nextElementSibling
+  if (next) {
+    next.firstElementChild.click()
+  }
+}
+
+  previousTab() {
+  event.preventDefault();
+  let current_tab
+  for (var i = 0; i < this.tabsTargets.length; i++) {
+    if (this.tabsTargets[i].classList.contains('active')) {
+      current_tab = this.tabsTargets[i]
+    }
+  }
+  let previous = current_tab.parentElement.previousElementSibling
+  if (previous) {
+    previous.firstElementChild.click()
+  }
+}
 }
