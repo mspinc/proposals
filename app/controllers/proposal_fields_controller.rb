@@ -11,7 +11,6 @@ class ProposalFieldsController < ApplicationController
 
   def create
     @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new
-    options if params[:type].in?(%w[SingleChoice MultiChoice Radio])
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)
     @proposal_field.fieldable = @fieldable
     if @proposal_field.insert_at(@proposal_field.position)
@@ -44,7 +43,8 @@ class ProposalFieldsController < ApplicationController
 
   def proposal_field_params
     params.require(:proposal_field).permit(:position, :description, :location_id, :statement, :guideline_link,
-                                           validations_attributes: %i[id _destroy validation_type value error_message])
+                                           validations_attributes: %i[id _destroy validation_type value error_message],
+                                           options_attributes: %i[id index value text _destroy])
   end
 
   def set_proposal_form
@@ -53,9 +53,5 @@ class ProposalFieldsController < ApplicationController
 
   def set_proposal_field
     @proposal_field = ProposalField.find_by(id: params[:id])
-  end
-
-  def options
-    @fieldable.options = params[:proposal_field][:options]
   end
 end
