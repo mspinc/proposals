@@ -12,4 +12,6 @@ class Proposal < ApplicationRecord
   def lead_organizer
   	proposal_roles.joins(:role).find_by('roles.name = ?', 'lead_organizer')&.person
   end
+
+  scope :no_of_participants, -> (id, invited_as) { joins(:invites).where('invites.invited_as = ? AND invites.proposal_id = ?', invited_as, id) }
 end

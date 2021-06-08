@@ -19,18 +19,18 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-    if @invite.email == @proposal.lead_organizer&.email
-      redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot send yourself an invite'
-    else
-      @invite.proposal = @proposal
-      person unless @invite.person
 
-      if @invite.save
-        InviteMailer.with(invite: @invite).invite_email.deliver_later
-        redirect_to edit_proposal_path(@proposal), notice: "Invitation sent to #{@invite.person.fullname}."
-      else
-        redirect_to new_proposal_invite_path(@proposal), alert: @invite.errors.full_messages
-      end
+    if @invite.email == @proposal.lead_organizer&.email
+      redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot invite yourself!'
+      return
+    end
+
+    max_invitations = Proposal.no_of_participants(@proposal.id, @invite.invited_as).count
+
+    if max_invitations < @proposal.proposal_type[@invite.invited_as.downcase.split(" ").join('_')]
+      create_invite
+    else
+      redirect_to new_proposal_invite_path(@proposal), alert: "The maximum number of #{@invite.invited_as} invitations has been sent."
     end
   end
 
@@ -44,7 +44,7 @@ class InvitesController < ApplicationController
       redirect_to thanks_proposal_invites_path(@invite.proposal)
     else
       InviteMailer.with(invite: @invite, token: @token).invite_acceptance.deliver_later
-      redirect_to new_survey_path(id: @invite.id)
+      redirect_to new_survey_path(code: @invite.code)
     end
   end
 
@@ -56,6 +56,18 @@ class InvitesController < ApplicationController
 
   def person
     @invite.person = Person.find_or_create_by!(firstname: @invite.firstname, lastname: @invite.lastname, email: @invite.email)
+  end
+
+  def create_invite
+    @invite.proposal = @proposal
+    person unless @invite.person
+
+    if @invite.save
+      InviteMailer.with(invite: @invite).invite_email.deliver_later
+      redirect_to edit_proposal_path(@proposal)
+    else
+      render :new, alert: 'Error sending invite'
+    end
   end
 
   def user
