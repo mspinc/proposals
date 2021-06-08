@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_08_074500) do
+ActiveRecord::Schema.define(version: 2021_06_07_100053) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -51,14 +51,18 @@ ActiveRecord::Schema.define(version: 2021_06_08_074500) do
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
-  create_table "invites", force: :cascade do |t|
+  create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "firstname"
     t.string "lastname"
     t.string "email"
     t.string "invited_as"
     t.integer "status", default: 0
+<<<<<<< HEAD
     t.integer "response"
     t.string "code"
+=======
+    t.integer "response", default: 0
+>>>>>>> 0b0d27eefd941a16022c83e290baac484f2d5a7a
     t.bigint "proposal_id", null: false
     t.bigint "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
