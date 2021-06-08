@@ -1,0 +1,14 @@
+class AddProposalFormIdInProposals < ActiveRecord::Migration[6.1]
+  def up
+    add_reference :proposals, :proposal_form, foreign_key: true
+
+    Proposal.find_each do |proposal|
+      proposal.proposal_form = ProposalForm.active_form(proposal.proposal_type_id)
+      proposal.save
+    end
+  end
+
+  def down
+    remove_reference :proposals, :proposal_form, foreign_key: true
+  end
+end
