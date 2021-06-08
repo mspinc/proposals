@@ -19,9 +19,11 @@
           <div class="card" style="background: #f4f7fc">
             <div class="card-body">
               <div data-controller="submit-proposals"  data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
-                    data-submit-proposals-proposal-value="<%= @proposal.id %>" >  
+                    data-submit-proposals-proposal-value="<%= @proposal.id %>" > 
                 <div class="mb-3">
-                  <%= link_to 'Invites', proposal_invites_path(@proposal), class:'btn btn-primary' %>
+                  <% if lead_organizer?(@proposal.proposal_roles) %> 
+                    <%= link_to 'Invites', proposal_invites_path(@proposal), title: 'Invite as a Participant or Co Organizer', 'data-toggle' => 'tooltip', class:'btn btn-primary' %>
+                  <% end %> 
                   <% if @proposal.draft? %>
                     <div class="float-end">
                       <%= f.submit 'Save as draft', class:'btn btn-primary' %>
@@ -57,7 +59,7 @@
 
                       <div class="mb-3">
                         <%= f.label :year %>
-                        <%= f.select :year, options_for_select([['2021', '2021'], ['2022', '2022'], ['2023', '2023'], ['2024', '2024'], ['2025', '2025']], @proposal.year), {}, class: "form-control"%>
+                        <%= f.select :year, options_for_select(proposal_type_year(@proposal.proposal_type),  @proposal.year), {}, class: "form-control"%>
                       </div>
                     </div>
 

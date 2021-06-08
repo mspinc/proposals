@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_07_082657) do
+ActiveRecord::Schema.define(version: 2021_06_08_074500) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -51,17 +51,19 @@ ActiveRecord::Schema.define(version: 2021_06_07_082657) do
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
-  create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "invites", force: :cascade do |t|
     t.string "firstname"
     t.string "lastname"
     t.string "email"
     t.string "invited_as"
     t.integer "status", default: 0
     t.integer "response"
+    t.string "code"
     t.bigint "proposal_id", null: false
     t.bigint "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deadline_date"
     t.index ["person_id"], name: "index_invites_on_person_id"
     t.index ["proposal_id"], name: "index_invites_on_proposal_id"
   end
@@ -155,6 +157,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_082657) do
     t.bigint "updated_by_id"
     t.string "title"
     t.text "introduction"
+    t.integer "version", default: 0
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
@@ -193,6 +196,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_082657) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "year"
   end
 
   create_table "proposals", force: :cascade do |t|
@@ -203,6 +207,8 @@ ActiveRecord::Schema.define(version: 2021_06_07_082657) do
     t.integer "status"
     t.string "title"
     t.string "year"
+    t.bigint "proposal_form_id"
+    t.index ["proposal_form_id"], name: "index_proposals_on_proposal_form_id"
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"
   end
 
@@ -320,6 +326,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_082657) do
   add_foreign_key "proposal_roles", "roles"
   add_foreign_key "proposal_type_locations", "locations"
   add_foreign_key "proposal_type_locations", "proposal_types"
+  add_foreign_key "proposals", "proposal_forms"
   add_foreign_key "proposals", "proposal_types"
   add_foreign_key "role_privileges", "roles"
   add_foreign_key "subjects", "subject_categories"

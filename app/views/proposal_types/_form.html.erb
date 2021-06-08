@@ -29,6 +29,12 @@
           </div>
 
           <div class="mb-3">
+            <%= f.label :year, class: 'form-label' %><br>
+            <%= f.text_field :year, class: 'form-control' %>
+            <small>This text field supports a list of years i.e. 2021, 2022..</small>
+          </div>
+
+          <div class="mb-3">
             <%= f.label :Location , class: 'form-label' %><br>
             <%= f.select :location_ids, locations, {}, class: 'form-control', multiple: true %>
           </div>
