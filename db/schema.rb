@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_04_093036) do
+ActiveRecord::Schema.define(version: 2021_06_08_094723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -98,6 +98,15 @@ ActiveRecord::Schema.define(version: 2021_06_04_093036) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
     t.string "url"
+  end
+
+  create_table "proposal_ams_subjects", force: :cascade do |t|
+    t.bigint "proposal_id"
+    t.bigint "ams_subject_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ams_subject_id"], name: "index_proposal_ams_subjects_on_ams_subject_id"
+    t.index ["proposal_id"], name: "index_proposal_ams_subjects_on_proposal_id"
   end
 
   create_table "proposal_fields", force: :cascade do |t|
@@ -205,7 +214,9 @@ ActiveRecord::Schema.define(version: 2021_06_04_093036) do
     t.integer "status"
     t.string "title"
     t.string "year"
+    t.bigint "subject_id"
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"
+    t.index ["subject_id"], name: "index_proposals_on_subject_id"
   end
 
   create_table "role_privileges", force: :cascade do |t|
@@ -322,6 +333,7 @@ ActiveRecord::Schema.define(version: 2021_06_04_093036) do
   add_foreign_key "proposal_type_locations", "locations"
   add_foreign_key "proposal_type_locations", "proposal_types"
   add_foreign_key "proposals", "proposal_types"
+  add_foreign_key "proposals", "subjects"
   add_foreign_key "role_privileges", "roles"
   add_foreign_key "subjects", "subject_categories"
   add_foreign_key "survey_answers", "people"
