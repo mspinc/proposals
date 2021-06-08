@@ -48,7 +48,7 @@ class ProposalTypesController < ApplicationController
   private
 
   def proposal_type_params
-    params.require(:proposal_type).permit(:name, location_ids: [])
+    params.require(:proposal_type).permit(:name, :co_organizer, :participant, location_ids: [])
   end
 
   def set_proposal_type

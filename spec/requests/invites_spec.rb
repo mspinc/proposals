@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "/proposals/:proposal_id/invites", type: :request do
-  let(:proposal) { create(:proposal) }
+  let(:proposal_type) { create(:proposal_type) }
+  let(:proposal) { create(:proposal, proposal_type: proposal_type) }
   let(:invite) { create(:invite) }
 
   describe "GET /index" do
@@ -41,11 +42,14 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
     end
 
     context "with invalid parameters" do
+      before do 
+        proposal.proposal_type.update(participant: 0)
+      end
       let(:params) do
         { firstname: 'Handree',
           lastname: 'Tan',
           email: 'ben@tan.com',
-          invited_as: ' ' }
+          invited_as: 'Participant' }
       end
       it "does not create a new invite" do
         expect do

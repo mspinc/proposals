@@ -29,6 +29,16 @@
           </div>
 
           <div class="mb-3">
+            <%= f.label :'No of Co Organizers:' , class: 'form-label' %><br>
+            <%= f.number_field :co_organizer %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :'No of Participants:', class: 'form-label' %><br>
+            <%= f.number_field :participant %>
+          </div>
+
+          <div class="mb-3">
             <%= f.label :Location , class: 'form-label' %><br>
             <%= f.select :location_ids, locations, {}, class: 'form-control', multiple: true %>
           </div>

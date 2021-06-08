@@ -19,14 +19,12 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-    @invite.proposal = @proposal
-    person unless @invite.person
+    max_invitations = Proposal.no_of_participants(@proposal.id, @invite.invited_as).count
 
-    if @invite.save
-      InviteMailer.with(invite: @invite).invite_email.deliver_later
-      redirect_to edit_proposal_path(@proposal)
+    if max_invitations < @proposal.proposal_type[@invite.invited_as.downcase.split(" ").join('_')]
+      create_invite
     else
-      render :new, alert: 'Error sending invite'
+      redirect_to new_proposal_invite_path(@proposal), alert: "You cannot send an invite as #{@invite.invited_as}"
     end
   end
 
@@ -52,6 +50,18 @@ class InvitesController < ApplicationController
 
   def person
     @invite.person = Person.find_or_create_by!(firstname: @invite.firstname, lastname: @invite.lastname, email: @invite.email)
+  end
+
+  def create_invite
+    @invite.proposal = @proposal
+    person unless @invite.person
+
+    if @invite.save
+      InviteMailer.with(invite: @invite).invite_email.deliver_later
+      redirect_to edit_proposal_path(@proposal)
+    else
+      render :new, alert: 'Error sending invite'
+    end
   end
 
   def user
