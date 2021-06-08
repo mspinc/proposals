@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2021_06_08_074500) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "ams_subjects", force: :cascade do |t|
@@ -154,8 +155,8 @@ ActiveRecord::Schema.define(version: 2021_06_08_074500) do
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
     t.string "title"
-    t.integer "version", default: 0
     t.text "introduction"
+    t.integer "version", default: 0
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
