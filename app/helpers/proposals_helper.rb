@@ -3,6 +3,11 @@ module ProposalsHelper
     ProposalType.active_forms.map { |pt| [pt.name, pt.id] }
   end
 
+  def proposal_type_year(proposal_type)
+    return [Date.current.year + 2] if proposal_type.year.blank?
+    proposal_type.year&.split(",").map { |year| year}
+  end
+
   def locations
     Location.all.map { |loc| [loc.name, loc.id] }
   end
@@ -11,8 +16,8 @@ module ProposalsHelper
     ProposalType.all.map { |pt| [pt.name, pt.id] }
   end
   
-  def common_proposal_fields(proposal_type)
-    proposal_form = ProposalForm.active_form(proposal_type.id)
+  def common_proposal_fields(proposal)
+    proposal_form = proposal.proposal_form
     proposal_form&.proposal_fields&.where(location_id: nil)
   end
 

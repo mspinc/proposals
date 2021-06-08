@@ -11,15 +11,13 @@ class ProposalFieldsController < ApplicationController
 
   def create
     @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new
-    options if params[:type].in?(%w[SingleChoice MultiChoice Radio])
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)
     @proposal_field.fieldable = @fieldable
     if @proposal_field.insert_at(@proposal_field.position)
-      proposal_field_validations
       @proposal_form.update(updated_by: current_user)
-      redirect_to edit_proposal_form_path(@proposal_form), notice: "Field was successfully created."
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), notice: "Field was successfully created."
     else
-      redirect_to edit_proposal_form_path(@proposal_form), alert: @proposal_form.errors
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), alert: @proposal_form.errors
     end
   end
 
@@ -35,16 +33,18 @@ class ProposalFieldsController < ApplicationController
   def update
     if @proposal_field.update(proposal_field_params)
       @proposal_form.update(updated_by: current_user)
-      redirect_to edit_proposal_form_path(@proposal_form), notice: "Field was successfully updated."
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), notice: "Field was successfully updated."
     else
-      redirect_to edit_proposal_form_path(@proposal_form), alert: @proposal_form.errors
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), alert: @proposal_form.errors
     end
   end
 
   private
 
   def proposal_field_params
-    params.require(:proposal_field).permit(:position, :description, :location_id, :statement, :guideline_link)
+    params.require(:proposal_field).permit(:position, :description, :location_id, :statement, :guideline_link,
+                                           validations_attributes: %i[id _destroy validation_type value error_message],
+                                           options_attributes: %i[id index value text _destroy])
   end
 
   def set_proposal_form
@@ -53,15 +53,5 @@ class ProposalFieldsController < ApplicationController
 
   def set_proposal_field
     @proposal_field = ProposalField.find_by(id: params[:id])
-  end
-
-  def options
-    @fieldable.options = params[:proposal_field][:options]
-  end
-
-  def proposal_field_validations
-    params[:proposal_field][:validations]&.each do |key, val|
-      @proposal_field.validations.create(validation_type: val[:type], value: val[:value], error_message: val[:error_message])
-    end
   end
 end

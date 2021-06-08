@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_115331) do
+ActiveRecord::Schema.define(version: 2021_06_08_094723) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -51,17 +51,19 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
-  create_table "invites", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+  create_table "invites", force: :cascade do |t|
     t.string "firstname"
     t.string "lastname"
     t.string "email"
     t.string "invited_as"
     t.integer "status", default: 0
     t.integer "response"
+    t.string "code"
     t.bigint "proposal_id", null: false
     t.bigint "person_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "deadline_date"
     t.index ["person_id"], name: "index_invites_on_person_id"
     t.index ["proposal_id"], name: "index_invites_on_proposal_id"
   end
@@ -77,11 +79,12 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
 
   create_table "options", force: :cascade do |t|
     t.string "text"
-    t.string "optionable_type"
-    t.bigint "optionable_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["optionable_type", "optionable_id"], name: "index_options_on_optionable"
+    t.integer "index"
+    t.string "value"
+    t.bigint "proposal_field_id", null: false
+    t.index ["proposal_field_id"], name: "index_options_on_proposal_field_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -98,6 +101,15 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
     t.string "url"
+  end
+
+  create_table "proposal_ams_subjects", force: :cascade do |t|
+    t.bigint "proposal_id"
+    t.bigint "ams_subject_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ams_subject_id"], name: "index_proposal_ams_subjects_on_ams_subject_id"
+    t.index ["proposal_id"], name: "index_proposal_ams_subjects_on_proposal_id"
   end
 
   create_table "proposal_fields", force: :cascade do |t|
@@ -125,21 +137,18 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "options", default: "{}"
   end
 
   create_table "proposal_fields_radios", force: :cascade do |t|
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "options", default: "{}"
   end
 
   create_table "proposal_fields_single_choices", force: :cascade do |t|
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.jsonb "options", default: "{}"
   end
 
   create_table "proposal_fields_texts", force: :cascade do |t|
@@ -156,6 +165,8 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
     t.string "title"
+    t.text "introduction"
+    t.integer "version", default: 0
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
@@ -194,6 +205,9 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "year"
+    t.integer "participant"
+    t.integer "co_organizer"
   end
 
   create_table "proposals", force: :cascade do |t|
@@ -204,7 +218,11 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
     t.integer "status"
     t.string "title"
     t.string "year"
+    t.bigint "proposal_form_id"
+    t.bigint "subject_id"
+    t.index ["proposal_form_id"], name: "index_proposals_on_proposal_form_id"
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"
+    t.index ["subject_id"], name: "index_proposals_on_subject_id"
   end
 
   create_table "role_privileges", force: :cascade do |t|
@@ -309,6 +327,7 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
   add_foreign_key "demographic_data", "people"
   add_foreign_key "invites", "people"
   add_foreign_key "invites", "proposals"
+  add_foreign_key "options", "proposal_fields"
   add_foreign_key "proposal_fields", "proposal_forms"
   add_foreign_key "proposal_forms", "proposal_types"
   add_foreign_key "proposal_forms", "users", column: "created_by_id"
@@ -320,7 +339,9 @@ ActiveRecord::Schema.define(version: 2021_06_01_115331) do
   add_foreign_key "proposal_roles", "roles"
   add_foreign_key "proposal_type_locations", "locations"
   add_foreign_key "proposal_type_locations", "proposal_types"
+  add_foreign_key "proposals", "proposal_forms"
   add_foreign_key "proposals", "proposal_types"
+  add_foreign_key "proposals", "subjects"
   add_foreign_key "role_privileges", "roles"
   add_foreign_key "subjects", "subject_categories"
   add_foreign_key "survey_answers", "people"

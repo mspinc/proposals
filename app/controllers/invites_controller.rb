@@ -19,14 +19,18 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-    @invite.proposal = @proposal
-    person unless @invite.person
 
-    if @invite.save
-      InviteMailer.with(invite: @invite).invite_email.deliver_later
-      redirect_to edit_proposal_path(@proposal)
+    if @invite.email == @proposal.lead_organizer&.email
+      redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot invite yourself!'
+      return
+    end
+
+    max_invitations = Proposal.no_of_participants(@proposal.id, @invite.invited_as).count
+
+    if max_invitations < @proposal.proposal_type[@invite.invited_as.downcase.split(" ").join('_')]
+      create_invite
     else
-      render :new, alert: 'Error sending invite'
+      redirect_to new_proposal_invite_path(@proposal), alert: "The maximum number of #{@invite.invited_as} invitations has been sent."
     end
   end
 
@@ -39,8 +43,8 @@ class InvitesController < ApplicationController
       InviteMailer.with(invite: @invite).invite_decline.deliver_later
       redirect_to thanks_proposal_invites_path(@invite.proposal)
     else
-      InviteMailer.with(invite: @invite).invite_acceptance.deliver_later
-      redirect_to new_survey_path(id: @invite.id)
+      InviteMailer.with(invite: @invite, token: @token).invite_acceptance.deliver_later
+      redirect_to new_survey_path(code: @invite.code)
     end
   end
 
@@ -54,6 +58,18 @@ class InvitesController < ApplicationController
     @invite.person = Person.find_or_create_by!(firstname: @invite.firstname, lastname: @invite.lastname, email: @invite.email)
   end
 
+  def create_invite
+    @invite.proposal = @proposal
+    person unless @invite.person
+
+    if @invite.save
+      InviteMailer.with(invite: @invite).invite_email.deliver_later
+      redirect_to edit_proposal_path(@proposal)
+    else
+      render :new, alert: 'Error sending invite'
+    end
+  end
+
   def user
     user = User.new(email: @invite.person.email, password: '123456123456')
     user.person = @invite.person
@@ -61,7 +77,7 @@ class InvitesController < ApplicationController
   end
 
   def set_invite
-    @invite = Invite.find(params[:id])
+    @invite = Invite.find_by(code: params[:code])
   end
 
   def set_proposal
@@ -69,7 +85,7 @@ class InvitesController < ApplicationController
   end
 
   def invite_params
-    params.require(:invite).permit(:firstname, :lastname, :email, :invited_as)
+    params.require(:invite).permit(:firstname, :lastname, :email, :invited_as, :deadline_date)
   end
 
   def proposal_role

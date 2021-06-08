@@ -29,9 +29,9 @@ RSpec.feature "Proposal_Types index", type: :feature do
     expect(page).to have_link(href: new_proposal_type_path)
   end
 
-  scenario "there is a link to Proposal Form" do
+  scenario "there is a link to Proposal Forms" do
     ProposalType.all.each do |proposal_type|
-      expect(page).to have_link(href: new_proposal_form_url(proposal_type: proposal_type.id))
+      expect(page).to have_link(href: proposal_type_proposal_forms_path(proposal_type))
     end
   end
 end

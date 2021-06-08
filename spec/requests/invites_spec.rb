@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "/proposals/:proposal_id/invites", type: :request do
-  let(:proposal) { create(:proposal) }
+  let(:proposal_type) { create(:proposal_type) }
+  let(:proposal) { create(:proposal, proposal_type: proposal_type) }
   let(:invite) { create(:invite) }
 
   describe "GET /index" do
@@ -31,7 +32,8 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
         { firstname: 'Ben',
           lastname: 'Tan',
           email: 'ben@tan.com',
-          invited_as: 'Participant' }
+          invited_as: 'Participant',
+          deadline_date: Time.current.to_date }
       end
       it "creates a new invite" do
         expect do
@@ -41,11 +43,14 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
     end
 
     context "with invalid parameters" do
+      before do
+        proposal.proposal_type.update(participant: 0)
+      end
       let(:params) do
         { firstname: 'Handree',
           lastname: 'Tan',
           email: 'ben@tan.com',
-          invited_as: ' ' }
+          invited_as: 'Participant' }
       end
       it "does not create a new invite" do
         expect do
@@ -57,13 +62,13 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
 
   describe "POST /inviter_response" do
     before do
-      post inviter_response_proposal_invite_path(proposal_id: proposal.id, id: invite.id)
+      post inviter_response_proposal_invite_path(proposal_id: proposal.id, id: invite.id, code: invite.code)
     end
 
     context 'when response is yes/maybe' do
       let(:params) { { response: 'yes' } }
       it { expect(invite.proposal.proposal_roles.last.role.name).to eq(invite.invited_as) }
-      it { expect(response).to redirect_to(new_survey_path(id: invite.id)) }
+      it { expect(response).to redirect_to(new_survey_path(code: invite.code)) }
     end
 
     context 'when response is no' do
@@ -74,7 +79,7 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
 
   describe "GET /show" do
     before do
-      get proposal_invite_path(proposal_id: proposal.id, id: invite1.id)
+      get proposal_invite_path(proposal_id: proposal.id, id: invite1.id, code: invite1.code)
     end
 
     context 'when status is pending' do

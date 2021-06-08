@@ -19,9 +19,11 @@
           <div class="card" style="background: #f4f7fc">
             <div class="card-body">
               <div data-controller="submit-proposals"  data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
-                    data-submit-proposals-proposal-value="<%= @proposal.id %>" >  
+                    data-submit-proposals-proposal-value="<%= @proposal.id %>" > 
                 <div class="mb-3">
-                  <%= link_to 'Invites', proposal_invites_path(@proposal), class:'btn btn-primary' %>
+                  <% if lead_organizer?(@proposal.proposal_roles) %> 
+                    <%= link_to 'Invites', proposal_invites_path(@proposal), title: 'Invite as a Participant or Co Organizer', 'data-toggle' => 'tooltip', class:'btn btn-primary' %>
+                  <% end %> 
                   <% if @proposal.draft? %>
                     <div class="float-end">
                       <%= f.submit 'Save as draft', class:'btn btn-primary' %>
@@ -31,14 +33,17 @@
                 </div>
               <div class="col-12 col-lg-12">
                 <div class="tab">
-                  <ul class="nav nav-tabs row" role="tablist">
-                    <li class="nav-item col-4"><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab">Step 1</a></li>
-                    <li class="nav-item col-4"><a class="nav-link" href="#tab-2" data-bs-toggle="tab" role="tab">Step 2</a></li>
-                    <li class="nav-item col-4"><a class="nav-link" href="#tab-3" data-bs-toggle="tab" role="tab">Step 3</a></li>
+                  <ul id="tabs" class="nav nav-tabs row" role="tablist">
+                    <li class="nav-item active col-4" data-target='submit-proposals.tabs'><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab" data-target='submit-proposals.tabs'>Step 1</a></li>
+                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link" href="#tab-2" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 2</a></li>
+                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a></li>
                   </ul>
                   <div class="tab-content">
                     <div class="tab-pane active" id="tab-1" role="tabpanel">
                       <h4 class="tab-title"></h4>
+                      <div class="mb-3">
+                        <p><%= ProposalForm.active_form(@proposal.proposal_type.id)&.introduction %></p>
+                      </div>
                       <div class="mb-3">
                         <%= f.label :title %>
                         <%= f.text_field :title, class: 'form-control', value: @proposal.title %>
@@ -54,14 +59,39 @@
 
                       <div class="mb-3">
                         <%= f.label :year %>
-                        <%= f.select :year, options_for_select([['2021', '2021'], ['2022', '2022'], ['2023', '2023'], ['2024', '2024'], ['2025', '2025']], @proposal.year), {}, class: "form-control"%>
+                        <%= f.select :year, options_for_select(proposal_type_year(@proposal.proposal_type),  @proposal.year), {}, class: "form-control"%>
+                      </div>
+                      <div class="mb-5">
+                        <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                      </div>
+                      <div class="mb-3 row">
+                        <h4>Subject Areas</h4>
+                        <div class="col-6 mt-2">
+                          <label>Subject Area</label>
+                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), {}, class: "form-control"%>
+                        </div>
+                        <div class="col-6 mt-2">
+                          <div class="mb-3">
+                            <label>AMS Subject Code 1</label>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.first&.id), {}, class: "form-control", name:'ams_subject_ids[]'%>
+                          </div>
+
+                          <div class="mb-3">
+                            <label>AMS Subject Code 2</label>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.last&.id), {}, class: "form-control", name:'ams_subject_ids[]'%>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
                     <div class="tab-pane" id="tab-2" role="tabpanel">
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal.proposal_type) } %>
-                    </div>
+                    <div class="mb-4">
+                      <button style="float: right;" id="changeTab" class="btn btn-primary mx-2" data-action='click->submit-proposals#nextTab'>Next</button>
+                       <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                     </div>
+                  </div>
                     
                     <div class="tab-pane" id="tab-3" role="tabpanel">
                       <!-- <h4 class="tab-title">Location Fields</h4> -->
@@ -69,7 +99,11 @@
                         <%= f.label :location , class: 'form-label'%>
                         <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{}, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control', multiple: true, name: 'location_ids[]' %>
                       </div>
+                      <div class="mb-5">
+                        <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                      </div>
                       <div data-submit-proposals-target='locationSpecificQuestions'></div>
+
                     </div>
                   </div>
                   </div>
@@ -82,4 +116,3 @@
     <%end%>
   </div>
 </main>
-

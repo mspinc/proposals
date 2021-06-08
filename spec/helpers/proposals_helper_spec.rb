@@ -19,6 +19,13 @@ RSpec.describe ProposalsHelper, type: :helper do
     end
   end
 
+  describe "#proposal_type_year" do
+    let(:proposal_type) { create(:proposal_type) }
+    it "return array of year comma separated [year]" do
+      expect(proposal_type_year(proposal_type)).to match_array(["2021", "2022", "2023"])
+    end
+  end
+
   describe "#locations" do
     let(:locations_list) { create_list(:location, 4) }
     it "returns array of locations [name,id]" do
@@ -31,9 +38,10 @@ RSpec.describe ProposalsHelper, type: :helper do
     let(:p_type) { create(:proposal_type) }
     let(:p_form) { create(:proposal_form, proposal_type: p_type, status: :active) }
     let(:fields) { create(:proposal_field, :radio_field, proposal_form: p_form) }
+    let(:proposal) { create(:proposal, proposal_form: p_form, proposal_type: p_type) }
     it "returns proposal fields" do
       fields
-      expect(common_proposal_fields(p_type)).to eq([fields])
+      expect(common_proposal_fields(proposal)).to eq([fields])
     end
   end
 end

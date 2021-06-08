@@ -6,7 +6,7 @@
           <div class="card-body">
             <div class="m-sm-4">
               <div data-controller="survey">
-                <%= form_for :survey, url: submit_survey_survey_index_path(id: params[:id]), method: :post do |f| %>
+                <%= form_for :survey, url: submit_survey_survey_index_path(code: params[:code]), method: :post do |f| %>
                   <div class="col-lg-8">
                     <div class="mb-3"> 
                       <div>
@@ -21,7 +21,7 @@
 
                     <div class="mb-3">
                       <div>
-                        <label>2. Do you identify as an indigenous person?</label>
+                        <label>2. Do you identify as an Indigenous person?</label>
                         <%= f.select "indigenous_person", options_for_select(indigenous_person_options), {}, data: {'survey-target': 'indigenous',action: 'click->survey#handleIndigenousOptions'}, class: "form-control" %>
                         <div class="hidden mt-3" data-survey-target="indigenousYes">
                           <%= f.select "indigenous_person_yes", options_for_select(indigenouse_person_yes_options), {}, class: "form-control", multiple: true %>

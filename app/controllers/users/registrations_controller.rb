@@ -6,27 +6,39 @@ module Users
     # before_action :configure_account_update_params, only: [:update]
 
     # GET /resource/sign_up
-    # def new
-    #   super
-    # end
+    def new
+      build_resource
+      resource.build_person
+      respond_with resource
+    end
 
     # POST /resource
     def create
-      person = Person.new(firstname: person_params[:firstname],
-                           lastname: person_params[:lastname],
-                              email: user_params[:email])
+      email = sign_up_params['person_attributes']['email']
+      build_resource(sign_up_params.merge(email: email))
 
-      unless person.valid?
-        flash[:error] = person.errors.full_messages.join(", ")
-        build_resource(sign_up_params)
-        render :new and return
+      person = Person.find_by_email(email)
+      unless person.blank?
+        person.assign_attributes(sign_up_params['person_attributes'])
+        resource.person = person
       end
 
-      super
-
+      resource.save
+      yield resource if block_given?
       if resource.persisted?
-        person.user = resource
-        person.save
+        if resource.active_for_authentication?
+         set_flash_message! :notice, :signed_up
+         sign_up(resource_name, resource)
+         respond_with resource, location: after_sign_up_path_for(resource)
+        else
+         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+         expire_data_after_sign_in!
+         respond_with resource, location: after_inactive_sign_up_path_for(resource)
+        end
+      else
+        clean_up_passwords resource
+        set_minimum_password_length
+        respond_with resource
       end
     end
 
@@ -78,15 +90,15 @@ module Users
     # end
 
     def configure_sign_up_params
-      devise_parameter_sanitizer.permit(:sign_up, keys: [:firstname, :lastname])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [person_attributes: [:firstname, :lastname, :email]])
     end
 
-    def person_params
-      params.permit(:firstname, :lastname)
-    end
+    # def person_params
+    #   params.permit(:firstname, :lastname)
+    # end
 
-    def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
-    end
+    # def user_params
+    #   params.require(:user).permit(:email, :password, :password_confirmation)
+    # end
   end
 end

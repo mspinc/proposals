@@ -1,24 +1,8 @@
 import { Controller } from "stimulus" 
 
 export default class extends Controller {
-  static targets = ['hiddenField','proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow','contentOfButton', 'addValidation', 'validationRow']
-  static values = { visible: Boolean, field: String, index: Number  , validation: Number}
-
-  handleValidationChange(event){
-    let value = event.target.dataset.value
-    let selected_target = '' 
-    for (var i = 0; i < this.hiddenFieldTargets.length; i++) {
-      if (this.hiddenFieldTargets[i].dataset.value === value){
-        selected_target= this.hiddenFieldTargets[i]
-      }
-    }
-    if(event.target.value != "mandatory"){
-      selected_target.hidden = false
-    }
-    else{
-      selected_target.hidden = true
-    }
-  }
+  static targets = ['proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow','contentOfButton']
+  static values = { visible: Boolean, field: String, index: Number}
 
   toggleProposalFieldsPanel () {
     if( this.contentOfButtonTarget.innerText === 'Back' ){
@@ -34,6 +18,19 @@ export default class extends Controller {
       this.updateText()
   }
 
+  handleValidationChange (event) {
+    let id = event.currentTarget.id.split('_')[4]
+    let node = document.getElementById(`proposal_field_validations_attributes_${id}_value`)
+    if(event.currentTarget.value == 'mandatory') {
+      node.style.display = 'none'
+      node.previousElementSibling.style.display = 'none'
+    } else {
+      node.parentElement.classList.remove('hidden')
+      node.style.display = 'block'
+      node.previousElementSibling.style.display = 'block'
+    }
+  }
+
   updateText () {
     if( this.contentOfButtonTarget.innerText === 'Add Form Field' )
       this.contentOfButtonTarget.innerText = 'Back'
@@ -43,7 +40,7 @@ export default class extends Controller {
 
   fetchField(evt) {
     var dataset = evt.currentTarget.dataset
-    fetch(`/proposal_forms/${dataset.id}/proposal_fields/new?field_type=${dataset.field}`)
+    fetch(`/proposal_types/${dataset.typeId}/proposal_forms/${dataset.id}/proposal_fields/new?field_type=${dataset.field}`)
       .then(response => response.text())
       .then(data => {
         this.proposalFieldTarget.innerHTML = data
@@ -52,7 +49,7 @@ export default class extends Controller {
 
   editField(evt) {
     var dataset = evt.currentTarget.dataset
-    fetch(`/proposal_forms/${dataset.proposalFormId}/proposal_fields/${dataset.fieldId}/edit`)
+    fetch(`/proposal_types/${dataset.typeId}/proposal_forms/${dataset.proposalFormId}/proposal_fields/${dataset.fieldId}/edit`)
       .then(response => response.text())
       .then(data => {
         this.proposalFieldTarget.innerHTML = data
@@ -72,27 +69,6 @@ export default class extends Controller {
     this.clearOptionValues(child)
   }
 
-  handleAddValidations (event) {
-    
-    this.validationValue += 1
-    let clonedValidation = this.validationRowTarget.cloneNode(true)
-    let child = clonedValidation.childNodes[1]
-    child.childNodes[1].childNodes[3].name = `proposal_field[validations][${this.validationValue}][type]`
-    child.childNodes[3].childNodes[3].name = `proposal_field[validations][${this.validationValue}][value]`
-    child.childNodes[5].childNodes[3].name = `proposal_field[validations][${this.validationValue}][error_message]`
-    child.childNodes[1].childNodes[3].dataset.value = `proposal_field[validations][${this.validationValue}][type]`
-    child.childNodes[3].dataset.value = `proposal_field[validations][${this.validationValue}][type]`
-
-    this.addValidationTarget.append(clonedValidation)
-    this.clearValidationValues(child)
-  }
-
-  clearValidationValues (node) {
-    node.childNodes[1].childNodes[3].value = ''
-    node.childNodes[3].childNodes[3].value =  ''
-    node.childNodes[5].childNodes[3].value = ''
-  }
-
   clearOptionValues (node) {
     node.childNodes[1].childNodes[3].value = ''
     node.childNodes[3].childNodes[3].value =  ''
@@ -100,10 +76,6 @@ export default class extends Controller {
   }
 
   deleteOption (event) {
-    event.currentTarget.parentElement.parentElement.remove()
-  }
-
-  deleteValidation (event) {
     event.currentTarget.parentElement.parentElement.remove()
   }
 }
