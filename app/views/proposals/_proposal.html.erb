@@ -94,9 +94,9 @@
                     <div class="tab-pane" id="tab-2" role="tabpanel">
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal.proposal_type) } %>
-                    <div class="mb-4">
-                      <button style="float: right;" id="changeTab" class="btn btn-primary mx-2" data-action='click->submit-proposals#nextTab'>Next</button>
-                       <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                    <div class="float-end">
+                      <button id="changeTab" class="btn btn-primary mx-2" data-action='click->submit-proposals#nextTab'>Next</button>
+                       <button id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
                      </div>
                   </div>
                     
