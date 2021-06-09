@@ -22,12 +22,12 @@
                     data-submit-proposals-proposal-value="<%= @proposal.id %>" > 
                 <div class="mb-3">
                   <% if lead_organizer?(@proposal.proposal_roles) %> 
-                    <%= link_to 'Invites', proposal_invites_path(@proposal), title: 'Invite as a Participant or Co Organizer', 'data-toggle' => 'tooltip', class:'btn btn-primary' %>
+                    <%= link_to 'Invite People', proposal_invites_path(@proposal), title: 'Invite as a Participant or Co Organizer', 'data-toggle' => 'tooltip', class:'btn btn-primary' %>
                   <% end %> 
                   <% if @proposal.draft? %>
                     <div class="float-end">
                       <%= f.submit 'Save as draft', class:'btn btn-primary' %>
-                      <%= f.submit 'Publish', class:'btn btn-primary' %>
+                      <%= f.submit 'Submit for Review', class:'btn btn-primary' %>
                     </div>
                   <% end %>
                 </div>
@@ -59,26 +59,26 @@
 
                       <div class="mb-3">
                         <%= f.label :year %>
-                        <%= f.select :year, options_for_select(proposal_type_year(@proposal.proposal_type),  @proposal.year), {}, class: "form-control"%>
-                      </div>
-                      <div class="mb-5">
-                        <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                        <%= f.select :year, options_for_select(proposal_type_year(@proposal.proposal_type),  @proposal.year), {}, class: "form-select w-25"%>
                       </div>
                       <div class="mb-3 row">
                         <h4>Subject Areas</h4>
                         <div class="col-6 mt-2">
                           <label>Subject Area</label>
-                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), {}, class: "form-control"%>
+                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), {}, class: "form-select"%>
                         </div>
                         <div class="col-6 mt-2">
                           <div class="mb-3">
                             <label>AMS Subject Code 1</label>
-                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.first&.id), {}, class: "form-control", name:'ams_subject_ids[]'%>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.first&.id), {}, class: "form-select", name:'ams_subject_ids[]'%>
                           </div>
 
                           <div class="mb-3">
                             <label>AMS Subject Code 2</label>
-                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.last&.id), {}, class: "form-control", name:'ams_subject_ids[]'%>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.last&.id), {}, class: "form-select", name:'ams_subject_ids[]'%>
+                          </div>
+                          <div class="mb-5">
+                            <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
                           </div>
                         </div>
                       </div>
@@ -96,8 +96,8 @@
                     <div class="tab-pane" id="tab-3" role="tabpanel">
                       <!-- <h4 class="tab-title">Location Fields</h4> -->
                       <div class="mb-3">
-                        <%= f.label :location , class: 'form-label'%>
-                        <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{}, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control', multiple: true, name: 'location_ids[]' %>
+                        <%= f.label :location, "Select your preferred location for this event:", class: 'form-label lead' %>
+                        <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control form-select', multiple: false, name: 'location_ids[]' %>
                       </div>
                       <div class="mb-5">
                         <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>

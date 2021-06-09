@@ -3,12 +3,12 @@ require 'rails_helper'
 RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   let(:proposal_type) { create(:proposal_type) }
   let(:proposal) { create(:proposal, proposal_type: proposal_type) }
-  let(:invite) { create(:invite) }
+  let(:invite) { create(:invite, proposal: proposal) }
 
   describe "GET /index" do
     before do
       authenticate_for_controllers
-      get proposal_invites_url(proposal_id: proposal.id)
+      get proposal_invites_url(proposal_id: invite.proposal.id)
     end
     it { expect(response).to have_http_status(:ok) }
   end
@@ -16,8 +16,9 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   describe "GET /new" do
     before do
       authenticate_for_controllers
-      get new_proposal_invite_path(proposal_id: proposal.id)
+      get new_proposal_invite_path(proposal_id: invite.proposal.id)
     end
+
     it "renders a successful response" do
       expect(response).to have_http_status(:ok)
     end

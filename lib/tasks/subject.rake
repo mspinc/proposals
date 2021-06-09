@@ -1,4 +1,8 @@
 namespace :subject do
+  task :default => 'subject:birs_subjects'
+
+  desc "Add Subjects to database"
+
   task birs_subjects: :environment do
     subject_codes = [
       { code: 'ACS', title: 'Applied Computer Science' },
@@ -128,7 +132,7 @@ namespace :subject do
     end
 
     ams_subject_codes.each do |ams_subject|
-      AmsSubject.create(code: ams_subject[:code], title: ams_subject[:title], subject_category: category)
+      AmsSubject.create(code: ams_subject[:code], title: ams_subject[:title])
     end
   end
 end
