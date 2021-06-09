@@ -89,6 +89,7 @@ jobs:
             tar cvf - --exclude=".git" . | tar xf - -C /home/app/proposals/
             chown -R app:app /home/app/proposals
             cd /home/app/proposals
+            bundle install
             bundle exec cap staging deploy
 
   deploy_to_production:
