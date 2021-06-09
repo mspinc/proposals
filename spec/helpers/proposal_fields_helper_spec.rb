@@ -12,26 +12,30 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
 
   describe "#proposal_field_options" do
     let(:radio_field) { create(:proposal_field, :radio_field) }
-
+    let(:option) { create(:option, proposal_field: radio_field)}
+   
     it "returns array of options value and text" do
-      expect(proposal_field_options(radio_field.fieldable)).to match_array([%w[Female F], %w[Male M]])
+      option
+      expect(proposal_field_options(radio_field)).to match_array([%w[Male M]])
     end
 
     it 'returns empty array' do
-      radio_field.fieldable.update(options: '{}')
-      expect(proposal_field_options(radio_field.fieldable)).to match_array([])
+      expect(proposal_field_options(radio_field)).to match_array([])
     end
   end
 
   describe "#options_for_field" do
     let(:single_choice_field) { create(:proposal_field, :single_choice_field) }
+    let(:option_1) { create(:option, proposal_field: single_choice_field)}
+    let(:option_2) { create(:option, proposal_field: single_choice_field, text: 'Female')}
 
     it 'returns array of option values' do
+      option_1
+      option_2
       expect(options_for_field(single_choice_field)).to match_array(%w[Female Male])
     end
 
     it 'returns empty array' do
-      single_choice_field.fieldable.update(options: '{}')
       expect(options_for_field(single_choice_field)).to match_array([])
     end
   end
@@ -41,13 +45,11 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
 
     let(:field) { create(:proposal_field, :multi_choice_field) }
 
-    
     let(:proposal) { create(:proposal) }
     let(:proposal) { create(:proposal) }
 
     let(:field) { create(:proposal_field, :multi_choice_field) }
 
-    
     let(:field) { create(:proposal_field, :multi_choice_field) }
 
     context 'when multichoice filed has answer' do
@@ -69,13 +71,12 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
   end
 
   describe '#location_in_answers' do
-    let(:proposal) { create(:proposal) }
-    let(:field) { create(:proposal_field, :multi_choice_field, :location_based) }
-    let(:answer) { create(:answer, proposal: proposal, proposal_field: field, answer: "[\"YES\"]") }
-    
+    let(:locations) { create_list(:location, 4) }
+    let(:proposal_type) { create(:proposal_type, locations: locations) }
+    let(:proposal) { create(:proposal, proposal_type: proposal_type) }
+
     it 'returns location ids for proposal fields' do
-      answer
-      expect(location_in_answers(proposal)).to match_array([field.location.id])
+      expect(location_in_answers(proposal)).to match_array(proposal.locations.map(&:id))
     end
   end
 end

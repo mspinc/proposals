@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Dear <%= @person&.fullname %>:</h1>
+    <p>
+      Thank you for indicating your interest in participating the proposed workshop, "<%= @proposal.title %>"", currently being organized by <%= @proposal.lead_organizer&.fullname %>. We will contact you regarding future steps, if the proposal is successful.
+    </p>
+    <p>Sincerely,</p>
+    <p>Banff International Research Station,<br>
+      and the Organizing Committee.</p>
+  </body>
+</html>

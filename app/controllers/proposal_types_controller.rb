@@ -1,8 +1,9 @@
 class ProposalTypesController < ApplicationController
-  before_action :set_proposal_type, only: %i[show location_based_fields destroy update edit proposal_type_locations]
+  before_action :set_proposal_type, only: %i[show location_based_fields proposal_forms destroy update edit proposal_type_locations]
 
   def index
     @proposal_types = ProposalType.all
+    redirect_to proposals_path and return unless current_user&.staff_member?
   end
 
   def new
@@ -34,9 +35,9 @@ class ProposalTypesController < ApplicationController
   end
 
   def location_based_fields
-    @proposal = Proposal.find params[:proposal_id]
-    form = @proposal_type.proposal_forms.where(status: :active).last
-    @proposal_fields = form.proposal_fields.where(location_id: params[:ids].split(","))
+    @proposal = Proposal.find(params[:proposal_id])
+    @proposal_fields = @proposal.proposal_form&.proposal_fields&.where(location_id: params[:ids].split(","))
+    @publish = true if params[:publish] == 'true'
     render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_fields }
   end
 
@@ -44,10 +45,12 @@ class ProposalTypesController < ApplicationController
     render json: @proposal_type.locations
   end
 
+  def proposal_forms; end
+
   private
 
   def proposal_type_params
-    params.require(:proposal_type).permit(:name, location_ids: [])
+   params.require(:proposal_type).permit(:name, :year, :co_organizer, :participant, location_ids: [])
   end
 
   def set_proposal_type

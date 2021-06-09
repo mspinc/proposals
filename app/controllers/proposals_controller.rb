@@ -1,5 +1,5 @@
 class ProposalsController < ApplicationController
-  before_action :set_proposal, only: %w[edit destroy]
+  before_action :set_proposal, only: %w[show edit update destroy]
   before_action :authenticate_user!
   
   def index
@@ -13,6 +13,7 @@ class ProposalsController < ApplicationController
   def create
     @proposal = Proposal.new(proposal_params)
     @proposal.status = :draft
+    @proposal.proposal_form = ProposalForm.active_form(@proposal.proposal_type_id)
     if @proposal.save
       @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
       redirect_to edit_proposal_path(@proposal)
@@ -21,7 +22,15 @@ class ProposalsController < ApplicationController
     end
   end
 
-  def edit; end
+  def show; end
+
+  def edit
+    @publish = params[:publish]
+  end
+
+  def text
+    @text = session[:latex_text]
+  end
 
   def destroy
     @proposal.destroy
@@ -34,11 +43,11 @@ class ProposalsController < ApplicationController
   private
 
   def proposal_params
-    params.require(:proposal).permit(:proposal_type_id)
+    params.require(:proposal).permit(:proposal_type_id, :title, :year)
   end
 
   def organizer
-    Role.find_or_create_by!(name: 'Organizer')
+    Role.find_or_create_by!(name: 'lead_organizer')
   end
 
   def set_proposal

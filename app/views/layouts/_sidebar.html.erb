@@ -1,5 +1,5 @@
 <nav id="sidebar" class="sidebar">
-  <a class="sidebar-brand" href="index.html">
+  <a class="sidebar-brand" href="/dashboards">
     <svg>
       <use xlink:href="#ion-ios-pulse-strong"></use>
     </svg>
@@ -7,7 +7,7 @@
   </a>
   <div class="sidebar-content">
     <div class="sidebar-user">
-      <%= image_tag 'avatar.jpg', class:"img-fluid rounded-circle mb-2", alt:"Linda Miller" %>
+
       <div class="fw-bold"></div>
       <small><%= current_user&.fullname %></small>
     </div>
@@ -33,15 +33,14 @@
                 <span class="nav-link-text">Proposal Types</span>
               <% end %>
             </li>
-            <li class="sidebar-item <%= active_menu(proposal_forms_path) %>">
-              <%= link_to proposal_forms_path, class: "sidebar-link" do %>
+            <li class="sidebar-item <%= active_menu(feedbacks_path) %>">
+              <%= link_to feedbacks_path, class: "sidebar-link" do %>
                 <i class="far fa-file-alt"></i>
-                <span class="nav-link-text">Proposal Forms</span>
+                <span class="nav-link-text">Feedback</span>
               <% end %>
             </li>
           </ul>
         </li>
-
       <% else %>
         <li class="sidebar-item <%= proposal_list %>">
           <a data-bs-target="#proposals" data-bs-toggle="collapse" class="sidebar-link collapsed">
@@ -61,7 +60,6 @@
           </ul>
         </li>
       <% end %>
-
       <li class="sidebar-item <%= pages_list %>">
         <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
         <i class="align-middle me-2 fas fa-fw fa-file"></i> <span class="align-middle">Pages</span>
@@ -74,15 +72,22 @@
           </li>
         </ul>
       </li>
+      <% if !current_user&.staff_member? %>
+        <li class="sidebar-item <%= feedback_menu %>">
+          <%= link_to new_feedback_path , class: "sidebar-link" do %>
+            <i class="far fa-file-alt ms-1"></i>
+            <span class="nav-link-text">Feedback</span>
+          <% end %>
+        </li>
+      <% end %>
       <li class="sidebar-item">
-        <%= link_to destroy_user_session_path, :method => :delete, class: "sidebar-link" do %>
+        <%= link_to sign_out_path, method: :delete, class: "sidebar-link" do %>
           <i class="fas fa-sign-out-alt"></i>
           <span class="nav-link-text">Log out</span>
         <% end %>
       </li>
     </ul>
-
-    <% if true || ENV['APPLICATION_HOST']&.include?('staging') %>
+    <% if ENV['APPLICATION_HOST']&.include?('staging') %>
     <div class="sidebar-nav">
       <div class="sidebar-user">Deployed: TIMESTAMP</div>
     </div>

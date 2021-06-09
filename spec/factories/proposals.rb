@@ -6,5 +6,6 @@ FactoryBot.define do
     end
 
     association :proposal_type, factory: :proposal_type, strategy: :create
+    association :proposal_form, factory: :proposal_form, strategy: :create
   end
 end

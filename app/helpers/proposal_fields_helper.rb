@@ -4,40 +4,37 @@ module ProposalFieldsHelper
   end
 
   def proposal_field_options(field)
-    if field.options == "{}"
-      []
-    else
-      options = []
-      field.options.each do |option|
-        options.push([option.last["text"], option.last["value"]])
-      end
-      options
+    options = []
+    field.options.each do |option|
+      options.push([option.text, option.value])
     end
+    options
   end
 
   def options(field)
-    if field.options == "{}"
-      []
-    else
-      opt = []
-      field.options.each do |option|
-        opt.push(option.last['text'])
-      end
-      opt
+    opt = []
+    field.options.each do |option|
+      opt.push(option.text)
     end
+    opt
   end
 
   def options_for_field(field)
-    if field.fieldable_type.in?(%w[ProposalFields::SingleChoice ProposalFields::MultiChoice ProposalFields::Radio])
-      options(field.fieldable)
-    end
+    return unless field.fieldable_type.in?(%w[ProposalFields::SingleChoice ProposalFields::MultiChoice
+                                              ProposalFields::Radio])
+
+    options(field)
   end
 
   def answer(field, proposal)
+    return unless proposal
+
     Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.answer
   end
 
   def multichoice_answer(field, proposal)
+    return unless proposal
+
     answer = Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.answer
     if answer
       JSON.parse(answer)
@@ -47,8 +44,31 @@ module ProposalFieldsHelper
   end
 
   def location_in_answers(proposal)
-    ids = proposal.answers.pluck(:proposal_field_id)
-    proposal_fields = ProposalField.find ids
-    proposal_fields.pluck(:location_id).compact.uniq
+    proposal.locations.pluck(:id)
+  end
+
+  def validations(field, proposal)
+    if field.location_id
+      return [] unless @proposal.locations.include?(field.location)
+    end
+
+    ProposalFieldValidationsService.new(field, proposal).validations
+  end
+
+  def proposal_field_partial(field)
+    "proposal_fields/#{field.fieldable_type.split('::').last.underscore}"
+  end
+
+  def preferred_impossible_dates(field, attr)
+    field.fieldable[attr].split(",").map { |date| [date, date] }
+  end
+
+  def dates_answer(field, proposal, attr)
+    ans = answer(field, proposal)
+    if ans
+      dates = JSON.parse(ans)[attr.to_i]
+    else
+      ans
+    end
   end
 end

@@ -4,10 +4,22 @@ RSpec.describe "/proposal_types", type: :request do
   let(:proposal_type) { create(:proposal_type) }
 
   describe "GET /index" do
-    before do
-      get proposal_types_url
+    context 'for non-staff' do
+      it 'forwards to proposals_path' do
+        get proposal_types_url
+
+        expect(response).to have_http_status(:redirect)
+      end
     end
-    it { expect(response).to have_http_status(:ok) }
+
+    context 'for staff' do
+      it 'responds OK' do
+        authenticate_for_controllers
+        get proposal_types_url
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
   end
 
   describe "GET /new" do
@@ -26,7 +38,7 @@ RSpec.describe "/proposal_types", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      let(:proposal_type_params) { { name: '2 Day Workshop' } }
+      let(:proposal_type_params) { { name: '2 Day Workshop', year: '2015,2016,2017', participant: '1', co_organizer: '1' } }
       it "creates a new proposal_type" do
         expect do
           post proposal_types_url, params: { proposal_type: proposal_type_params }
@@ -47,7 +59,7 @@ RSpec.describe "/proposal_types", type: :request do
 
   describe "PATCH /update" do
     context "with valid parameters" do
-      let(:proposal_type_params) { { name: '5 Day Workshop' } }
+      let(:proposal_type_params) { { name: '5 Day Workshop', year: '2021,2022,2023' } }
 
       before do
         patch proposal_type_url(proposal_type), params: { proposal_type: proposal_type_params }
@@ -58,7 +70,7 @@ RSpec.describe "/proposal_types", type: :request do
     end
 
     context "with invalid parameters" do
-      let(:proposal_type_params) { { name: ' ' } }
+      let(:proposal_type_params) { { name: ' ', year: '2012,2013,2014' } }
 
       before do
         patch proposal_type_url(proposal_type), params: { proposal_type: proposal_type_params }
@@ -88,12 +100,13 @@ RSpec.describe "/proposal_types", type: :request do
   end
 
   describe "GET /location_based_fields" do
-    let(:proposal) { create(:proposal)}
+    let(:proposal) { create(:proposal) }
     let(:proposal_form) { create(:proposal_form, status: :active, proposal_type: proposal_type) }
-    let(:proposal_field) {create(:proposal_field, :radio_field, :location_based, proposal_form: proposal_form, )}
+    let(:proposal_field) { create(:proposal_field, :radio_field, :location_based, proposal_form: proposal_form) }
     before do
       proposal_field
-      get location_based_fields_proposal_type_url(proposal_type, ids: [proposal_field.location.id], proposal_id: proposal.id)
+      get location_based_fields_proposal_type_url(proposal_type, ids: [proposal_field.location.id],
+                                                                 proposal_id: proposal.id)
     end
     it { expect(response).to have_http_status(:ok) }
   end

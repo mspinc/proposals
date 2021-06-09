@@ -6,11 +6,11 @@ module ApplicationHelper
   end
 
   def dashboard_menu
-    return 'show' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms'])
+    return 'show' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms', '/feedback'])
   end
 
   def dashboard_list
-    return 'active' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms'])
+    return 'active' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms', '/feedback'])
   end
 
   def proposal_menu
@@ -27,5 +27,13 @@ module ApplicationHelper
 
   def pages_list
     return 'active' if request.path.in?(['/guidelines'])
+  end
+
+  def feedback_menu 
+    return 'active' if request.path.in?(['/feedback/new'])
+  end
+
+  def lesc(text)
+    LatexToPdf.escape_latex(text)
   end
 end
