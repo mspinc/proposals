@@ -15,7 +15,7 @@
       </a>
     <% end %>
   </p>
-  <%= select_tag "Option", options_for_select(proposal_field_options(field), answer(field, @proposal)), class: 'form-control', name: field.id %>
+  <%= select_tag "Option", options_for_select(proposal_field_options(field), answer(field, @proposal)), class: 'form-select', name: field.id %>
 
   <% if @publish %>
     <% validations(field, @proposal).each do |val| %>

@@ -10,7 +10,7 @@ class ProposalFieldsController < ApplicationController
   end
 
   def create
-    @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new
+    @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new(date_field_params)
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)
     @proposal_field.fieldable = @fieldable
     if @proposal_field.insert_at(@proposal_field.position)
@@ -31,7 +31,7 @@ class ProposalFieldsController < ApplicationController
   end
 
   def update
-    if @proposal_field.update(proposal_field_params)
+    if @proposal_field.update(proposal_field_params) && @proposal_field.fieldable.update(date_field_params)
       @proposal_form.update(updated_by: current_user)
       redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), notice: "Field was successfully updated."
     else
@@ -53,5 +53,13 @@ class ProposalFieldsController < ApplicationController
 
   def set_proposal_field
     @proposal_field = ProposalField.find_by(id: params[:id])
+  end
+
+  def date_field_params
+    param = params.require(:proposal_field)[:proposal_fields_preferred_impossible_date]
+    return {} unless param
+
+    param.permit(:preferred_dates_1, :preferred_dates_2, :preferred_dates_3, :preferred_dates_4,
+                 :preferred_dates_5, :impossible_dates_1, :impossible_dates_2)
   end
 end

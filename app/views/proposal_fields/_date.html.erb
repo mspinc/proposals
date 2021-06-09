@@ -7,10 +7,22 @@
   <% end %>
 </div>
 
-<p class="collapsible collapsed" style="font-style: italic;">
-  <%= field.description %> <%= link_to "Learn More", guidelines_path, target: '_blank' %>
+<p class="comment" style="font-style: italic;">
+  <%= field.description %> 
+  <% if field.description.length > 140 %>
+    <a href="<%= field.guideline_link %>" target="_blank">
+      Learn More
+    </a>
+  <% end %>
 </p>
 
 <div class="mb-3">
   <input name="<%= field.id %>" class="form-control" type="date" value='<%= answer(field, @proposal) %>'> </input>
 </div>
+<% if @publish %>
+  <ul>
+    <% validations(field, @proposal).each do |val| %>
+      <li style="color: red"><%= val %></li>
+    <% end %>
+  </ul>
+<% end %>

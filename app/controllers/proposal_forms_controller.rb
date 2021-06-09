@@ -53,6 +53,7 @@ class ProposalFormsController < ApplicationController
   def proposal_field
     @proposal_field = ProposalField.find_by(id: params[:field_id])
     @proposal_field.destroy
+    @proposal_field.fieldable.destroy
     redirect_to edit_proposal_type_proposal_form_path(@proposal_type, @proposal_form)
   end
 
