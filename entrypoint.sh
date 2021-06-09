@@ -92,10 +92,11 @@ if [ ! -e /home/app/proposals/config/webpacker.yml ]; then
   echo
 fi
 
-
-echo
-echo "Updating file permissions..."
-# chown app:app -R /home/app/proposals
+if [ $RAILS_ENV = "production" ]; then
+  echo
+  echo "Updating file permissions..."
+  chown app:app -R /home/app/proposals
+fi
 
 echo
 echo "Compiling Assets..."
