@@ -132,7 +132,7 @@ namespace :subject do
     end
 
     ams_subject_codes.each do |ams_subject|
-      AmsSubject.create(code: ams_subject[:code], title: ams_subject[:title])
+      AmsSubject.create!(code: ams_subject[:code], title: ams_subject[:title])
     end
   end
 end
