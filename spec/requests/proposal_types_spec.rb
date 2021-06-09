@@ -4,10 +4,22 @@ RSpec.describe "/proposal_types", type: :request do
   let(:proposal_type) { create(:proposal_type) }
 
   describe "GET /index" do
-    before do
-      get proposal_types_url
+    context 'for non-staff' do
+      it 'forwards to proposals_path' do
+        get proposal_types_url
+
+        expect(response).to have_http_status(:redirect)
+      end
     end
-    it { expect(response).to have_http_status(:ok) }
+
+    context 'for staff' do
+      it 'responds OK' do
+        authenticate_for_controllers
+        get proposal_types_url
+
+        expect(response).to have_http_status(:ok)
+      end
+    end
   end
 
   describe "GET /new" do
