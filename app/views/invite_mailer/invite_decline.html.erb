@@ -5,12 +5,12 @@
   <body>
     <h1>Dear <%= @person&.fullname %>:</h1>
     <p>
-      Thank you for letting us know that you will not be able to join the
-      proposed workshop titled <%= @proposal.proposal_type.name %> currently under planning by
-      <%= @proposal.lead_organizer&.fullname %>. We hope you can join us for some other event in the
-      future.
+      Thank you for letting us know that you will not be able to participate in the
+      proposed workshop, "<%= @proposal.title %>"", currently being organized by
+      <%= @proposal.lead_organizer&.fullname %>. We hope you can join us for
+      another event in the future.
     </p>
     <p>Sincerely,</p>
-    <p>[The organizing committee]</p>
+    <p>Banff International Research Station</p>
   </body>
 </html>

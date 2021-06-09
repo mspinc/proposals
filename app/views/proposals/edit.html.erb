@@ -54,7 +54,7 @@
 
                       <div class="mb-3">
                         <label>Type of Meeting</label>
-                        <%= f.label @proposal.proposal_type.name, class: 'form-control' %>
+                        <%= f.label @proposal.proposal_type.name, class: 'form-select w-25' %>
                       </div>
 
                       <div class="mb-3">
@@ -65,17 +65,17 @@
                         <h4>Subject Areas</h4>
                         <div class="col-6 mt-2">
                           <label>Subject Area</label>
-                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), {}, class: "form-select"%>
+                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), { include_blank: '' }, class: "form-select"%>
                         </div>
                         <div class="col-6 mt-2">
                           <div class="mb-3">
                             <label>AMS Subject Code 1</label>
-                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.first&.id), {}, class: "form-select", name:'ams_subject_ids[]'%>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.first&.id), { include_blank: '' }, class: "form-select", name:'ams_subject_ids[]'%>
                           </div>
 
                           <div class="mb-3">
                             <label>AMS Subject Code 2</label>
-                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.last&.id), {}, class: "form-select", name:'ams_subject_ids[]'%>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.last&.id), { include_blank: '' }, class: "form-select", name:'ams_subject_ids[]'%>
                           </div>
                           <div class="mb-5">
                             <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>

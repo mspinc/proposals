@@ -3,6 +3,7 @@ class ProposalTypesController < ApplicationController
 
   def index
     @proposal_types = ProposalType.all
+    redirect_to proposals_path and return unless current_user&.staff_member?
   end
 
   def new
