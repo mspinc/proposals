@@ -48,10 +48,27 @@ module ProposalFieldsHelper
   end
 
   def validations(field, proposal)
+    if field.location_id
+      return [] unless @proposal.locations.include?(field.location)
+    end
+
     ProposalFieldValidationsService.new(field, proposal).validations
   end
 
   def proposal_field_partial(field)
     "proposal_fields/#{field.fieldable_type.split('::').last.underscore}"
+  end
+
+  def preferred_impossible_dates(field, attr)
+    field.fieldable[attr].split(",").map { |date| [date, date] }
+  end
+
+  def dates_answer(field, proposal, attr)
+    ans = answer(field, proposal)
+    if ans
+      dates = JSON.parse(ans)[attr.to_i]
+    else
+      ans
+    end
   end
 end

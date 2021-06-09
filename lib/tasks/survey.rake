@@ -1,5 +1,6 @@
-namespace :survey do
-  task birs_survey: :environment do
+namespace :birs do
+  desc "Add default survey form text to database"
+  task add_survey: :environment do
     survey = { introduction: 'BIRS is committed to providing a welcoming environment to all participants at BIRS events.
             It is our goal to host workshops that are demographically diverse, and to foster opportunities for career
             growth and development that are inclusive to all.

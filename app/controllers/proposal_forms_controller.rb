@@ -15,7 +15,7 @@ class ProposalFormsController < ApplicationController
   def edit
     if @proposal_form.active?
       @proposal_form.update(status: :inactive)
-      form = @proposal_form.deep_clone include: :proposal_fields
+      form = @proposal_form.deep_clone include: { proposal_fields: [:options, :validations] }
       form.status = :draft
       form.save
       redirect_to edit_proposal_type_proposal_form_path(@proposal_type, form)
@@ -53,6 +53,7 @@ class ProposalFormsController < ApplicationController
   def proposal_field
     @proposal_field = ProposalField.find_by(id: params[:field_id])
     @proposal_field.destroy
+    @proposal_field.fieldable.destroy
     redirect_to edit_proposal_type_proposal_form_path(@proposal_type, @proposal_form)
   end
 

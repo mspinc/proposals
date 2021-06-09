@@ -22,6 +22,7 @@ RSpec.feature "Proposal Type new", type: :feature do
 
   scenario "updating the form fields create new Proposal Type" do
     fill_in 'proposal_type_name', with: 'Focussed Research Group'
+    fill_in 'proposal_type_year', with: Time.current.to_date
     fill_in 'proposal_type_co_organizer', with: 2
     fill_in 'proposal_type_participant', with: 3
     select Location.first.name

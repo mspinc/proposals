@@ -92,10 +92,17 @@ if [ ! -e /home/app/proposals/config/webpacker.yml ]; then
   echo
 fi
 
+if [ $RAILS_ENV = "production" ]; then
+  echo
+  echo "Updating file permissions..."
+  chown app:app -R /home/app/proposals
 
-echo
-echo "Updating file permissions..."
-# chown app:app -R /home/app/proposals
+  echo
+  echo "Installing LaTeX..."
+  apt update
+  apt install --yes --fix-missing texlive-latex-extra texlive-extra-utils
+  echo "Done!"
+fi
 
 echo
 echo "Compiling Assets..."
@@ -122,7 +129,7 @@ if [ $APPLICATION_HOST = "localhost" ]; then
 fi
 
 if [ $STAGING_SERVER = "true" ]; then
-  rake staging:release_tag
+  rake birs:release_tag
 fi
 
 echo
