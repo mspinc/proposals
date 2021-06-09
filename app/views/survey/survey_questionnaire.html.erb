@@ -68,7 +68,7 @@
                           <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
                           <label>*link to appropriate section of the FAQ*</label></em>
                         </div>
-                        <%= f.select(:disability, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]), {}, {class: "form-control"}) %>
+                        <%= f.select "disability", options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', 'Prefer']]), {}, data:{'survey-target': 'disability', action: 'click->survey#handleDisabilityOptions'}, class: "form-control" %>
                       </div>
                     </div>
                     
