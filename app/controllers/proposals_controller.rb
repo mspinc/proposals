@@ -1,5 +1,5 @@
 class ProposalsController < ApplicationController
-  before_action :set_proposal, only: %w[edit update destroy]
+  before_action :set_proposal, only: %w[show edit update destroy]
   before_action :authenticate_user!
   
   def index
@@ -21,6 +21,8 @@ class ProposalsController < ApplicationController
       render :new
     end
   end
+
+  def show; end
 
   def edit
     @publish = params[:publish]

@@ -93,4 +93,11 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
       it { expect(response).to redirect_to(root_path) }
     end
   end
+
+  describe "GET /thanks" do
+    it "render a successful response" do
+      get thanks_proposal_invites_url(invite.proposal)
+      expect(response).to have_http_status(:found)
+    end
+  end
 end
