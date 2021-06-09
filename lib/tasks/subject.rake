@@ -60,8 +60,10 @@ namespace :birs do
     # TODO: find or create SubjectCategory and assign accordingly
     category = SubjectCategory.find_or_create_by!(name: 'none')
     subject_codes.each do |subject|
+      puts "Adding BIRS Subject: #{subject[:code]}: #{subject[:title]}"
       Subject.create(code: subject[:code], title: subject[:title], subject_category: category)
     end
+    puts "Done!"
   end
 
   desc "Add AMS Subjects to database"
@@ -135,7 +137,9 @@ namespace :birs do
     ]
 
     ams_subject_codes.each do |ams_subject|
+      puts "Adding AMS Subject: #{ams_subject[:title]}"
       AmsSubject.create!(code: ams_subject[:code], title: ams_subject[:title])
     end
+    puts "Done!"
   end
 end
