@@ -5,14 +5,10 @@
   <body>
     <h1>Dear <%= @person&.fullname %>:</h1>
     <p>
-      Thank you for indicating your interest in joining the proposed workshop
-      titled <%= @proposal.proposal_type.name %> currently under planning by <%= @proposal.lead_organizer&.fullname %>.
-      The organizing committee will be in touch regarding future steps if the
-      proposal is successful.
+      Thank you for indicating your interest in participating the proposed workshop, "<%= @proposal.title %>"", currently being organized by <%= @proposal.lead_organizer&.fullname %>. We will contact you regarding future steps, if the proposal is successful.
     </p>
-
-    <%= link_to "Please reset your password", new_user_password_url %>
     <p>Sincerely,</p>
-    <p>[The organizing committee]</p>
+    <p>Banff International Research Station,<br>
+      and the Organizing Committee.</p>
   </body>
 </html>
