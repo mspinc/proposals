@@ -1,8 +1,7 @@
-namespace :subject do
-  task :default => 'subject:birs_subjects'
+namespace :birs do
+  task :default => 'birs:birs_subjects'
 
-  desc "Add Subjects to database"
-
+  desc "Add BIRS Subjects to database"
   task birs_subjects: :environment do
     subject_codes = [
       { code: 'ACS', title: 'Applied Computer Science' },
@@ -57,6 +56,16 @@ namespace :subject do
       { code: 'AIM', title: 'Applied Analysis and Industrial Math' },
       { code: 'SS', title: 'Summer Schools' },
     ]
+
+    # TODO: find or create SubjectCategory and assign accordingly
+    category = SubjectCategory.find_or_create_by!(name: 'none')
+    subject_codes.each do |subject|
+      Subject.create(code: subject[:code], title: subject[:title], subject_category: category)
+    end
+  end
+
+  desc "Add AMS Subjects to database"
+  task ams_subjects: :environment do
 
     ams_subject_codes = [
       { code: "00", title: "00 General" },
@@ -124,12 +133,6 @@ namespace :subject do
       { code: "97", title: "97 Mathematics education" },
       { code: "99", title: "99 Other" },
     ]
-
-    # TODO: find or create SubjectCategory and assign accordingly
-    category = SubjectCategory.find_or_create_by!(name: 'none')
-    subject_codes.each do |subject|
-      Subject.create(code: subject[:code], title: subject[:title], subject_category: category)
-    end
 
     ams_subject_codes.each do |ams_subject|
       AmsSubject.create!(code: ams_subject[:code], title: ams_subject[:title])

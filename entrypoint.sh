@@ -123,7 +123,7 @@ if [ $APPLICATION_HOST = "localhost" ]; then
 fi
 
 if [ $STAGING_SERVER = "true" ]; then
-  rake staging:release_tag
+  rake birs:release_tag
 fi
 
 echo
