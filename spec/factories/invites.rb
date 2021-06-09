@@ -6,10 +6,10 @@ FactoryBot.define do
     f.lastname
     f.email
     
-    invited_as { %w[participant coorganizer]}
+    invited_as { %w[participant coorganizer].sample }
     status { %w[pending completed].sample }
     response { %w[yes maybe no].sample }
-    deadline_date { Time.current.to_date }
+    deadline_date { Time.current.to_date + 1.week }
 
     association :proposal, factory: :proposal, strategy: :create
     association :person, factory: :person
