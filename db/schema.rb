@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_08_171659) do
+ActiveRecord::Schema.define(version: 2021_06_08_191917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -135,6 +135,18 @@ ActiveRecord::Schema.define(version: 2021_06_08_171659) do
 
   create_table "proposal_fields_multi_choices", force: :cascade do |t|
     t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "proposal_fields_preferred_impossible_dates", force: :cascade do |t|
+    t.string "preferred_dates_1"
+    t.string "preferred_dates_2"
+    t.string "preferred_dates_3"
+    t.string "preferred_dates_4"
+    t.string "preferred_dates_5"
+    t.string "impossible_dates_1"
+    t.string "impossible_dates_2"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

@@ -6,15 +6,15 @@ class SubmitProposalsController < ApplicationController
   def create
     @proposal = Proposal.find params[:proposal]
     @proposal.update(proposal_params)
-    SubmitProposalService.new(@proposal, params).save_answers
     @publish = true
-   	redirect_to edit_proposal_path(@proposal, publish: @publish)
+    if SubmitProposalService.new(@proposal, params).save_answers
+      redirect_to thanks_submit_proposals_path, notice: 'Your proposal has been submitted'
+    else
+      redirect_to edit_proposal_path(@proposal, publish: @publish)
+    end
   end
 
-  def update_proposal
-    @proposal.update(proposal_params)
-  end
-
+  def thanks; end
 
   private
 

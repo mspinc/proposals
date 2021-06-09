@@ -33,7 +33,11 @@ Rails.application.routes.draw do
       post :submit_survey
     end
   end
-  resources :submit_proposals
+  resources :submit_proposals do
+    collection do 
+      get :thanks
+    end
+  end
   resources :proposal_types do
     resources :proposal_forms do
       member do
