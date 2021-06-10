@@ -33,7 +33,7 @@ module ApplicationHelper
     return 'active' if request.path.in?(['/feedback/new'])
   end
 
-  def lesc(text)
-    LatexToPdf.escape_latex(text)
+  def render_latex(input)
+    LatexToPdf.escape_latex(input)
   end
 end

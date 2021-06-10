@@ -21,6 +21,7 @@
             <thead>
               <tr>
                 <th style="width:40%;">Name</th>
+                <th>Locations</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -28,6 +29,7 @@
               <% @proposal_types.each do |proposal_type|%>                     
                 <tr>
                   <td><%= proposal_type.name %></td>
+                  <td><%= list_proposal_locations(proposal_type) %></td>
                   <td class="table-action">
                     <%= link_to '<i class="align-middle fas fa-fw fa-pen" data-toggle="tooltip" title="Edit"></i>Edit'.html_safe, edit_proposal_type_path(proposal_type) %>
                     <%= link_to '<i class="align-middle fas fa-fw fa-trash" data-toggle="tooltip" title="Delete" ></i>Delete'.html_safe, proposal_type_path(proposal_type), method: :delete ,

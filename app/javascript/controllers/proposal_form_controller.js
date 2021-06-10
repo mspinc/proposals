@@ -83,16 +83,13 @@ export default class extends Controller {
   latex () {
     let selectedButtonId = event.target.dataset.value
     let proposalId = this.data.get("propid")
-    let _this = this;
 
     for (var i = 0; i < this.textFieldTargets.length; i++) {
       if(this.textFieldTargets[i].dataset.value === selectedButtonId) {
-        let index = i
-
         $.post("/proposals/" + proposalId + "/latex",
-          { text: this.textFieldTargets[index].value },
+          { latex: this.textFieldTargets[i].value },
           function(data, status) {
-            window.open(`/proposals/text.pdf`)
+            window.open(`/proposals/rendered_proposal.pdf`)
         });
       }
     }
