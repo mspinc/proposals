@@ -1,7 +1,8 @@
 import { Controller } from "stimulus" 
 
 export default class extends Controller {
-  static targets = ['proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow','contentOfButton']
+  static targets = [ 'proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow', 'contentOfButton',
+                     'textField', 'proposalId' ]
   static values = { visible: Boolean, field: String, index: Number}
 
   toggleProposalFieldsPanel () {
@@ -77,5 +78,23 @@ export default class extends Controller {
 
   deleteOption (event) {
     event.currentTarget.parentElement.parentElement.remove()
+  }
+
+  latex () {
+    let selectedButtonId = event.target.dataset.value
+    let proposalId = this.data.get("propid")
+    let _this = this;
+
+    for (var i = 0; i < this.textFieldTargets.length; i++) {
+      if(this.textFieldTargets[i].dataset.value === selectedButtonId) {
+        let index = i
+
+        $.post("/proposals/" + proposalId + "/latex",
+          { text: this.textFieldTargets[index].value },
+          function(data, status) {
+            window.open(`/proposals/text.pdf`)
+        });
+      }
+    }
   }
 }

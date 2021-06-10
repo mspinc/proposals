@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'dashboards', to: 'proposal_types#index'
 
   resources :proposals do
+    post :latex
     collection do
       get :text
     end

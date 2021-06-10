@@ -14,11 +14,12 @@ class ProposalsController < ApplicationController
     @proposal = Proposal.new(proposal_params)
     @proposal.status = :draft
     @proposal.proposal_form = ProposalForm.active_form(@proposal.proposal_type_id)
+
     if @proposal.save
       @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
-      redirect_to edit_proposal_path(@proposal)
+      redirect_to edit_proposal_path(@proposal), notice: "Started a new #{@proposal.proposal_type.name} proposal!"
     else
-      render :new
+      render :new, alert: @proposal.errors.full_messages
     end
   end
 
@@ -26,6 +27,11 @@ class ProposalsController < ApplicationController
 
   def edit
     @publish = params[:publish]
+  end
+
+  def latex
+    @proposal = Proposal.find_by_id(latex_params[:proposal_id])
+    @text_field = latex_params[:text]
   end
 
   def text
@@ -52,5 +58,9 @@ class ProposalsController < ApplicationController
 
   def set_proposal
     @proposal = Proposal.find(params[:id])
+  end
+
+  def latex_params
+    params.permit(:text, :proposal_id)
   end
 end
