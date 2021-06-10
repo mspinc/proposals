@@ -53,7 +53,7 @@
                       </div>
                       <div class="mb-3">
                         <%= f.label :title %>
-                        <%= f.text_field :title, class: 'form-control', value: @proposal.title %>
+                        <%= f.text_field :title, class: 'form-control', disabled: action, value: @proposal.title %>
                         <% if params[:publish] && @proposal.title.blank? %>
                           <p style="color: red">Title is required</p>
                         <% end %>
@@ -66,32 +66,23 @@
 
                       <div class="mb-3">
                         <%= f.label :year %>
-                        <%= f.select :year, options_for_select(proposal_type_year(@proposal.proposal_type),  @proposal.year), {}, class: "form-select w-25"%>
+                        <%= f.select :year, options_for_select(proposal_type_year(@proposal.proposal_type),  @proposal.year), {}, disabled: action, class: "form-select w-25"%>
                       </div>
                       <div class="mb-3 row">
                         <h4>Subject Areas</h4>
                         <div class="col-6 mt-2">
                           <label>Subject Area</label>
-                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), { include_blank: '' }, class: "form-select"%>
-                          <% if params[:publish] && @proposal.subject&.id.nil? %>
-                            <p style="color: red">Subject is required</p>
-                          <% end %>
+                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), { include_blank: '' }, disabled: action, class: "form-select"%>
                         </div>
                         <div class="col-6 mt-2">
                           <div class="mb-3">
                             <label>AMS Subject Code 1</label>
-                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, proposal_ams_subjects_code(@proposal, 'code1')), { include_blank: '' }, class: "form-select", name:'ams_subjects[code1]'%>
-                            <% if params[:publish] && proposal_ams_subjects_code(@proposal, 'code1').blank? %>
-                              <p style="color: red">AMS Subject Code 1 is required</p>
-                            <% end %>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.first&.id), { include_blank: '' }, disabled: action, class: "form-select", name:'ams_subject_ids[]'%>
                           </div>
 
                           <div class="mb-3">
                             <label>AMS Subject Code 2</label>
-                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, proposal_ams_subjects_code(@proposal, 'code2')), { include_blank: '' }, class: "form-select", name:'ams_subjects[code2]'%>
-                            <% if params[:publish] && proposal_ams_subjects_code(@proposal, 'code2').blank? %>
-                              <p style="color: red">AMS Subject Code 2 is required</p>
-                            <% end %>
+                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, @proposal.ams_subjects&.last&.id), { include_blank: '' }, disabled: action, class: "form-select", name:'ams_subject_ids[]'%>
                           </div>
                           <div class="mb-5">
                             <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
@@ -100,7 +91,7 @@
                       </div>
                     </div>
 
-                    <div class="tab-pane" id="tab-2" role="tabpanel">
+                    <div class="tab-pane" id="tab-2" role="tabpanel" >
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal.proposal_type) } %>
                     <div class="float-end">
@@ -113,7 +104,7 @@
                       <!-- <h4 class="tab-title">Location Fields</h4> -->
                       <div class="mb-3">
                         <%= f.label :location, "Select your preferred location for this event:", class: 'form-label lead' %>
-                        <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, class: 'form-control form-select', multiple: false, name: 'location_ids[]' %>
+                        <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, disabled: action, class: 'form-control form-select', multiple: false, name: 'location_ids[]' %>
                       </div>
                       <div data-submit-proposals-target='locationSpecificQuestions'></div>
                       <div class="mb-5">
