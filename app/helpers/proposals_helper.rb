@@ -28,4 +28,8 @@ module ProposalsHelper
   def lead_organizer?(proposal_roles)
     proposal_roles.joins(:role).where('person_id =? AND roles.name =?', current_user.person&.id, 'lead_organizer').present?
   end
+
+  def proposal_ams_subjects_code(proposal, code)
+    proposal.ams_subjects.where(code: code).first&.id
+  end
 end

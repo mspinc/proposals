@@ -14,7 +14,7 @@
     <% end %>
   </p>
 <div>
-  <textarea name="<%= field.id %>" data-proposal-form-target="textField" id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control"><%= answer(field, @proposal) %></textarea>
+  <textarea name="<%= field.id %>" <%= action ? 'disabled' : '' %> id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-proposal-form-target="textField" ><%= answer(field, @proposal) %></textarea>
   <% if @publish %>
     <ul>
       <% validations(field, @proposal).each do |val| %>

@@ -19,7 +19,7 @@ class ProposalsController < ApplicationController
       @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
       redirect_to edit_proposal_path(@proposal), notice: "Started a new #{@proposal.proposal_type.name} proposal!"
     else
-      render :new, alert: @proposal.errors.full_messages
+      redirect_to new_proposal_path, alert: @proposal.errors.full_messages
     end
   end
 

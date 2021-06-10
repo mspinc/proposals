@@ -76,7 +76,7 @@ RSpec.describe "/proposal_types", type: :request do
         patch proposal_type_url(proposal_type), params: { proposal_type: proposal_type_params }
       end
       it "renders a successful response (i.e. to display the 'edit' template)" do
-        expect(response).to have_http_status(200)
+        expect(response).to redirect_to(edit_proposal_type_url(proposal_type))
       end
     end
   end

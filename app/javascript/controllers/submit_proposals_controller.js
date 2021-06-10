@@ -10,6 +10,7 @@ export default class extends Controller {
       this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
     }
   }
+
   handleLocationChange(locations) {
     var publish = window.location.href.includes("publish")
     if(event && event.type == 'change')
