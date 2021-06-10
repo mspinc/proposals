@@ -16,9 +16,9 @@ class ProposalsController < ApplicationController
     @proposal.proposal_form = ProposalForm.active_form(@proposal.proposal_type_id)
     if @proposal.save
       @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
-      redirect_to edit_proposal_path(@proposal)
+      redirect_to edit_proposal_path(@proposal), notice: "Started a new #{@proposal.proposal_type.name} proposal!"
     else
-      render :new
+      redirect_to new_proposal_path, alert: @proposal.errors.full_messages
     end
   end
 

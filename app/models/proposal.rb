@@ -11,8 +11,8 @@ class Proposal < ApplicationRecord
   has_many :ams_subjects, through: :proposal_ams_subjects
   belongs_to :subject, optional: true
 
-  validates_presence_of :year, :title
-  validate :create_code
+  # validates_presence_of :year, :title
+  # validate :create_code
 
   enum status: { draft: 0, active: 1 }
 
