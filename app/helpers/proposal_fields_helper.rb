@@ -48,9 +48,7 @@ module ProposalFieldsHelper
   end
 
   def validations(field, proposal)
-    if field.location_id
-      return [] unless @proposal.locations.include?(field.location)
-    end
+    return [] if field.location_id && @proposal.locations.exclude?(field.location)
 
     ProposalFieldValidationsService.new(field, proposal).validations
   end
@@ -70,5 +68,9 @@ module ProposalFieldsHelper
     else
       ans
     end
+  end
+
+  def action
+    params[:action] == 'show' || (params[:action] == 'location_based_fields' && request.referer.exclude?('edit'))
   end
 end

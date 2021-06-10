@@ -13,9 +13,9 @@ class ProposalTypesController < ApplicationController
   def create
     @proposal_type = ProposalType.new(proposal_type_params)
     if @proposal_type.save
-      redirect_to proposal_types_path
+      redirect_to proposal_types_path,  notice: 'Proposal Type successfully created'
     else
-      render :new
+      redirect_to new_proposal_type_path(@proposal_type), alert: @proposal_type.errors.full_messages
     end
   end
 
@@ -23,9 +23,9 @@ class ProposalTypesController < ApplicationController
 
   def update
     if @proposal_type.update(proposal_type_params)
-      redirect_to proposal_types_path
+      redirect_to proposal_types_path, notice: 'Proposal Type successfully updated'
     else
-      render :edit
+      redirect_to edit_proposal_type_path(@proposal_type), alert: @proposal_type.errors.full_messages
     end
   end
 

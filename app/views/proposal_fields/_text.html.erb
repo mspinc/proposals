@@ -7,13 +7,13 @@
   <% end %>
 </div>
 <p class="comment" style="font-style: italic;">
-    <%= field.description %> 
+    <%= field.description.html_safe %>
     <% if field.description.length > 140 %>
       <a href="<%= field.guideline_link %>" target="_blank"> Learn More</a>
     <% end %>
   </p>
 <div>
-  <textarea name="<%= field.id %>" id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-submit-proposals-target="text" ><%= answer(field, @proposal) %></textarea>
+  <textarea name="<%= field.id %>" <%= action ? 'disabled' : '' %> id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-submit-proposals-target="text" ><%= answer(field, @proposal) %></textarea>
   <% if @publish %>
     <ul>
       <% validations(field, @proposal).each do |val| %>
