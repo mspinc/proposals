@@ -32,7 +32,7 @@
                       <% if @proposal.draft? %>
                         <div class="float-end">
                           <%= f.submit 'Save as draft', class:'btn btn-primary' %>
-                          <%= f.submit 'Submit for Review', class:'btn btn-primary' %>
+                          <%= f.submit 'Submit Proposal', data: {confirm: "This step is final and cannot be reversed. You cannot edit your proposal after submission. Proceed?"}, class:'btn btn-primary' %>
                         </div>
                       <% end %>
                     <% end %>
