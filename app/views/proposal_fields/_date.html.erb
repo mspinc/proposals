@@ -15,9 +15,8 @@
     </a>
   <% end %>
 </p>
-
 <div class="mb-3">
-  <input name="<%= field.id %>" class="form-control" type="date" value='<%= answer(field, @proposal) %>'> </input>
+  <input name="<%= field.id %>" <%= action ? 'disabled' : '' %> class="form-control" type="date" value='<%= answer(field, @proposal) %>'> </input>
 </div>
 <% if @publish %>
   <ul>
