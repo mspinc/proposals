@@ -21,12 +21,12 @@ class SubmitProposalsController < ApplicationController
   private
 
   def proposal_params
-    params.permit(:title, :year, :subject_id).merge(ams_subject_ids: proposal_ams_subjects)
+    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids) #.merge(ams_subject_ids: proposal_ams_subjects)
   end
 
   def proposal_ams_subjects
-    @param = params[:ams_subjects]
-    [@param[:code1], @param[:code2]]
+    ams_subjects = proposal_params[:ams_subject_ids]
+    [ams_subjects.first, ams_subjects.last]
   end
 
   def update_ams_subject_code
