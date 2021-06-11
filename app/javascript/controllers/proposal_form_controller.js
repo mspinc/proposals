@@ -3,7 +3,7 @@ import { Controller } from "stimulus"
 export default class extends Controller {
   static targets = [ 'proposalFieldsPanel', 'proposalField', 'addOption', 'optionRow', 'contentOfButton',
                      'textField', 'proposalId' ]
-  static values = { visible: Boolean, field: String, index: Number}
+  static values = { visible: Boolean, field: String }
 
   toggleProposalFieldsPanel () {
     if( this.contentOfButtonTarget.innerText === 'Back' ){
@@ -59,34 +59,12 @@ export default class extends Controller {
       })
   }
 
-  handleAddOptions (event) {
-    this.indexValue += 1
-    let clonedOption = this.optionRowTarget.cloneNode(true)
-    let child = clonedOption.childNodes[1]
-    child.childNodes[1].childNodes[3].name = `proposal_field[options][${this.indexValue}][index]`
-    child.childNodes[3].childNodes[3].name = `proposal_field[options][${this.indexValue}][text]`
-    child.childNodes[5].childNodes[3].name = `proposal_field[options][${this.indexValue}][value]`
-    this.addOptionTarget.append(clonedOption)
-    this.clearOptionValues(child)
-  }
-
-  clearOptionValues (node) {
-    node.childNodes[1].childNodes[3].value = ''
-    node.childNodes[3].childNodes[3].value =  ''
-    node.childNodes[5].childNodes[3].value = ''
-  }
-
-  deleteOption (event) {
-    event.currentTarget.parentElement.parentElement.remove()
-  }
-
   latex () {
-    let selectedButtonId = event.target.dataset.value
-    let proposalId = this.data.get("propid")
+    let data = event.target.dataset
 
     for (var i = 0; i < this.textFieldTargets.length; i++) {
-      if(this.textFieldTargets[i].dataset.value === selectedButtonId) {
-        $.post("/proposals/" + proposalId + "/latex",
+      if(this.textFieldTargets[i].dataset.value === data.value) {
+        $.post("/proposals/" + data.propid + "/latex",
           { latex: this.textFieldTargets[i].value },
           function(data, status) {
             window.open(`/proposals/rendered_proposal.pdf`)
