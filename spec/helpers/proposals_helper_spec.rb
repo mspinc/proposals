@@ -41,7 +41,20 @@ RSpec.describe ProposalsHelper, type: :helper do
     let(:proposal) { create(:proposal, proposal_form: p_form, proposal_type: p_type) }
     it "returns proposal fields" do
       fields
-      expect(common_proposal_fields(p_type)).to eq([fields])
+      expect(common_proposal_fields(proposal)).to eq([fields])
+    end
+  end
+
+  describe '#proposal_ams_subjects_code' do
+    let(:proposal) { create :proposal }
+    let(:ams_subject) { create(:ams_subject, code: 'code2') }
+
+    before do
+      proposal.ams_subjects << ams_subject
+    end
+
+    it 'returns id of proposal ams subject with provided code' do 
+      expect(proposal_ams_subjects_code(proposal, 'code2')).to eq(ams_subject.id) 
     end
   end
 end

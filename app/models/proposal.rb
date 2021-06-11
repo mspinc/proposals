@@ -34,6 +34,11 @@ class Proposal < ApplicationRecord
     locations.pluck(:name).join(', ')
   end
 
+  def list_of_co_organizers
+    invites.where('invites.invited_as = ?',
+      'Co Organizer').map(&:person).map(&:fullname).join(', ')
+  end
+
 
   private
 
