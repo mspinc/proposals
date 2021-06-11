@@ -6,7 +6,11 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
     let(:proposal_type) { create(:proposal_type, locations: locations) }
 
     it "returns locations of a proposal type" do
-      expect(proposal_type_locations(proposal_type)).to match_array(proposal_type.locations.pluck(:name, :id))
+      proposal_type_locations(proposal_type).each do |location|
+        loc = proposal_type.locations.where(id: location.last).first
+        location_string = "#{loc.name} (#{loc.city}, #{loc.country})"
+        expect(location.first).to eq(location_string)
+      end
     end
   end
 

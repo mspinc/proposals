@@ -2,7 +2,7 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
   
-  static targets = ['proposalType', 'locationSpecificQuestions', 'locationIds', 'text', 'tabs']
+  static targets = [ 'proposalType', 'locationSpecificQuestions', 'locationIds', 'text', 'tabs' ]
   static values = { proposalTypeId: Number, proposal: Number }
   
   connect() {
@@ -28,6 +28,7 @@ export default class extends Controller {
     for (var i = 0; i < this.textTargets.length; i++) {
       if(this.textTargets[i].dataset.value === selectedButtonId) {
         let index = i
+
         $.post("/proposal_types/1/proposal_forms/1/proposal_fields/latex_text",
           { text: this.textTargets[index].value },
           function(data, status) {
