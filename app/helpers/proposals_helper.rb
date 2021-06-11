@@ -31,6 +31,6 @@ module ProposalsHelper
   end
 
   def proposal_ams_subjects_code(proposal, code)
-    proposal.ams_subjects.where(code: code).first&.id
+    proposal.ams_subjects.find_by_code(code)&.id
   end
 end
