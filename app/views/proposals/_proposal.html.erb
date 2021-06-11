@@ -23,7 +23,7 @@
         <div class="col-12">
           <div class="card" style="background: #f4f7fc">
             <div class="card-body">
-              <div data-controller="submit-proposals"  data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
+              <div data-controller="submit-proposals proposal-form"  data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
                     data-submit-proposals-proposal-value="<%= @proposal.id %>" > 
                 <div class="mb-3">
                   <% if params[:action] == 'edit' %>
