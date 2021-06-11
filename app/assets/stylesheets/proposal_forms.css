@@ -30,3 +30,8 @@
 .sidebar-nav .sidebar-item {
   margin-left: -10px;
 }
+
+.required:after {
+    content:" *";
+    color: red;
+  }

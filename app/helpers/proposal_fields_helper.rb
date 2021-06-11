@@ -73,4 +73,13 @@ module ProposalFieldsHelper
   def action
     params[:action] == 'show' || (params[:action] == 'location_based_fields' && request.referer.exclude?('edit'))
   end
+
+  def mendatory_field?(field)
+    field.validations.where(validation_type: 'mandatory').present?
+  end
+
+  def print_validation
+    '<span style="color:red; margin-left: 3px;">*</sapn>'.html_safe
+  end
+
 end
