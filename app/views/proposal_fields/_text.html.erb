@@ -1,4 +1,3 @@
-<div data-controller="proposal-form" data-proposal-form-propid="<%= @proposal&.id %>">
 <div>
   <label for="statement"><%= field.statement %></label>
   <% if current_user&.staff_member? && @proposal_form&.draft? && params[:action] == 'edit' %>
@@ -24,6 +23,5 @@
   <% end %>
 </div>
 <% unless current_user&.staff_member? || params[:action] == 'show' %>
-  <span class="btn btn-primary my-2" data-action="click->proposal-form#latex" data-value='<%= field.id %>'>Run LaTeX</span>
+  <span class="btn btn-primary my-2" data-action="click->proposal-form#latex" data-value='<%= field.id %>' data-propid="<%= @proposal&.id %>">Run LaTeX</span>
 <% end %>
-</div>

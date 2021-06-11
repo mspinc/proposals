@@ -3,7 +3,7 @@ class SubmitProposalService
 
   def initialize(proposal, params)
     @proposal = proposal
-    @proposal_form = ProposalForm.active_form(proposal.proposal_type.id)
+    @proposal_form = proposal.proposal_form
     @params = params
     @errors = []
   end
@@ -16,7 +16,7 @@ class SubmitProposalService
       create_or_update(id, value)
     end
     proposal_locations
-    proposal.update(status: :active) if @errors.flatten.count.zero? && params[:commit] == 'Submit for Review' && @proposal.title.present?
+    proposal.update(status: :active) if @errors.flatten.count.zero? && params[:commit] == 'Submit Proposal' && @proposal.title.present?
     proposal.active?
   end
 
