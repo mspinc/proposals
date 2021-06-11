@@ -29,6 +29,7 @@ class InvitesController < ApplicationController
     max_invitations = Proposal.no_of_participants(@proposal.id, @invite.invited_as).count
 
     if max_invitations < @proposal.proposal_type[@invite.invited_as.downcase.split(" ").join('_')]
+      @co_organizers = @proposal.list_of_co_organizers
       create_invite
     else
       redirect_to new_proposal_invite_path(@proposal), alert: "The maximum number of #{@invite.invited_as} invitations has been sent."
@@ -64,8 +65,8 @@ class InvitesController < ApplicationController
     person unless @invite.person
 
     if @invite.save
-      InviteMailer.with(invite: @invite).invite_email.deliver_later
-      redirect_to edit_proposal_path(@proposal)
+      InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_email.deliver_later
+      redirect_to proposal_invites_path(@proposal)
     else
       render :new, alert: 'Error sending invite'
     end
