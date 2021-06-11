@@ -64,7 +64,7 @@ module ProposalFieldsHelper
   def dates_answer(field, proposal, attr)
     ans = answer(field, proposal)
     if ans
-      dates = JSON.parse(ans)[attr.to_i]
+      JSON.parse(ans)[attr.to_i]
     else
       ans
     end
