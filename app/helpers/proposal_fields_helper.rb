@@ -81,5 +81,4 @@ module ProposalFieldsHelper
   def print_validation
     '<span style="color:red; margin-left: 3px;">*</sapn>'.html_safe
   end
-
 end
