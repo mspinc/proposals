@@ -32,8 +32,4 @@ module ApplicationHelper
   def feedback_menu 
     return 'active' if request.path.in?(['/feedback/new'])
   end
-
-  def escape_latex(input)
-    LatexToPdf.escape_latex(input)
-  end
 end
