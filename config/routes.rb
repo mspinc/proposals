@@ -7,16 +7,17 @@ Rails.application.routes.draw do
     get 'sign_out', to: 'users/sessions#destroy'
   end
 
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   get :guidelines, to: 'pages#guidelines'
   resources :feedbacks, path: :feedback
-  # resources :dashboards
   get 'dashboards', to: 'proposal_types#index'
 
   resources :proposals do
+    post :latex, to: 'proposals#latex_input'
     collection do
-      get :text
+      get :latex, to: 'proposals#latex_output'
+      get :'rendered_proposal', to: 'proposals#latex_output'
     end
+
     resources :invites do
       member do
         post :inviter_response

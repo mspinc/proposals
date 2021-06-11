@@ -21,10 +21,6 @@ class ProposalFieldsController < ApplicationController
     end
   end
 
-  def latex_text
-    session[:latex_text] = params[:text]
-  end
-
   def edit
     render partial: 'proposal_fields/fields_form',
            locals: { proposal_field: @proposal_field, proposal_form: @proposal_form }

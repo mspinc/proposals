@@ -1,3 +1,4 @@
+<div data-controller="proposal-form" data-proposal-form-propid="<%= @proposal&.id %>">
 <div>
   <label for="statement"><%= field.statement %></label>
   <% if current_user&.staff_member? && @proposal_form&.draft? && params[:action] == 'edit' %>
@@ -13,7 +14,7 @@
     <% end %>
   </p>
 <div>
-  <textarea name="<%= field.id %>" <%= action ? 'disabled' : '' %> id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-submit-proposals-target="text" ><%= answer(field, @proposal) %></textarea>
+  <textarea name="<%= field.id %>" <%= action ? 'disabled' : '' %> id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-proposal-form-target="textField" ><%= answer(field, @proposal) %></textarea>
   <% if @publish %>
     <ul>
       <% validations(field, @proposal).each do |val| %>
@@ -22,6 +23,7 @@
     </ul>
   <% end %>
 </div>
-<% unless current_user&.staff_member? && params[:action] == 'show' %>
-  <span class="btn btn-primary my-2" data-action="click->submit-proposals#print" data-value='<%= field.id %>' >Print</span>
+<% unless current_user&.staff_member? || params[:action] == 'show' %>
+  <span class="btn btn-primary my-2" data-action="click->proposal-form#latex" data-value='<%= field.id %>'>Run LaTeX</span>
 <% end %>
+</div>

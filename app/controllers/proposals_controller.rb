@@ -14,6 +14,7 @@ class ProposalsController < ApplicationController
     @proposal = Proposal.new(proposal_params)
     @proposal.status = :draft
     @proposal.proposal_form = ProposalForm.active_form(@proposal.proposal_type_id)
+
     if @proposal.save
       @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
       redirect_to edit_proposal_path(@proposal), notice: "Started a new #{@proposal.proposal_type.name} proposal!"
@@ -28,8 +29,29 @@ class ProposalsController < ApplicationController
     @publish = params[:publish]
   end
 
-  def text
-    @text = session[:latex_text]
+  # POST /proposals/:1/latex
+  def latex_input
+    proposal_id = latex_params[:proposal_id]
+    session[:proposal_id] = proposal_id
+    temp_file = "propfile-#{proposal_id}.tex"
+    session[:latex_file] = temp_file
+
+    File.open(file="#{Rails.root}/tmp/#{temp_file}",'w:binary') do |io|
+      io.write(latex_params[:latex])
+    end
+
+    head :ok
+  end
+
+  # GET /proposals/rendered_proposal.pdf
+  def latex_output
+    proposal = Proposal.find_by_id(session[:proposal_id])
+    @year = proposal.year || Date.current.year.to_i + 2
+
+    fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
+    @latex_input = fh.read
+
+    render 'rendered-proposal', formats: [:pdf]
   end
 
   def destroy
@@ -51,6 +73,10 @@ class ProposalsController < ApplicationController
   end
 
   def set_proposal
-    @proposal = Proposal.find(params[:id])
+    @proposal = Proposal.find_by_id(params[:id])
+  end
+
+  def latex_params
+    params.permit(:latex, :proposal_id, :format)
   end
 end
