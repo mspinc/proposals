@@ -93,9 +93,140 @@
                               <p style="color: red">AMS Subject Code 2 is required</p>
                             <% end %>
                           </div>
-                          <div class="mb-5">
-                            <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
-                          </div>
+                        </div>
+                        <div>
+                          <% if params[:action] == 'edit' %>
+                            <div class="mb-3">
+                              <h3>Supporting Organizers:</h3>
+                              <div class="mb-3 row">
+                                <% if @proposal.invites %>
+                                  <% @proposal.invites.each do |invite|%>
+                                    <% if invite.invited_as == 'Co Organizer' %>
+                                      <div class="col-6 mt-2">
+                                        <div class="mb-3">
+                                          <%= f.label :firstname, "First Name: " %>
+                                          <%= f.label invite.firstname %>
+                                        </div>
+                                        <div class="mb-3">
+                                          <%= f.label :lastname, "Last Name: " %>
+                                          <%= f.label invite.lastname %>
+                                        </div>
+                                        <div class="mb-3">
+                                          <%= f.label :email, "Email " %>
+                                          <%= f.label invite.email %>
+                                        </div>
+                                      </div>
+                                      <div class="col-6 mt-2">
+                                        <div class="mb-3">
+                                          <%= f.label :status, "Status: " %>
+                                          <%= f.label invite.status %>
+                                        </div>
+                                        <div class="mb-3">
+                                          <%= f.label :deadline_date, "Deadline Date: " %>
+                                          <%= f.label invite.deadline_date.to_date %>
+                                        </div>
+                                      </div>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                              <div>
+                                <%= form_for([@proposal, @invite]) do |f| %>
+                                  <div class="mb-3">
+                                    <%= f.label :firstname, "First Name" %>
+                                    <%= f.text_field :firstname, autofocus: true, class:'form-control', required: true %>
+                                  </div>
+                                  <div class="mb-3">
+                                    <%= f.label :firstname, "Last Name" %>
+                                    <%= f.text_field :lastname, class:'form-control', required: true %>
+                                  </div>
+                                  <div class="mb-3">
+                                    <%= f.label :email, "E-mail" %>
+                                    <%= f.email_field :email, class:"form-control form-control-lg", autocomplete: "email", required: true %>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label>Select role of person to invite:</label>
+                                    <%= f.select :invited_as, options_for_select([['Co Organizer', 'Co Organizer']]), {}, class: "form-select", disabled: true %>
+                                    <%= f.hidden_field :invited_as, value: 'Participant' %>
+                                  </div>
+                                  <div class="mb-3">
+                                    <%= f.label :deadline, "Deadline for reply" %>
+                                    <%= f.date_field :deadline_date,  class:"form-control", required: true %>
+                                  </div>
+                                  <div class="mt-3">
+                                    <%= f.submit "Send Invitation", class: 'btn btn-primary' %>
+                                  </div>
+                                <% end %>
+                              </div>
+                            </div>
+
+                            <div class="mb-3">
+                              <h3>Participants:</h3>
+                              <div class="mb-3 row">
+                                <% if @proposal.invites %>
+                                  <% @proposal.invites.each do |invite|%>
+                                    <% if invite.invited_as == 'Participant' %>
+                                      <div class="col-6 mt-2">
+                                        <div class="mb-3">
+                                          <%= f.label :firstname, "First Name: " %>
+                                          <%= f.label invite.firstname %>
+                                        </div>
+                                        <div class="mb-3">
+                                          <%= f.label :lastname, "Last Name: " %>
+                                          <%= f.label invite.lastname %>
+                                        </div>
+                                        <div class="mb-3">
+                                          <%= f.label :email, "Email " %>
+                                          <%= f.label invite.email %>
+                                        </div>
+                                      </div>
+                                      <div class="col-6 mt-2">
+                                        <div class="mb-3">
+                                          <%= f.label :status, "Status: " %>
+                                          <%= f.label invite.status %>
+                                        </div>
+                                        <div class="mb-3">
+                                          <%= f.label :deadline_date, "Deadline Date: " %>
+                                          <%= f.label invite.deadline_date.to_date %>
+                                        </div>
+                                      </div>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                              <div>
+                                <%= form_for([@proposal, @invite]) do |f| %>
+                                  <div class="mb-3">
+                                    <%= f.label :firstname, "First Name" %>
+                                    <%= f.text_field :firstname, autofocus: true, class:'form-control', required: true %>
+                                  </div>
+                                  <div class="mb-3">
+                                    <%= f.label :firstname, "Last Name" %>
+                                    <%= f.text_field :lastname, class:'form-control', required: true %>
+                                  </div>
+                                  <div class="mb-3">
+                                    <%= f.label :email, "E-mail" %>
+                                    <%= f.email_field :email, class:"form-control form-control-lg", autocomplete: "email", required: true %>
+                                  </div>
+                                  <div class="mb-3">
+                                    <label>Select role of person to invite:</label>
+                                    <%= f.select :invited_as, options_for_select([['Participant', 'Participant']]), {}, class: "form-select", disabled: true %>
+                                    <%= f.hidden_field :invited_as, value: 'Participant' %>
+                                  </div>
+                                  <div class="mb-3">
+                                    <%= f.label :deadline, "Deadline for reply" %>
+                                    <%= f.date_field :deadline_date,  class:"form-control", required: true %>
+                                  </div>
+                                  <div class="mt-3">
+                                    <%= f.submit "Send Invitation", class: 'btn btn-primary' %>
+                                  </div>
+                                <% end %>
+                              </div>
+                            </div>
+                          <% end %>
+                        </div>
+                        <div class="mb-5">
+                          <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
                         </div>
                       </div>
                     </div>
@@ -103,11 +234,11 @@
                     <div class="tab-pane" id="tab-2" role="tabpanel" style="overflow: auto;">
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
-                    <div class="float-end">
-                      <button id="changeTab" class="btn btn-primary mx-2" data-action='click->submit-proposals#nextTab'>Next</button>
-                       <button id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
-                     </div>
-                  </div>
+                      <div class="float-end">
+                        <button id="changeTab" class="btn btn-primary mx-2" data-action='click->submit-proposals#nextTab'>Next</button>
+                         <button id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                       </div>
+                    </div>
                     
                     <div class="tab-pane" id="tab-3" role="tabpanel">
                       <!-- <h4 class="tab-title">Location Fields</h4> -->

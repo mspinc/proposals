@@ -26,6 +26,7 @@ class ProposalsController < ApplicationController
   def show; end
 
   def edit
+    @invite = @proposal.invites.new
     @publish = params[:publish]
   end
 

@@ -25,7 +25,6 @@ class InvitesController < ApplicationController
       redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot invite yourself!'
       return
     end
-
     max_invitations = Proposal.no_of_participants(@proposal.id, @invite.invited_as).count
 
     if max_invitations < @proposal.proposal_type[@invite.invited_as.downcase.split(" ").join('_')]
@@ -66,7 +65,7 @@ class InvitesController < ApplicationController
 
     if @invite.save
       InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_email.deliver_later
-      redirect_to proposal_invites_path(@proposal)
+      redirect_to edit_proposal_path(@proposal)
     else
       render :new, alert: 'Error sending invite'
     end
