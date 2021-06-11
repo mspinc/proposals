@@ -21,22 +21,6 @@ export default class extends Controller {
         this.locationSpecificQuestionsTarget.innerHTML = html
       });
   }
-
-  print () {
-    let selectedButtonId = event.target.dataset.value
-    let _this = this;
-    for (var i = 0; i < this.textTargets.length; i++) {
-      if(this.textTargets[i].dataset.value === selectedButtonId) {
-        let index = i
-
-        $.post("/proposal_types/1/proposal_forms/1/proposal_fields/latex_text",
-          { text: this.textTargets[index].value },
-          function(data, status) {
-            window.open(`/proposals/text.pdf`)
-        });
-      }
-    }
-  }
   
   nextTab() {
   event.preventDefault();

@@ -64,7 +64,7 @@ module ProposalFieldsHelper
   def dates_answer(field, proposal, attr)
     ans = answer(field, proposal)
     if ans
-      dates = JSON.parse(ans)[attr.to_i]
+      JSON.parse(ans)[attr.to_i]
     else
       ans
     end
@@ -72,5 +72,16 @@ module ProposalFieldsHelper
 
   def action
     params[:action] == 'show' || (params[:action] == 'location_based_fields' && request.referer.exclude?('edit'))
+  end
+
+  def mandatory_field?(field)
+    if field.validations.where(validation_type: 'mandatory').present?
+      return print_validation
+    end
+    ''
+  end
+
+  def print_validation
+    '<span class="required"></span>'.html_safe
   end
 end

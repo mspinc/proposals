@@ -83,4 +83,17 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
       expect(location_in_answers(proposal)).to match_array(proposal.locations.map(&:id))
     end
   end
-end
+
+  describe '#mandatory_field?' do
+    let(:field) { create :proposal_field, :radio_field }
+    let(:validations) { create_list(:validation, 4, proposal_field: field) }
+
+    before do
+      validations.last.update(validation_type: 'mandatory')
+    end
+
+    it 'returns true' do
+      expect(mandatory_field?(field)).to include('required')
+    end
+  end
+ end
