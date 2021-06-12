@@ -27,8 +27,8 @@
   -webkit-box-orient: vertical;   
 }
 
-.sidebar-nav .sidebar-item {
-  margin-left: -10px;
+.sidebar-nav .sidebar-item .proposal-item {
+  margin-left: -20px;
 }
 
 .required:after {
