@@ -83,13 +83,22 @@ export default class extends Controller {
   latex () {
     let data = event.target.dataset
 
-    for (var i = 0; i < this.textFieldTargets.length; i++) {
-      if(this.textFieldTargets[i].dataset.value === data.value) {
-        $.post("/proposals/" + data.propid + "/latex",
-          { latex: this.textFieldTargets[i].value },
-          function(data, status) {
-            window.open(`/proposals/rendered_proposal.pdf`)
-        });
+    if(data.value == 'all') {
+      $.post("/proposals/" + data.propid + "/latex",
+        { latex: 'all' },
+        function(data, status) {
+          window.open(`/proposals/rendered_proposal.pdf`)
+      });
+    }
+    else {
+      for (var i = 0; i < this.textFieldTargets.length; i++) {
+        if(this.textFieldTargets[i].dataset.value === data.value) {
+          $.post("/proposals/" + data.propid + "/latex",
+            { latex: this.textFieldTargets[i].value },
+            function(data, status) {
+              window.open(`/proposals/rendered_proposal.pdf`)
+          });
+        }
       }
     }
   }
