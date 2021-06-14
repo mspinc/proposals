@@ -28,7 +28,11 @@ module Users
 
     def after_sign_in_path_for(resource)
       return proposal_types_path if resource&.staff_member?
-      new_proposal_path
+      if resource.person&.demographic_data
+        new_proposal_path
+      else
+        survey_questionnaire_survey_index_path
+      end
     end
   end
 end
