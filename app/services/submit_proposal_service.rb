@@ -1,5 +1,5 @@
 class SubmitProposalService
-  attr_reader :params, :proposal, :proposal_form
+  attr_reader :params, :proposal, :proposal_form, :errors
 
   def initialize(proposal, params)
     @proposal = proposal

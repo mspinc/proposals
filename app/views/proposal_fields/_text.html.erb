@@ -14,10 +14,10 @@
   </p>
 <div>
   <textarea name="<%= field.id %>" <%= action ? 'disabled' : '' %> id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-proposal-form-target="textField" ><%= answer(field, @proposal) %></textarea>
-  <% if @publish %>
+  <% if @submission %>
     <ul>
       <% validations(field, @proposal).each do |val| %>
-        <li style="color: red"><%= val %></li>
+        <li class="field-validation"><%= val %></li>
       <% end %>
     </ul>
   <% end %>

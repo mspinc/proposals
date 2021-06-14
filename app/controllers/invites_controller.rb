@@ -1,5 +1,6 @@
 class InvitesController < ApplicationController
   before_action :authenticate_user!, except: %i[show inviter_response]
+  skip_before_action :verify_authenticity_token, only: %i[create]
   before_action :set_proposal, only: %i[new create index show]
   before_action :set_invite, only: %i[show inviter_response]
 
@@ -22,17 +23,16 @@ class InvitesController < ApplicationController
     @invite = Invite.new(invite_params)
 
     if @invite.email == @proposal.lead_organizer&.email
-      redirect_to new_proposal_invite_path(@proposal), alert: 'You cannot invite yourself!'
+      redirect_to edit_proposal_path(@proposal), alert: 'You cannot invite yourself!'
       return
     end
-
     max_invitations = Proposal.no_of_participants(@proposal.id, @invite.invited_as).count
 
     if max_invitations < @proposal.proposal_type[@invite.invited_as.downcase.split(" ").join('_')]
       @co_organizers = @proposal.list_of_co_organizers
       create_invite
     else
-      redirect_to new_proposal_invite_path(@proposal), alert: "The maximum number of #{@invite.invited_as} invitations has been sent."
+      redirect_to edit_proposal_path(@proposal), alert: "The maximum number of #{@invite.invited_as} invitations has been sent."
     end
   end
 
@@ -66,9 +66,9 @@ class InvitesController < ApplicationController
 
     if @invite.save
       InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_email.deliver_later
-      redirect_to proposal_invites_path(@proposal)
+      redirect_to edit_proposal_path(@proposal), notice: "Invite sent to #{@invite.firstname+ ' ' +@invite.lastname}"
     else
-      render :new, alert: 'Error sending invite'
+      redirect_to edit_proposal_path(@proposal), alert: "Error while sending invite"
     end
   end
 

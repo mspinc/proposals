@@ -17,10 +17,10 @@
   <% end %>
   <%= select_tag "Option", options_for_select(proposal_field_options(field),multichoice_answer(field, @proposal)), class: 'form-control', disabled: action,  multiple: true, name: "#{field.id}[]" %>
 
- <% if @publish %>
+ <% if @submission %>
     <ul>
     <% validations(field, @proposal).each do |val| %>
-      <li style="color: red"><%= val %></li>
+      <li class="field-validation"><%= val %></li>
     <% end %>
   </ul>
   <% end %>

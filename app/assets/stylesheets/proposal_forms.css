@@ -36,3 +36,11 @@
     color: red;
     margin-left: 3px;
 }
+
+.field-validation {
+  color: red;
+}
+
+.table-padding {
+  padding: 10px
+}

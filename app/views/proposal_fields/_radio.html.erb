@@ -22,10 +22,10 @@
     </div>
   <% end %>
 
-  <% if @publish %>
+  <% if @submission %>
     <ul>
       <% validations(field, @proposal).each do |val| %>
-        <li style="color: red"><%= val %></li>
+        <li class="field-validation"><%= val %></li>
       <% end %>
     </ul>
   <% end %>
