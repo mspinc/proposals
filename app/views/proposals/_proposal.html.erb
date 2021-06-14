@@ -28,7 +28,7 @@
                 <div class="mb-3">
                   <% if params[:action] == 'edit' %>
                     <% if lead_organizer?(@proposal.proposal_roles) %> 
-                      <%= link_to 'Invite People', proposal_invites_path(@proposal), title: 'Invite as a Participant or Co Organizer', 'data-toggle' => 'tooltip', class:'btn btn-primary' %>
+                      <%= link_to 'Invite People', proposal_invites_path(@proposal), title: 'Invite as a Participant or Co-organizer', 'data-toggle' => 'tooltip', class:'btn btn-primary' %>
                       <% if @proposal.draft? %>
                         <div class="float-end">
                           <%= f.submit 'Save as draft', class:'btn btn-primary' %>
@@ -61,7 +61,7 @@
 
                       <div class="mb-3">
                         <label>Type of Meeting</label>
-                        <%= f.label @proposal.proposal_type.name.titleize, class: 'form-select w-25' %>
+                        <p class="form-select w-25"><%= @proposal.proposal_type.name.titleize %></p>
                       </div>
 
                       <div class="mb-3">
