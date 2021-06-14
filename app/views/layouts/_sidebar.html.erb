@@ -49,12 +49,12 @@
           <ul id="proposals" class="sidebar-dropdown list-unstyled collapse <%= proposal_menu %>" data-bs-parent="#sidebar">
             <li class="sidebar-item <%= active_menu(new_proposal_path) %>">
               <%= link_to new_proposal_path, class: "sidebar-link" do %>
-                <i class="fas fa-book"></i> Create New Proposal
+                <i class="fas fa-book proposal-item"></i> Create New Proposal
               <% end %>
             </li>
             <li class="sidebar-item <%= active_menu(proposals_path) %>">
               <%= link_to proposals_path, class: "sidebar-link" do %>
-                <i class="fas fa-book"></i> Past & Current Proposals
+                <i class="fas fa-book proposal-item"></i> Past & Current Proposals
               <% end %>
             </li>
           </ul>

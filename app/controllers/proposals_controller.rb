@@ -19,7 +19,7 @@ class ProposalsController < ApplicationController
       @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
       redirect_to edit_proposal_path(@proposal), notice: "Started a new #{@proposal.proposal_type.name} proposal!"
     else
-      redirect_to new_proposal_path, alert: @proposal.errors.full_messages
+      redirect_to new_proposal_path, alert: @proposal.errors #.full_messages
     end
   end
 
@@ -34,11 +34,14 @@ class ProposalsController < ApplicationController
   def latex_input
     proposal_id = latex_params[:proposal_id]
     session[:proposal_id] = proposal_id
-    temp_file = "propfile-#{proposal_id}.tex"
+
+    temp_file = "propfile-#{current_user.id}-#{proposal_id}.tex"
     session[:latex_file] = temp_file
 
+    input = latex_params[:latex]
+    input = 'Please enter some text.' if input.blank?
     File.open(file="#{Rails.root}/tmp/#{temp_file}",'w:binary') do |io|
-      io.write(latex_params[:latex])
+      io.write(input)
     end
 
     head :ok
@@ -46,13 +49,16 @@ class ProposalsController < ApplicationController
 
   # GET /proposals/rendered_proposal.pdf
   def latex_output
-    proposal = Proposal.find_by_id(session[:proposal_id])
-    @year = proposal.year || Date.current.year.to_i + 2
+    prop_id = session[:proposal_id]
+    return if prop_id.blank?
+
+    proposal = Proposal.find_by_id(prop_id)
+    @year = proposal&.year || Date.current.year.to_i + 2
 
     fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
     @latex_input = fh.read
 
-    render 'rendered-proposal', formats: [:pdf]
+    render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
   end
 
   def destroy

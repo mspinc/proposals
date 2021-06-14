@@ -1,4 +1,4 @@
-\documentclass[12pt]{report}
+\documentclass[12pt,table]{report}
 <% @latex_config = { :recipe => [
   {:command => 'pdflatex'},
   {:command => 'bibtex', :arguments =>[]},
@@ -34,10 +34,8 @@
 
 \DeclareMathOperator{\Gal}{Gal}
 \DeclareMathOperator{\SL}{SL}
-
 \DeclareMathOperator\ed{\mathrm{ed}}
 \DeclareMathOperator\ho{\mathrm{H}}
-
 \DeclareMathOperator{\Diff}{Diff}
 \DeclareMathOperator{\Homeo}{Homeo}
 
