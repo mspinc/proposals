@@ -27,7 +27,6 @@ class ProposalsController < ApplicationController
 
   def edit
     @invite = @proposal.invites.new
-    @publish = params[:publish]
   end
 
   # POST /proposals/:1/latex
@@ -81,6 +80,7 @@ class ProposalsController < ApplicationController
 
   def set_proposal
     @proposal = Proposal.find_by_id(params[:id])
+    @submission = session[:is_submission]
   end
 
   def latex_params

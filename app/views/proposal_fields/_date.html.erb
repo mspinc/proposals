@@ -18,10 +18,10 @@
 <div class="mb-3">
   <input name="<%= field.id %>" <%= action ? 'disabled' : '' %> class="form-control" type="date" value='<%= answer(field, @proposal) %>'> </input>
 </div>
-<% if @publish %>
+<% if @submission %>
   <ul>
     <% validations(field, @proposal).each do |val| %>
-      <li style="color: red"><%= val %></li>
+      <li class="field-validation"><%= val %></li>
     <% end %>
   </ul>
 <% end %>

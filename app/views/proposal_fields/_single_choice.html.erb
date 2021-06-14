@@ -17,9 +17,9 @@
   <% end %>
   <%= select_tag "Option", options_for_select(proposal_field_options(field), answer(field, @proposal)), class: 'form-select', disabled: action, name: field.id %>
 
-  <% if @publish %>
+  <% if @submission %>
     <% validations(field, @proposal).each do |val| %>
-      <p style="color: red"><%= val %></p>
+      <p class="field-validation"><%= val %></p>
     <% end %>
   <% end %>
 </div>
