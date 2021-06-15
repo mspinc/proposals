@@ -48,14 +48,15 @@ class Proposal < ApplicationRecord
 
   def subjects
     errors.add('Subject Area:', "can't be blank.") if subject.nil?
-    unless ams_subjects.pluck(:code) == ["code1", "code2"]
+    unless ams_subjects.pluck(:code).count == 2
       errors.add('AMS Subjects:', 'Please select 2 AMS Subjects')
     end
   end
 
   def next_number
-    last_code = Proposal.submitted(proposal_type.name)
-                        .pluck(:code).sort.last
+    codes = Proposal.submitted(proposal_type.name).pluck(:code)
+    last_code = codes.reject { |c| c.to_s.empty? }.sort.last
+
     return '001' if last_code.blank?
     (last_code[-3..-1].to_i + 1).to_s.rjust(3, '0')
   end
