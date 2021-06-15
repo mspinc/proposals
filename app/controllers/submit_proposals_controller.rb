@@ -8,7 +8,9 @@ class SubmitProposalsController < ApplicationController
     @proposal.update(proposal_params)
     update_ams_subject_code
     
-    session[:is_submission] = params[:commit] == 'Submit Proposal'
+    draft_or_final = params[:commit] == 'Submit Proposal'
+    session[:is_submission] = @proposal.is_submission = draft_or_final
+
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
 
@@ -45,7 +47,7 @@ class SubmitProposalsController < ApplicationController
   end
 
   def flash_notice(submission)
-    if params[:commit] == 'Submit Proposal'
+    if @proposal.is_submission
       { alert: "Your submission has errors: #{submission.errors.join(', ')}" }
     else
       { notice: 'Draft saved.' }
