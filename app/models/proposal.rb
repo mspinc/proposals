@@ -1,4 +1,6 @@
 class Proposal < ApplicationRecord
+  attr_accessor :is_submission
+
   has_many :proposal_locations, dependent: :destroy
   has_many :locations, through: :proposal_locations
   belongs_to :proposal_type
@@ -11,8 +13,9 @@ class Proposal < ApplicationRecord
   has_many :ams_subjects, through: :proposal_ams_subjects
   belongs_to :subject, optional: true
 
-  # validates_presence_of :year, :title
-  # validate :create_code
+  validates_presence_of :year, :title, if: :is_submission
+  validate :subjects, if: :is_submission
+  before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
 
@@ -27,7 +30,8 @@ class Proposal < ApplicationRecord
   }
 
   def lead_organizer
-  	proposal_roles.joins(:role).find_by('roles.name = ?', 'lead_organizer')&.person
+  	proposal_roles.joins(:role).find_by('roles.name = ?',
+                                        'lead_organizer')&.person
   end
 
   def the_locations
@@ -42,6 +46,13 @@ class Proposal < ApplicationRecord
 
   private
 
+  def subjects
+    errors.add('Subject Area:', "can't be blank.") if subject.nil?
+    unless ams_subjects.pluck(:code) == ["code1", "code2"]
+      errors.add('AMS Subjects:', 'Please select 2 AMS Subjects')
+    end
+  end
+
   def next_number
     last_code = Proposal.submitted(proposal_type.name)
                         .pluck(:code).sort.last
@@ -50,8 +61,6 @@ class Proposal < ApplicationRecord
   end
 
   def create_code
-    return true if !code.blank? || year.blank?
-
     # temporary, until type-code feature is added to ProposalTypes
     type_codes = {
       '5 Day Workshop' => 'w5',

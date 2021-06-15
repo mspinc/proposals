@@ -37,7 +37,7 @@ class ProposalTypesController < ApplicationController
   def location_based_fields
     @proposal = Proposal.find(params[:proposal_id])
     @proposal_fields = @proposal.proposal_form&.proposal_fields&.where(location_id: params[:ids].split(","))
-    @publish = true if params[:publish] == 'true'
+    @submission = session[:is_submission]
     render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: @proposal_fields }
   end
 

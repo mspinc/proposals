@@ -14,7 +14,7 @@ export default class extends Controller {
   }
 
   handleEthnicityOptions() {
-    if (this.ethnicityTarget.value === 'Prefer Other') {
+    if (this.ethnicityTarget.value === 'Other') {
       this.otherEthnicityTarget.classList.remove("hidden")
     } else {
       this.otherEthnicityTarget.classList.add("hidden")

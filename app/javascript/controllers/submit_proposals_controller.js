@@ -6,16 +6,13 @@ export default class extends Controller {
   static values = { proposalTypeId: Number, proposal: Number }
   
   connect() {
-    if (this.haslocationIdsTarget) {
-      this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
-    }
+    this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
   }
 
   handleLocationChange(locations) {
-    var publish = window.location.href.includes("publish")
     if(event && event.type == 'change')
       locations = [...event.target.selectedOptions].map(opt => opt.value)
-    fetch(`/proposal_types/${this.proposalTypeIdValue}/location_based_fields?ids=${locations}&proposal_id=${this.proposalValue},&publish=${publish}`)
+    fetch(`/proposal_types/${this.proposalTypeIdValue}/location_based_fields?ids=${locations}&proposal_id=${this.proposalValue}`)
       .then(response => response.text())
       .then(html => {
         this.locationSpecificQuestionsTarget.innerHTML = html

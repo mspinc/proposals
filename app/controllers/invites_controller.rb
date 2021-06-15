@@ -23,29 +23,35 @@ class InvitesController < ApplicationController
     @invite = Invite.new(invite_params)
 
     if @invite.email == @proposal.lead_organizer&.email
-      redirect_to edit_proposal_path(@proposal), alert: 'You cannot invite yourself!'
+      redirect_to edit_proposal_path(@proposal),
+                    alert: 'You cannot invite yourself!'
       return
     end
-    max_invitations = Proposal.no_of_participants(@proposal.id, @invite.invited_as).count
+    max_invitations = Proposal.no_of_participants(@proposal.id,
+                                                  @invite.invited_as).count
 
-    if max_invitations < @proposal.proposal_type[@invite.invited_as.downcase.split(" ").join('_')]
+    if max_invitations < @proposal.proposal_type[@invite.invited_as
+                                  .downcase.split(" ").join('_')]
       @co_organizers = @proposal.list_of_co_organizers
       create_invite
     else
-      redirect_to edit_proposal_path(@proposal), alert: "The maximum number of #{@invite.invited_as} invitations has been sent."
+      redirect_to edit_proposal_path(@proposal),
+                  alert: "The maximum number of #{@invite.invited_as}
+                          invitations has been sent.".squish
     end
   end
 
   def inviter_response
     @invite.update(response: params[:response], status: 'completed')
     proposal_role unless @invite.no?
-    user unless @invite.person.user
+    create_user unless @invite.person.user
 
     if @invite.no?
       InviteMailer.with(invite: @invite).invite_decline.deliver_later
       redirect_to thanks_proposal_invites_path(@invite.proposal)
     else
-      InviteMailer.with(invite: @invite, token: @token).invite_acceptance.deliver_later
+      InviteMailer.with(invite: @invite, token: @token).invite_acceptance
+                  .deliver_later
       redirect_to new_survey_path(code: @invite.code)
     end
   end
@@ -56,24 +62,29 @@ class InvitesController < ApplicationController
 
   private
 
-  def person
-    @invite.person = Person.find_or_create_by!(firstname: @invite.firstname, lastname: @invite.lastname, email: @invite.email)
+  def add_person
+    @invite.person = Person.find_or_create_by!(firstname: @invite.firstname,
+                              lastname: @invite.lastname, email: @invite.email)
   end
 
   def create_invite
-    @invite.proposal = @proposal
-    person unless @invite.person
+    @invite.proposal = @proposal 
+    add_person if @invite.person.nil?
 
     if @invite.save
-      InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_email.deliver_later
-      redirect_to edit_proposal_path(@proposal), notice: "Invite sent to #{@invite.firstname+ ' ' +@invite.lastname}"
+      InviteMailer.with(invite: @invite, co_organizers: @co_organizers)
+                  .invite_email.deliver_later
+      redirect_to edit_proposal_path(@proposal),
+                  notice: "Invitation sent to #{@invite.person.fullname}"
     else
-      redirect_to edit_proposal_path(@proposal), alert: "Error while sending invite"
-    end
+      redirect_to edit_proposal_path(@proposal),
+                  alert: "Errors: #{@invite.errors.full_messages.join(', ')}."
+    end 
   end
 
-  def user
-    user = User.new(email: @invite.person.email, password: '123456123456')
+  def create_user
+    user = User.new(email: @invite.person.email,
+                    password: SecureRandom.urlsafe_base64(20))
     user.person = @invite.person
     user.save
   end
@@ -87,7 +98,8 @@ class InvitesController < ApplicationController
   end
 
   def invite_params
-    params.require(:invite).permit(:firstname, :lastname, :email, :invited_as, :deadline_date)
+    params.require(:invite).permit(:firstname, :lastname, :email, :invited_as,
+            :deadline_date)
   end
 
   def proposal_role

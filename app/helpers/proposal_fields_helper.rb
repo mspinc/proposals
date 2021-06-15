@@ -84,4 +84,11 @@ module ProposalFieldsHelper
   def print_validation
     '<span class="required"></span>'.html_safe
   end
+
+  def location_name(field)
+    return unless field.location_id
+
+    loc = "#{field.location&.name} (#{field.location&.city}, #{field.location&.country})"
+    "#{loc} - Based question"
+  end
 end

@@ -1,18 +1,20 @@
 class SubmitProposalsController < ApplicationController
+  before_action :set_proposal, only: %i[create]
   def new
     @proposals = ProposalForm.new
   end
 
   def create
-    @proposal = Proposal.find params[:proposal]
     @proposal.update(proposal_params)
     update_ams_subject_code
     
-    session[:is_submission] = params[:commit] == 'Submit Proposal'
+    draft_or_final = params[:commit] == 'Submit Proposal'
+    session[:is_submission] = @proposal.is_submission = draft_or_final
+
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
 
-    if submission.errors.empty?
+    if submission.errors.flatten.empty?
       redirect_to thanks_submit_proposals_path, notice: 'Your proposal has been
             submitted. A copy of your proposal has been emailed to you.'.squish
     else
@@ -29,6 +31,10 @@ class SubmitProposalsController < ApplicationController
           .merge(ams_subject_ids: proposal_ams_subjects)
   end
 
+  def set_proposal
+    @proposal = Proposal.find(params[:proposal])
+  end
+
   def proposal_ams_subjects
     @code1 = params.dig(:ams_subjects, :code1)
     @code2 = params.dig(:ams_subjects, :code2)
@@ -41,7 +47,7 @@ class SubmitProposalsController < ApplicationController
   end
 
   def flash_notice(submission)
-    if params[:commit] == 'Submit Proposal'
+    if @proposal.is_submission
       { alert: "Your submission has errors: #{submission.errors.join(', ')}" }
     else
       { notice: 'Draft saved.' }

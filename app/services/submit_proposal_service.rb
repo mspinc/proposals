@@ -16,8 +16,12 @@ class SubmitProposalService
       create_or_update(id, value)
     end
     proposal_locations
-    proposal.update(status: :active) if @errors.flatten.count.zero? && params[:commit] == 'Submit Proposal' && @proposal.title.present?
-    proposal.active?
+
+    if @proposal.is_submission && @proposal.valid?
+      proposal.update(status: :active)
+    else
+      errors << @proposal.errors.full_messages.join(', ')
+    end
   end
 
   def create_or_update(id, value)
