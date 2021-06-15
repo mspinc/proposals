@@ -36,14 +36,9 @@ class ProposalsController < ApplicationController
 
     temp_file = "propfile-#{current_user.id}-#{proposal_id}.tex"
     session[:latex_file] = temp_file
-
     input = latex_params[:latex]
-    input = 'Please enter some text.' if input.blank?
-    input = all_proposal_fields(proposal_id) if input == 'all'
 
-    File.open(file="#{Rails.root}/tmp/#{temp_file}",'w:binary') do |io|
-      io.write(input)
-    end
+    ProposalPdfService.new(proposal_id, temp_file, input).pdf
 
     head :ok
   end
@@ -71,18 +66,6 @@ class ProposalsController < ApplicationController
   end
 
   private
-
-  def all_proposal_fields(proposal_id)
-    proposal = Proposal.find_by_id(proposal_id)
-    return 'Proposal data not found!' if proposal.blank?
-
-    text = '\section*{\centering ' + proposal.title + " }\n\n"
-    proposal.answers.each do |field|
-      text << '\subsection*{' + field.proposal_field.statement + '}' + "\n\n"
-      text << "#{field.answer}\n\n"
-    end
-    text
-  end
 
   def proposal_params
     params.require(:proposal).permit(:proposal_type_id, :title, :year)
