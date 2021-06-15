@@ -61,15 +61,18 @@ class InvitesController < ApplicationController
   end
 
   def create_invite
-    @invite.proposal = @proposal
+    @invite.proposal = @proposal 
     person unless @invite.person
-
+    if @invite.proposal.title.blank?
+      redirect_to edit_proposal_path(@proposal), alert: "Please add proposal title and save it as draft then send invitation."
+      return      
+    end
     if @invite.save
       InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_email.deliver_later
       redirect_to edit_proposal_path(@proposal), notice: "Invite sent to #{@invite.firstname+ ' ' +@invite.lastname}"
     else
       redirect_to edit_proposal_path(@proposal), alert: "Error while sending invite"
-    end
+    end 
   end
 
   def user
