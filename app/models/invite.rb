@@ -16,7 +16,8 @@ class Invite < ApplicationRecord
   def proposal_title
     return if self.proposal.nil?
     if proposal.title.blank?
-      errors.add('Proposal Title:', 'Please add a title to the proposal.')
+      errors.add('Proposal Title:', 'Please add a title, and click
+        "Save as Draft" before adding people.'.squish)
     end
   end
 end
