@@ -40,7 +40,7 @@ module SurveyHelper
                   Syrian Arab Republic, Turkey, United Arab Emirates, West Bank and Yemen)', 'West Asian (including
                   Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip, Georgia, Iran (Islamic Republic of),
                   Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syrian Arab Republic, Turkey, United
-                  Arab Emirates, West Bank and Yemen)'],['Prefer Other', 'Prefer Other'], ['Prefer not to answer', '']]
+                  Arab Emirates, West Bank and Yemen)'],['Other', 'Other'], ['Prefer not to answer', '']]
     ethnicity.map { |disp, _value| disp }
   end
 
