@@ -12,7 +12,7 @@ class SubmitProposalsController < ApplicationController
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
 
-    if submission.errors.empty?
+    if submission.errors.flatten.empty?
       redirect_to thanks_submit_proposals_path, notice: 'Your proposal has been
             submitted. A copy of your proposal has been emailed to you.'.squish
     else

@@ -16,7 +16,8 @@ class SubmitProposalService
       create_or_update(id, value)
     end
     proposal_locations
-    proposal.update(status: :active) if @errors.flatten.count.zero? && params[:commit] == 'Submit Proposal' && @proposal.title.present?
+
+    proposal.update(status: :active) if able_to_active?
     proposal.active?
   end
 
@@ -40,5 +41,9 @@ class SubmitProposalService
 
   def proposal_locations
     proposal.locations = Location.where(id: params[:location_ids])
+  end
+
+  def able_to_active?
+    @errors.flatten.count.zero? && params[:commit] == 'Submit Proposal' && proposal.title.present? && proposal.subject && proposal.ams_subjects.find_by(code: 'code1') && proposal.ams_subjects.find_by(code: 'code2')
   end
 end
