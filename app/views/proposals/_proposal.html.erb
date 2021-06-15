@@ -111,7 +111,7 @@
                                           <%= f.label invite.lastname %>
                                         </div>
                                         <div class="mb-3">
-                                          <%= f.label :email, "Email " %>
+                                          <%= f.label :email, "Email: " %>
                                           <%= f.label invite.email %>
                                         </div>
                                       </div>
@@ -119,6 +119,10 @@
                                         <div class="mb-3">
                                           <%= f.label :status, "Status: " %>
                                           <%= f.label invite.status %>
+                                        </div>
+                                        <div class="mb-3">
+                                          <%= f.label :craeted_at, "Invitation Date: " %>
+                                          <%= f.label invite.created_at.to_date %>
                                         </div>
                                         <div class="mb-3">
                                           <%= f.label :deadline_date, "Deadline Date: " %>
