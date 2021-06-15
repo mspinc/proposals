@@ -96,4 +96,13 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
       expect(mandatory_field?(field)).to include('required')
     end
   end
+
+  describe '#location_name' do 
+    let(:field) { create :proposal_field, :radio_field, :location_based }
+    it 'returns location detail' do
+      loc = "#{field.location&.name} (#{field.location&.city}, #{field.location&.country})"
+      location = "#{loc} - Based question"
+      expect(location_name(field)).to eq(location)
+    end
+  end
  end

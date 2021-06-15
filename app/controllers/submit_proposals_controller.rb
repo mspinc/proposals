@@ -1,10 +1,10 @@
 class SubmitProposalsController < ApplicationController
+  before_action :set_proposal, only: %i[create]
   def new
     @proposals = ProposalForm.new
   end
 
   def create
-    @proposal = Proposal.find params[:proposal]
     @proposal.update(proposal_params)
     update_ams_subject_code
     
@@ -27,6 +27,10 @@ class SubmitProposalsController < ApplicationController
   def proposal_params
     params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids)
           .merge(ams_subject_ids: proposal_ams_subjects)
+  end
+
+  def set_proposal
+    @proposal = Proposal.find(params[:proposal])
   end
 
   def proposal_ams_subjects
