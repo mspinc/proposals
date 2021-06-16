@@ -16,6 +16,8 @@ class SubmitProposalsController < ApplicationController
 
     if submission.errors.flatten.empty?
       session[:is_submission] = nil
+
+      ProposalMailer.with(proposal: @proposal, file: proposal_pdf).proposal_submission.deliver_later
       redirect_to thanks_submit_proposals_path, notice: 'Your proposal has been
             submitted. A copy of your proposal has been emailed to you.'.squish
     else
@@ -26,6 +28,12 @@ class SubmitProposalsController < ApplicationController
   def thanks; end
 
   private
+
+  def proposal_pdf
+    ProposalPdfService.new(@proposal.id, session[:latex_file], 'all').pdf
+    fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
+    render_to_string(layout: "application", inline: "#{fh.read}", formats: [:pdf])
+  end
 
   def proposal_params
     params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids)
@@ -49,7 +57,7 @@ class SubmitProposalsController < ApplicationController
 
   def flash_notice(submission)
     if @proposal.is_submission
-      { alert: "Your submission has errors: #{submission.errors.join(', ')}" }
+      { alert: "Your submission has errors: #{submission.errors.flatten.join(', ')}" }
     else
       { notice: 'Draft saved.' }
     end

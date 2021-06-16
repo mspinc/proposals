@@ -24,8 +24,9 @@
           <div class="card" style="background: #f4f7fc">
             <div class="card-body">
               <div data-controller="submit-proposals proposal-form"
-                   data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
-                   data-submit-proposals-proposal-value="<%= @proposal.id %>" >
+                data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
+                data-submit-proposals-proposal-value="<%= @proposal.id %>" 
+              >
                 <div class="mb-3 d-flex flex-row-reverse">
                   <% if params[:action] == 'edit' %>
                     <% if lead_organizer?(@proposal.proposal_roles) %> 
@@ -55,7 +56,7 @@
                         <%= f.label :title, class: "required" %>
                         <%= f.text_field :title, class: 'form-control', disabled: action, value: @proposal.title %>
                         <% if @submission && @proposal.title.blank? %>
-                          <p style="color: red">Title is required</p>
+                          <p class="field-validation">Title is required</p>
                         <% end %>
                       </div>
 
@@ -169,10 +170,11 @@
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 
                       <div class="row mt-20">&nbsp;</div>
-                      <div class="d-flex flex-row-reverse">
+                      <div class="d-flex">
+                        <span class="me-auto p-2 btn btn-primary" data-action="click->proposal-form#latex" data-value="all" data-propid="<%= @proposal&.id %>">Print Proposal</span>
                         <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
                         <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
-                      </div>
+                       </div>
                     </div>
                     
                     <div class="tab-pane <%= active_tab(@proposal, 'three') %>" id="tab-3" role="tabpanel">
@@ -185,6 +187,7 @@
 
                       <div class="row mt-20">&nbsp;</div>
                       <div class="d-flex">
+                        <span class="me-auto p-2 btn btn-primary" data-action="click->proposal-form#latex" data-value="all" data-propid="<%= @proposal&.id %>">Print Proposal</span>
                         <button class="ms-auto p-2 btn btn-primary" id="changeTab" data-action='click->submit-proposals#previousTab'>Back</button>
                       </div>
                     </div>
