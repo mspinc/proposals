@@ -2,6 +2,8 @@ class InviteMailer < ApplicationMailer
   def invite_email
     @invite = params[:invite]
     @existing_co_organizers = params[:co_organizers]
+
+    @existing_co_organizers.prepend(" and ") if @existing_co_organizers.present?
     @proposal = @invite.proposal
     @person = @invite.person
 
@@ -11,6 +13,8 @@ class InviteMailer < ApplicationMailer
   def invite_acceptance
     @invite = params[:invite]
     @existing_co_organizers = params[:co_organizers]
+
+    @existing_co_organizers.prepend(" and ") if @existing_co_organizers.present?
     @proposal = @invite.proposal
     @person = @invite.person
 
