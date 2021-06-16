@@ -57,6 +57,12 @@ services:
       - EMAIL_SERVER=mail.example.com
       - EMAIL_PORT=587
       - EMAIL_STARTTLS=true
+      - WEBMASTER_EMAIL=webmaster@example.com
+      - BIRS_EMAIL=birs@example.com
+      - CMO_EMAIL=cmo@example.com
+      - IASM_EMAIL=iasm@example.com
+      - UBCO_EMAIL=ubco@example.com
+
 
 
 volumes:

@@ -1,0 +1,20 @@
+# contact emails
+# use: Rails.application.config_for(:contacts)['webmaster_email']
+development:
+  webmaster_email: <%= ENV['WEBMASTER_EMAIL'] %>
+  birs_email: <%= ENV['BIRS_EMAIL'] %>
+  cmo_email: <%= ENV['CMO_EMAIL'] %>
+  iasm_email: <%= ENV['IASM_EMAIL'] %>
+  ubco_email: <%= ENV['UBCO_EMAIL'] %>
+test:
+  webmaster_email: <%= ENV['WEBMASTER_EMAIL'] %>
+  birs_email: <%= ENV['BIRS_EMAIL'] %>
+  cmo_email: <%= ENV['CMO_EMAIL'] %>
+  iasm_email: <%= ENV['IASM_EMAIL'] %>
+  ubco_email: <%= ENV['UBCO_EMAIL'] %>
+production:
+  webmaster_email: <%= ENV['WEBMASTER_EMAIL'] %>
+  birs_email: <%= ENV['BIRS_EMAIL'] %>
+  cmo_email: <%= ENV['CMO_EMAIL'] %>
+  iasm_email: <%= ENV['IASM_EMAIL'] %>
+  ubco_email: <%= ENV['UBCO_EMAIL'] %>
