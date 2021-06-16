@@ -17,7 +17,7 @@ class SubmitProposalService
     end
     proposal_locations
 
-    if @proposal.is_submission && @proposal.valid?
+    if @proposal.is_submission && @proposal.valid? && errors.flatten.count.zero?
       proposal.update(status: :active)
     else
       errors << @proposal.errors.full_messages.join(', ')
