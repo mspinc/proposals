@@ -10,7 +10,7 @@ class InvitesController < ApplicationController
   end
 
   def show
-    redirect_to root_path and return if @invite.completed?
+    redirect_to root_path and return if @invite.confirmed?
 
     render layout: 'devise'
   end
