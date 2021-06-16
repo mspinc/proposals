@@ -99,40 +99,10 @@
                           <div class="row">
                             <h3>Add Supporting Organizers:</h3>
                             <%= organizer_intro(@proposal) %>
-
                             <% if @proposal.invites %>
                               <% @proposal.invites.each do |invite|%>
                                 <% if invite.invited_as == 'Co Organizer' %>
-                                  <div class="mb-3 row border p-1 m-1">
-                                    <div class="col-6 mt-2">
-                                      <div class="mb-3">
-                                        <%= f.label :firstname, "First Name: " %>
-                                        <%= f.label invite.firstname %>
-                                      </div>
-                                      <div class="mb-3">
-                                        <%= f.label :lastname, "Last Name: " %>
-                                        <%= f.label invite.lastname %>
-                                      </div>
-                                      <div class="mb-3">
-                                        <%= f.label :email, "Email: " %>
-                                        <%= f.label invite.email %>
-                                      </div>
-                                    </div>
-                                    <div class="col-6 mt-2">
-                                      <div class="mb-3">
-                                        <%= f.label :status, "Status: " %>
-                                        <%= f.label invite.status %>
-                                      </div>
-                                      <div class="mb-3">
-                                        <%= f.label :created_at, "Invitation Date: " %>
-                                        <%= f.label invite.created_at.to_date %>
-                                      </div>
-                                      <div class="mb-3">
-                                        <%= f.label :deadline_date, "Deadline Date: " %>
-                                        <%= f.label invite.deadline_date.to_date %>
-                                      </div>
-                                    </div>
-                                  </div>
+                                  <%= render partial: 'organizer', locals: { invite: invite } %>
                                 <% end %>
                               <% end %>
                             <% end %>
@@ -148,36 +118,7 @@
                               <% if @proposal.invites %>
                                 <% @proposal.invites.each do |invite|%>
                                   <% if invite.invited_as == 'Participant' %>
-                                    <div class="mb-3 row border m-1 p-1">
-                                      <div class="col-6 mt-2">
-                                        <div class="mb-3">
-                                          <%= f.label :firstname, "First Name: " %>
-                                          <%= f.label invite.firstname %>
-                                        </div>
-                                        <div class="mb-3">
-                                          <%= f.label :lastname, "Last Name: " %>
-                                          <%= f.label invite.lastname %>
-                                        </div>
-                                        <div class="mb-3">
-                                          <%= f.label :email, "Email " %>
-                                          <%= f.label invite.email %>
-                                        </div>
-                                      </div>
-                                      <div class="col-6 mt-2">
-                                        <div class="mb-3">
-                                          <%= f.label :status, "Status: " %>
-                                          <%= f.label invite.status %>
-                                        </div>
-                                        <div class="mb-3">
-                                          <%= f.label :created_at, "Invitation Date: " %>
-                                          <%= f.label invite.created_at.to_date %>
-                                        </div>
-                                        <div class="mb-3">
-                                          <%= f.label :deadline_date, "Deadline Date: " %>
-                                          <%= f.label invite.deadline_date.to_date %>
-                                        </div>
-                                      </div>
-                                    </div>
+                                    <%= render partial: 'organizer', locals: { invite: invite } %>
                                   <% end %>
                                 <% end %>
                               <% end %>
@@ -188,6 +129,33 @@
                               </div>
                             </div>
                           </div>
+                          <% end %>
+                        </div>
+                        <div>
+                          <% if params[:action] == 'show' %>
+                            <div class="row">
+                              <h3>Supporting Organizers:</h3>
+                              <%= organizer_intro(@proposal) %>
+                              <% if @proposal.invites %>
+                                <% @proposal.invites.each do |invite|%>
+                                  <% if invite.invited_as == 'Co Organizer' %>
+                                    <%= render partial: 'organizer', locals: { invite: invite } %>
+                                  <% end %>
+                                <% end %>
+                              <% end %>
+                            </div>
+                            <div class="row mt-4">
+                              <div class="mb-3">
+                                <h3>Participants:</h3>
+                                <% if @proposal.invites %>
+                                  <% @proposal.invites.each do |invite|%>
+                                    <% if invite.invited_as == 'Participant' %>
+                                      <%= render partial: 'organizer', locals: { invite: invite } %>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                            </div>
                           <% end %>
                         </div>
                         <div class="d-flex flex-row-reverse">
