@@ -15,6 +15,7 @@ class Proposal < ApplicationRecord
 
   validates_presence_of :year, :title, if: :is_submission
   validate :subjects, if: :is_submission
+  validate :minimum_organizers, if: :is_submission
   before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
@@ -46,10 +47,18 @@ class Proposal < ApplicationRecord
 
   private
 
+  def minimum_organizers
+    if invites.select { |i| i.status == 'confirmed' }.count < 1
+      errors.add('Supporting Organizers: ', 'At least one supporting organizer
+        must confirm their participation by following the link in the email
+        that was sent to them.'.squish)
+    end
+  end
+
   def subjects
-    errors.add('Subject Area:', "can't be blank.") if subject.nil?
+    errors.add('Subject Area:', "please select a subject area") if subject.nil?
     unless ams_subjects.pluck(:code).count == 2
-      errors.add('AMS Subjects:', 'Please select 2 AMS Subjects')
+      errors.add('AMS Subjects:', 'please select 2 AMS Subjects')
     end
   end
 

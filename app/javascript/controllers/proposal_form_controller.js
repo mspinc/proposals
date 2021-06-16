@@ -6,7 +6,6 @@ export default class extends Controller {
   static values = { visible: Boolean, field: String }
 
   disableOtherInvites () {
-    console.log("This value: " + event.target.value + ".")
     let disable_role = 'participant'
     let role = event.target.dataset.role
     if( role == 'participant' ) { disable_role = 'organizer' }

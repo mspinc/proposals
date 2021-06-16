@@ -54,7 +54,7 @@ export default class extends Controller {
       let ele = $('#'+invited_as+'_'+el)
       if(ele.val() == "") {
         if(ele.next().is('span')) return;
-        else ele.after($('<span class="required">This is a required field.</span>'))
+        else ele.after($('<span class="field-validation">This is a required field.</span>'))
       } else {
         if(ele.next().is('span')) {
           ele.next().remove();
