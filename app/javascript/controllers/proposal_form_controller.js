@@ -9,7 +9,7 @@ export default class extends Controller {
     let disable_role = 'participant'
     let role = event.target.dataset.role
     if( role == 'participant' ) { disable_role = 'organizer' }
-    let elements = ['firstname', 'lastname', 'email']
+    let elements = ['firstname', 'lastname', 'email', 'deadline']
     let disable_value = true
     let role_values = []
 
@@ -22,6 +22,8 @@ export default class extends Controller {
     $.each(elements, function(index, element) {
       $('#' + disable_role + '_' + element).prop("disabled", disable_value);
     })
+
+    $('#' + disable_role).prop("hidden", disable_value);
   }
 
   toggleProposalFieldsPanel () {
