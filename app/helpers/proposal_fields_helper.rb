@@ -48,7 +48,7 @@ module ProposalFieldsHelper
   end
 
   def validations(field, proposal)
-    return [] if field.location_id && @proposal.locations.exclude?(field.location)
+    return [] if field.location_id && proposal.locations.exclude?(field.location)
 
     ProposalFieldValidationsService.new(field, proposal).validations
   end
@@ -75,9 +75,8 @@ module ProposalFieldsHelper
   end
 
   def mandatory_field?(field)
-    if field.validations.where(validation_type: 'mandatory').present?
-      return print_validation
-    end
+    return print_validation if field.validations.where(validation_type: 'mandatory').present?
+
     ''
   end
 
@@ -90,5 +89,47 @@ module ProposalFieldsHelper
 
     loc = "#{field.location&.name} (#{field.location&.city}, #{field.location&.country})"
     "#{loc} - Based question"
+  end
+
+  def active_tab(proposal, tab)
+    tab_errors(proposal).eql?(tab) ? 'active' : ''
+  end
+
+  def tab_errors(proposal)
+    return 'one' unless session[:is_submission]
+
+    if tab_one(proposal)
+      'one'
+    elsif tab_two(proposal)
+      'two'
+    elsif tab_three(proposal)
+      'three'
+    end
+  end
+
+  def tab_one(proposal)
+    proposal.title.blank? || proposal.subject.blank? || !proposal.ams_subjects.count.eql?(2) || proposal.invites.count do |i|
+      i.status == 'confirmed'
+    end.zero?
+  end
+
+  def tab_two(proposal)
+    errors = []
+    proposal.proposal_form.proposal_fields.where(location_id: nil).each do |field|
+      errors << ProposalFieldValidationsService.new(field, proposal).validations
+
+      return true if errors.flatten.count == 1
+    end
+    false
+  end
+
+  def tab_three(proposal)
+    errors = []
+    proposal.proposal_form.proposal_fields.where(location_id: proposal.location_ids).each do |field|
+      errors << ProposalFieldValidationsService.new(field, proposal).validations
+
+      return true if errors.flatten.count == 1
+    end
+    false
   end
 end

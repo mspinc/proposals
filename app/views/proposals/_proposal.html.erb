@@ -41,12 +41,12 @@
               <div class="col-12 col-lg-12">
                 <div class="tab">
                   <ul id="tabs" class="nav nav-tabs row" role="tablist">
-                    <li class="nav-item active col-4" data-target='submit-proposals.tabs'><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab" data-target='submit-proposals.tabs'>Step 1</a></li>
-                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link" href="#tab-2" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 2</a></li>
-                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a></li>
+                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'one') %>" href="#tab-1" data-bs-toggle="tab" role="tab" data-target='submit-proposals.tabs'>Step 1</a></li>
+                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'two') %>" href="#tab-2" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 2</a></li>
+                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'three') %>" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a></li>
                   </ul>
                   <div class="tab-content">
-                    <div class="tab-pane active" id="tab-1" role="tabpanel">
+                    <div class="tab-pane <%= active_tab(@proposal, 'one') %>" id="tab-1" role="tabpanel">
                       <h4 class="tab-title"></h4>
                       <div class="mb-3">
                         <p><%= @proposal.proposal_form.introduction.html_safe %></p>
@@ -196,7 +196,7 @@
                       </div>
                     </div>
 
-                    <div class="tab-pane overflow-hidden" id="tab-2" role="tabpanel">
+                    <div class="tab-pane <%= active_tab(@proposal, 'two') %> overflow-hidden" id="tab-2" role="tabpanel">
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 
@@ -207,7 +207,7 @@
                       </div>
                     </div>
                     
-                    <div class="tab-pane" id="tab-3" role="tabpanel">
+                    <div class="tab-pane <%= active_tab(@proposal, 'three') %>" id="tab-3" role="tabpanel">
                       <!-- <h4 class="tab-title">Location Fields</h4> -->
                       <div class="mb-3">
                         <%= f.label :location, "Select your preferred location for this event:", class: 'form-label lead' %>

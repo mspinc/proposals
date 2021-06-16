@@ -15,6 +15,7 @@ class SubmitProposalsController < ApplicationController
     submission.save_answers
 
     if submission.errors.flatten.empty?
+      session[:is_submission] = nil
       redirect_to thanks_submit_proposals_path, notice: 'Your proposal has been
             submitted. A copy of your proposal has been emailed to you.'.squish
     else
