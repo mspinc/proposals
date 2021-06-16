@@ -30,8 +30,9 @@ class SubmitProposalsController < ApplicationController
   private
 
   def proposal_pdf
-    ProposalPdfService.new(@proposal.id, session[:latex_file], 'all').pdf
-    fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
+    temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
+    ProposalPdfService.new(@proposal.id, temp_file, 'all').pdf
+    fh = File.open("#{Rails.root}/tmp/#{temp_file}")
     render_to_string(layout: "application", inline: "#{fh.read}", formats: [:pdf])
   end
 

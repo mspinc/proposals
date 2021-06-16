@@ -43,7 +43,7 @@ export default class extends Controller {
   handleValidationChange (event) {
     let id = event.currentTarget.id.split('_')[4]
     let node = document.getElementById(`proposal_field_validations_attributes_${id}_value`)
-    if(event.currentTarget.value == 'mandatory') {
+    if(event.currentTarget.value == 'mandatory' || event.currentTarget.value == '5-day workshop preferred/Impossible dates') {
       node.style.display = 'none'
       node.previousElementSibling.style.display = 'none'
     } else {
