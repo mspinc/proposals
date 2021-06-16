@@ -36,7 +36,20 @@ class ProposalFieldValidationsService
         @errors << val.error_message unless @answer.to_i == val.value.to_i
       when 'equal (float matcher)'
         @errors << val.error_message unless @answer.to_f == val.value.to_f
+      when '5-day workshop preferred/Impossible dates'
+        preferred_impossible_dates_validation
       end
     end
+  end
+
+  def preferred_impossible_dates_validation
+    return unless @answer
+
+    preferred = JSON.parse(@answer)&.first(5)
+    preferred_dates = preferred.reject { |date| date == '' }
+    uniq_dates = JSON.parse(@answer).reject { |date| date == '' }
+
+    @errors << 'At least 2 preferred dates must be selected' if preferred_dates.count < 2
+    @errors << "You can't select the same date twice" unless uniq_dates.uniq.count == uniq_dates.count
   end
 end

@@ -17,22 +17,17 @@ class SubmitProposalService
     end
     proposal_locations
 
-    if @proposal.is_submission && @proposal.valid?
+    if @proposal.is_submission && @proposal.valid? && errors.flatten.count.zero?
       proposal.update(status: :active)
     else
       errors << @proposal.errors.full_messages.join(', ')
     end
   end
 
-  def create_or_update(id, value)
-    if @errors.flatten.count.zero?
-      field = ProposalField.find(id)
-      if field.location_id
-        return unless @proposal.locations.include?(field.location)
-      end
+  private
 
-      @errors << ProposalFieldValidationsService.new(field, proposal).validations
-    end
+  def create_or_update(id, value)
+    check_field_validations(id)
 
     answer = Answer.find_by(proposal_field_id: id, proposal: proposal)
     if answer
@@ -44,5 +39,16 @@ class SubmitProposalService
 
   def proposal_locations
     proposal.locations = Location.where(id: params[:location_ids])
+  end
+
+  def check_field_validations(id)
+    if @errors.flatten.count.zero?
+      field = ProposalField.find(id)
+      if field.location_id
+        return unless @proposal.locations.include?(field.location)
+      end
+
+      @errors << ProposalFieldValidationsService.new(field, proposal).validations
+    end
   end
 end

@@ -20,18 +20,20 @@
           <table class="table">
             <thead>
               <tr>
+                <th>Code</th>
                 <th>Proposal Title</th>
                 <th>Proposal Type</th>
                 <th>Role</th>
-                <th>Location</th>
+                <th>Preferred Location</th>
                 <th>Status</th>
-                <th>Created</th>
+                <th width="125">Created</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
               <% @proposals&.each do |proposal| %>
               <tr>
+                <td><%= proposal.code %></td>
                 <td><%= proposal.title %></td>
                 <td><%= proposal.proposal_type.name %></td>
                 <td><%= proposal_roles(proposal.proposal_roles) %></td>
