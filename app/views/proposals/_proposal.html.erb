@@ -97,7 +97,7 @@
                         </div>
                         <div>
                           <% if params[:action] == 'edit' %>
-                          <div class="row">
+                          <div>
                             <h3>Add Supporting Organizers:</h3>
                             <%= organizer_intro(@proposal) %>
                             <% if @proposal.invites %>
@@ -113,7 +113,7 @@
                               <% end %>
                             </div>
                           </div>
-                          <div class="row mt-4">
+                          <div class="mt-4">
                             <div class="mb-3">
                               <h3>Add Participants:</h3>
                               <% if @proposal.invites %>
@@ -134,7 +134,7 @@
                         </div>
                         <div>
                           <% if params[:action] == 'show' %>
-                            <div class="row">
+                            <div>
                               <h3>Supporting Organizers:</h3>
                               <%= organizer_intro(@proposal) %>
                               <% if @proposal.invites %>
@@ -145,7 +145,7 @@
                                 <% end %>
                               <% end %>
                             </div>
-                            <div class="row mt-4">
+                            <div class="mt-4">
                               <div class="mb-3">
                                 <h3>Participants:</h3>
                                 <% if @proposal.invites %>
