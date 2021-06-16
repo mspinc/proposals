@@ -5,6 +5,25 @@ export default class extends Controller {
                      'textField', 'proposalId' ]
   static values = { visible: Boolean, field: String }
 
+  disableOtherInvites () {
+    let disable_role = 'participant'
+    let role = event.target.dataset.role
+    if( role == 'participant' ) { disable_role = 'organizer' }
+    let elements = ['firstname', 'lastname', 'email']
+    let disable_value = true
+    let role_values = []
+
+    $.each(elements, function(index, element) {
+      let length = $('#' + role + '_' + element)[0].value.length
+      role_values.push(length)
+    })
+    if( role_values.every( e => e == 0 ) ) { disable_value = false }
+
+    $.each(elements, function(index, element) {
+      $('#' + disable_role + '_' + element).prop("disabled", disable_value);
+    })
+  }
+
   toggleProposalFieldsPanel () {
     if( this.contentOfButtonTarget.innerText === 'Back' ){
       this.visibleValue = !this.visibleValue

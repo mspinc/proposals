@@ -88,8 +88,8 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
       it { expect(response).to have_http_status(:ok) }
     end
 
-    context 'when status is completed' do
-      let(:invite1) { create(:invite, status: 'completed') }
+    context 'when status is confirmed' do
+      let(:invite1) { create(:invite, status: 'confirmed') }
       it { expect(response).to redirect_to(root_path) }
     end
   end
