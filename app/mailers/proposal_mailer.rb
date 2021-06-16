@@ -2,7 +2,7 @@ class ProposalMailer < ApplicationMailer
   def proposal_submission
     proposal = params[:proposal]
     proposal_pdf = params[:file]
-    email = params[:email]
+    email = proposal.lead_organizer.email
 
     attachments["#{proposal.title}.pdf"] = proposal_pdf
 
