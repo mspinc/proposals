@@ -76,7 +76,7 @@ class ProposalPdfService
         next
       end
       @text << "\\subsection*{#{field.proposal_field.statement}}\n\n"
-      @text << "#{field.answer}\n\n"
+      @text << "\\noindent #{field.answer}\n\n"
     end
   end
 
