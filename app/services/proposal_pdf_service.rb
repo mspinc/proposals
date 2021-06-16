@@ -9,8 +9,12 @@ class ProposalPdfService
 
   def pdf
     input = @input.presence || 'Please enter some text.'
-
     input = all_proposal_fields if @input == 'all'
+
+    if @proposal.is_submission
+      LatexToPdf.config[:arguments].delete('-halt-on-error')
+    end
+
     File.open("#{Rails.root}/tmp/#{temp_file}", 'w:binary') do |io|
       io.write(input)
     end
@@ -81,8 +85,9 @@ class ProposalPdfService
         preferred_impossible_dates(field)
         next
       end
-      unless field.proposal_field.statement.blank?
-        @text << "\\subsection*{#{field.proposal_field.statement}}\n\n"
+      question = field.proposal_field.statement
+      unless question.blank?
+        @text << "\\subsection*{#{LatexToPdf.escape_latex(question)}}\n\n"
       end
       unless field.answer.blank?
         @text << "\\noindent #{field.answer}\n\n"
