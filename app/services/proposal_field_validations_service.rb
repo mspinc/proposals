@@ -43,8 +43,9 @@ class ProposalFieldValidationsService
   end
 
   def preferred_impossible_dates_validation
-    preferred = JSON.parse(@answer)&.first(5)
+    return unless @answer
 
+    preferred = JSON.parse(@answer)&.first(5)
     preferred_dates = preferred.reject { |date| date == '' }
     uniq_dates = JSON.parse(@answer).reject { |date| date == '' }
 

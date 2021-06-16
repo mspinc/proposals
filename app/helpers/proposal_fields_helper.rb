@@ -97,6 +97,7 @@ module ProposalFieldsHelper
 
   def tab_errors(proposal)
     return 'one' unless session[:is_submission]
+    return 'one' if params[:action] == 'show'
 
     if tab_one(proposal)
       'one'
