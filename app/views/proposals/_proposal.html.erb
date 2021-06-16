@@ -23,12 +23,12 @@
         <div class="col-12">
           <div class="card" style="background: #f4f7fc">
             <div class="card-body">
-              <div data-controller="submit-proposals proposal-form"  data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
-                    data-submit-proposals-proposal-value="<%= @proposal.id %>" > 
+              <div data-controller="submit-proposals proposal-form"
+                   data-submit-proposals-proposal-type-id-value="<%= @proposal.proposal_type.id %>"
+                   data-submit-proposals-proposal-value="<%= @proposal.id %>" >
                 <div class="mb-3 d-flex flex-row-reverse">
                   <% if params[:action] == 'edit' %>
                     <% if lead_organizer?(@proposal.proposal_roles) %> 
-                     <!--  <%= link_to 'Invite People', proposal_invites_path(@proposal), title: 'Invite as a Participant or Co Organizer', 'data-toggle' => 'tooltip', class:'btn btn-primary' %> -->
                       <% if @proposal.draft? %>
                         <div class="float-end">
                           <%= f.submit 'Save as draft', class:'btn btn-primary' %>
@@ -96,50 +96,55 @@
                         </div>
                         <div>
                           <% if params[:action] == 'edit' %>
-                              <h3>Supporting Organizers:</h3>
-                              <% if @proposal.invites %>
-                                <% @proposal.invites.each do |invite|%>
-                                  <% if invite.invited_as == 'Co Organizer' %>
-                                    <div class="mb-3 row border p-1 m-1">
-                                      <div class="col-6 mt-2">
-                                        <div class="mb-3">
-                                          <%= f.label :firstname, "First Name: " %>
-                                          <%= f.label invite.firstname %>
-                                        </div>
-                                        <div class="mb-3">
-                                          <%= f.label :lastname, "Last Name: " %>
-                                          <%= f.label invite.lastname %>
-                                        </div>
-                                        <div class="mb-3">
-                                          <%= f.label :email, "Email: " %>
-                                          <%= f.label invite.email %>
-                                        </div>
+                          <div class="row">
+                            <h3>Add Supporting Organizers:</h3>
+                            <%= organizer_intro(@proposal) %>
+
+                            <% if @proposal.invites %>
+                              <% @proposal.invites.each do |invite|%>
+                                <% if invite.invited_as == 'Co Organizer' %>
+                                  <div class="mb-3 row border p-1 m-1">
+                                    <div class="col-6 mt-2">
+                                      <div class="mb-3">
+                                        <%= f.label :firstname, "First Name: " %>
+                                        <%= f.label invite.firstname %>
                                       </div>
-                                      <div class="col-6 mt-2">
-                                        <div class="mb-3">
-                                          <%= f.label :status, "Status: " %>
-                                          <%= f.label invite.status %>
-                                        </div>
-                                        <div class="mb-3">
-                                          <%= f.label :created_at, "Invitation Date: " %>
-                                          <%= f.label invite.created_at.to_date %>
-                                        </div>
-                                        <div class="mb-3">
-                                          <%= f.label :deadline_date, "Deadline Date: " %>
-                                          <%= f.label invite.deadline_date.to_date %>
-                                        </div>
+                                      <div class="mb-3">
+                                        <%= f.label :lastname, "Last Name: " %>
+                                        <%= f.label invite.lastname %>
+                                      </div>
+                                      <div class="mb-3">
+                                        <%= f.label :email, "Email: " %>
+                                        <%= f.label invite.email %>
                                       </div>
                                     </div>
-                                  <% end %>
+                                    <div class="col-6 mt-2">
+                                      <div class="mb-3">
+                                        <%= f.label :status, "Status: " %>
+                                        <%= f.label invite.status %>
+                                      </div>
+                                      <div class="mb-3">
+                                        <%= f.label :created_at, "Invitation Date: " %>
+                                        <%= f.label invite.created_at.to_date %>
+                                      </div>
+                                      <div class="mb-3">
+                                        <%= f.label :deadline_date, "Deadline Date: " %>
+                                        <%= f.label invite.deadline_date.to_date %>
+                                      </div>
+                                    </div>
+                                  </div>
                                 <% end %>
                               <% end %>
-                              <div>
-                                <% if max_invitations(@proposal, 'Co Organizer') %>
-                                  <%= render partial: 'invite', locals: {invited_as: 'organizer', date: @proposal.invites.where(invited_as: 'Co Organizer').first&.deadline_date&.to_date } %>
-                                <% end %>
-                              </div>
+                            <% end %>
+                            <div>
+                              <% if max_invitations(@proposal, 'Co Organizer') %>
+                                <%= render partial: 'invite', locals: {invited_as: 'organizer', date: @proposal.invites.where(invited_as: 'Co Organizer').first&.deadline_date&.to_date } %>
+                              <% end %>
+                            </div>
+                          </div>
+                          <div class="row mt-4">
                             <div class="mb-3">
-                              <h3>Participants:</h3>
+                              <h3>Add Participants:</h3>
                               <% if @proposal.invites %>
                                 <% @proposal.invites.each do |invite|%>
                                   <% if invite.invited_as == 'Participant' %>
@@ -164,6 +169,10 @@
                                           <%= f.label invite.status %>
                                         </div>
                                         <div class="mb-3">
+                                          <%= f.label :created_at, "Invitation Date: " %>
+                                          <%= f.label invite.created_at.to_date %>
+                                        </div>
+                                        <div class="mb-3">
                                           <%= f.label :deadline_date, "Deadline Date: " %>
                                           <%= f.label invite.deadline_date.to_date %>
                                         </div>
@@ -178,10 +187,11 @@
                                 <% end %>
                               </div>
                             </div>
+                          </div>
                           <% end %>
                         </div>
-                        <div class="mb-5">
-                          <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                        <div class="d-flex flex-row-reverse">
+                          <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
                         </div>
                       </div>
                     </div>
@@ -189,10 +199,12 @@
                     <div class="tab-pane overflow-hidden" id="tab-2" role="tabpanel">
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
-                      <div class="float-end">
-                        <button id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
-                        <button id="changeTab" class="btn btn-primary mx-2" data-action='click->submit-proposals#nextTab'>Next</button>
-                       </div>
+
+                      <div class="row mt-20">&nbsp;</div>
+                      <div class="d-flex flex-row-reverse">
+                        <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                        <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                      </div>
                     </div>
                     
                     <div class="tab-pane" id="tab-3" role="tabpanel">
@@ -202,8 +214,10 @@
                         <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, disabled: action, class: 'form-select w-50', multiple: true, name: 'location_ids[]' %>
                       </div>
                       <div data-submit-proposals-target='locationSpecificQuestions'></div>
-                      <div class="mb-5">
-                        <button style="float: right;" id="changeTab" class="btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+
+                      <div class="row mt-20">&nbsp;</div>
+                      <div class="d-flex">
+                        <button class="ms-auto p-2 btn btn-primary" id="changeTab" data-action='click->submit-proposals#previousTab'>Back</button>
                       </div>
                     </div>
                   </div>
