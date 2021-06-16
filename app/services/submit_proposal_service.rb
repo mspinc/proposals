@@ -20,7 +20,7 @@ class SubmitProposalService
     if @proposal.is_submission && @proposal.valid? && errors.flatten.count.zero?
       proposal.update(status: :active)
     else
-      errors << @proposal.errors.full_messages.join(', ')
+      errors << @proposal.errors.full_messages.uniq.join(', ')
     end
   end
 
