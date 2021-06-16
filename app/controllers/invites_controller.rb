@@ -10,7 +10,7 @@ class InvitesController < ApplicationController
   end
 
   def show
-    redirect_to root_path and return if @invite.completed?
+    redirect_to root_path and return if @invite.confirmed?
 
     render layout: 'devise'
   end
@@ -42,7 +42,7 @@ class InvitesController < ApplicationController
   end
 
   def inviter_response
-    @invite.update(response: params[:response], status: 'completed')
+    @invite.update(response: params[:response], status: 'confirmed')
     proposal_role unless @invite.no?
     create_user unless @invite.person.user
 

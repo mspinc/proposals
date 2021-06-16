@@ -5,6 +5,27 @@ export default class extends Controller {
                      'textField', 'proposalId' ]
   static values = { visible: Boolean, field: String }
 
+  disableOtherInvites () {
+    let disable_role = 'participant'
+    let role = event.target.dataset.role
+    if( role == 'participant' ) { disable_role = 'organizer' }
+    let disable_value = true
+    let role_values = []
+
+    $.each(['firstname', 'lastname', 'email'], function(index, element) {
+      let length = $('#' + role + '_' + element)[0].value.length
+      role_values.push(length)
+    })
+    if( role_values.every( e => e == 0 ) ) { disable_value = false }
+
+    $.each(['firstname', 'lastname', 'email', 'deadline'],
+      function(index, element) {
+        $('#' + disable_role + '_' + element).prop("disabled", disable_value);
+    })
+
+    $('#' + disable_role).prop("hidden", disable_value);
+  }
+
   toggleProposalFieldsPanel () {
     if( this.contentOfButtonTarget.innerText === 'Back' ){
       this.visibleValue = !this.visibleValue
@@ -22,7 +43,7 @@ export default class extends Controller {
   handleValidationChange (event) {
     let id = event.currentTarget.id.split('_')[4]
     let node = document.getElementById(`proposal_field_validations_attributes_${id}_value`)
-    if(event.currentTarget.value == 'mandatory') {
+    if(event.currentTarget.value == 'mandatory' || event.currentTarget.value == '5-day workshop preferred/Impossible dates') {
       node.style.display = 'none'
       node.previousElementSibling.style.display = 'none'
     } else {
@@ -62,13 +83,22 @@ export default class extends Controller {
   latex () {
     let data = event.target.dataset
 
-    for (var i = 0; i < this.textFieldTargets.length; i++) {
-      if(this.textFieldTargets[i].dataset.value === data.value) {
-        $.post("/proposals/" + data.propid + "/latex",
-          { latex: this.textFieldTargets[i].value },
-          function(data, status) {
-            window.open(`/proposals/rendered_proposal.pdf`)
-        });
+    if(data.value == 'all') {
+      $.post("/proposals/" + data.propid + "/latex",
+        { latex: 'all' },
+        function(data, status) {
+          window.open(`/proposals/rendered_proposal.pdf`)
+      });
+    }
+    else {
+      for (var i = 0; i < this.textFieldTargets.length; i++) {
+        if(this.textFieldTargets[i].dataset.value === data.value) {
+          $.post("/proposals/" + data.propid + "/latex",
+            { latex: this.textFieldTargets[i].value },
+            function(data, status) {
+              window.open(`/proposals/rendered_proposal.pdf`)
+          });
+        }
       }
     }
   }

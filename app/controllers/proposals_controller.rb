@@ -36,12 +36,9 @@ class ProposalsController < ApplicationController
 
     temp_file = "propfile-#{current_user.id}-#{proposal_id}.tex"
     session[:latex_file] = temp_file
-
     input = latex_params[:latex]
-    input = 'Please enter some text.' if input.blank?
-    File.open(file="#{Rails.root}/tmp/#{temp_file}",'w:binary') do |io|
-      io.write(input)
-    end
+
+    ProposalPdfService.new(proposal_id, temp_file, input).pdf
 
     head :ok
   end
