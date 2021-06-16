@@ -55,8 +55,12 @@ class ProposalPdfService
 
   def proposal_locations
     @text << "\\subsection*{Preferred Location(s)}\n\n"
-    proposal.locations.each do |location|
-      @text << "#{location.name}\n\n"
+    unless proposal.locations.empty?
+      @text << "\\begin{enumerate}\n"
+      proposal.locations.each do |location|
+        @text << "\\item #{location.name}\n"
+      end
+      @text << "\\end{enumerate}\n"
     end
   end
 
