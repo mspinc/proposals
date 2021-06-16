@@ -62,11 +62,13 @@ class ProposalPdfService
 
   def proposal_subjects
     @text << "\\subsection*{Subject Areas}\n\n"
-    @text << "#{proposal.subject&.title} \\\\ \n"
-    @text << "\\noindent #{proposal.ams_subjects
-                                   .where(code: 'code1').first&.title} \\\\ \n"
-    @text << "\\noindent #{proposal.ams_subjects
-                                   .where(code: 'code2').first&.title} \\\\ \n"
+    @text << "#{proposal.subject&.title} \\\\ \n" unless proposal.subject.blank?
+
+    ams_subject1 = proposal.ams_subjects.where(code: 'code1').first&.title
+    @text << "\\noindent #{ams_subject1} \\\\ \n" unless ams_subject1.blank?
+
+    ams_subject2 = proposal.ams_subjects.where(code: 'code2').first&.title
+    @text << "\\noindent #{ams_subject2} \\\\ \n" unless ams_subject2.blank?
   end
 
   def user_defined_fields
@@ -75,8 +77,12 @@ class ProposalPdfService
         preferred_impossible_dates(field)
         next
       end
-      @text << "\\subsection*{#{field.proposal_field.statement}}\n\n"
-      @text << "\\noindent #{field.answer}\n\n"
+      unless field.proposal_field.statement.blank?
+        @text << "\\subsection*{#{field.proposal_field.statement}}\n\n"
+      end
+      unless field.answer.blank?
+        @text << "\\noindent #{field.answer}\n\n"
+      end
     end
   end
 
