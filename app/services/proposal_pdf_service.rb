@@ -37,7 +37,7 @@ class ProposalPdfService
   end
 
   def proposal_detail
-    @text = "\\section*{\\centering #{proposal.title} }\n\n"
+    @text = "\\section*{\\centering #{proposal.code}: #{proposal.title} }\n\n"
     @text << "#{proposal.proposal_form.introduction}\n\n"
     @text << "\\subsection*{#{proposal.proposal_type&.name} }\n\n"
     @text << "#{proposal.invites.count} participants\n\n"
