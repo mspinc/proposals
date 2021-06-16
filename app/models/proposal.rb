@@ -30,6 +30,7 @@ class Proposal < ApplicationRecord
     .joins(:proposal_type).where('name = ?', type)
   }
 
+
   def lead_organizer
   	proposal_roles.joins(:role).find_by('roles.name = ?',
                                         'lead_organizer')&.person
@@ -42,6 +43,14 @@ class Proposal < ApplicationRecord
   def list_of_co_organizers
     invites.where('invites.invited_as = ?',
       'Co Organizer').map(&:person).map(&:fullname).join(', ')
+  end
+
+  def supporting_organizers
+    invites.where(invited_as: 'Co Organizer').where(status: 'confirmed')
+  end
+
+  def participants
+    invites.where(invited_as: 'Participant').where(status: 'confirmed')
   end
 
 
