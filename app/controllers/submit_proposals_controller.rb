@@ -34,7 +34,14 @@ class SubmitProposalsController < ApplicationController
     temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
     ProposalPdfService.new(@proposal.id, temp_file, 'all').pdf
     fh = File.open("#{Rails.root}/tmp/#{temp_file}")
-    render_to_string(layout: "application", inline: "#{fh.read}", formats: [:pdf])
+
+    begin
+      render_to_string(layout: "application", inline: "#{fh.read}",
+                       formats: [:pdf])
+    rescue ActionView::Template::Error => error
+      error_output = ProposalPdfService.format_errors(error)
+      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
+    end
   end
 
   def proposal_params
