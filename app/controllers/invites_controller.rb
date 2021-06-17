@@ -46,11 +46,13 @@ class InvitesController < ApplicationController
     proposal_role unless @invite.no?
     create_user unless @invite.person.user
 
+    @co_organizers = @invite.proposal.list_of_co_organizers.remove(@invite.person&.fullname)
+
     if @invite.no?
       InviteMailer.with(invite: @invite).invite_decline.deliver_later
       redirect_to thanks_proposal_invites_path(@invite.proposal)
     else
-      InviteMailer.with(invite: @invite, token: @token).invite_acceptance
+      InviteMailer.with(invite: @invite, token: @token, co_organizers: @co_organizers).invite_acceptance
                   .deliver_later
       redirect_to new_survey_path(code: @invite.code)
     end
