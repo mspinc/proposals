@@ -125,23 +125,19 @@ class ProposalPdfService
   def preferred_impossible_dates(field)
     #@text << "\\subsection*{#{field.proposal_field.statement}}\n\n"
     preferred = JSON.parse(field.answer)&.first(5)
-    unless preferred.blank?
-      @text << "\\subsection*{Preferred dates}\n\n"
-      @text << "\\begin{enumerate}\n\n"
-      preferred.each do |date|
-        @text << "\\item #{date}\n"
-      end
-      @text << "\\end{enumerate}\n\n"
+    @text << "\\subsection*{Preferred dates}\n\n"
+    @text << "\\begin{enumerate}\n\n"
+    preferred.each do |date|
+      @text << "\\item #{date}\n" unless date.blank?
     end
+    @text << "\\end{enumerate}\n\n"
 
     impossible = JSON.parse(field.answer)&.last(2)
-    unless impossible.blank?
-      @text << "\\subsection*{Impossible dates}\n\n"
-      @text << "\\begin{enumerate}\n\n"
-      impossible.each do |date|
-        @text << "\\item #{date}\n\n"
-      end
-      @text << "\\end{enumerate}\n\n"
+    @text << "\\subsection*{Impossible dates}\n\n"
+    @text << "\\begin{enumerate}\n\n"
+    impossible.each do |date|
+      @text << "\\item #{date}\n\n" unless date.blank?
     end
+    @text << "\\end{enumerate}\n\n"
   end
 end
