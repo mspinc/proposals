@@ -6,7 +6,6 @@ class SubmitProposalService
     @proposal_form = proposal.proposal_form
     @params = params
     @errors = []
-    @proposal.is_submission = is_submission?
   end
 
   def save_answers
@@ -27,11 +26,12 @@ class SubmitProposalService
     errors.uniq.flatten.join(', ')
   end
 
-  private
-
-  def is_submission?
+  def is_final?
     params[:commit] == 'Submit Proposal'
   end
+
+
+  private
 
   def create_or_update(id, value)
     check_field_validations(id)

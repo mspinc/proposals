@@ -9,7 +9,7 @@ class SubmitProposalsController < ApplicationController
     update_ams_subject_code
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
-    session[:is_submission] = @proposal.is_submission
+    session[:is_submission] = @proposal.is_submission = submission.is_final?
 
     unless @proposal.is_submission
       redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
