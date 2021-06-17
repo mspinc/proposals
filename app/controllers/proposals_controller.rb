@@ -48,8 +48,8 @@ class ProposalsController < ApplicationController
     prop_id = session[:proposal_id]
     return if prop_id.blank?
 
-    proposal = Proposal.find_by_id(prop_id)
-    @year = proposal&.year || Date.current.year.to_i + 2
+    @proposal = Proposal.find_by_id(prop_id)
+    @year = @proposal&.year || Date.current.year.to_i + 2
 
     fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
     @latex_input = fh.read

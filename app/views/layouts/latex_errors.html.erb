@@ -23,6 +23,11 @@
             <div class="col-12 col-lg-12">
               <div class="card">
                 <div class="card-body">
+                  <div class="mb-3 d-flex flex-row-reverse">
+                    <%= link_to "Edit Proposal", edit_proposal_path(@proposal),
+                      class: "btn btn-primary" %>
+                  </div>
+
                   <%= yield %>
                 </div>
               </div>
