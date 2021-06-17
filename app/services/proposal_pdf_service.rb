@@ -9,8 +9,12 @@ class ProposalPdfService
 
   def pdf
     input = @input.presence || 'Please enter some text.'
-
     input = all_proposal_fields if @input == 'all'
+
+    if @proposal.is_submission
+      LatexToPdf.config[:arguments].delete('-halt-on-error')
+    end
+
     File.open("#{Rails.root}/tmp/#{temp_file}", 'w:binary') do |io|
       io.write(input)
     end
@@ -54,19 +58,26 @@ class ProposalPdfService
   end
 
   def proposal_locations
-    @text << "\\subsection*{Preferred Location(s)}\n\n"
-    proposal.locations.each do |location|
-      @text << "#{location.name}\n\n"
+    locations = proposal.locations.count > 1 ? 'Locations' : 'Location'
+    unless proposal.locations.empty?
+      @text << "\\subsection*{Preferred #{locations}}\n\n"
+      @text << "\\begin{enumerate}\n"
+      proposal.locations.each do |location|
+        @text << "\\item #{location.name}\n"
+      end
+      @text << "\\end{enumerate}\n"
     end
   end
 
   def proposal_subjects
     @text << "\\subsection*{Subject Areas}\n\n"
-    @text << "#{proposal.subject&.title} \\\\ \n"
-    @text << "\\noindent #{proposal.ams_subjects
-                                   .where(code: 'code1').first&.title} \\\\ \n"
-    @text << "\\noindent #{proposal.ams_subjects
-                                   .where(code: 'code2').first&.title} \\\\ \n"
+    @text << "#{proposal.subject&.title} \\\\ \n" unless proposal.subject.blank?
+
+    ams_subject1 = proposal.ams_subjects.where(code: 'code1').first&.title
+    @text << "\\noindent #{ams_subject1} \\\\ \n" unless ams_subject1.blank?
+
+    ams_subject2 = proposal.ams_subjects.where(code: 'code2').first&.title
+    @text << "\\noindent #{ams_subject2} \\\\ \n" unless ams_subject2.blank?
   end
 
   def user_defined_fields
@@ -75,8 +86,13 @@ class ProposalPdfService
         preferred_impossible_dates(field)
         next
       end
-      @text << "\\subsection*{#{field.proposal_field.statement}}\n\n"
-      @text << "\\noindent #{field.answer}\n\n"
+      question = field.proposal_field.statement
+      unless question.blank?
+        @text << "\\subsection*{#{LatexToPdf.escape_latex(question)}}\n\n"
+      end
+      unless field.answer.blank?
+        @text << "\\noindent #{field.answer}\n\n"
+      end
     end
   end
 
@@ -93,17 +109,24 @@ class ProposalPdfService
 
   def preferred_impossible_dates(field)
     #@text << "\\subsection*{#{field.proposal_field.statement}}\n\n"
-    @text << "\\subsection*{Preferred dates}\n\n"
     possible = JSON.parse(field.answer)&.first(5)
-    possible.each do |date|
-      @text << "#{date}\n\n"
+    unless possible.blank?
+      @text << "\\subsection*{Preferred dates}\n\n"
+      @text << "\\begin{enumerate}\n\n"
+      possible.each do |date|
+        @text << "\item #{date}\n"
+      end
+      @text << "\\end{enumerate}\n\n"
     end
 
     impossible = JSON.parse(field.answer)&.last(2)
-    @text << "\\subsection*{Impossible dates}\n\n"
-
-    impossible.each do |date|
-      @text << "#{date}\n\n"
+    unless impossible.blank?
+      @text << "\\subsection*{Impossible dates}\n\n"
+      @text << "\\begin{enumerate}\n\n"
+      impossible.each do |date|
+        @text << "#{date}\n\n"
+      end
+      @text << "\\end{enumerate}\n\n"
     end
   end
 end
