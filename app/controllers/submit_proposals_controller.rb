@@ -39,6 +39,9 @@ class SubmitProposalsController < ApplicationController
       render_to_string(layout: "application", inline: "#{fh.read}",
                        formats: [:pdf])
     rescue ActionView::Template::Error => error
+      flash[:alert] = "There are errors in your LaTeX code. Please see the
+                        output from the compiler, and the LaTeX document,
+                        below".squish
       error_output = ProposalPdfService.format_errors(error)
       render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
     end
@@ -66,7 +69,8 @@ class SubmitProposalsController < ApplicationController
 
   def flash_notice(submission)
     if @proposal.is_submission
-      { alert: "Your submission has errors: #{submission.errors.flatten.join(', ')}" }
+      error_message = submission.errors.flatten.join(', ')
+      { alert: "Your submission has errors: #{error_message}" }
     else
       { notice: 'Draft saved.' }
     end
