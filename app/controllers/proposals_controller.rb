@@ -54,7 +54,12 @@ class ProposalsController < ApplicationController
     fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
     @latex_input = fh.read
 
-    render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
+    begin
+      render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
+    rescue ActionView::Template::Error => error
+      error_output = ProposalPdfService.format_errors(error)
+      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
+    end
   end
 
   def destroy

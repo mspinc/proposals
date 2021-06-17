@@ -20,6 +20,21 @@ class ProposalPdfService
     end
   end
 
+  def self.format_errors(error)
+    error_object = error.cause # RailsLatex::ProcessingError
+
+    error_output = "<h2 class=\"text-danger\">LaTeX Error Log:</h2>\n\n"
+    error_output << "<pre>\n" + error_object.log + "\n</pre>\n\n"
+    error_output << "<h2 class=\"text-danger\">LaTeX Source File:</h2>\n\n"
+    error_output << "<pre>\n"
+    line_num = 1
+    error_object.src.each_line do |line|
+      error_output << line_num.to_s + " #{line}"
+      line_num += 1
+    end
+    error_output << "\n</pre>\n\n"
+  end
+
   private
 
   def all_proposal_fields
@@ -124,7 +139,7 @@ class ProposalPdfService
       @text << "\\subsection*{Impossible dates}\n\n"
       @text << "\\begin{enumerate}\n\n"
       impossible.each do |date|
-        @text << "#{date}\n\n"
+        @text << "\item #{date}\n\n"
       end
       @text << "\\end{enumerate}\n\n"
     end
