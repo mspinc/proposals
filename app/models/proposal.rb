@@ -81,6 +81,7 @@ class Proposal < ApplicationRecord
   end
 
   def create_code
+    return unless self.code.blank?
     # temporary, until type-code feature is added to ProposalTypes
     type_codes = {
       '5 Day Workshop' => 'w5',

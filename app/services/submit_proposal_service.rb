@@ -17,11 +17,17 @@ class SubmitProposalService
     end
     proposal_locations
 
-    if @proposal.is_submission && @proposal.valid? && errors.flatten.count.zero?
-      proposal.update(status: :active)
-    else
-      errors << @proposal.errors.full_messages.join(', ')
+    unless @proposal.valid?
+      errors << @proposal.errors.full_messages
     end
+  end
+
+  def has_errors?
+    !errors.flatten.empty?
+  end
+
+  def error_messages
+    errors.flatten.join(', ')
   end
 
   private
