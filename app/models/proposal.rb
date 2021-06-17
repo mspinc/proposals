@@ -16,6 +16,7 @@ class Proposal < ApplicationRecord
   validates_presence_of :year, :title, if: :is_submission
   validate :subjects, if: :is_submission
   validate :minimum_organizers, if: :is_submission
+  validate :preferred_locations, if: :is_submission
   before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
@@ -92,5 +93,9 @@ class Proposal < ApplicationRecord
 
     tc = type_codes[proposal_type.name] || 'xx'
     self.code = year.to_s[-2..-1] + tc + next_number
+  end
+
+  def preferred_locations
+    errors.add('Preferred Locations:', "Please select at least one preferred location") if locations.empty?
   end
 end
