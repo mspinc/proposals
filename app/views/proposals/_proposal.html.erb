@@ -97,6 +97,7 @@
                         </div>
                         <div>
                           <% if params[:action] == 'edit' %>
+                          <%= render partial: 'lead_organizer' %>
                           <div>
                             <h3>Add Supporting Organizers:</h3>
                             <%= organizer_intro(@proposal) %>
@@ -134,6 +135,7 @@
                         </div>
                         <div>
                           <% if params[:action] == 'show' %>
+                          <%= render partial: 'lead_organizer' %>
                             <div>
                               <h3>Supporting Organizers:</h3>
                               <%= organizer_intro(@proposal) %>
