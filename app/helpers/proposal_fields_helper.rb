@@ -125,10 +125,11 @@ module ProposalFieldsHelper
   end
 
   def tab_three(proposal)
+    return true if proposal.locations.empty?
+
     errors = []
     proposal.proposal_form.proposal_fields.where(location_id: proposal.location_ids).each do |field|
       errors << ProposalFieldValidationsService.new(field, proposal).validations
-
       return true if errors.flatten.count == 1
     end
     false
