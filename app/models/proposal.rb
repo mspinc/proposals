@@ -1,4 +1,6 @@
 class Proposal < ApplicationRecord
+  attr_accessor :is_submission
+
   has_many :proposal_locations, dependent: :destroy
   has_many :locations, through: :proposal_locations
   belongs_to :proposal_type
@@ -11,8 +13,11 @@ class Proposal < ApplicationRecord
   has_many :ams_subjects, through: :proposal_ams_subjects
   belongs_to :subject, optional: true
 
-  # validates_presence_of :year, :title
-  # validate :create_code
+  validates_presence_of :year, :title, if: :is_submission
+  validate :subjects, if: :is_submission
+  validate :minimum_organizers, if: :is_submission
+  validate :preferred_locations, if: :is_submission
+  before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
 
@@ -26,8 +31,10 @@ class Proposal < ApplicationRecord
     .joins(:proposal_type).where('name = ?', type)
   }
 
+
   def lead_organizer
-  	proposal_roles.joins(:role).find_by('roles.name = ?', 'lead_organizer')&.person
+  	proposal_roles.joins(:role).find_by('roles.name = ?',
+                                        'lead_organizer')&.person
   end
 
   def the_locations
@@ -39,19 +46,41 @@ class Proposal < ApplicationRecord
       'Co Organizer').map(&:person).map(&:fullname).join(', ')
   end
 
+  def supporting_organizers
+    invites.where(invited_as: 'Co Organizer').where(status: 'confirmed')
+  end
+
+  def participants
+    invites.where(invited_as: 'Participant').where(status: 'confirmed')
+  end
+
 
   private
 
+  def minimum_organizers
+    if invites.select { |i| i.status == 'confirmed' }.count < 1
+      errors.add('Supporting Organizers: ', 'At least one supporting organizer
+        must confirm their participation by following the link in the email
+        that was sent to them.'.squish)
+    end
+  end
+
+  def subjects
+    errors.add('Subject Area:', "please select a subject area") if subject.nil?
+    unless ams_subjects.pluck(:code).count == 2
+      errors.add('AMS Subjects:', 'please select 2 AMS Subjects')
+    end
+  end
+
   def next_number
-    last_code = Proposal.submitted(proposal_type.name)
-                        .pluck(:code).sort.last
+    codes = Proposal.submitted(proposal_type.name).pluck(:code)
+    last_code = codes.reject { |c| c.to_s.empty? }.sort.last
+
     return '001' if last_code.blank?
     (last_code[-3..-1].to_i + 1).to_s.rjust(3, '0')
   end
 
   def create_code
-    return true if !code.blank? || year.blank?
-
     # temporary, until type-code feature is added to ProposalTypes
     type_codes = {
       '5 Day Workshop' => 'w5',
@@ -64,5 +93,9 @@ class Proposal < ApplicationRecord
 
     tc = type_codes[proposal_type.name] || 'xx'
     self.code = year.to_s[-2..-1] + tc + next_number
+  end
+
+  def preferred_locations
+    errors.add('Preferred Locations:', "Please select at least one preferred location") if locations.empty?
   end
 end

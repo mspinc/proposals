@@ -27,6 +27,20 @@
   -webkit-box-orient: vertical;   
 }
 
-.sidebar-nav .sidebar-item {
-  margin-left: -10px;
+.sidebar-nav .sidebar-item .proposal-item {
+  margin-left: -20px;
+}
+
+.required:after {
+    content:" *";
+    color: red;
+    margin-left: 3px;
+}
+
+.field-validation {
+  color: red;
+}
+
+.table-padding {
+  padding: 10px
 }

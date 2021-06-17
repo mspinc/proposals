@@ -1,5 +1,7 @@
 <div>
-  <label for="statement"><%= field.statement %></label>
+  <span><%= location_name(field) %></span><br>
+  <label for="statement"><h2><%= field.statement %></h2></label>
+  <%= mandatory_field?(field) %>
   <% if current_user&.staff_member? && @proposal_form&.draft? && params[:action] == 'edit' %>
     <span data-action="click->proposal-form#editField" data-field-id="<%= field.id %>" data-proposal-form-id="<%= @proposal_form&.id %>" style="color: #3b7ddd" class="mx-1" data-type-id="<%= @proposal_type&.id %>">Edit</span>
     <%= link_to 'Delete', proposal_field_proposal_type_proposal_form_url(@proposal_type, @proposal_form, field_id: field.id), method: :delete ,
@@ -7,7 +9,7 @@
   <% end %>
 </div>
 
-<span class="comment" style="font-style: italic;">
+<span class="comment">
   <%= field.description.html_safe %>
 </span>
 <% if field.guideline_link.present? %>
@@ -18,10 +20,10 @@
 <div class="mb-3">
   <input name="<%= field.id %>" <%= action ? 'disabled' : '' %> class="form-control" type="date" value='<%= answer(field, @proposal) %>'> </input>
 </div>
-<% if @publish %>
+<% if @submission %>
   <ul>
     <% validations(field, @proposal).each do |val| %>
-      <li style="color: red"><%= val %></li>
+      <li class="field-validation"><%= val %></li>
     <% end %>
   </ul>
 <% end %>

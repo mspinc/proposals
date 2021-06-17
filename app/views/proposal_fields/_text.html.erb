@@ -1,12 +1,13 @@
 <div>
-  <label for="statement"><%= field.statement %></label>
+  <span><%= location_name(field) %></span><br>
+  <label for="statement"><h2><%= field.statement %></h2></label><%= mandatory_field?(field) %>
   <% if current_user&.staff_member? && @proposal_form&.draft? && params[:action] == 'edit' %>
     <span data-action="click->proposal-form#editField" data-field-id="<%= field.id %>" data-proposal-form-id="<%= @proposal_form&.id %>" style="color: #3b7ddd" class="mx-1" data-type-id="<%= @proposal_type&.id %>">Edit</span>
     <%= link_to 'Delete', proposal_field_proposal_type_proposal_form_url(@proposal_type, @proposal_form, field_id: field.id), method: :delete ,
     data: {confirm: "Are you sure you want to delete this field?"} %>
   <% end %>
 </div>
-<p class="comment" style="font-style: italic;">
+<p class="comment">
     <%= field.description.html_safe %>
     <% if field.description.length > 140 %>
       <a href="<%= field.guideline_link %>" target="_blank"> Learn More</a>
@@ -14,14 +15,14 @@
   </p>
 <div>
   <textarea name="<%= field.id %>" <%= action ? 'disabled' : '' %> id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-proposal-form-target="textField" ><%= answer(field, @proposal) %></textarea>
-  <% if @publish %>
+  <% if @submission %>
     <ul>
       <% validations(field, @proposal).each do |val| %>
-        <li style="color: red"><%= val %></li>
+        <li class="field-validation"><%= val %></li>
       <% end %>
     </ul>
   <% end %>
 </div>
 <% unless current_user&.staff_member? || params[:action] == 'show' %>
-  <span class="btn btn-primary my-2" data-action="click->proposal-form#latex" data-value='<%= field.id %>' data-propid="<%= @proposal&.id %>">Run LaTeX</span>
+  <button class="btn btn-primary my-2" data-action="click->proposal-form#latex" data-value='<%= field.id %>' data-propid="<%= @proposal&.id %>"> Print Field</button>
 <% end %>

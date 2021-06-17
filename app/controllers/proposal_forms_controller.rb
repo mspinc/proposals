@@ -59,7 +59,7 @@ class ProposalFormsController < ApplicationController
 
   def clone
     @proposal_type.proposal_forms.update_all(status: :inactive)
-    proposal_form = @proposal_form.deep_clone include: :proposal_fields
+    proposal_form = @proposal_form.deep_clone include: { proposal_fields: [:options, :validations] }
     proposal_form.version = highest_version
     proposal_form.status = :draft
     proposal_form.proposal_type_id = params[:proposal_type_id]
