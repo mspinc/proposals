@@ -124,7 +124,7 @@ class ProposalPdfService
       @text << "\\subsection*{Impossible dates}\n\n"
       @text << "\\begin{enumerate}\n\n"
       impossible.each do |date|
-        @text << "#{date}\n\n"
+        @text << "\item #{date}\n\n"
       end
       @text << "\\end{enumerate}\n\n"
     end
