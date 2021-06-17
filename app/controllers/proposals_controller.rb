@@ -57,6 +57,9 @@ class ProposalsController < ApplicationController
     begin
       render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
     rescue ActionView::Template::Error => error
+      flash[:alert] = "There are errors in your LaTeX code. Please see the
+                        output from the compiler, and the LaTeX document,
+                        below".squish
       error_output = ProposalPdfService.format_errors(error)
       render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
     end
