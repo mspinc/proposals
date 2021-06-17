@@ -7,12 +7,9 @@ class SubmitProposalsController < ApplicationController
   def create
     @proposal.update(proposal_params)
     update_ams_subject_code
-    
-    draft_or_final = (params[:commit] == 'Submit Proposal')
-    session[:is_submission] = @proposal.is_submission = draft_or_final
-
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
+    session[:is_submission] = @proposal.is_submission
 
     unless @proposal.is_submission
       redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
@@ -26,6 +23,14 @@ class SubmitProposalsController < ApplicationController
     end
 
     attachment = generate_proposal_pdf || return
+    confirm_submission(attachment)
+  end
+
+  def thanks; end
+
+  private
+
+  def confirm_submission(attachment)
     @proposal.update(status: :active)
     session[:is_submission] = nil
 
@@ -36,10 +41,6 @@ class SubmitProposalsController < ApplicationController
         been submitted. A copy of your proposal has been emailed to
         you.'.squish
   end
-
-  def thanks; end
-
-  private
 
   def generate_proposal_pdf
     temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
