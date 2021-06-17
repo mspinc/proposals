@@ -84,10 +84,14 @@ export default class extends Controller {
     let data = event.target.dataset
 
     if(data.value == 'all') {
-      $.post("/proposals/" + data.propid + "/latex",
-        { latex: 'all' },
-        function(data, status) {
-          window.open(`/proposals/rendered_proposal.pdf`)
+      let proposalId = data.propid
+
+      $.post(`/submit_proposals?proposal=${proposalId}`, $('form#submit_proposal').serialize(), function(data) {
+        $.post("/proposals/" + proposalId + "/latex",
+          { latex: 'all' },
+          function(data, status) {
+            window.open(`/proposals/rendered_proposal.pdf`)
+        });
       });
     }
     else {
