@@ -76,8 +76,13 @@ class InvitesController < ApplicationController
     if @invite.save
       InviteMailer.with(invite: @invite, co_organizers: @co_organizers)
                   .invite_email.deliver_later
-      redirect_to edit_proposal_path(@proposal),
-                  notice: "Invitation sent to #{@invite.person.fullname}"
+      respond_to do |format|
+        format.html do
+          redirect_to edit_proposal_path(@proposal, code: @invite.code),
+                    notice: "Invitation sent to #{@invite.person.fullname}"
+        end
+        format.js {}
+      end
     else
       redirect_to edit_proposal_path(@proposal),
                   alert: "Errors: #{@invite.errors.full_messages.join(', ')}."
