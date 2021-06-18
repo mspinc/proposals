@@ -48,6 +48,7 @@ export default class extends Controller {
   }
 
   SendInvitation (evt) {
+    let _this = this 
     let invited_as = evt.currentTarget.id
     let elements = ['firstname', 'lastname', 'email', 'deadline']
     $.each(elements, function(index, el){
@@ -55,7 +56,13 @@ export default class extends Controller {
       if(ele.val() == "") {
         if(ele.next().is('span')) return;
         else ele.after($('<span class="field-validation">This is a required field.</span>'))
-      } else {
+      }else if (el === "email" && !_this.validateEmail(ele.val())){
+        if(ele.next().is('span')) {
+          ele.next().remove();
+          ele.after($('<span class="field-validation">Invalid Email</span>'));
+        }
+        else ele.after($('<span class="field-validation">Invalid Email</span>'))
+      }else {
         if(ele.next().is('span')) {
           ele.next().remove();
         }
@@ -63,8 +70,13 @@ export default class extends Controller {
     })
     this.formData(invited_as, evt.currentTarget.dataset.propid)
   }
+  validateEmail (email) {
+    let re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
 
   SendInvite (id, firstname, lastname, email, deadline, invited) {
+    if(!this.validateEmail(email)) return
     $(`<form action="/proposals/${id}/invites" method="POST" id="send_invite">
       <input type="hidden" name='invite[firstname]' value=${firstname} />
       <input type="hidden" name='invite[lastname]' value=${lastname} />
@@ -98,5 +110,7 @@ export default class extends Controller {
     if(firstname && lastname && email && deadline) {
       this.SendInvite (id, firstname, lastname, email, deadline, invited)
     }
+
   }
+
 }
