@@ -46,4 +46,15 @@ module ProposalsHelper
     co_organizers.prepend(" and ") if co_organizers.present?
     co_organizers.strip.delete_suffix(",")
   end
+
+  def invite_status(status)
+    case status
+    when "yes", "maybe"
+      "Invitation accepted"
+    when nil
+      "Not yet responded to invitation"
+    when "no"
+      "Invitation declined"
+    end
+  end
 end
