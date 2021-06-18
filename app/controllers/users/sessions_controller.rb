@@ -31,7 +31,7 @@ module Users
       if resource.person&.demographic_data
         new_proposal_path
       else
-        new_survey_path
+        new_person_path
       end
     end
   end

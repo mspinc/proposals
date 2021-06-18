@@ -7,30 +7,42 @@ class SubmitProposalsController < ApplicationController
   def create
     @proposal.update(proposal_params)
     update_ams_subject_code
-    
-    draft_or_final = params[:commit] == 'Submit Proposal'
-    session[:is_submission] = @proposal.is_submission = draft_or_final
-
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
+    session[:is_submission] = @proposal.is_submission = submission.is_final?
 
-    if submission.errors.flatten.empty?
-      session[:is_submission] = nil
-
-      ProposalMailer.with(proposal: @proposal, file: proposal_pdf)
-                    .proposal_submission.deliver_later
-      redirect_to thanks_submit_proposals_path, notice: 'Your proposal has been
-            submitted. A copy of your proposal has been emailed to you.'.squish
-    else
-      redirect_to edit_proposal_path(@proposal), flash_notice(submission)
+    unless @proposal.is_submission
+      redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
+      return
     end
+
+    if submission.has_errors?
+      redirect_to edit_proposal_path(@proposal), alert: "Your submission has
+          errors: #{submission.error_messages}.".squish
+      return
+    end
+
+    attachment = generate_proposal_pdf || return
+    confirm_submission(attachment)
   end
 
   def thanks; end
 
   private
 
-  def proposal_pdf
+  def confirm_submission(attachment)
+    @proposal.update(status: :active)
+    session[:is_submission] = nil
+
+    ProposalMailer.with(proposal: @proposal, file: attachment)
+                  .proposal_submission.deliver_later
+
+    redirect_to thanks_submit_proposals_path, notice: 'Your proposal has
+        been submitted. A copy of your proposal has been emailed to
+        you.'.squish
+  end
+
+  def generate_proposal_pdf
     temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
     ProposalPdfService.new(@proposal.id, temp_file, 'all').pdf
     fh = File.open("#{Rails.root}/tmp/#{temp_file}")
@@ -39,11 +51,14 @@ class SubmitProposalsController < ApplicationController
       render_to_string(layout: "application", inline: "#{fh.read}",
                        formats: [:pdf])
     rescue ActionView::Template::Error => error
-      flash[:alert] = "There are errors in your LaTeX code. Please see the
-                        output from the compiler, and the LaTeX document,
-                        below".squish
+      flash[:alert] = "We were unable to compile your proposal with LaTeX.
+                      Please see the error messages, and generated LaTeX
+                      docmument, then edit your submission to fix the
+                      errors".squish
+
       error_output = ProposalPdfService.format_errors(error)
       render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
+      return
     end
   end
 
@@ -52,8 +67,12 @@ class SubmitProposalsController < ApplicationController
           .merge(ams_subject_ids: proposal_ams_subjects)
   end
 
+  def proposal_id_param
+    params.permit(:proposal)['proposal'].to_i
+  end
+
   def set_proposal
-    @proposal = Proposal.find(params[:proposal])
+    @proposal = Proposal.find(proposal_id_param)
   end
 
   def proposal_ams_subjects
@@ -65,14 +84,5 @@ class SubmitProposalsController < ApplicationController
   def update_ams_subject_code
     @proposal.ams_subjects.where(id: @code1)&.update(code: 'code1')
     @proposal.ams_subjects.where(id: @code2)&.update(code: 'code2')
-  end
-
-  def flash_notice(submission)
-    if @proposal.is_submission
-      error_message = submission.errors.flatten.join(', ')
-      { alert: "Your submission has errors: #{error_message}" }
-    else
-      { notice: 'Draft saved.' }
-    end
   end
 end

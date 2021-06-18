@@ -16,13 +16,20 @@ class SubmitProposalService
       create_or_update(id, value)
     end
     proposal_locations
-
-    if @proposal.is_submission && @proposal.valid? && errors.flatten.count.zero?
-      proposal.update(status: :active)
-    else
-      errors << @proposal.errors.full_messages.join(', ')
-    end
   end
+
+  def has_errors?
+    !errors.flatten.empty?
+  end
+
+  def error_messages
+    errors.uniq.flatten.join(', ')
+  end
+
+  def is_final?
+    params[:commit] == 'Submit Proposal'
+  end
+
 
   private
 
@@ -49,6 +56,10 @@ class SubmitProposalService
       end
 
       @errors << ProposalFieldValidationsService.new(field, proposal).validations
+    end
+
+    unless @proposal.valid?
+      @errors << @proposal.errors.full_messages
     end
   end
 end

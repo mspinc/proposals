@@ -18,14 +18,13 @@ import "spark"; // vendor/assets/javascripts
 
 import "../stylesheets/application"
 import "../js/common";
-import "../js/proposal_form";
 
 // Toastr flash messages
 global.toastr = require("toastr")
 toastr.options.closeButton = true;
 toastr.options.preventDuplicates = true;
-toastr.options.timeOut = 10000;
-toastr.options.extendedTimeOut = 30000;
+toastr.options.timeOut = 30000;
+toastr.options.extendedTimeOut = 60000;
 
 window.Turbo = Turbo
 Rails.start();

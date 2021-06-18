@@ -9,9 +9,7 @@
   <% end %>
 </div>
 
-<span class="comment">
-  <%= field.description.html_safe %>
-</span>
+<span><%= field.description.html_safe %></span>
 <% if field.guideline_link.present? %>
   <p><a href="<%= field.guideline_link %>" target="_blank"> 
     Learn More
