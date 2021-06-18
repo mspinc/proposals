@@ -54,7 +54,7 @@ class InvitesController < ApplicationController
     else
       InviteMailer.with(invite: @invite, token: @token, co_organizers: @co_organizers).invite_acceptance
                   .deliver_later
-      redirect_to new_survey_path(code: @invite.code)
+      redirect_to new_person_path(code: @invite.code)
     end
   end
 
