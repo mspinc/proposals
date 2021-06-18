@@ -40,4 +40,10 @@ module ProposalsHelper
 
     %q(<p>5-Day Workshops and Summer Schools require a minimum of 2, and a maximum of 4 total organizers per proposal. In accordance with BIRS' commitment to equity, diversity and inclusion (EDI), the organizing committee should contain at least one early-career researcher within ten years of their doctoral degree. For applications with two organizers, at least one member of the organizing committee must be from an under-represented community in STEM disciplines. For applications with three or more organizers, at least two members of the organizing committee must be from an under-represented community in STEM disciplines.</p>).html_safe
   end
+
+  def existing_co_organizers(invite)
+    co_organizers = invite.proposal.list_of_co_organizers.remove(invite.person&.fullname)
+    co_organizers.prepend(" and ") if co_organizers.present?
+    co_organizers.strip.delete_suffix(",")
+  end
 end

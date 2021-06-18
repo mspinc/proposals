@@ -71,7 +71,17 @@ export default class extends Controller {
       <input type="hidden" name='invite[email]' value=${email} />
       <input type="hidden" name='invite[deadline_date]' value=${deadline} />
       <input type="hidden" name='invite[invited_as]' value='${invited}' />
-      </form>`).appendTo('body').submit();
+      </form>`).appendTo('body');
+
+    $.post(`/proposals/${id}/invites.js`, $('form#send_invite').serialize(), function(data) {
+      if (!data.includes("Save as draft")) {
+        $("#email-preview").html(data)
+        $("#email-preview").modal('show')
+      } else {
+        $("#email-preview").html(data)
+      }
+    })
+
     $('#send_invite').remove();
   }
 
