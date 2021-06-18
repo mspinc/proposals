@@ -34,6 +34,9 @@ Rails.application.routes.draw do
       post :submit_survey
     end
   end
+
+  resources :people, path: :person
+
   resources :submit_proposals do
     collection do 
       get :thanks
