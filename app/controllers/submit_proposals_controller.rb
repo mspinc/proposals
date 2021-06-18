@@ -67,8 +67,12 @@ class SubmitProposalsController < ApplicationController
           .merge(ams_subject_ids: proposal_ams_subjects)
   end
 
+  def proposal_id_param
+    params.permit(:proposal)['proposal'].to_i
+  end
+
   def set_proposal
-    @proposal = Proposal.find(params[:proposal])
+    @proposal = Proposal.find(proposal_id_param)
   end
 
   def proposal_ams_subjects

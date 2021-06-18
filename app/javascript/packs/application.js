@@ -18,7 +18,6 @@ import "spark"; // vendor/assets/javascripts
 
 import "../stylesheets/application"
 import "../js/common";
-import "../js/proposal_form";
 
 // Toastr flash messages
 global.toastr = require("toastr")
