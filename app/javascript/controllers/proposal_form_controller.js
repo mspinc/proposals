@@ -5,6 +5,14 @@ export default class extends Controller {
                      'textField', 'proposalId' ]
   static values = { visible: Boolean, field: String }
 
+  connect () {
+    let url = window.location.href.split('/').slice(-3)
+    if(url.includes('proposals') && url.includes('edit')) {
+      let id = url[1]
+      this.autoSaveProposal(id);
+    }
+  }
+
   disableOtherInvites () {
     let disable_role = 'participant'
     let role = event.target.dataset.role
@@ -105,5 +113,14 @@ export default class extends Controller {
         }
       }
     }
+  }
+
+  autoSaveProposal (id) {
+    setInterval(function() {
+      $.post(`/submit_proposals?proposal=${id}`,
+        $('form#submit_proposal').serialize(), function(data) {
+        console.log('auto saving...')
+      })  
+    }, 10000);
   }
 }
