@@ -1,7 +1,10 @@
 module PeopleHelper
   def academic_status_options
-    academic = [['Grad Student', 'Grad Student'], ['Post Doc', 'Post Doc'], ['Tenure Track Faculty', 'Tenure Track Faculty'],
-                ['Tenured Faculty', 'Tenured Faculty'], ['Prefessor Emeritus', 'Prefessor Emeritus'],
+    academic = [['Graduate Student', 'Graduate Student'],
+                ['Post Doctoral', 'Post Doctoral'],
+                ['Tenure Track Faculty', 'Tenure Track Faculty'],
+                ['Tenured Faculty', 'Tenured Faculty'],
+                ['Prefessor Emeritus', 'Prefessor Emeritus'],
                 ['Industry Scientist', 'Industry Scientist'], %w[Other Other]]
     academic.map { |disp, _value| disp }
   end
