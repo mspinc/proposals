@@ -1,5 +1,5 @@
 class SurveyController < ApplicationController
-  before_action :set_invite, only: %i[submit_survey]
+  before_action :set_invite, only: %i[new survey_questionnaire submit_survey]
   layout('devise')
 
   def new

@@ -12,6 +12,12 @@
       <label for="email">Email: </label>
       <label for="email"><%= invite.email %></label>
     </div>
+    <% if invite.invited_as == 'Participant' && invite.person.academic_status.present? %>
+      <div class="mb-3">
+        <label>Academic Status: </label>
+        <label><%= invite.person.academic_status %></label>
+      </div>
+    <% end %>
   </div>
   <div class="col-6 mt-2">
     <div class="mb-3">
@@ -25,7 +31,6 @@
     <div class="mb-3">
       <label for="deadline_date">Deadline Date: </label>
       <label for="deadline_date"><%= invite.deadline_date.to_date %></label>
-      
     </div>
   </div>
 </div>

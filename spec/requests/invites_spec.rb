@@ -63,17 +63,17 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
 
   describe "POST /inviter_response" do
     before do
-      post inviter_response_proposal_invite_path(proposal_id: proposal.id, id: invite.id, code: invite.code)
+      post inviter_response_proposal_invite_path(proposal_id: proposal.id, id: invite.id, code: invite.code, commit: commit)
     end
 
     context 'when response is yes/maybe' do
-      let(:params) { { response: 'yes' } }
+      let(:commit) { 'YES' }
       it { expect(invite.proposal.proposal_roles.last.role.name).to eq(invite.invited_as) }
       it { expect(response).to redirect_to(new_person_path(code: invite.code)) }
     end
 
     context 'when response is no' do
-      let(:params) { { response: 'no' } }
+      let(:commit) { 'No' }
       it { expect(response).to have_http_status(:found) }
     end
   end
