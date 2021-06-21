@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_17_122310) do
+ActiveRecord::Schema.define(version: 2021_06_21_065709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -105,13 +105,13 @@ ActiveRecord::Schema.define(version: 2021_06_17_122310) do
     t.string "title"
     t.string "academic_status"
     t.string "country"
-    t.string "province"
-    t.string "state"
+    t.string "region"
     t.string "city"
     t.string "street_1"
     t.string "street_2"
-    t.string "year_first_phd"
-    t.string "address"
+    t.string "first_phd_year"
+    t.string "postal_code"
+    t.string "other_academic_status"
   end
 
   create_table "proposal_ams_subjects", force: :cascade do |t|
