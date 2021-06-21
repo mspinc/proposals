@@ -5,11 +5,11 @@
   <body>
     <h1>Dear <%= @person&.fullname %>:</h1>
     <p>
-      Thank you for indicating your interest in becoming a <%= @invite.invited_as.downcase %> for the proposed workshop titled "<%= @proposal.title %>", which is currently being organized by <%= @proposal.lead_organizer&.fullname %><%= @existing_co_organizers %>.
+      Thank you for indicating your interest in becoming a <%= @invite.invited_as?.downcase %> for the proposed workshop titled, "<%= @proposal.title %>", which is currently being organized by <%= @proposal.lead_organizer&.fullname %><%= @existing_co_organizers %>.
       The organizing committee will be in touch regarding future steps if the proposal is successful.
     </p>
     <p>
-      You will also receive an email to confirm your email and complete your profile on the BIRS Proposals system, which should take no more than 5 minutes to complete.
+      We also sent you an email with a link to confirm that we have your correct email address, and we ask that you answer some questions, which should take no more than 5 minutes to complete.
     </p>
     <p>Sincerely,</p>
     <p>Banff International Research Station,<br>

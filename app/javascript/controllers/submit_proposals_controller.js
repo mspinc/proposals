@@ -91,6 +91,9 @@ export default class extends Controller {
         $("#email-preview").modal('show')
       } else {
         $("#email-preview").html(data)
+        setTimeout(function() {
+          window.location.reload()
+        }, 3000)
       }
     })
 

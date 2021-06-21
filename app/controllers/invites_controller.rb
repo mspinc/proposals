@@ -42,9 +42,11 @@ class InvitesController < ApplicationController
   end
 
   def inviter_response
-    @invite.update(response: params[:response], status: 'confirmed')
-    proposal_role unless @invite.no?
-    create_user unless @invite.person.user
+    @invite.update(response: response_params, status: 'confirmed')
+    unless @invite.no?
+      proposal_role
+      create_user unless @invite.person.user
+    end
 
     @co_organizers = @invite.proposal.list_of_co_organizers.remove(@invite.person&.fullname)
 
@@ -63,6 +65,10 @@ class InvitesController < ApplicationController
   end
 
   private
+
+  def response_params
+    params.require(:commit)&.downcase
+  end
 
   def add_person
     @invite.person = Person.find_or_create_by!(firstname: @invite.firstname,
