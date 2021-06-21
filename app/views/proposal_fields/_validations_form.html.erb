@@ -3,7 +3,7 @@
   <div class="row mt-2">
     <div class="form-group col-5 mb-2">
       <%= f.label :type %>
-      <%= f.select :validation_type, options_for_select(validation_types, f.object&.validation_type), {include_blank: 'Select validation'}, class: 'form-control', data: {action: 'proposal-form#handleValidationChange'} %>
+      <%= f.select :validation_type, options_for_select(validation_types, f.object&.validation_type), {include_blank: 'Select validation'}, class: 'form-select', data: {action: 'proposal-form#handleValidationChange'} %>
     </div>
     <div class="form-group col-5 mb-2 <%= f.object&.validation_type == 'mandatory' ? 'hidden' : '' %>" >
       <%= f.label :value %>
