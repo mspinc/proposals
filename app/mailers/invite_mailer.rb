@@ -7,7 +7,7 @@ class InviteMailer < ApplicationMailer
     @proposal = @invite.proposal
     @person = @invite.person
 
-    mail(to: @person.email, subject: "BIRS Proposal: Invite for #{@invite.invited_as.titleize}")
+    mail(to: @person.email, subject: "BIRS Proposal: Invite for #{@invite.invited_as?}")
   end
 
   def invite_acceptance
