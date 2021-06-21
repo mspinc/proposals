@@ -8,6 +8,7 @@ class Invite < ApplicationRecord
   belongs_to :proposal
 
   before_save :generate_code
+  validates_uniqueness_of :email, scope: :proposal_id, message: "Same email cannot be used to invite already invited organizers or participants"
 
   def generate_code
     self.code = SecureRandom.urlsafe_base64(37) if self.code.blank?
