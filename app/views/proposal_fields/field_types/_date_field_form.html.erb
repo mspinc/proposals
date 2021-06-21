@@ -5,7 +5,7 @@
   </div>
   <div class="mb-3">
     <%= f.label :location, class: 'form-label' %>
-    <%= f.select :location_id, proposal_type_locations(@proposal_form.proposal_type),{:include_blank => 'Select location if this field is location based'} ,class:'form-control' %>
+    <%= f.select :location_id, proposal_type_locations(@proposal_form.proposal_type),{:include_blank => 'Select location if this field is location based'} ,class:'form-select' %>
   </div>
   <div class="mb-3">
     <%= f.label :description , class: 'form-label'%>
