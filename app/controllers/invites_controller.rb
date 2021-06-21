@@ -43,8 +43,10 @@ class InvitesController < ApplicationController
 
   def inviter_response
     @invite.update(response: params[:response], status: 'confirmed')
-    proposal_role unless @invite.no?
-    create_user unless @invite.person.user
+    unless @invite.no?
+      proposal_role
+      create_user unless @invite.person.user
+    end
 
     @co_organizers = @invite.proposal.list_of_co_organizers.remove(@invite.person&.fullname)
 
