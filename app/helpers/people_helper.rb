@@ -17,13 +17,18 @@ module PeopleHelper
   end
 
   def country_options
-    countries = [%w[Afghanistan Afghanistan], %w[Albania Albania], %w[Algeria Algeria], %w[Andorra Andorra],
+    countries = [
+                %w[Canada Canada], %w[France France], %w[Germany Germany], %w[Italy Italy],
+                ['United Kingdom', 'United Kingdom'],
+                ['United States of America', 'United States of America'],
+                %w[],
+                %w[Afghanistan Afghanistan], %w[Albania Albania], %w[Algeria Algeria], %w[Andorra Andorra],
                  %w[Angola Angola], %w[Antigua Antigua], %w[Barbuda Barbuda], %w[Argentina Argentina],
                  %w[Armenia Armenia], %w[Australia Australia], %w[Azerbaijan Azerbaijan], %w[Bahamas Bahamas],
                  %w[Bahrain Bahrain], %w[Bangladesh Bangladesh], %w[Barbados Barbados], %w[Belarus Belarus],
                  %w[Belgium Belgium], %w[Belize Belize], %w[Bhutan Bhutan], %w[Bolivia Bolivia], %w[Bosnia Bosnia],
                  %w[Herzegovina Herzegovina], %w[Botswana Botswana], %w[Brazil Brazil], %w[Brunei Brunei], %w[Bulgaria Bulgaria],
-                 ['Burkina Faso', 'Burkina Faso'], ['United States of America', 'United States of America'], %w[Burundi Burundi],
+                 ['Burkina Faso', 'Burkina Faso'], %w[Burundi Burundi],
                  ['Cabo Verde', 'Cabo Verde'], %w[Cambodia Cambodia], %w[Cameroon Cameroon], %w[Canada Canada],
                  ['Central African Republic', 'Central African Republic'], %w[Chad Chad], %w[Chile Chile], %w[China China],
                  %w[Colombia Colombia], %w[Comoros Comoros], ['Congo (Congo-Brazzaville)', 'Congo (Congo-Brazzaville)'],
