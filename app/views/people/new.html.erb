@@ -9,6 +9,14 @@
               	<%= form_for(@person) do |f|  %>
                   <%= hidden_field_tag 'code', params[:code] %>
             			<div class="form-group mb-2">
+                    <p class="lead">
+                      Thank you for your interest in attending the potential workshop,
+                      &quot;<%= @proposal.title %>&quot;. Please provide some information
+                      about yourself, by filling out the form below. This information will be
+                      helpful to the review process. The information will be available to the
+                      proposal organizers and review panelists, and will not be shared outside
+                      of BIRS.
+                    </p>
               			<%= f.label :affiliation, "Main Affiliation/Institution" , class: 'form-label required'%>
               			<%= f.text_field :affiliation, class:'form-control', placeholder: "Enter affiliation name" %>
             			</div>

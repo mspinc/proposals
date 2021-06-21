@@ -4,6 +4,7 @@ class PeopleController < ApplicationController
 
   def new
     @invited_as = invite&.invited_as
+    @proposal = invite&.proposal
 
     redirect_to root_path, alert: 'Something went wrong.' unless @person
   end
