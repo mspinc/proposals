@@ -34,7 +34,7 @@
                 </div>
                 <div class="mb-3">
                   <label>Select role of person to invite:</label>
-                  <%= f.select(:invited_as, options_for_select([['Co-organizer', 'Co Organizer'], ['Participant', 'Participant']]), {required: true}, {class: "form-control"}) %>
+                  <%= f.select(:invited_as, options_for_select([['Co-organizer', 'Co Organizer'], ['Participant', 'Participant']]), {required: true}, {class: "form-select"}) %>
                 </div>
                 <div class="mb-3">
                   <%= f.label :deadline, "Deadline for reply" %>
