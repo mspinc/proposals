@@ -21,4 +21,8 @@ class Invite < ApplicationRecord
         "Save as Draft", before adding people.'.squish)
     end
   end
+
+  def invited_as?
+    invited_as == 'Co Organizer' ? 'Supporting Organizer' : 'Participant'
+  end
 end
