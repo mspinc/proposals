@@ -10,7 +10,7 @@ class PeopleController < ApplicationController
 
   def update
     if @person.update(person_params)
-      redirect_to new_survey_path, notice: "Personal data saved successfully"
+      redirect_to new_survey_path(code: params[:code]), notice: "Personal data saved successfully"
     elsif invited_person.present?
       redirect_to new_person_path(code: params[:code]), alert: @person.errors.full_messages
     else
