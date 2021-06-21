@@ -26,4 +26,8 @@ class Invite < ApplicationRecord
   def deadline_date_never_be_past
    errors.add('Deadline', "can't be in past") unless deadline_date.to_date >= Date.current
   end
+  
+  def invited_as?
+    invited_as == 'Co Organizer' ? 'Supporting Organizer' : 'Participant'
+  end
 end
