@@ -26,7 +26,7 @@ class PeopleController < ApplicationController
   end
 
   def set_person
-    @person = current_user&.person || invited_person
+    @person = invited_person || current_user&.person
     @person.is_lead_organizer = true if params[:code].blank?
   end
 
