@@ -9,7 +9,7 @@
                 <div class="col-lg-8">
                   <div class="mb-3">
                     <%= f.label 'Please show your interest' , class: 'form-label' %>
-                    <%= f.select :response, options_for_select(invite_responses, @invite.response),{}, class: 'form-control' %>
+                    <%= f.select :response, options_for_select(invite_responses, @invite.response),{}, class: 'form-select' %>
                   </div>
                   <div class="mb-3">
                     <%= f.submit class:'btn btn-primary' %>
