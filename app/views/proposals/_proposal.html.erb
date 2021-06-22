@@ -5,7 +5,7 @@
         Proposals
       </h1>
       <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
+        <ol class="breadcrumb" data-turbo="false">
            <li class="breadcrumb-item"> <%= link_to "Dashboard", dashboards_path %> </a></li>
           <li class="breadcrumb-item active" aria-current="page"><%= link_to "Proposals", proposals_path %></li>
           <% if params[:action] == 'edit' %>
