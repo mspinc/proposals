@@ -1,5 +1,5 @@
 class InvitesController < ApplicationController
-  before_action :authenticate_user!, except: %i[show inviter_response]
+  before_action :authenticate_user!, except: %i[show inviter_response thanks]
   skip_before_action :verify_authenticity_token, only: %i[create]
   before_action :set_proposal, only: %i[new create index show]
   before_action :set_invite, only: %i[show inviter_response]
@@ -45,7 +45,9 @@ class InvitesController < ApplicationController
     @invite.update(response: response_params, status: 'confirmed')
     unless @invite.no?
       proposal_role
-      create_user unless @invite.person.user
+      if @invite.invited_as == 'Co Organizer'
+        create_user unless @invite.person.user
+      end
     end
 
     @co_organizers = @invite.proposal.list_of_co_organizers.remove(@invite.person&.fullname)

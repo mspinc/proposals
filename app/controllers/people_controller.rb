@@ -11,7 +11,7 @@ class PeopleController < ApplicationController
 
   def update
     if @person.update(person_params)
-      redirect_to new_survey_path(code: params[:code]), notice: "Personal data saved successfully"
+      redirect_to new_survey_path(code: params[:code]), notice: "Thank you!"
     elsif invited_person.present?
       redirect_to new_person_path(code: params[:code]), alert: @person.errors.full_messages
     else
@@ -22,8 +22,10 @@ class PeopleController < ApplicationController
   private
 
   def person_params
-    params.require(:person).permit(:affiliation, :department, :academic_status, :title, :first_phd_year, :country,
-                                   :region, :city, :street_1, :street_2, :postal_code, :other_academic_status)
+    params.require(:person).permit(:affiliation, :department, :academic_status,
+                                   :title, :first_phd_year, :country, :region,
+                                   :city, :street_1, :street_2, :postal_code,
+                                   :other_academic_status, :province, :state)
   end
 
   def set_person

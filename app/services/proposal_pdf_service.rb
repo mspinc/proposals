@@ -123,6 +123,8 @@ class ProposalPdfService
   end
 
   def preferred_impossible_dates(field)
+    return unless field.answer
+
     #@text << "\\subsection*{#{field.proposal_field.statement}}\n\n"
     preferred = JSON.parse(field.answer)&.first(5)
     unless preferred.any?

@@ -3,6 +3,7 @@ FactoryBot.define do
     statement { Faker::Lorem.paragraph }
     description { Faker::Lorem.paragraph }
     association :proposal_form, factory: :proposal_form, strategy: :create
+    association :fieldable, factory: :proposal_fields_text
 
     trait :location_based do
       association :location, factory: :location, strategy: :create

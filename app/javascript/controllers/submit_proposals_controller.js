@@ -6,7 +6,8 @@ export default class extends Controller {
   static values = { proposalTypeId: Number, proposal: Number }
   
   connect() {
-    this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
+    if(this.hasLocationIdsTarget)
+      this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
   }
 
   handleLocationChange(locations) {
@@ -113,7 +114,5 @@ export default class extends Controller {
     if(firstname && lastname && email && deadline) {
       this.SendInvite (id, firstname, lastname, email, deadline, invited)
     }
-
   }
-
 }

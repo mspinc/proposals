@@ -6,21 +6,21 @@
           <div class="card-body">
             <div class="m-sm-4">
               <div data-controller="person">
-              	<%= form_for(@person) do |f|  %>
+                <%= form_for(@person) do |f|  %>
                   <%= hidden_field_tag 'code', params[:code] %>
-            			<div class="form-group mb-2">
+                  <div class="form-group mb-2">
                     <p class="lead">
                       Thank you for your interest in attending the potential workshop,
-                      &quot;<%= @proposal.title %>&quot;. Please provide some information
+                      &quot;<%= @proposal&.title %>&quot;. Please provide some information
                       about yourself, by filling out the form below. This information will be
                       helpful to the review process. The information will be available to the
                       proposal organizers and review panelists, and will not be shared outside
                       of BIRS.
                     </p>
-              			<%= f.label :affiliation, "Main Affiliation/Institution" , class: 'form-label required' %>
-              			<%= f.text_field :affiliation, class:'form-control', placeholder: "Enter affiliation name" %>
-            			</div>
-            			<% if @invited_as.nil? %>
+                    <%= f.label :affiliation, "Main Affiliation/Institution" , class: 'form-label required' %>
+                    <%= f.text_field :affiliation, class:'form-control', placeholder: "Enter affiliation name" %>
+                  </div>
+                  <% if @invited_as.nil? %>
                     <div class="form-group mb-2">
                       <%= f.label :department, "Department " , class: 'form-label' %>
                       <%= f.text_field :department, class:'form-control', placeholder: "Department name" %>
@@ -30,20 +30,20 @@
                       <%= f.text_field :title, class:'form-control', placeholder: "Title" %>
                     </div>
                   <% end %>
-            			<div class="form-group mb-2">
-            				<%= f.label :academic_status, "Academic Status", class: 'form-label required' %><br>
+                  <div class="form-group mb-2">
+                    <%= f.label :academic_status, "Academic Status", class: 'form-label required' %><br>
                     <%= f.select :academic_status, academic_status_options, {include_blank: true},
-                    data: {action: 'click->person#handleAcademicOptions'}, class: 'form-select' %>
-									</div>
-									<div class="form-group mb-2 hidden" data-person-target="otherAcedamicStatus">
-										<%= f.label :other_academic_status, "Other", class: 'form-label' %>
-										<%= f.text_field :other_academic_status, class: 'form-control' %>
-									</div>
-									<div class="form-group mb-2">
-            				<%= f.label :first_phd_year, "Year of First Phd" , class: 'form-label required'%><br>
+                    data: {action: 'change->person#handleAcademicOptions'}, class: 'form-select' %>
+                  </div>
+                  <div class="hidden form-group mb-2" data-person-target="otherAcademicStatus">
+                    <%= f.label :other_academic_status, "Other", class: 'form-label' %>
+                    <%= f.text_field :other_academic_status, class: 'form-control' %>
+                  </div>
+                  <div class="form-group mb-2">
+                    <%= f.label :first_phd_year, "Year of First Phd" , class: 'form-label required'%><br>
                     <%= f.select :first_phd_year, phd_year_options, {include_blank: true}, class:'form-select' %>
-									</div>
-									<div>
+                  </div>
+                  <div>
                     <% if @invited_as == 'Lead Organizer' %>
                       <h3>Mailing Address:</h3>
                       <div class="form-group mb-2">
@@ -56,7 +56,7 @@
                       </div>
                       <div class="form-group mb-2">
                         <%= f.label :city, "City", class: 'form-label required' %>
-                        <%= f.text_field :city, class: 'form-control' %> 
+                        <%= f.text_field :city, class: 'form-control' %>
                       </div>
                       <div class="form-group mb-2">
                         <%= f.label :postal_code, "Postal Code", class: 'form-label' %>
@@ -69,18 +69,18 @@
                       <%= f.select :country, country_options, {include_blank: true}, data: {action: 'change->person#handleCountryOptions'} , class:'form-select' %>
                     </div>
                     <div class="hidden form-group mt-3" data-person-target="province">
-                        <%= f.label :region, "Region", class:"form-label required" %>
-                        <%= f.select :region, options_for_select(country_canada_options), {include_blank: true}, class: "form-control" %>
+                        <%= f.label :province, "Province", class:"form-label required" %>
+                        <%= f.select :province, options_for_select(country_canada_options), {include_blank: true}, class: "form-select" %>
                     </div>
                     <div class="hidden form-group mt-3" data-person-target="state">
-                      <%= f.label :region, "Region", class:"form-label required" %>
-                      <%= f.select :region , options_for_select(country_united_states_of_america_options), {include_blank: true}, class: "form-select" %>
+                      <%= f.label :state, "State", class:"form-label required" %>
+                      <%= f.select :state , options_for_select(country_united_states_of_america_options), {include_blank: true}, class: "form-select" %>
                     </div>
                   </div>
                   <div class="form-group mt-3">
-                  	<%= f.submit "Submit", class:"btn btn-primary" %>
+                    <%= f.submit "Submit", class:"btn btn-primary" %>
                   </div>
-          			<% end %>
+                <% end %>
               </div>
             </div>
           </div>
