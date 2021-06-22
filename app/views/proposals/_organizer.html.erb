@@ -12,6 +12,12 @@
       <label for="email">Email: </label>
       <label for="email"><%= invite.email %></label>
     </div>
+    <% if invite.person.affiliation.present? %>
+      <div class="mb-3">
+        <label>Affiliation: </label>
+        <label><%= invite.person.affiliation %></label>
+      </div>
+    <% end %>
     <% if invite.invited_as == 'Participant' && invite.person.academic_status.present? %>
       <div class="mb-3">
         <label>Academic Status: </label>
