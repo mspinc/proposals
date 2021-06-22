@@ -11,7 +11,7 @@
                   <div class="form-group mb-2">
                     <p class="lead">
                       Thank you for your interest in attending the potential workshop,
-                      &quot;<%= @proposal.title %>&quot;. Please provide some information
+                      &quot;<%= @proposal&.title %>&quot;. Please provide some information
                       about yourself, by filling out the form below. This information will be
                       helpful to the review process. The information will be available to the
                       proposal organizers and review panelists, and will not be shared outside
@@ -70,7 +70,7 @@
                     </div>
                     <div class="hidden form-group mt-3" data-person-target="province">
                         <%= f.label :region, "Region", class:"form-label required" %>
-                        <%= f.select :region, options_for_select(country_canada_options), {include_blank: true}, class: "form-control" %>
+                        <%= f.select :region, options_for_select(country_canada_options), {include_blank: true}, class: "form-select" %>
                     </div>
                     <div class="hidden form-group mt-3" data-person-target="state">
                       <%= f.label :region, "Region", class:"form-label required" %>
