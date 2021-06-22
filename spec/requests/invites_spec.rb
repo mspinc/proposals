@@ -97,7 +97,7 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   describe "GET /thanks" do
     it "render a successful response" do
       get thanks_proposal_invites_url(invite.proposal)
-      expect(response).to have_http_status(:found)
+      expect(response).to have_http_status(:ok)
     end
   end
 end
