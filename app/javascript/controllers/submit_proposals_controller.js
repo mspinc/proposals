@@ -8,6 +8,8 @@ export default class extends Controller {
   connect() {
     let url = window.location.href.split('/').slice(-3)
     this.autoSaveProposal(url);
+    if(this.hasLocationIdsTarget)
+      this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
   }
 
   handleLocationChange(locations) {
@@ -119,7 +121,6 @@ export default class extends Controller {
   autoSaveProposal (url) {
     var interval;
     if(url.includes('proposals') && url.includes('edit')) {
-      this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
       let id = url[1]
       interval =  setInterval(function() {
         $.post(`/submit_proposals?proposal=${id}`,
