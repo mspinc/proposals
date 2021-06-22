@@ -1,5 +1,5 @@
 class Person < ApplicationRecord
-  attr_accessor :is_lead_organizer
+  attr_accessor :is_lead_organizer, :province, :state
 
   validates :firstname, :lastname, :email, presence: true
   belongs_to :user, optional: true
@@ -19,14 +19,29 @@ class Person < ApplicationRecord
     errors.add('City', "can't be blank") if city.blank?
   end
 
+  def region_type
+    return "Province" if country == 'Canada'
+    return "State" if country == 'United States of America'
+    "Region"
+  end
+
   def common_fields
     errors.add('Main Affiliation/Institution', "can't be blank") if affiliation.blank?
     errors.add('Academic Status', "can't be blank") if academic_status.blank?
     errors.add('Year of First Phd', "can't be blank") if first_phd_year.blank?
     errors.add('Country', "can't be blank") if country.blank?
 
-    return unless country == 'Canada' || country == 'United States of America' && region.blank?
+    if academic_status == 'Other'
+      if other_academic_status.blank?
+        errors.add(:other_academic_status, "Please indicate your academic status.")
+      end
+    end
 
-    errors.add('Region', "can't be blank")
+    return unless country == 'Canada' || country == 'United States of America'
+    self.region = province unless province.blank?
+    self.region = state unless state.blank?
+    if region.blank?
+      errors.add("Missing data: ", "You must select a #{region_type}")
+    end
   end
 end

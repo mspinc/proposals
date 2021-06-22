@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = ['province','state','otherAcedamicStatus']
+  static targets = ['province','state','otherAcademicStatus']
 
   handleCountryOptions() {
     if(event.currentTarget.value === 'Canada') {
@@ -20,9 +20,9 @@ export default class extends Controller {
 
   handleAcademicOptions(){
   	if(event.currentTarget.value === 'Other') {
-  		this.otherAcedamicStatusTarget.classList.remove("hidden")
-  	}else{
-  		this.otherAcedamicStatusTarget.classList.add("hidden")
+  		this.otherAcademicStatusTarget.classList.remove("hidden")
+  	} else {
+  		this.otherAcademicStatusTarget.classList.add("hidden")
   	}
   }
 }
