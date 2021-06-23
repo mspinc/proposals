@@ -19,10 +19,11 @@ class SubmitProposalService
   end
 
   def has_errors?
-    !errors.flatten.empty?
+    !errors.flatten.empty? && !@proposal.valid?
   end
 
   def error_messages
+    errors.prepend(@proposal.errors.full_messages)
     errors.uniq.flatten.join(', ')
   end
 
