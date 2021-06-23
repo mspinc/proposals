@@ -17,7 +17,7 @@ class Proposal < ApplicationRecord
   validate :subjects, if: :is_submission
   validate :minimum_organizers, if: :is_submission
   validate :preferred_locations, if: :is_submission
-  # validate :not_before_opening, if: :is_submission
+  validate :not_before_opening, if: :is_submission
   before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
