@@ -15,11 +15,16 @@ class ProposalsController < ApplicationController
     @proposal.status = :draft
     @proposal.proposal_form = ProposalForm.active_form(@proposal.proposal_type_id)
 
-    if @proposal.save
-      @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
-      redirect_to edit_proposal_path(@proposal), notice: "Started a new #{@proposal.proposal_type.name} proposal!"
+    role = ProposalRole.lead_organizer?(current_user.person.id)
+    unless role
+      if @proposal.save
+        @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
+        redirect_to edit_proposal_path(@proposal), notice: "Started a new #{@proposal.proposal_type.name} proposal!"
+      else
+        redirect_to new_proposal_path, alert: @proposal.errors #.full_messages
+      end
     else
-      redirect_to new_proposal_path, alert: @proposal.errors #.full_messages
+      redirect_to new_proposal_path, alert: "You cannot create a new proposal"
     end
   end
 
