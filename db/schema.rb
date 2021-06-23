@@ -189,8 +189,8 @@ ActiveRecord::Schema.define(version: 2021_06_23_114447) do
     t.bigint "created_by_id"
     t.bigint "updated_by_id"
     t.string "title"
-    t.integer "version", default: 0
     t.text "introduction"
+    t.integer "version", default: 0
     t.text "introduction_2"
     t.text "introduction_3"
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
