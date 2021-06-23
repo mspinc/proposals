@@ -19,6 +19,10 @@ class SubmitProposalService
   end
 
   def has_errors?
+    unless @proposal.valid?
+      @errors << @proposal.errors.full_messages
+    end
+
     !errors.flatten.empty?
   end
 
@@ -56,10 +60,6 @@ class SubmitProposalService
       end
 
       @errors << ProposalFieldValidationsService.new(field, proposal).validations
-    end
-
-    unless @proposal.valid?
-      @errors << @proposal.errors.full_messages
     end
   end
 end

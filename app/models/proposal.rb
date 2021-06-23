@@ -17,6 +17,7 @@ class Proposal < ApplicationRecord
   validate :subjects, if: :is_submission
   validate :minimum_organizers, if: :is_submission
   validate :preferred_locations, if: :is_submission
+  # validate :not_before_opening, if: :is_submission
   before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
@@ -56,6 +57,14 @@ class Proposal < ApplicationRecord
 
 
   private
+
+  # Temporary, until open/close feature is added
+  def not_before_opening
+    if DateTime.current < DateTime.parse('2020-07-15 00:01')
+      errors.add('Early submission', 'Proposal submissions are not allowed
+        until July 15th, 2021.'.squish)
+    end
+  end
 
   def minimum_organizers
     if invites.select { |i| i.status == 'confirmed' }.count < 1
