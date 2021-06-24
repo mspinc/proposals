@@ -64,6 +64,7 @@ class Proposal < ApplicationRecord
   # Temporary, until open/close feature is added
   def not_before_opening
     return unless DateTime.current < DateTime.parse('2021-07-15 00:00:01')
+
     errors.add('Early submission - ', 'proposal submissions are not allowed
         until July 15th, 2021'.squish)
   end
