@@ -10,4 +10,10 @@ class ProposalType < ApplicationRecord
   def active_form
     proposal_forms.where('proposal_forms.status =?', 1).last
   end
+
+  def lead_organizer?(person_id)
+    proposals.joins(proposal_roles: :role)
+             .where("proposal_roles.person_id =?", person_id)
+             .where('roles.name =?', 'lead_organizer').empty?
+  end
 end
