@@ -24,7 +24,8 @@ class ProposalsController < ApplicationController
         redirect_to new_proposal_path, alert: @proposal.errors #.full_messages
       end
     else
-      redirect_to new_proposal_path, alert: "You cannot create a new proposal"
+      redirect_to new_proposal_path, alert: "There is a limit of one
+        #{@proposal.proposal_type.name} proposal per lead organizer.".squish
     end
   end
 
