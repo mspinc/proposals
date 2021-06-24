@@ -32,6 +32,9 @@ class Proposal < ApplicationRecord
     .joins(:proposal_type).where('name = ?', type)
   }
 
+  def create_organizer_role(person)
+    proposal_roles.create!(person: person, role: organizer)
+  end
 
   def lead_organizer
   	proposal_roles.joins(:role).find_by('roles.name = ?',
