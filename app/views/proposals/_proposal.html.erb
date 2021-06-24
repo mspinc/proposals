@@ -169,7 +169,7 @@
 
                     <div class="tab-pane <%= active_tab(@proposal, 'two') %> overflow-hidden" id="tab-2" role="tabpanel">
                       <div class="mb-3">
-                        <p><%= @proposal.proposal_form.introduction_2&.html_safe %></p>
+                        <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
                       </div>
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
@@ -184,7 +184,7 @@
                     
                     <div class="tab-pane <%= active_tab(@proposal, 'three') %>" id="tab-3" role="tabpanel">
                       <div class="mb-3">
-                        <p><%= @proposal.proposal_form.introduction_3&.html_safe %></p>
+                        <p><%= @proposal.proposal_form.introduction3&.html_safe %></p>
                       </div>
                       <!-- <h4 class="tab-title">Location Fields</h4> -->
                       <div class="mb-3">

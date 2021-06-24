@@ -9,3 +9,7 @@ const application = Application.start()
 const context = require.context("controllers", true, /_controller\.js$/)
 application.register("nested-form", NestedForm)
 application.load(definitionsFromContext(context))
+
+/* eslint quotes: ["error", "double"] */
+/* eslint-env es6 */
+var single = 'single', { 'avoidEscape': true }
