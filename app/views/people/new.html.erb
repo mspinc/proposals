@@ -39,7 +39,7 @@
                     data: {action: 'change->person#handleAcademicOptions'}, class: 'form-select' %>
                   </div>
                   <div class="hidden form-group mb-2" data-person-target="otherAcademicStatus">
-                    <%= f.label :other_academic_status, "Other", class: 'form-label' %>
+                    <%= f.label :other_academic_status, "Other", class: 'form-label required' %>
                     <%= f.text_field :other_academic_status, class: 'form-control' %>
                   </div>
                   <div class="form-group mb-2">
@@ -47,7 +47,7 @@
                     <%= f.select :first_phd_year, phd_year_options, {include_blank: true}, class:'form-select' %>
                   </div>
                   <div>
-                    <% if @invited_as == 'Lead Organizer' %>
+                    <% if @person.is_lead_organizer %>
                       <h3>Mailing Address:</h3>
                       <div class="form-group mb-2">
                         <%= f.label :street_1, "Street 1" , class: 'form-label required' %>
