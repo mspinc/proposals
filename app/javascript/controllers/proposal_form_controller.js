@@ -93,7 +93,9 @@ export default class extends Controller {
           function() {
             _this.renderPdf(proposalId)
           });
-      } else this.renderPdf(proposalId)
+      } else {
+        this.renderPdf(proposalId)
+      }
     }
     else {
       for (var i = 0; i < this.textFieldTargets.length; i++) {
