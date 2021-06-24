@@ -53,7 +53,7 @@ class ProposalPdfService
     code = proposal.code.blank? ? '' : "#{proposal.code}: "
     @text = "\\section*{\\centering #{code} #{proposal.title} }\n\n"
     @text << "\\subsection*{#{proposal.proposal_type&.name} }\n\n"
-    @text << "#{proposal.invites.count} participants\n\n"
+    @text << "#{proposal.invites.count} confirmed / #{proposal.proposal_type&.participant} maximum participants\n\n"
 
     @text << "\\subsection*{Lead Organiser}\n\n"
     @text << "#{proposal.lead_organizer&.fullname}  \\\\ \n\n"

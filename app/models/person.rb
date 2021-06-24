@@ -31,6 +31,8 @@ class Person < ApplicationRecord
     errors.add('Year of First Phd', "can't be blank") if first_phd_year.blank?
     errors.add('Country', "can't be blank") if country.blank?
 
+    self.first_phd_year = nil if first_phd_year == "N/A"
+
     if academic_status == 'Other'
       if other_academic_status.blank?
         errors.add(:other_academic_status, "Please indicate your academic status.")

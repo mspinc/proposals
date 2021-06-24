@@ -10,10 +10,11 @@ module PeopleHelper
   end
 
   def phd_year_options
-    phd_year = []
+    phd_year = [ %w[N/A] ]
     (1951..2021).each do |i|
       phd_year.push(i)
     end
+    phd_year.push()
   end
 
   def country_options

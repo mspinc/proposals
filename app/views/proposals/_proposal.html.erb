@@ -50,7 +50,7 @@
                     <div class="tab-pane <%= active_tab(@proposal, 'one') %>" id="tab-1" role="tabpanel">
                       <h4 class="tab-title"></h4>
                       <div class="mb-3">
-                        <p><%= @proposal.proposal_form.introduction.html_safe %></p>
+                        <p><%= @proposal.proposal_form.introduction&.html_safe %></p>
                       </div>
                       <div class="mb-3">
                         <%= f.label :title, class: "required" %>
@@ -168,6 +168,9 @@
                     </div>
 
                     <div class="tab-pane <%= active_tab(@proposal, 'two') %> overflow-hidden" id="tab-2" role="tabpanel">
+                      <div class="mb-3">
+                        <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
+                      </div>
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 
@@ -180,6 +183,9 @@
                     </div>
                     
                     <div class="tab-pane <%= active_tab(@proposal, 'three') %>" id="tab-3" role="tabpanel">
+                      <div class="mb-3">
+                        <p><%= @proposal.proposal_form.introduction3&.html_safe %></p>
+                      </div>
                       <!-- <h4 class="tab-title">Location Fields</h4> -->
                       <div class="mb-3">
                         <%= f.label :location, "Select your preferred location for this event:", class: 'form-label lead' %>
