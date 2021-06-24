@@ -12,10 +12,9 @@ class PeopleController < ApplicationController
   def update
     if @person.update(person_params)
       redirect_to new_survey_path(code: params[:code]), notice: "Thank you!"
-    elsif invited_person.present?
-      redirect_to new_person_path(code: params[:code]), alert: @person.errors.full_messages
     else
-      redirect_to new_person_path, alert: @person.errors.full_messages
+      @invited_as = invite&.invited_as
+      render :new
     end
   end
 

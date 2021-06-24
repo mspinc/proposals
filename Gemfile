@@ -31,6 +31,7 @@ group :development, :test do
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'simplecov'
+  gem 'simplecov-lcov'
   gem 'webdrivers'
 end
 

@@ -17,7 +17,7 @@ class Proposal < ApplicationRecord
   validate :subjects, if: :is_submission
   validate :minimum_organizers, if: :is_submission
   validate :preferred_locations, if: :is_submission
-  # validate :not_before_opening, if: :is_submission
+  validate :not_before_opening, if: :is_submission
   before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
@@ -32,6 +32,9 @@ class Proposal < ApplicationRecord
     .joins(:proposal_type).where('name = ?', type)
   }
 
+  def create_organizer_role(person)
+    proposal_roles.create!(person: person, role: organizer)
+  end
 
   def lead_organizer
   	proposal_roles.joins(:role).find_by('roles.name = ?',
@@ -48,11 +51,11 @@ class Proposal < ApplicationRecord
   end
 
   def supporting_organizers
-    invites.where(invited_as: 'Co Organizer').where(status: 'confirmed')
+    invites.where(invited_as: 'Co Organizer').where(response: %w[yes maybe])
   end
 
   def participants
-    invites.where(invited_as: 'Participant').where(status: 'confirmed')
+    invites.where(invited_as: 'Participant').where(response: %w[yes maybe])
   end
 
 
@@ -60,10 +63,10 @@ class Proposal < ApplicationRecord
 
   # Temporary, until open/close feature is added
   def not_before_opening
-    if DateTime.current < DateTime.parse('2020-07-15 00:01')
-      errors.add('Early submission', 'Proposal submissions are not allowed
-        until July 15th, 2021.'.squish)
-    end
+    return unless DateTime.current < DateTime.parse('2021-07-15 00:00:01')
+
+    errors.add('Early submission - ', 'proposal submissions are not allowed
+        until July 15th, 2021'.squish)
   end
 
   def minimum_organizers

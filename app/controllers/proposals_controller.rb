@@ -11,20 +11,15 @@ class ProposalsController < ApplicationController
   end
 
   def create
-    @proposal = Proposal.new(proposal_params)
-    @proposal.status = :draft
-    @proposal.proposal_form = ProposalForm.active_form(@proposal.proposal_type_id)
+    @proposal = start_new_proposal
+    limit_of_one_per_type and return if already_has_proposal?
 
-    role = ProposalRole.lead_organizer?(current_user.person.id)
-    unless role
-      if @proposal.save
-        @proposal.proposal_roles.create!(person: current_user.person, role: organizer)
-        redirect_to edit_proposal_path(@proposal), notice: "Started a new #{@proposal.proposal_type.name} proposal!"
-      else
-        redirect_to new_proposal_path, alert: @proposal.errors #.full_messages
-      end
+    if @proposal.save
+      @proposal.create_organizer_role(current_user.person)
+      redirect_to edit_proposal_path(@proposal), notice: "Started a new
+                              #{@proposal.proposal_type.name} proposal!".squish
     else
-      redirect_to new_proposal_path, alert: "You cannot create a new proposal"
+      redirect_to new_proposal_path, alert: @proposal.errors
     end
   end
 
@@ -95,5 +90,21 @@ class ProposalsController < ApplicationController
 
   def latex_params
     params.permit(:latex, :proposal_id, :format)
+  end
+
+  def start_new_proposal
+    prop = Proposal.new(proposal_params)
+    prop.status = :draft
+    prop.proposal_form = ProposalForm.active_form(@proposal.proposal_type_id)
+    prop
+  end
+
+  def already_has_proposal?
+    @proposal.proposal_type.lead_organizer?(current_user.person)
+  end
+
+  def limit_of_one_per_type
+    redirect_to new_proposal_path, alert: "There is a limit of one
+      #{@proposal.proposal_type.name} proposal per lead organizer.".squish
   end
 end
