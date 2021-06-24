@@ -33,7 +33,7 @@ class ProposalFormsController < ApplicationController
       version = @proposal_form.version + 1
       @proposal_form.update(version: version) if @proposal_form.active?
       redirect_to proposal_type_proposal_form_path(@proposal_type,
-                  @proposal_form),
+                                                   @proposal_form),
                   notice: 'Proposal form was successfully updated'
     else
       redirect_to edit_proposal_type_proposal_form_path,
@@ -90,7 +90,8 @@ class ProposalFormsController < ApplicationController
 
   def proposal_form_params
     params.require(:proposal_form).permit(:title, :status, :introduction,
-                   :introduction2, :introduction3, :proposal_type_id)
+                                          :introduction2, :introduction3,
+                                          :proposal_type_id)
           .merge(updated_by: current_user)
   end
 
