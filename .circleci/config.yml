@@ -24,6 +24,7 @@ jobs:
           PG_USER: $DB_USER
           RAILS_ENV: test
           RACK_ENV: test
+          CODACY_PROJECT_TOKEN: $CODACY_PROJECT_TOKEN
       - image: 'circleci/postgres:12.1-alpine-ram'
         environment:
           POSTGRES_USER: postgres
@@ -66,6 +67,7 @@ jobs:
             chown -R app:app /home/app/proposals
             cd /home/app/proposals
             bundle exec rspec
+            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/.resultset.json
   deploy_to_staging:
     docker:
       - image: birs/proposals:latest
