@@ -84,17 +84,16 @@ export default class extends Controller {
 
   latex () {
     let data = event.target.dataset
-
+    let _this = this
     if(data.value == 'all') {
       let proposalId = data.propid
-
-      $.post(`/submit_proposals?proposal=${proposalId}`, $('form#submit_proposal').serialize(), function(data) {
-        $.post("/proposals/" + proposalId + "/latex",
-          { latex: 'all' },
-          function(data, status) {
-            window.open(`/proposals/rendered_proposal.pdf`)
-        });
-      });
+      if(window.location.href.includes('edit')){
+        $.post(`/submit_proposals?proposal=${proposalId}`, 
+          $('form#submit_proposal').serialize(),
+          function(data) {
+            _this.renderPdf(proposalId)
+          });
+      } else this.renderPdf(proposalId)
     }
     else {
       for (var i = 0; i < this.textFieldTargets.length; i++) {
@@ -107,5 +106,13 @@ export default class extends Controller {
         }
       }
     }
+  }
+
+  renderPdf (proposalId) {
+    $.post("/proposals/" + proposalId + "/latex",
+      { latex: 'all' },
+      function(data, status) {
+        window.open(`/proposals/rendered_proposal.pdf`)
+    });
   }
 }
