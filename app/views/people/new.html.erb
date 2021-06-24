@@ -6,7 +6,10 @@
           <div class="card-body">
             <div class="m-sm-4">
               <div data-controller="person">
-                <%= form_for(@person) do |f|  %>
+                <%= form_for(@person, html: {'data-turbo': false}) do |f|  %>
+                <% if @person.errors.present? %>
+                  <%= render partial: 'layouts/errors', locals: {errors: @person.errors} %>
+                  <% end %>
                   <%= hidden_field_tag 'code', params[:code] %>
                   <div class="form-group mb-2">
                     <p class="lead">
