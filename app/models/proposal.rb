@@ -48,11 +48,11 @@ class Proposal < ApplicationRecord
   end
 
   def supporting_organizers
-    invites.where(invited_as: 'Co Organizer').where(status: 'confirmed')
+    invites.where(invited_as: 'Co Organizer').where(response: %w[yes maybe])
   end
 
   def participants
-    invites.where(invited_as: 'Participant').where(status: 'confirmed')
+    invites.where(invited_as: 'Participant').where(response: %w[yes maybe])
   end
 
 
