@@ -67,7 +67,7 @@ jobs:
             chown -R app:app /home/app/proposals
             cd /home/app/proposals
             bundle exec rspec
-            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage/.resultset.json
+            bash <(curl -Ls https://coverage.codacy.com/get.sh) report -l ruby -p "Proposals" -r coverage/lcov/proposals.lcov
   deploy_to_staging:
     docker:
       - image: birs/proposals:latest
