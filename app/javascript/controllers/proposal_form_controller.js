@@ -90,7 +90,7 @@ export default class extends Controller {
       if(window.location.href.includes('edit')){
         $.post(`/submit_proposals?proposal=${proposalId}`, 
           $('form#submit_proposal').serialize(),
-          function(data) {
+          function() {
             _this.renderPdf(proposalId)
           });
       } else this.renderPdf(proposalId)
