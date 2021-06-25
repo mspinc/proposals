@@ -65,8 +65,11 @@
                       <div>
                         <label>6. Do you have a disability,impairment, or ongoing medical condition that impacts your participation in everyday life?</label>
                         <div>
-                          <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
-                          <label>*link to appropriate section of the FAQ*</label></em>
+                          <label>
+                            <em>For more information about under-represented minorities, please look at our 
+                            <%= link_to "FAQs", faq_survey_index_path, target: "_blank" %>
+                            </em>
+                          </label>
                         </div>
                         <%= f.select "disability", options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', 'Prefer']]),{ include_blank: '' }, data:{'survey-target': 'disability', action: 'click->survey#handleDisabilityOptions'}, class: "form-select" %>
                       </div>
@@ -76,8 +79,11 @@
                       <div>
                         <label>7. Do you consider yourself to be part of an under-represented minority in the country of your current affiliation?</label>
                         <div>
-                          <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
-                          <label>*link to appropriate section of the FAQ*</label></em>
+                          <label>
+                            <em>For more information about under-represented minorities, please look at our 
+                            <%= link_to "FAQs", faq_survey_index_path, target: "_blank" %>
+                            </em>
+                          </label>
                         </div>
                         <%= f.select(:minorities, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]),{ include_blank: '' }, {class: "form-select"}) %>
                       </div>
@@ -87,8 +93,11 @@
                       <div>
                         <label>8. Do you consider yourself to be part of an under-represented minority in STEM?</label>
                         <div>
-                          <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
-                          <label>*link to appropriate section of the FAQ*</label></em>
+                          <label>
+                            <em>For more information about under-represented minorities, please look at our 
+                            <%= link_to "FAQs", faq_survey_index_path, target: "_blank" %>
+                            </em>
+                          </label>
                         </div>
                         <%= f.select(:stem, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]),{ include_blank: '' }, {class: "form-select"}) %>
                       </div>
@@ -98,8 +107,11 @@
                       <div>
                         <label>9. Do you consider yourself to be part of an under-represented minority in your research area?</label>
                         <div>
-                          <label><em>For more information about under-represented minorities, please look at our FAQs.</label>
-                          <label>*link to appropriate section of the FAQ*</label></em>
+                          <label>
+                            <em>For more information about under-represented minorities, please look at our 
+                            <%= link_to "FAQs", faq_survey_index_path, target: "_blank" %>
+                            </em>
+                          </label>
                         </div>
                         <%= f.select(:underRepresented, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]),{ include_blank: '' }, {class: "form-select"}) %>
                       </div>
