@@ -25,10 +25,10 @@ export default class extends Controller {
   }
 
   handleAcademicOptions(targetValue) {
-  	if(event.currentTarget.value === 'Other' || targetValue === 'Other') {
-  		this.otherAcademicStatusTarget.classList.remove("hidden")
-  	} else {
-  		this.otherAcademicStatusTarget.classList.add("hidden")
-  	}
+   if(event.currentTarget.value === 'Other' || targetValue === 'Other') {
+    this.otherAcademicStatusTarget.classList.remove("hidden")
+   } else {
+     this.otherAcademicStatusTarget.classList.add("hidden")
+   }
   }
 }
