@@ -29,11 +29,7 @@ RSpec.describe "Proposals", type: :request do
 
     context 'when already has proposal it will not create' do
       let(:params) do
-        { proposal: {
-          proposal_type_id: proposal.proposal_type.id,
-          title: 'Test proposal',
-          year: '2023'
-        } }
+        { proposal: { proposal_type_id: proposal.proposal_type.id, title: 'Test proposal', year: '2023' } }
       end
 
       it { expect(response).to redirect_to(new_proposal_path) }
@@ -43,11 +39,7 @@ RSpec.describe "Proposals", type: :request do
       let(:proposal_type) { create(:proposal_type) }
       let(:form) { create(:proposal_form, status: :active, proposal_type: proposal_type) }
       let(:params) do
-        { proposal: {
-          proposal_type_id: form.proposal_type.id,
-          title: 'Test proposal',
-          year: '2025'
-        } }
+        { proposal: { proposal_type_id: form.proposal_type.id, title: 'Test proposal', year: '2025' } }
       end
 
       it { expect(response).to redirect_to(edit_proposal_path(Proposal.last)) }
