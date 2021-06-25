@@ -22,11 +22,11 @@ FactoryBot.define do
     f.first_phd_year { Date.current.year - 5 }
   end
 
-  trait :with_proposals do 
-    after(:create) do |person| 
+  trait :with_proposals do
+    after(:create) do |person|
       proposals = create_list(:proposal, 3)
       organizer = create(:role, name: 'lead_organizer')
-      proposals.map{ |p| p.create_organizer_role(person, organizer)}
+      proposals.map { |p| p.create_organizer_role(person, organizer) }
     end
   end
 end
