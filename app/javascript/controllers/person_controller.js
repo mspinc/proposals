@@ -1,7 +1,13 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = ['province','state','otherAcademicStatus']
+  static targets = ['province','state','otherAcademicStatus', 'otherOption']
+
+  connect() {
+    if(this.otherOptionTarget.value) {
+      this.handleAcademicOptions(this.otherOptionTarget.value)
+    }
+  }
 
   handleCountryOptions() {
     if(event.currentTarget.value === 'Canada') {
@@ -18,11 +24,11 @@ export default class extends Controller {
     }
   }
 
-  handleAcademicOptions(){
-  	if(event.currentTarget.value === 'Other') {
-  		this.otherAcademicStatusTarget.classList.remove("hidden")
-  	} else {
-  		this.otherAcademicStatusTarget.classList.add("hidden")
-  	}
+  handleAcademicOptions(targetValue) {
+   if(event.currentTarget.value === 'Other' || targetValue === 'Other') {
+    this.otherAcademicStatusTarget.classList.remove("hidden")
+   } else {
+     this.otherAcademicStatusTarget.classList.add("hidden")
+   }
   }
 }
