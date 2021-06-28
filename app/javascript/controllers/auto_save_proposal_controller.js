@@ -26,7 +26,6 @@ export default class extends Controller {
   }
 
   onFoucs () {
-    console.log('onFoucs')
     this.autoSaveProposal();
   }
 
