@@ -19,7 +19,7 @@
   </div>
   <div class="mb-3">
     <label for="deadline" class="required">Deadline for reply</label>
-    <input type="date" name="invite[deadline_date]" class="form-control" id="<%= invited_as %>_deadline" value="<%= date %>">
+    <input type="date" name="invite[deadline_date]" class="form-control" id="<%= invited_as %>_deadline" value="<%= date %>" data-action="click->proposal-form#presentDate" >
   </div>
   <input type="hidden" name="invited_as" value="<%= invited_as %>" />
   <div class="mb-3">
