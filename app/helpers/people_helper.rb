@@ -4,7 +4,7 @@ module PeopleHelper
                 ['Post Doctoral', 'Post Doctoral'],
                 ['Tenure Track Faculty', 'Tenure Track Faculty'],
                 ['Tenured Faculty', 'Tenured Faculty'],
-                ['Prefessor Emeritus', 'Prefessor Emeritus'],
+                ['Professor Emeritus', 'Professor Emeritus'],
                 ['Industry Scientist', 'Industry Scientist'], %w[Other Other]]
     academic.map { |disp, _value| disp }
   end
