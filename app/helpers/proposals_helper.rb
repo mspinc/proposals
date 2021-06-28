@@ -59,7 +59,7 @@ module ProposalsHelper
   end
 
   def proposal_status(status)
-    status == 'draft' ? "text-primary" : "text-success" ;
+    status == 'draft' ? "text-primary" : "text-success"
   end
 
   def invite_response_color(status)
