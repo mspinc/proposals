@@ -12,7 +12,7 @@ class ProposalsController < ApplicationController
 
   def create
     @proposal = start_new_proposal
-    limit_of_one_per_type and return unless has_no_proposal?
+    limit_of_one_per_type and return unless no_proposal?
 
     if @proposal.save
       @proposal.create_organizer_role(current_user.person, organizer)
@@ -99,7 +99,7 @@ class ProposalsController < ApplicationController
     prop
   end
 
-  def has_no_proposal?
+  def no_proposal?
     @proposal.proposal_type.not_lead_organizer?(current_user.person)
   end
 
