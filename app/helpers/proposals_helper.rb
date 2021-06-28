@@ -57,4 +57,19 @@ module ProposalsHelper
       "Invitation declined"
     end
   end
+
+  def proposal_status(status)
+    status == 'draft' ? "text-primary" : "text-success" ;
+  end
+
+  def invite_response_color(status)
+    case status
+    when "yes", "maybe"
+      "text-success"
+    when nil
+      "text-primary"
+    when "no"
+      "text-danger"
+    end
+  end
 end
