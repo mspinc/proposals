@@ -46,4 +46,8 @@ class Person < ApplicationRecord
       errors.add("Missing data: ", "You must select a #{region_type}")
     end
   end
+
+  def draft_proposals?
+    proposals.where(status: :draft).present?
+  end
 end
