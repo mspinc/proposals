@@ -9,8 +9,9 @@ class Invite < ApplicationRecord
 
   before_save :generate_code
   validate :deadline_not_in_past
-  validates_uniqueness_of :email, scope: :proposal_id, message: "Same email cannot be used to invite already invited organizers or participants"
-
+  validates :email, uniqueness: { scope: :proposal_id,
+                                  message: "Same email cannot be used to invite already invited organizers or participants",
+                                  conditions: -> { where.not(response: :no) } }
   def generate_code
     self.code = SecureRandom.urlsafe_base64(37) if self.code.blank?
   end
