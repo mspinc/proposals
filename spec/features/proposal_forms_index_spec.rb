@@ -14,7 +14,6 @@ RSpec.feature "Proposal_Form index", type: :feature do
         expect(page).to have_text(loc.name)
       end
 
-      expect(page).to have_text(proposal_form.status)
       expect(page).to have_text(proposal_form.created_at.to_date)
       expect(page).to have_text(proposal_form.created_by.email)
       expect(page).to have_text(proposal_form.updated_by.email)
