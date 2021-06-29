@@ -8,6 +8,8 @@ class SurveyController < ApplicationController
 
   def survey_questionnaire; end
 
+  def faq; end
+
   def submit_survey
     demographic_data = DemographicData.new
     demographic_data.result = questionnaire_answers

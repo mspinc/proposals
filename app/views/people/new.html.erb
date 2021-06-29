@@ -36,7 +36,7 @@
                   <div class="form-group mb-2">
                     <%= f.label :academic_status, "Academic Status", class: 'form-label required' %><br>
                     <%= f.select :academic_status, academic_status_options, {include_blank: true},
-                    data: {action: 'change->person#handleAcademicOptions'}, class: 'form-select' %>
+                    data: {'person-target': 'otherOption', action: 'change->person#handleAcademicOptions'}, class: 'form-select' %>
                   </div>
                   <div class="hidden form-group mb-2" data-person-target="otherAcademicStatus">
                     <%= f.label :other_academic_status, "Other", class: 'form-label required' %>

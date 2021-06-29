@@ -28,6 +28,11 @@ export default class extends Controller {
     $('#' + disable_role).prop("hidden", disable_value);
   }
 
+  presentDate () {
+    var today = new Date().toISOString().split('T')[0];
+    event.currentTarget.setAttribute('min', today);
+  }
+
   toggleProposalFieldsPanel () {
     if( this.contentOfButtonTarget.innerText === 'Back' ){
       this.visibleValue = !this.visibleValue
