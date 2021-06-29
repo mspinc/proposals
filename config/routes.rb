@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
+    member do
+      patch :ranking
+    end
     collection do
       get :latex, to: 'proposals#latex_output'
       get :'rendered_proposal', to: 'proposals#latex_output'

@@ -1,9 +1,14 @@
 class ProposalsController < ApplicationController
-  before_action :set_proposal, only: %w[show edit update destroy]
+  before_action :set_proposal, only: %w[show edit update destroy ranking]
   before_action :authenticate_user!
   
   def index
     @proposals = current_user&.person&.proposals
+  end
+
+  def ranking
+    @proposal.proposal_locations.update(position: params[:position].to_i)
+    head :ok
   end
 
   def new

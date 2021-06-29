@@ -1,8 +1,11 @@
 import { Controller } from "stimulus"
+import Sortable from "sortablejs"
+import Rails from '@rails/ujs'
 
 export default class extends Controller {
   
-  static targets = [ 'proposalType', 'locationSpecificQuestions', 'locationIds', 'text', 'tabs' ]
+  static targets = [ 'proposalType', 'locationSpecificQuestions', 'locationIds', 'text', 'tabs', 
+                    'dragLocations']
   static values = { proposalTypeId: Number, proposal: Number }
   
   connect() {
@@ -11,13 +14,32 @@ export default class extends Controller {
   }
 
   handleLocationChange(locations) {
-    if(event && event.type == 'change')
+    var ele = this.dragLocationsTarget
+    this.sortable = Sortable.create(ele, {
+      onEnd: this.end.bind(this)
+    })
+
+    if(event && event.type == 'change') {
       locations = [...event.target.selectedOptions].map(opt => opt.value)
+      // this.dragLocationsTarget.innerHTML = [...event.target.selectedOptions].map(opt => opt.text)
+    }
     fetch(`/proposal_types/${this.proposalTypeIdValue}/location_based_fields?ids=${locations}&proposal_id=${this.proposalValue}`)
       .then(response => response.text())
       .then(html => {
         this.locationSpecificQuestionsTarget.innerHTML = html
       });
+  }
+
+  end(event) {
+    let id = event.item.dataset.id
+    let data = new FormData()
+    data.append("position", event.newIndex + 1)
+    var url = `/proposals/${this.proposalValue}/ranking`
+    Rails.ajax({
+      url: url.replace(":id", id),
+      type: "PATCH",
+      data: data
+    })
   }
   
   nextTab() {
