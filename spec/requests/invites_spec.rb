@@ -80,7 +80,7 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
 
   describe "GET /show" do
     before do
-      get proposal_invite_path(proposal_id: proposal.id, id: invite1.id, code: invite1.code)
+      get invite_path(code: invite1.code)
     end
 
     context 'when status is pending' do

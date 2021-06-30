@@ -11,6 +11,8 @@ Rails.application.routes.draw do
   resources :feedbacks, path: :feedback
   get 'dashboards', to: 'proposal_types#index'
 
+  get :invite, to: 'invites#show'
+
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
     member do
@@ -22,7 +24,8 @@ Rails.application.routes.draw do
       get :'rendered_proposal', to: 'proposals#latex_output'
     end
 
-    resources :invites do
+
+    resources :invites, :except => [:show] do
       member do
         post :inviter_response
       end

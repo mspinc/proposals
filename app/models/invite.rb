@@ -9,14 +9,21 @@ class Invite < ApplicationRecord
 
   before_save :generate_code
   validate :deadline_not_in_past
-  validates_uniqueness_of :email, scope: :proposal_id, message: "Same email cannot be used to invite already invited organizers or participants"
+
+  # rubocop:disable Rails/UniqueValidationWithoutIndex
+  validates :email, uniqueness: { scope: :proposal_id,
+                                  message: "Same email cannot be used to invite already
+                                  invited organizers or participants.".squish,
+                                  conditions: -> { where.not(response: :no) } }
+  # rubocop:enable Rails/UniqueValidationWithoutIndex
 
   def generate_code
-    self.code = SecureRandom.urlsafe_base64(37) if self.code.blank?
+    self.code = SecureRandom.urlsafe_base64(37) if code.blank?
   end
 
   def proposal_title
     return if self.proposal.nil?
+
     if proposal.title.blank?
       errors.add('Proposal Title:', 'Please add a title, and click
         "Save as Draft", before adding people.'.squish)
@@ -25,9 +32,10 @@ class Invite < ApplicationRecord
 
   def deadline_not_in_past
     return if deadline_date.nil?
+
     errors.add('Deadline', "can't be in past") if deadline_date < Date.current
   end
-  
+
   def invited_as?
     invited_as == 'Co Organizer' ? 'Supporting Organizer' : 'Participant'
   end
