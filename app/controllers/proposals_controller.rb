@@ -1,9 +1,15 @@
 class ProposalsController < ApplicationController
-  before_action :set_proposal, only: %w[show edit update destroy]
+  before_action :set_proposal, only: %w[show edit update destroy ranking locations]
   before_action :authenticate_user!
   
   def index
     @proposals = current_user&.person&.proposals
+  end
+
+  def ranking
+    @proposal_locations = @proposal.proposal_locations.find_by(location_id: params[:location_id])
+    @proposal_locations.update(position: params[:position].to_i)
+    head :ok
   end
 
   def new
@@ -27,6 +33,10 @@ class ProposalsController < ApplicationController
 
   def edit
     @invite = @proposal.invites.new
+  end
+
+  def locations
+    render json: @proposal.locations, status: :ok
   end
 
   # POST /proposals/:1/latex

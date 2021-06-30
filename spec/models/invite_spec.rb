@@ -31,4 +31,12 @@ RSpec.describe Invite, type: :model do
     it { should belong_to(:proposal) }
     it { should belong_to(:person) }
   end
+
+  describe '#invited_as?' do
+    let(:invite) { create(:invite, invited_as: "Co Organizer") }
+
+    it "returns a Supporting Organizer" do
+      expect(invite.invited_as?).to eq('Supporting Organizer')
+    end
+  end
 end
