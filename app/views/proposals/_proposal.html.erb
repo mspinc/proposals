@@ -132,7 +132,7 @@
                               </div>
                             </div>
                             <% end %>
-                          </div>
+                          </div >
                           <div>
                             <% if params[:action] == 'show' %>
                             <%= render partial: 'lead_organizer' %>
@@ -176,7 +176,8 @@
 
                         <div class="row mt-20">&nbsp;</div>
                         <div class="d-flex">
-                          <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
+                          <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'me-auto p-2 btn btn-primary',
+                            :'data-action' => 'click->proposal-form#latex', :'data-value' => 'all' %>
                           <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
                           <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
                          </div>
@@ -195,7 +196,7 @@
 
                         <div class="row mt-20">&nbsp;</div>
                         <div class="d-flex">
-                          <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
+                          <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary', :'data-action' => 'click->proposal-form#latex', :'data-value' => 'all',  :'data-propid' => @proposal.id %>
                           <button class="ms-auto p-2 btn btn-primary" id="changeTab" data-action='click->submit-proposals#previousTab'>Back</button>
                         </div>
                       </div>
