@@ -1,5 +1,5 @@
 class ProposalsController < ApplicationController
-  before_action :set_proposal, only: %w[show edit update destroy]
+  before_action :set_proposal, only: %w[show edit destroy]
   before_action :authenticate_user!
   
   def index
