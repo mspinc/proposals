@@ -20,22 +20,43 @@ RSpec.describe "/proposal_forms", type: :request do
 
   describe "POST /create" do
     let(:proposal_type) { create(:proposal_type) }
-    let(:params) do
-      {
-        proposal_form: {
-          title: 'Proposal Form',
-          status: 'draft',
-          proposal_type_id: proposal_type.id
+
+    context "with valid parameters" do
+      let(:params) do
+        {
+          proposal_form: {
+            title: 'Proposal Form',
+            status: 'draft',
+            proposal_type_id: proposal_type.id
+          }
         }
-      }
+      end
+      it "creates a new proposal_form" do
+        authenticate_for_controllers
+
+        expect do
+          post proposal_type_proposal_forms_url(proposal_type), params: params
+        end.to change(ProposalForm, :count).by(1)
+      end
     end
 
-    it "creates a new proposal_form" do
-      authenticate_for_controllers
+    context "with invalid parameters" do
+      let(:params) do
+        { 
+          proposal_form: {
+            title: '',
+            status: 'draft',
+            proposal_type_id: proposal_type.id
+          }
+        }
+      end
+      it "does not create a new proposal_form" do
+        authenticate_for_controllers
 
-      expect do
-        post proposal_type_proposal_forms_url(proposal_type), params: params
-      end.to change(ProposalForm, :count).by(1)
+        expect do
+          post proposal_type_proposal_forms_url(proposal_type), params: params
+        end.to change(ProposalForm, :count).by(0)
+      end
     end
   end
 
@@ -55,16 +76,40 @@ RSpec.describe "/proposal_forms", type: :request do
   end
 
   describe "PATCH /update" do
-    let(:params) { { proposal_form: { status: 'active' } } }
-    before do
-      authenticate_for_controllers
-      patch proposal_type_proposal_form_url(proposal_type,proposal_form, params: params)
+
+    context "with valid parameters" do
+      let(:params) { { proposal_form: { status: 'active' } } }
+      before do
+        authenticate_for_controllers
+        patch proposal_type_proposal_form_url(proposal_type,proposal_form, params: params)
+      end
+
+      it "updates the status to active" do
+        expect(proposal_form.reload.status).to eq('active')
+      end
+      it { expect(proposal_form.reload.updated_by).to eq(@user) }
     end
 
-    it "updates the status to active" do
-      expect(proposal_form.reload.status).to eq('active')
+    context "with invalid parameters" do
+      let(:params) { { proposal_form: { title: '' } } }
+      before do
+        authenticate_for_controllers
+        patch proposal_type_proposal_form_url(proposal_type,proposal_form, params: params)
+      end
+
+      it "will not update proposal form" do
+        expect(proposal_form.reload.title).to eq(proposal_form.title)
+      end
     end
-    it { expect(proposal_form.reload.updated_by).to eq(@user) }
+  end
+
+  describe "DELETE /proposal_field" do
+    let(:proposal_field) { create(:proposal_field, proposal_form: proposal_form) }
+    before do
+      delete proposal_field_proposal_type_proposal_form_path(proposal_type, proposal_form, field_id: proposal_field.id)
+    end
+    
+    it { expect(response).to redirect_to(edit_proposal_type_proposal_form_path(proposal_type, proposal_form)) }
   end
 
   describe "POST /clone" do
