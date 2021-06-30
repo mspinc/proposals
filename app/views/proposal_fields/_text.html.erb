@@ -24,7 +24,7 @@
   <% end %>
 </div>
 <% unless current_user&.staff_member? || params[:action] == 'show' %>
-<!--
-  <button class="btn btn-primary my-2" data-action="click->proposal-form#latex" data-value='<%= field.id %>' data-propid="<%= @proposal&.id %>" disabled="true"> Print Field</button>
--->
+
+  <a target="_blank" href="<%= "/proposals/#{@proposal&.id}/rendered_field.pdf" %>" class="btn btn-primary my-2" data-value='<%= field.id %>' data-propid="<%= @proposal&.id %>" data-action="click->proposal-form#latex"> Print Field</a>
+
 <% end %>

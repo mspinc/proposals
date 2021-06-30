@@ -15,9 +15,10 @@ Rails.application.routes.draw do
 
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
-    collection do
-      get :latex, to: 'proposals#latex_output'
-      get :'rendered_proposal', to: 'proposals#latex_output'
+    member do 
+      get :rendered_proposal, to: 'proposals#latex_output'
+      get :rendered_field, to: 'proposals#latex_field'
+
     end
 
 
