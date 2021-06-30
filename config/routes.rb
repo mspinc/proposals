@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     post :latex, to: 'proposals#latex_input'
     member do
       patch :ranking
+      get :locations
     end
     collection do
       get :latex, to: 'proposals#latex_output'

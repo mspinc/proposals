@@ -190,17 +190,9 @@
                         <div class="mb-3">
                           <%= f.label :location, "Select your preferred location for this event:", class: 'form-label lead' %>
                         </div>
-                        <div class="d-flex justify-content-evenly">
-                            <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, disabled: action, class: 'form-select w-50', multiple: true, name: 'location_ids[]' %>
-                            <div data-submit-proposals-target="dragLocations">
-                              <% @proposal.proposal_locations.each do |location|%>
-                                <div data-id="<%= location.id %>" class="card card-body">
-                                  <p>
-                                  <%= location.location.name %> ( <%= location.location.city %> , <%= location.location.country %>) 
-                                  </p>
-                                </div>
-                              <% end %>
-                            </div>
+                        <div class="d-flex flex-row">
+                          <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, disabled: action, class: 'form-select w-50', multiple: true, name: 'location_ids[]' %>
+                            <div data-submit-proposals-target="dragLocations" class="ms-5"></div>
                         </div>
                       <div data-submit-proposals-target='locationSpecificQuestions'></div>
 
