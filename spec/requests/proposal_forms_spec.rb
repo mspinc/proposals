@@ -42,7 +42,7 @@ RSpec.describe "/proposal_forms", type: :request do
 
     context "with invalid parameters" do
       let(:params) do
-        { 
+        {
           proposal_form: {
             title: '',
             status: 'draft',
@@ -76,12 +76,11 @@ RSpec.describe "/proposal_forms", type: :request do
   end
 
   describe "PATCH /update" do
-
     context "with valid parameters" do
       let(:params) { { proposal_form: { status: 'active' } } }
       before do
         authenticate_for_controllers
-        patch proposal_type_proposal_form_url(proposal_type,proposal_form, params: params)
+        patch proposal_type_proposal_form_url(proposal_type, proposal_form, params: params)
       end
 
       it "updates the status to active" do
@@ -94,7 +93,7 @@ RSpec.describe "/proposal_forms", type: :request do
       let(:params) { { proposal_form: { title: '' } } }
       before do
         authenticate_for_controllers
-        patch proposal_type_proposal_form_url(proposal_type,proposal_form, params: params)
+        patch proposal_type_proposal_form_url(proposal_type, proposal_form, params: params)
       end
 
       it "will not update proposal form" do
@@ -108,7 +107,7 @@ RSpec.describe "/proposal_forms", type: :request do
     before do
       delete proposal_field_proposal_type_proposal_form_path(proposal_type, proposal_form, field_id: proposal_field.id)
     end
-    
+
     it { expect(response).to redirect_to(edit_proposal_type_proposal_form_path(proposal_type, proposal_form)) }
   end
 
