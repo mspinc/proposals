@@ -69,4 +69,7 @@ Rails.application.routes.draw do
       get :proposal_types
     end
   end
+
+  get 'profile/' => 'profile#editProfile'
+  patch 'update' => 'profile#update'
 end
