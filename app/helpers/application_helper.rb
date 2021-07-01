@@ -6,11 +6,11 @@ module ApplicationHelper
   end
 
   def dashboard_menu
-    return 'show' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms', '/feedback'])
+    return 'show' if request.path.in?(['/proposal_types', '/submitted_proposals', '/locations', '/proposal_forms', '/feedback' ])
   end
 
   def dashboard_list
-    return 'active' if request.path.in?(['/proposal_types', '/locations', '/proposal_forms', '/feedback'])
+    return 'active' if request.path.in?(['/proposal_types', '/submitted_proposals', '/locations', '/proposal_forms', '/feedback'])
   end
 
   def proposal_menu
