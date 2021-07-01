@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   get :invite, to: 'invites#show'
 
+  resources :submitted_proposals
+
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
     member do
@@ -73,4 +75,8 @@ Rails.application.routes.draw do
       get :proposal_types
     end
   end
+
+  get 'profile/' => 'profile#edit'
+  patch 'update' => 'profile#update'
+  post 'demographic_data' => 'profile#demographic_data'
 end
