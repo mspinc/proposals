@@ -9,11 +9,11 @@
     <div class="sidebar-user">
 
       <div class="fw-bold"></div>
-      <small><%= current_user&.fullname %></small>
+      <small><%= current_user&.fullname %>
+        <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, profile_url %>
+      </small>
     </div>
-    <div style="text-align: center;">
-      <%= link_to "Edit", profile_url, class: "btn btn-primary" %>
-    </div>
+    
     <ul class="sidebar-nav">
       <li class="sidebar-header">
         Main

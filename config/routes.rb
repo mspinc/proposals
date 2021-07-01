@@ -70,6 +70,7 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'profile/' => 'profile#editProfile'
+  get 'profile/' => 'profile#edit'
   patch 'update' => 'profile#update'
+  post 'demographic_data' => 'profile#demographic_data'
 end
