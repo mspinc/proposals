@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   get :invite, to: 'invites#show'
 
+  resources :submitted_proposals
+
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
     member do
