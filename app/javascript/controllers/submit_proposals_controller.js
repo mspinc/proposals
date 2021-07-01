@@ -44,7 +44,7 @@ export default class extends Controller {
     .then((res) => {
       res.forEach(function (location) {
         locationList +=  `<p data-id='${location.id}'>${location.name}</p>`;
-        _this.dragLocationsTarget.innerText = locationList
+        _this.dragLocationsTarget.innerHTML = locationList
       })
       if(res.length === 0) {
         _this.dragLocationsTarget.innerHTML = ''
