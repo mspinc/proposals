@@ -106,7 +106,12 @@ class ProposalPdfService
         @text << "\\subsection*{#{LatexToPdf.escape_latex(question)}}\n\n"
       end
       unless field.answer.blank?
-        @text << "\\noindent #{field.answer}\n\n"
+
+        if @proposal.no_latex
+          @text << "\\noindent #{LatexToPdf.escape_latex(field.answer)  }\n\n"
+        else
+          @text << "\\noindent #{field.answer}\n\n"
+        end
       end
     end
   end
