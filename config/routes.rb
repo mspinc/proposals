@@ -8,7 +8,11 @@ Rails.application.routes.draw do
   end
 
   get :guidelines, to: 'pages#guidelines'
-  resources :feedbacks, path: :feedback
+  resources :feedbacks, path: :feedback do 
+    member do
+      patch :add_reply
+    end
+  end
   get 'dashboards', to: 'proposal_types#index'
 
   get :invite, to: 'invites#show'
