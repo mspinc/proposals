@@ -73,6 +73,7 @@ class Proposal < ApplicationRecord
 
   # Temporary, until open/close feature is added
   def not_before_opening
+    return true
     return unless DateTime.current < DateTime.parse('2021-07-15 00:00:01')
 
     errors.add('Early submission - ', 'proposal submissions are not allowed
@@ -104,17 +105,8 @@ class Proposal < ApplicationRecord
 
   def create_code
     return unless self.code.blank?
-    # temporary, until type-code feature is added to ProposalTypes
-    type_codes = {
-      '5 Day Workshop' => 'w5',
-      '2 Day Workshop' => 'w2',
-      'Summer School' => 'ss',
-      'Focussed Research Group' => 'frg',
-      'Research in Teams' => 'rit',
-      'Hybrid Thematic Program' => 'htp'
-    }
 
-    tc = type_codes[proposal_type.name] || 'xx'
+    tc = proposal_type.code || 'xx'
     self.code = year.to_s[-2..-1] + tc + next_number
   end
 

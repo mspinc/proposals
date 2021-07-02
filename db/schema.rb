@@ -237,6 +237,8 @@ ActiveRecord::Schema.define(version: 2021_07_01_122830) do
     t.string "year"
     t.integer "participant"
     t.integer "co_organizer"
+    t.string "code"
+    t.index ["code"], name: "index_proposal_types_on_code", unique: true
   end
 
   create_table "proposals", force: :cascade do |t|
