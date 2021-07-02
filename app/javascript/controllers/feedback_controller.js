@@ -20,10 +20,11 @@ export default class extends Controller {
   showCollapsable() {
     var collapsable = event.target.dataset.id
     var id = "#" + collapsable
-    if($(id).hasClass('show'))
+    if($(id).hasClass('show')) {
       $(id).collapse("hide")
-    else
+    } else {
       $(id).collapse("show")
+    }
   }
 
   addReply() {
