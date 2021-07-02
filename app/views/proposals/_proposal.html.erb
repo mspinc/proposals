@@ -181,6 +181,10 @@
                           <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
                         </div>
                         <!-- <h4 class="tab-title">Common Fields</h4> -->
+                        <div class="form-group" align="right">
+                          <%= f.check_box :no_latex %>
+                          <%= f.label "No Latex", class: "form-label" %>
+                        </div>
                         <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 
                       <div class="row mt-20">&nbsp;</div>

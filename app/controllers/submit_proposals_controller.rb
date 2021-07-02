@@ -63,7 +63,7 @@ class SubmitProposalsController < ApplicationController
   end
 
   def proposal_params
-    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids)
+    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex)
           .merge(ams_subject_ids: proposal_ams_subjects)
   end
 
