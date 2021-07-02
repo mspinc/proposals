@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_25_125117) do
+ActiveRecord::Schema.define(version: 2021_07_02_103247) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -235,6 +235,8 @@ ActiveRecord::Schema.define(version: 2021_06_25_125117) do
     t.string "year"
     t.integer "participant"
     t.integer "co_organizer"
+    t.string "code"
+    t.index ["code"], name: "index_proposal_types_on_code", unique: true
   end
 
   create_table "proposals", force: :cascade do |t|
