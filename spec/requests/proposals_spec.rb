@@ -59,14 +59,14 @@ RSpec.describe "Proposals", type: :request do
   end
 
   describe "print latex" do
-    it '' do
+    it 'latex input' do
       post "/proposals/#{proposal.id}/latex"
       expect(response).to have_http_status(:ok)
     end
 
-    it '' do
-      get '/proposals/rendered_proposal.pdf'
-      expect(response).to have_http_status(204)
+    it 'latex output' do
+      get "/proposals/#{proposal.id}/rendered_proposal.pdf"
+      expect(response).to have_http_status(:ok)
     end
   end
 

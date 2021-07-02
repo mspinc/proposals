@@ -8,24 +8,27 @@ Rails.application.routes.draw do
   end
 
   get :guidelines, to: 'pages#guidelines'
-  resources :feedbacks, path: :feedback
+  resources :feedbacks, path: :feedback do 
+    member do
+      patch :add_reply
+    end
+  end
   get 'dashboards', to: 'proposal_types#index'
-
-  get :invite, to: 'invites#show'
 
   resources :submitted_proposals
 
+  get :invite, to: 'invites#show'
+  get 'expired' => 'invites#expired'
+  post 'cancel' => 'invites#cancel'
+
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
-    member do
+    member do 
+      get :rendered_proposal, to: 'proposals#latex_output'
+      get :rendered_field, to: 'proposals#latex_field'
       patch :ranking
       get :locations
     end
-    collection do
-      get :latex, to: 'proposals#latex_output'
-      get :'rendered_proposal', to: 'proposals#latex_output'
-    end
-
 
     resources :invites, :except => [:show] do
       member do

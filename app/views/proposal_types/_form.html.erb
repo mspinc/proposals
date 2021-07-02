@@ -29,6 +29,11 @@
           </div>
 
           <div class="mb-3">
+            <%= f.label :code, class: 'form-label' %><br>
+            <%= f.text_field :code %>
+          </div>
+
+          <div class="mb-3">
             <%= f.label :year, class: 'form-label' %><br>
             <%= f.text_field :year, class: 'form-control' %>
             <small>This text field supports a list of years i.e. 2021, 2022..</small>
