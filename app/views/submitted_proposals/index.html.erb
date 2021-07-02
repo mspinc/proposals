@@ -1,0 +1,60 @@
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Proposals
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "Dashboard", dashboards_path %> </a></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= link_to "Submitted Proposals", submitted_proposals_path %></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            </h6>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Code</th>
+                <th>Proposal Title</th>
+                <th>Proposal Type</th>
+                <th>Lead Organizer</th>
+                <th>Preferred Location</th>
+                <th>Status</th>
+                <th width="125">Updated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @submitted_proposals&.each do |proposal| %>
+              <tr>
+                <td><%= proposal.code %></td>
+                <td><%= proposal.title %></td>
+                <td><%= proposal.proposal_type.name %></td>
+                <td><%= proposal.lead_organizer.fullname %></td>
+                <td> 
+                  <% proposal.locations.each do |loc| %>
+                   <%= loc.name %><br>
+                  <% end %>
+                </td>
+                <td class=<%= proposal_status(proposal.status) %> >
+                  <%= proposal.status %>
+                </td>
+                <td><%= proposal.updated_at.to_date %></td>
+                <td class="table-action">
+                  <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>Show'.html_safe, submitted_proposal_url(proposal) %>
+                </td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

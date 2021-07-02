@@ -9,6 +9,10 @@ FactoryBot.define do
       association :location, factory: :location, strategy: :create
     end
 
+    trait :date_field do
+      association :fieldable, factory: :proposal_fields_dates
+    end
+
     trait :radio_field do
       association :fieldable, factory: :proposal_fields_radio
     end
