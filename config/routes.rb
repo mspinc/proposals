@@ -17,15 +17,12 @@ Rails.application.routes.draw do
 
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
-    member do
+    member do 
+      get :rendered_proposal, to: 'proposals#latex_output'
+      get :rendered_field, to: 'proposals#latex_field'
       patch :ranking
       get :locations
     end
-    collection do
-      get :latex, to: 'proposals#latex_output'
-      get :'rendered_proposal', to: 'proposals#latex_output'
-    end
-
 
     resources :invites, :except => [:show] do
       member do

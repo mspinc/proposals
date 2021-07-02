@@ -53,8 +53,24 @@ class ProposalsController < ApplicationController
     head :ok
   end
 
-  # GET /proposals/rendered_proposal.pdf
+  # GET /proposals/:id/rendered_proposal.pdf
   def latex_output
+    proposal_id = params[:id]
+
+    temp_file = "propfile-#{current_user.id}-#{proposal_id}.tex"
+    ProposalPdfService.new(proposal_id, temp_file, 'all').pdf
+
+    @proposal = Proposal.find_by_id(proposal_id)
+    @year = @proposal&.year || Date.current.year.to_i + 2
+
+    fh = File.open("#{Rails.root}/tmp/#{temp_file}")
+    @latex_input = fh.read
+
+    render_latex
+  end
+
+  # GET /proposals/:id/rendered_field.pdf
+  def latex_field
     prop_id = session[:proposal_id]
     return if prop_id.blank?
 
@@ -64,15 +80,7 @@ class ProposalsController < ApplicationController
     fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
     @latex_input = fh.read
 
-    begin
-      render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
-    rescue ActionView::Template::Error => error
-      flash[:alert] = "There are errors in your LaTeX code. Please see the
-                        output from the compiler, and the LaTeX document,
-                        below".squish
-      error_output = ProposalPdfService.format_errors(error)
-      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
-    end
+    render_latex
   end
 
   def destroy
@@ -116,5 +124,17 @@ class ProposalsController < ApplicationController
   def limit_of_one_per_type
     redirect_to new_proposal_path, alert: "There is a limit of one
       #{@proposal.proposal_type.name} proposal per lead organizer.".squish
+  end
+
+  def render_latex
+    begin
+      render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
+    rescue ActionView::Template::Error => error
+      flash[:alert] = "There are errors in your LaTeX code. Please see the
+                        output from the compiler, and the LaTeX document,
+                        below".squish
+      error_output = ProposalPdfService.format_errors(error)
+      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
+    end
   end
 end
