@@ -1,8 +1,8 @@
 class InvitesController < ApplicationController
-  before_action :authenticate_user!, except: %i[show inviter_response thanks]
+  before_action :authenticate_user!, except: %i[show inviter_response thanks expired]
   skip_before_action :verify_authenticity_token, only: %i[create]
   before_action :set_proposal, only: %i[new create index]
-  before_action :set_invite, only: %i[show inviter_response]
+  before_action :set_invite, only: %i[show inviter_response cancel]
   before_action :set_invite_proposal, only: %i[show]
 
   def index
@@ -12,6 +12,7 @@ class InvitesController < ApplicationController
 
   def show
     redirect_to root_path and return if @invite.confirmed?
+    redirect_to expired_path and return if @invite.cancelled?
 
     render layout: 'devise'
   end
@@ -65,6 +66,15 @@ class InvitesController < ApplicationController
 
   def thanks
     render layout: 'devise'
+  end
+
+  def expired
+    render layout: 'devise'
+  end
+
+  def cancel
+    @invite.update(status: 'cancelled')
+    redirect_to edit_proposal_path(@invite.proposal), notice: 'Invite has been cancelled!'
   end
 
   private

@@ -28,7 +28,10 @@
   <div class="col-6 mt-2">
     <div class="mb-3">
       <label for="status">Status: </label>
-      <label for="status" class=<%= invite_response_color(invite.response) %> ><%= invite_status(invite.response) %></label>
+      <label for="status" class=<%= invite_response_color(invite.response) %> ><%= invite_status(invite.response, invite.status) %></label>
+      <% if invite.pending? %>
+        <%= link_to 'Cancel Invite', cancel_url(code: invite.code), class: 'btn btn-sm btn-primary', method: :post %>
+      <% end %>
     </div>
     <div class="mb-3">
       <label for="created_at">Invitation Date: </label>
