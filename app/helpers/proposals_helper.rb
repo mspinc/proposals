@@ -72,4 +72,62 @@ module ProposalsHelper
       "text-danger"
     end
   end
+
+  def graph_data(param, param2)
+    citizenships = DemographicData.pluck(:result).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    citizenships.each do |c|
+      @data[c] += 1
+    end
+  end
+
+  def nationality_labels
+    graph_data("citizenships", "citizenships_other")
+    @data.keys
+  end
+
+  def nationality_values
+    graph_data("citizenships", "citizenships_other")
+    @data.values
+  end
+
+  def ethnicity_labels
+    graph_data("ethnicity", "ethnicity_other")
+    @data.keys.map { |x| truncate(x,length: 15) }
+  end
+
+  def ethnicity_values
+    graph_data("ethnicity", "ethnicity_other")
+    @data.values
+  end
+
+  def gender_labels
+    graph_data("gender", "gender_other")
+    @data.keys
+  end
+
+  def gender_values
+    graph_data("gender", "gender_other")
+    @data.values
+  end
+
+  def stem_graph_data
+    citizenships = DemographicData.pluck(:result).pluck("stem").flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    citizenships.each do |c|
+      @data[c] += 1
+    end
+  end
+
+  def stem_labels
+    stem_graph_data
+    @data.keys
+  end
+
+  def stem_values
+    stem_graph_data
+    @data.values
+  end
 end

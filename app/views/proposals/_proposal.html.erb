@@ -42,9 +42,18 @@
                 <div class="col-12 col-lg-12">
                   <div class="tab">
                     <ul id="tabs" class="nav nav-tabs row" role="tablist">
-                      <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'one') %>" href="#tab-1" data-bs-toggle="tab" role="tab" data-target='submit-proposals.tabs'>Step 1</a></li>
-                      <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'two') %>" href="#tab-2" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 2</a></li>
-                      <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'three') %>" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a></li>
+                      <li class="nav-item col-3" data-target='submit-proposals.tabs'>
+                        <a class="nav-link <%= active_tab(@proposal, 'one') %>" href="#tab-1" data-bs-toggle="tab" role="tab" data-target='submit-proposals.tabs'>Step 1</a>
+                      </li>
+                      <li class="nav-item col-3" data-target='submit-proposals.tabs'>
+                        <a class="nav-link <%= active_tab(@proposal, 'two') %>" href="#tab-2" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 2</a>
+                      </li>
+                      <li class="nav-item col-3" data-target='submit-proposals.tabs'>
+                        <a class="nav-link <%= active_tab(@proposal, 'three') %>" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a>
+                      </li>
+                      <li class="nav-item col-3" data-target='submit-proposals.tabs'>
+                        <a class="nav-link" href="#tab-4" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Demographic Graphs and charts</a>
+                      </li>
                     </ul>
                     <div class="tab-content">
                       <div class="tab-pane <%= active_tab(@proposal, 'one') %>" id="tab-1" role="tabpanel">
@@ -172,6 +181,10 @@
                           <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
                         </div>
                         <!-- <h4 class="tab-title">Common Fields</h4> -->
+                        <div class="form-group" align="right">
+                          <%= f.check_box :no_latex %>
+                          <%= f.label "No Latex", class: "form-label" %>
+                        </div>
                         <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 
                       <div class="row mt-20">&nbsp;</div>
@@ -179,7 +192,7 @@
                         <span class="me-auto p-2 btn btn-primary" data-action="click->proposal-form#latex" data-value="all" data-propid="<%= @proposal&.id %>">Print Proposal</span>
                         <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
                         <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
-                       </div>
+                      </div>
                     </div>
                     
                     <div class="tab-pane <%= active_tab(@proposal, 'three') %>" id="tab-3" role="tabpanel">
@@ -194,11 +207,78 @@
                           <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, disabled: action, class: 'form-select w-50', multiple: true, name: 'location_ids[]' %>
                             <div data-submit-proposals-target="dragLocations" class="ms-5"></div>
                         </div>
-                      <div data-submit-proposals-target='locationSpecificQuestions'></div>
+                        <div data-submit-proposals-target='locationSpecificQuestions'></div>
 
                         <div class="row mt-20">&nbsp;</div>
                         <div class="d-flex">
-                          <span class="me-auto p-2 btn btn-primary" data-action="click->proposal-form#latex" data-value="all" data-propid="<%= @proposal&.id %>">Print Proposal</span>
+                          <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
+                          <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                          <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane" id="tab-4" role="tabpanel">
+                      <div class="mb-3">Charts</div>
+
+                      <div class="row">
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Nationality</h5>
+                              <!-- <h6 class="card-subtitle text-muted">A line chart is a way of plotting data points on a line.</h6> -->
+                            </div>
+                            <div class="card-body">
+                              <div class="chart">
+                                <canvas id="chartjs-nationality"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Ethnicity</h5>
+                              <!-- <h6 class="card-subtitle text-muted">A line chart is a way of plotting data points on a line.</h6> -->
+                            </div>
+                            <div class="card-body">
+                              <div class="chart">
+                                <canvas id="chartjs-ethnicity"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Gender</h5>
+                              <!-- <h6 class="card-subtitle text-muted">A line chart is a way of plotting data points on a line.</h6> -->
+                            </div>
+                            <div class="card-body">
+                              <div class="chart">
+                                <canvas id="chartjs-gender"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Under-represented minority in STEM</h5>
+                              <!-- <h6 class="card-subtitle text-muted">A line chart is a way of plotting data points on a line.</h6> -->
+                            </div>
+                            <div class="card-body">
+                              <div class="chart">
+                                <canvas id="chartjs-stem"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                        <div class="row mt-20">&nbsp;</div>
+                        <div class="d-flex">
+                          <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
                           <button class="ms-auto p-2 btn btn-primary" id="changeTab" data-action='click->submit-proposals#previousTab'>Back</button>
                         </div>
                       </div>
@@ -213,3 +293,203 @@
     <%end%>
   </div>
 </main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    new Chart(document.getElementById("chartjs-nationality"), {
+      type: "line",
+      data: {
+        labels: <%= nationality_labels.to_json.html_safe %>,
+        datasets: [{
+          fill: true,
+          backgroundColor: "transparent",
+          borderColor: window.theme.primary,
+          data: <%= nationality_values %>
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 500
+            },
+            display: true,
+            borderDash: [5, 5],
+            gridLines: {
+              color: "rgba(0,0,0,0)",
+              fontColor: "#fff"
+            }
+          }]
+        }
+      }
+    });
+
+    new Chart(document.getElementById("chartjs-ethnicity"), {
+      type: "line",
+      data: {
+        labels: <%= ethnicity_labels.to_json.html_safe %>,
+        datasets: [{
+          fill: true,
+          backgroundColor: "transparent",
+          borderColor: window.theme.primary,
+          data: <%= ethnicity_values %>
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 500
+            },
+            display: true,
+            borderDash: [5, 5],
+            gridLines: {
+              color: "rgba(0,0,0,0)",
+              fontColor: "#fff"
+            }
+          }]
+        }
+      }
+    });
+
+    new Chart(document.getElementById("chartjs-gender"), {
+      type: "line",
+      data: {
+        labels: <%= gender_labels.to_json.html_safe %>,
+        datasets: [{
+          fill: true,
+          backgroundColor: "transparent",
+          borderColor: window.theme.primary,
+          data: <%= gender_values %>
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 500
+            },
+            display: true,
+            borderDash: [5, 5],
+            gridLines: {
+              color: "rgba(0,0,0,0)",
+              fontColor: "#fff"
+            }
+          }]
+        }
+      }
+    });
+
+    new Chart(document.getElementById("chartjs-stem"), {
+      type: "line",
+      data: {
+        labels: <%= stem_labels.to_json.html_safe %>,
+        datasets: [{
+          fill: true,
+          backgroundColor: "transparent",
+          borderColor: window.theme.primary,
+          data: <%= stem_values %>
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 500
+            },
+            display: true,
+            borderDash: [5, 5],
+            gridLines: {
+              color: "rgba(0,0,0,0)",
+              fontColor: "#fff"
+            }
+          }]
+        }
+      }
+    });
+  });
+</script>
