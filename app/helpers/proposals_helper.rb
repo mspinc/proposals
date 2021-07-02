@@ -47,8 +47,10 @@ module ProposalsHelper
     co_organizers.strip.delete_suffix(",")
   end
 
-  def invite_status(status)
-    case status
+  def invite_status(response, status)
+    return "Invite has been cancelled" if status == 'cancelled'
+
+    case response
     when "yes", "maybe"
       "Invitation accepted"
     when nil

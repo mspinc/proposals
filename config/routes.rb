@@ -15,9 +15,11 @@ Rails.application.routes.draw do
   end
   get 'dashboards', to: 'proposal_types#index'
 
-  get :invite, to: 'invites#show'
-
   resources :submitted_proposals
+
+  get :invite, to: 'invites#show'
+  get 'expired' => 'invites#expired'
+  post 'cancel' => 'invites#cancel'
 
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
