@@ -38,7 +38,7 @@ RSpec.describe "/proposal_types", type: :request do
 
   describe "POST /create" do
     context "with valid parameters" do
-      let(:proposal_type_params) { { name: '2 Day Workshop', year: '2015,2016,2017', participant: '1', co_organizer: '1' } }
+      let(:proposal_type_params) { { name: '2 Day Workshop', year: '2015,2016,2017', participant: '1', co_organizer: '1', code: '2021xx2' } }
       it "creates a new proposal_type" do
         expect do
           post proposal_types_url, params: { proposal_type: proposal_type_params }

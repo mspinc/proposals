@@ -16,5 +16,3 @@ namespace :birs do
     end
   end
 end
-
-
