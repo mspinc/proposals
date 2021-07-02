@@ -1,4 +1,10 @@
 class Proposal < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_proposals, :against => [:year, :title, :status, :subject_id], 
+  associated_against: {
+    people: [:firstname, :lastname]
+  }
+
   attr_accessor :is_submission
 
   has_many :proposal_locations, dependent: :destroy
@@ -21,6 +27,10 @@ class Proposal < ApplicationRecord
   before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
+
+  scope :active_proposals, -> {
+    where(status: 'active')
+  }
 
   scope :no_of_participants, -> (id, invited_as) {
     joins(:invites).where('invites.invited_as = ?
