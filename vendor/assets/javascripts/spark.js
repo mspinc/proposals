@@ -13,7 +13,7 @@ import "./modules/toastr";
 // import "./modules/dragula";
 
 // Charts
-// import "./modules/chartjs";
+import "./modules/chartjs";
 // import "./modules/apexcharts";
 
 // Forms

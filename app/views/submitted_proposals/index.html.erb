@@ -15,44 +15,38 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            </h6>
+            <form class="form-inline">
+              
+              <div class="row">
+                <div class="col-xs-6 col-md-3">
+                  <label>First Name</label><br>
+                  <input type="search" name="firstname" placeholder="Enter First Name" value="<%= params[:firstname] %>">
+                </div>
+                <div class="col-xs-6 col-md-3">
+                  <label>Last Name</label><br>
+                    <input type="search" name="lastname" placeholder="Enter Last Name" value="<%= params[:lastname] %>">
+                </div>
+                <div class="col-xs-6 col-md-3">
+                  <label>Keywords</label><br>
+                  <input type="search" name="keywords" placeholder="Enter Keywords" value="<%= params[:keywords] %>">
+                </div>
+                <div class="col-xs-6 col-md-3">
+                  <label>Workshop Year</label><br>
+                  <%= select_tag "workshop_year", options_for_select([[2021, 2021], [2022, 2022], [2023,2023], [2024, 2024], [2025, 2025], [2026, 2026], [2027, 2027], [2028, 2028], [2029, 2029]], params[:workshop_year]), { include_blank: '', class: 'mb-3', style: 'width: 116px;'}%>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label>Subject Area</label><br>
+                <%= select_tag "subject_area", options_for_select(subjects_area, params[:subject_area]), { include_blank: '', class: 'p-1' }%>
+                <div class="float-end">
+                  <button class="btn btn-primary">Search</button>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div>
+            <%= render partial: "proposals" %>
           </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Code</th>
-                <th>Proposal Title</th>
-                <th>Proposal Type</th>
-                <th>Lead Organizer</th>
-                <th>Preferred Location</th>
-                <th>Status</th>
-                <th width="125">Updated</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% @submitted_proposals&.each do |proposal| %>
-              <tr>
-                <td><%= proposal.code %></td>
-                <td><%= proposal.title %></td>
-                <td><%= proposal.proposal_type.name %></td>
-                <td><%= proposal.lead_organizer.fullname %></td>
-                <td> 
-                  <% proposal.locations.each do |loc| %>
-                   <%= loc.name %><br>
-                  <% end %>
-                </td>
-                <td class=<%= proposal_status(proposal.status) %> >
-                  <%= proposal.status %>
-                </td>
-                <td><%= proposal.updated_at.to_date %></td>
-                <td class="table-action">
-                  <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>Show'.html_safe, submitted_proposal_url(proposal) %>
-                </td>
-              </tr>
-              <% end %>
-            </tbody>
-          </table>
         </div>
       </div>
     </div>

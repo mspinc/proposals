@@ -10,7 +10,9 @@
 
       <div class="fw-bold"></div>
       <small><%= current_user&.fullname %>
-        <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, profile_url %>
+        <% unless current_user&.staff_member? %>
+          <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>'.html_safe, profile_url %>
+        <% end %>
       </small>
     </div>
     

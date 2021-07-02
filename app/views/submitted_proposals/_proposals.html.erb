@@ -1,0 +1,36 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th>Code</th>
+      <th>Proposal Title</th>
+      <th>Proposal Type</th>
+      <th>Lead Organizer</th>
+      <th>Preferred Location</th>
+      <th>Status</th>
+      <th width="125">Updated</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @proposals&.each do |proposal| %>
+    <tr>
+      <td><%= proposal.code %></td>
+      <td><%= proposal.title %></td>
+      <td><%= proposal.proposal_type.name %></td>
+      <td><%= proposal.lead_organizer.fullname %></td>
+      <td> 
+        <% proposal.locations.each do |loc| %>
+         <%= loc.name %><br>
+        <% end %>
+      </td>
+      <td class=<%= proposal_status(proposal.status) %> >
+        <%= proposal.status %>
+      </td>
+      <td><%= proposal.updated_at.to_date %></td>
+      <td class="table-action">
+        <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>Show'.html_safe, submitted_proposal_url(proposal) %>
+      </td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
