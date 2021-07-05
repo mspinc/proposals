@@ -114,6 +114,25 @@ module ProposalsHelper
     @data.values
   end
 
+  def career_data(param, param2)
+    careerStage = Person.pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    careerStage.each do |s|
+      @data[s] += 1
+    end
+  end
+
+  def career_labels
+    career_data("academic_status", "other_academic_status")
+    @data.keys
+  end
+
+  def career_values
+    career_data("academic_status", "other_academic_status")
+    @data.values
+  end
+
   def stem_graph_data
     citizenships = DemographicData.pluck(:result).pluck("stem").flatten.reject{ |s| s.blank? || s.eql?("Other")}
     @data = Hash.new(0)

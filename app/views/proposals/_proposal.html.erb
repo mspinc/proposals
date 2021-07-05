@@ -288,6 +288,20 @@
                           </div>
                         </div>
                       </div>
+                      <div class="row">
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Career Stage</h5>
+                            </div>
+                            <div class="card-body">
+                              <div class="chart">
+                                <canvas id="chartjs-career"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                         <div class="row mt-20">&nbsp;</div>
                         <div class="d-flex">
                           <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
@@ -464,6 +478,55 @@
           backgroundColor: "transparent",
           borderColor: window.theme.primary,
           data: <%= stem_values %>
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 500
+            },
+            display: true,
+            borderDash: [5, 5],
+            gridLines: {
+              color: "rgba(0,0,0,0)",
+              fontColor: "#fff"
+            }
+          }]
+        }
+      }
+    });
+
+    new Chart(document.getElementById("chartjs-career"), {
+      type: "bar",
+      data: {
+        labels: <%= career_labels.to_json.html_safe %>,
+        datasets: [{
+          fill: true,
+          backgroundColor: "rgba(50, 83, 168)",
+          borderColor: window.theme.primary,
+          data: <%= career_values %>
         }]
       },
       options: {
