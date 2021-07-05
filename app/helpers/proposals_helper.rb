@@ -84,24 +84,14 @@ module ProposalsHelper
     end
   end
 
-  def nationality_labels
+  def nationality_data
     graph_data("citizenships", "citizenships_other")
-    @data.keys
+    @data
   end
 
-  def nationality_values
-    graph_data("citizenships", "citizenships_other")
-    @data.values
-  end
-
-  def ethnicity_labels
+  def ethnicity_data
     graph_data("ethnicity", "ethnicity_other")
-    @data.keys.map { |x| truncate(x,length: 15) }
-  end
-
-  def ethnicity_values
-    graph_data("ethnicity", "ethnicity_other")
-    @data.values
+    @data
   end
 
   def gender_labels
