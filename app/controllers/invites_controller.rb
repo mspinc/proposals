@@ -66,7 +66,7 @@ class InvitesController < ApplicationController
 
   def invite_reminder
     if @invite.pending?
-      @co_organizers = @invite.proposal.list_of_co_organizers.remove(@invite.person&.fullname)
+      @co_organizers = @invite.proposal.list_of_co_organizers
       InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_reminder.deliver_later
       redirect_to edit_proposal_path(@proposal), notice: "Invite reminder has been sent to #{@invite.person.fullname}!"
     end
