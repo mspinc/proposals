@@ -141,6 +141,16 @@
                               </div>
                             </div>
                             <% end %>
+                            <div class="mt-4">
+                              <div class="mb-3">
+                                <h3>Confirmed Participants:</h3>
+                                <% if @proposal.invites %>
+                                  <% @proposal.participants.each do |invite|%>
+                                    <%= render partial: 'confirm_participant', locals: { invite: invite } %>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                            </div>
                           </div>
                           <div>
                             <% if params[:action] == 'show' %>
