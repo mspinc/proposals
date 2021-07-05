@@ -5,8 +5,6 @@
 // that code so it'll be compiled.
 
 import Rails from "@rails/ujs"
-import { Turbo } from "@hotwired/turbo-rails"
-import "@hotwired/turbo-rails"
 import * as ActiveStorage from "@rails/activestorage"
 import "channels"
 import "controllers"
@@ -26,6 +24,5 @@ toastr.options.preventDuplicates = true;
 toastr.options.timeOut = 30000;
 toastr.options.extendedTimeOut = 60000;
 
-window.Turbo = Turbo
 Rails.start();
 ActiveStorage.start();

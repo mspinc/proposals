@@ -3,7 +3,7 @@ $(document).ready(function() {
     window.location.reload()
   });
 
-  var today = new Date().toISOString().split('T')[0];
-  document.getElementsByName("invite[deadline_date]")[0]?.setAttribute('min', today);
-  document.getElementsByName("invite[deadline_date]")[1]?.setAttribute('min', today);
+  $('[id^="chartjs"]').each(function(index, el) {
+    this.style.height = '200px'
+  })
 });

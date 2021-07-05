@@ -1,8 +1,14 @@
 class Proposal < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_proposals, :against => [:year, :title, :status, :subject_id], 
+  associated_against: {
+    people: [:firstname, :lastname]
+  }
+
   attr_accessor :is_submission
 
   has_many :proposal_locations, dependent: :destroy
-  has_many :locations, through: :proposal_locations
+  has_many :locations, -> { order 'proposal_locations.position' }, through: :proposal_locations
   belongs_to :proposal_type
   has_many :proposal_roles, dependent: :destroy
   has_many :people, through: :proposal_roles
@@ -21,6 +27,10 @@ class Proposal < ApplicationRecord
   before_save :create_code, if: :is_submission
 
   enum status: { draft: 0, active: 1 }
+
+  scope :active_proposals, -> {
+    where(status: 'active')
+  }
 
   scope :no_of_participants, -> (id, invited_as) {
     joins(:invites).where('invites.invited_as = ?
@@ -94,17 +104,8 @@ class Proposal < ApplicationRecord
 
   def create_code
     return unless self.code.blank?
-    # temporary, until type-code feature is added to ProposalTypes
-    type_codes = {
-      '5 Day Workshop' => 'w5',
-      '2 Day Workshop' => 'w2',
-      'Summer School' => 'ss',
-      'Focussed Research Group' => 'frg',
-      'Research in Teams' => 'rit',
-      'Hybrid Thematic Program' => 'htp'
-    }
 
-    tc = type_codes[proposal_type.name] || 'xx'
+    tc = proposal_type.code || 'xx'
     self.code = year.to_s[-2..-1] + tc + next_number
   end
 

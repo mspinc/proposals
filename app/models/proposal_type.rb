@@ -1,5 +1,6 @@
 class ProposalType < ApplicationRecord
-  validates :name, :participant, :co_organizer,  presence: true
+  validates :name, :participant, :co_organizer, :code,  presence: true
+  validates :code, uniqueness: true
   has_many :proposals, dependent: :destroy
   has_many :proposal_forms, dependent: :destroy
   has_many :proposal_type_locations, dependent: :destroy
@@ -11,7 +12,7 @@ class ProposalType < ApplicationRecord
     proposal_forms.where('proposal_forms.status =?', 1).last
   end
 
-  def lead_organizer?(person_id)
+  def not_lead_organizer?(person_id)
     proposals.joins(proposal_roles: :role)
              .where("proposal_roles.person_id =?", person_id)
              .where('roles.name =?', 'lead_organizer').empty?

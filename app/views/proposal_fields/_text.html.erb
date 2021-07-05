@@ -14,7 +14,7 @@
   </a></p>
 <% end %>
 <div>
-  <textarea name="<%= field.id %>" <%= action ? 'disabled' : '' %> id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-proposal-form-target="textField" ><%= answer(field, @proposal) %></textarea>
+  <textarea name="<%= field.id %>" <%= action ? 'disabled' : '' %> id="" data-value='<%= field.id %>' cols="30" rows="5" class="form-control" data-proposal-form-target="textField" data-action="focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur"><%= answer(field, @proposal) %></textarea>
   <% if @submission %>
     <ul>
       <% validations(field, @proposal).each do |val| %>
@@ -24,7 +24,7 @@
   <% end %>
 </div>
 <% unless current_user&.staff_member? || params[:action] == 'show' %>
-<!--
-  <button class="btn btn-primary my-2" data-action="click->proposal-form#latex" data-value='<%= field.id %>' data-propid="<%= @proposal&.id %>" disabled="true"> Print Field</button>
--->
+
+  <a target="_blank" href="<%= "/proposals/#{@proposal&.id}/rendered_field.pdf" %>" class="btn btn-primary my-2" data-value='<%= field.id %>' data-propid="<%= @proposal&.id %>" data-action="click->proposal-form#latex"> Print Field</a>
+
 <% end %>

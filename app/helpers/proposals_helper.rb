@@ -47,8 +47,10 @@ module ProposalsHelper
     co_organizers.strip.delete_suffix(",")
   end
 
-  def invite_status(status)
-    case status
+  def invite_status(response, status)
+    return "Invite has been cancelled" if status == 'cancelled'
+
+    case response
     when "yes", "maybe"
       "Invitation accepted"
     when nil
@@ -56,5 +58,87 @@ module ProposalsHelper
     when "no"
       "Invitation declined"
     end
+  end
+
+  def proposal_status(status)
+    status == 'draft' ? "text-primary" : "text-success"
+  end
+
+  def invite_response_color(status)
+    case status
+    when "yes", "maybe"
+      "text-success"
+    when nil
+      "text-primary"
+    when "no"
+      "text-danger"
+    end
+  end
+
+  def graph_data(param, param2)
+    citizenships = DemographicData.pluck(:result).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    citizenships.each do |c|
+      @data[c] += 1
+    end
+  end
+
+  def nationality_data
+    graph_data("citizenships", "citizenships_other")
+    @data
+  end
+
+  def ethnicity_data
+    graph_data("ethnicity", "ethnicity_other")
+    @data
+  end
+
+  def gender_labels
+    graph_data("gender", "gender_other")
+    @data.keys
+  end
+
+  def gender_values
+    graph_data("gender", "gender_other")
+    @data.values
+  end
+
+  def career_data(param, param2)
+    careerStage = Person.pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    careerStage.each do |s|
+      @data[s] += 1
+    end
+  end
+
+  def career_labels
+    career_data("academic_status", "other_academic_status")
+    @data.keys
+  end
+
+  def career_values
+    career_data("academic_status", "other_academic_status")
+    @data.values
+  end
+
+  def stem_graph_data
+    citizenships = DemographicData.pluck(:result).pluck("stem").flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    citizenships.each do |c|
+      @data[c] += 1
+    end
+  end
+
+  def stem_labels
+    stem_graph_data
+    @data.keys
+  end
+
+  def stem_values
+    stem_graph_data
+    @data.values
   end
 end

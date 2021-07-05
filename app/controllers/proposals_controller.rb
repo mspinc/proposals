@@ -1,9 +1,15 @@
 class ProposalsController < ApplicationController
-  before_action :set_proposal, only: %w[show edit update destroy]
+  before_action :set_proposal, only: %w[show edit destroy ranking locations]
   before_action :authenticate_user!
   
   def index
     @proposals = current_user&.person&.proposals
+  end
+
+  def ranking
+    @proposal_locations = @proposal.proposal_locations.find_by(location_id: params[:location_id])
+    @proposal_locations.update(position: params[:position].to_i)
+    head :ok
   end
 
   def new
@@ -12,7 +18,7 @@ class ProposalsController < ApplicationController
 
   def create
     @proposal = start_new_proposal
-    limit_of_one_per_type and return unless already_has_proposal?
+    limit_of_one_per_type and return unless no_proposal?
 
     if @proposal.save
       @proposal.create_organizer_role(current_user.person, organizer)
@@ -29,6 +35,10 @@ class ProposalsController < ApplicationController
     @invite = @proposal.invites.new
   end
 
+  def locations
+    render json: @proposal.locations, status: :ok
+  end
+
   # POST /proposals/:1/latex
   def latex_input
     proposal_id = latex_params[:proposal_id]
@@ -43,8 +53,24 @@ class ProposalsController < ApplicationController
     head :ok
   end
 
-  # GET /proposals/rendered_proposal.pdf
+  # GET /proposals/:id/rendered_proposal.pdf
   def latex_output
+    proposal_id = params[:id]
+
+    temp_file = "propfile-#{current_user.id}-#{proposal_id}.tex"
+    ProposalPdfService.new(proposal_id, temp_file, 'all').pdf
+
+    @proposal = Proposal.find_by_id(proposal_id)
+    @year = @proposal&.year || Date.current.year.to_i + 2
+
+    fh = File.open("#{Rails.root}/tmp/#{temp_file}")
+    @latex_input = fh.read
+
+    render_latex
+  end
+
+  # GET /proposals/:id/rendered_field.pdf
+  def latex_field
     prop_id = session[:proposal_id]
     return if prop_id.blank?
 
@@ -54,15 +80,7 @@ class ProposalsController < ApplicationController
     fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
     @latex_input = fh.read
 
-    begin
-      render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
-    rescue ActionView::Template::Error => error
-      flash[:alert] = "There are errors in your LaTeX code. Please see the
-                        output from the compiler, and the LaTeX document,
-                        below".squish
-      error_output = ProposalPdfService.format_errors(error)
-      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
-    end
+    render_latex
   end
 
   def destroy
@@ -99,12 +117,24 @@ class ProposalsController < ApplicationController
     prop
   end
 
-  def already_has_proposal?
-    @proposal.proposal_type.lead_organizer?(current_user.person)
+  def no_proposal?
+    @proposal.proposal_type.not_lead_organizer?(current_user.person)
   end
 
   def limit_of_one_per_type
     redirect_to new_proposal_path, alert: "There is a limit of one
       #{@proposal.proposal_type.name} proposal per lead organizer.".squish
+  end
+
+  def render_latex
+    begin
+      render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
+    rescue ActionView::Template::Error => error
+      flash[:alert] = "There are errors in your LaTeX code. Please see the
+                        output from the compiler, and the LaTeX document,
+                        below".squish
+      error_output = ProposalPdfService.format_errors(error)
+      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
+    end
   end
 end
