@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     resources :invites, :except => [:show] do
       member do
         post :inviter_response
+        post :invite_reminder
       end
       collection do
         get :thanks

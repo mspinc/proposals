@@ -1,8 +1,8 @@
 class InvitesController < ApplicationController
   before_action :authenticate_user!, except: %i[show inviter_response thanks expired]
   skip_before_action :verify_authenticity_token, only: %i[create]
-  before_action :set_proposal, only: %i[new create index]
-  before_action :set_invite, only: %i[show inviter_response cancel]
+  before_action :set_proposal, only: %i[new create index invite_reminder]
+  before_action :set_invite, only: %i[show inviter_response cancel invite_reminder]
   before_action :set_invite_proposal, only: %i[show]
 
   def index
@@ -61,6 +61,14 @@ class InvitesController < ApplicationController
       InviteMailer.with(invite: @invite, token: @token, co_organizers: @co_organizers).invite_acceptance
                   .deliver_later
       redirect_to new_person_path(code: @invite.code)
+    end
+  end
+
+  def invite_reminder
+    if @invite.pending?
+      @co_organizers = @invite.proposal.list_of_co_organizers
+      InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_reminder.deliver_later
+      redirect_to edit_proposal_path(@proposal), notice: "Invite reminder has been sent to #{@invite.person.fullname}!"
     end
   end
 
