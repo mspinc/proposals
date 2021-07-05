@@ -12,6 +12,12 @@ class ProposalTypesController < ApplicationController
 
   def create
     @proposal_type = ProposalType.new(proposal_type_params)
+
+    unless @proposal_type.greater_closed_date
+      redirect_to new_proposal_type_path(@proposal_type), alert: "Open date #{@proposal_type.open_date.to_date} cannot be greater than Closed Date #{@proposal_type.closed_date.to_date}"
+      return
+    end
+
     if @proposal_type.save
       redirect_to proposal_types_path,  notice: 'Proposal Type successfully created'
     else
@@ -50,7 +56,7 @@ class ProposalTypesController < ApplicationController
   private
 
   def proposal_type_params
-   params.require(:proposal_type).permit(:name, :year, :co_organizer, :participant, :code, location_ids: [])
+   params.require(:proposal_type).permit(:name, :year, :co_organizer, :participant, :code, :open_date, :closed_date, location_ids: [])
   end
 
   def set_proposal_type

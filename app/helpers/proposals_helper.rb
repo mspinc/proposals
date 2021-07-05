@@ -1,6 +1,10 @@
 module ProposalsHelper
   def proposal_types
-    ProposalType.active_forms.map { |pt| [pt.name, pt.id] }
+    today = DateTime.now
+    proposal_type = ProposalType.active_forms.where('open_date <= ?', today)
+    today = today.to_date
+    proposal_type = proposal_type.where('closed_date >= ?', today)
+    proposal_type.map { |pt| [pt.name, pt.id] }
   end
 
   def proposal_type_year(proposal_type)
