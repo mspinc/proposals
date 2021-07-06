@@ -42,6 +42,10 @@ class Proposal < ApplicationRecord
     .joins(:proposal_type).where('name = ?', type)
   }
 
+  def demographics_data
+    DemographicData.where(person_id: invites.pluck(:person_id))
+  end
+
   def create_organizer_role(person, organizer)
     proposal_roles.create!(person: person, role: organizer)
   end
