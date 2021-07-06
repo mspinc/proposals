@@ -28,7 +28,7 @@ class Person < ApplicationRecord
   def common_fields
     errors.add('Main Affiliation/Institution', "can't be blank") if affiliation.blank?
     errors.add('Academic Status', "can't be blank") if academic_status.blank?
-    errors.add('Year of First Phd', "can't be blank") if first_phd_year.blank?
+    errors.add('Year of', "PhD can't be blank") if first_phd_year.blank?
     errors.add('Country', "can't be blank") if country.blank?
 
     self.first_phd_year = nil if first_phd_year == "N/A"

@@ -1,8 +1,8 @@
 class InvitesController < ApplicationController
   before_action :authenticate_user!, except: %i[show inviter_response thanks expired]
   skip_before_action :verify_authenticity_token, only: %i[create]
-  before_action :set_proposal, only: %i[new create index invite_reminder]
-  before_action :set_invite, only: %i[show inviter_response cancel invite_reminder]
+  before_action :set_proposal, only: %i[new create index invite_reminder invite_email]
+  before_action :set_invite, only: %i[show inviter_response cancel invite_reminder invite_email]
   before_action :set_invite_proposal, only: %i[show]
 
   def index
@@ -41,6 +41,14 @@ class InvitesController < ApplicationController
                   alert: "The maximum number of #{@invite.invited_as}
                           invitations has been sent.".squish
     end
+  end
+
+  def invite_email
+    @co_organizers = @proposal.list_of_co_organizers
+    InviteMailer.with(invite: @invite, co_organizers: @co_organizers)
+                  .invite_email.deliver_later
+    redirect_to edit_proposal_path(@proposal, code: @invite.code),
+                    notice: "Invitation sent to #{@invite.person.fullname}"
   end
 
   def inviter_response
@@ -105,8 +113,6 @@ class InvitesController < ApplicationController
     add_person if @invite.person.nil?
 
     if @invite.save
-      InviteMailer.with(invite: @invite, co_organizers: @co_organizers)
-                  .invite_email.deliver_later
       respond_to do |format|
         format.html do
           redirect_to edit_proposal_path(@proposal, code: @invite.code),

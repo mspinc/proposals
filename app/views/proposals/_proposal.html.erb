@@ -192,16 +192,18 @@
                         </div>
                         <!-- <h4 class="tab-title">Common Fields</h4> -->
                         <div class="form-group" align="right">
-                          <%= f.check_box :no_latex %>
+                          <%= f.check_box :no_latex, data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
                           <%= f.label "No Latex", class: "form-label" %>
                         </div>
                         <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 
                       <div class="row mt-20">&nbsp;</div>
-                      <div class="d-flex">
-                        <span class="me-auto p-2 btn btn-primary" data-action="click->proposal-form#latex" data-value="all" data-propid="<%= @proposal&.id %>">Print Proposal</span>
-                        <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
-                        <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                      <div class="d-flex justify-content-between">
+                        <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
+                        <div>
+                          <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                          <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                        </div>
                       </div>
                     </div>
                     
@@ -247,7 +249,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <% nationality_data.each do |key, value| %>
+                                  <% nationality_data(@proposal).each do |key, value| %>
                                   <tr>
                                     <td><%= key %></td>
                                     <td><%=  value %></td>
@@ -272,7 +274,7 @@
                                   </tr>
                                 </thead>
                                 <tbody>
-                                  <% ethnicity_data.each do |key, value| %>
+                                  <% ethnicity_data(@proposal).each do |key, value| %>
                                   <tr>
                                     <td><%= key %></td>
                                     <td><%=  value %></td>
@@ -349,12 +351,12 @@
     new Chart(document.getElementById("chartjs-gender"), {
       type: "bar",
       data: {
-        labels: <%= gender_labels.to_json.html_safe %>,
+        labels: <%= gender_labels(@proposal).to_json.html_safe %>,
         datasets: [{
           fill: true,
           backgroundColor: "rgba(50, 83, 168)",
           borderColor: window.theme.primary,
-          data: <%= gender_values %>
+          data: <%= gender_values(@proposal) %>
         }]
       },
       options: {
@@ -398,12 +400,12 @@
     new Chart(document.getElementById("chartjs-stem"), {
       type: "bar",
       data: {
-        labels: <%= stem_labels.to_json.html_safe %>,
+        labels: <%= stem_labels(@proposal).to_json.html_safe %>,
         datasets: [{
           fill: true,
           backgroundColor: "rgba(50, 83, 168)",
           borderColor: window.theme.primary,
-          data: <%= stem_values %>
+          data: <%= stem_values(@proposal) %>
         }]
       },
       options: {
@@ -447,12 +449,12 @@
     new Chart(document.getElementById("chartjs-career"), {
       type: "bar",
       data: {
-        labels: <%= career_labels.to_json.html_safe %>,
+        labels: <%= career_labels(@proposal).to_json.html_safe %>,
         datasets: [{
           fill: true,
           backgroundColor: "rgba(50, 83, 168)",
           borderColor: window.theme.primary,
-          data: <%= career_values %>
+          data: <%= career_values(@proposal) %>
         }]
       },
       options: {

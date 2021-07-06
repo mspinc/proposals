@@ -42,6 +42,10 @@ class Proposal < ApplicationRecord
     .joins(:proposal_type).where('name = ?', type)
   }
 
+  def demographics_data
+    DemographicData.where(person_id: invites.pluck(:person_id))
+  end
+
   def create_organizer_role(person, organizer)
     proposal_roles.create!(person: person, role: organizer)
   end
@@ -71,12 +75,11 @@ class Proposal < ApplicationRecord
 
   private
 
-  # Temporary, until open/close feature is added
   def not_before_opening
-    return unless DateTime.current < DateTime.parse('2021-07-15 00:00:01')
-
-    errors.add('Early submission - ', 'proposal submissions are not allowed
-        until July 15th, 2021'.squish)
+    return unless DateTime.current.to_date > proposal_type.closed_date.to_date
+    
+    errors.add("Late submission - ", "proposal submissions are not allowed
+        because of due date #{proposal_type.closed_date.to_date}".squish)
   end
 
   def minimum_organizers

@@ -21,6 +21,7 @@
             and the organizing committee.</p>
     </div>
     <div class="modal-footer">
+      <%= link_to 'Send Invitation', invite_email_proposal_invite_url(@invite.proposal, @invite, code: @invite.code), class: 'btn btn-secondary', method: :post %>
       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
     </div>
   </div>
