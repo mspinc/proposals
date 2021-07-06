@@ -40,6 +40,16 @@
           </div>
 
           <div class="mb-3">
+            <%= f.label :'Open Date', class: 'form-label' %>
+            <%= f.text_field :open_date, class: 'form-control', type: 'date', value: @proposal_type.open_date&.to_date %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :'Closed Date', class: 'form-label' %>
+            <%= f.text_field :closed_date, class: 'form-control', type: 'date', value: @proposal_type.closed_date&.to_date %>
+          </div>
+
+          <div class="mb-3">
             <%= f.label :'Maximum number of Co-organizers' , class: 'form-label' %><br>
             <%= f.number_field :co_organizer %>
           </div>
