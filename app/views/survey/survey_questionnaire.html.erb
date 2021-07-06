@@ -6,7 +6,7 @@
           <div class="card-body">
             <div class="m-sm-4">
               <div data-controller="survey">
-                <%= form_for :survey, url: submit_survey_survey_index_path, method: :post do |f| %>
+                <%= form_for :survey, url: submit_survey_survey_index_path(code: params[:code]), method: :post do |f| %>
                   <div class="col-lg-8">
                     <div class="mb-3"> 
                       <div>
@@ -57,7 +57,7 @@
                     <div class="mb-3">
                       <div>
                         <label>5. Do you identify as a member of the 2SLGBTQIA+ community?</label>
-                        <%= f.select(:community, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]),{ include_blank: '' }, {class: "form-select"}) %>
+                        <%= f.select(:community, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', 'Prefer not to answer']]),{ include_blank: '' }, {class: "form-select"}) %>
                       </div>
                     </div>
 
@@ -71,7 +71,7 @@
                             </em>
                           </label>
                         </div>
-                        <%= f.select "disability", options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', 'Prefer']]),{ include_blank: '' }, data:{'survey-target': 'disability', action: 'click->survey#handleDisabilityOptions'}, class: "form-select" %>
+                        <%= f.select "disability", options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', 'Prefer not to answer']]),{ include_blank: '' }, data:{'survey-target': 'disability', action: 'click->survey#handleDisabilityOptions'}, class: "form-select" %>
                       </div>
                     </div>
                     
@@ -85,7 +85,7 @@
                             </em>
                           </label>
                         </div>
-                        <%= f.select(:minorities, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]),{ include_blank: '' }, {class: "form-select"}) %>
+                        <%= f.select(:minorities, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', 'Prefer not to answer']]),{ include_blank: '' }, {class: "form-select"}) %>
                       </div>
                     </div>
 
@@ -99,7 +99,7 @@
                             </em>
                           </label>
                         </div>
-                        <%= f.select(:stem, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]),{ include_blank: '' }, {class: "form-select"}) %>
+                        <%= f.select(:stem, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', 'Prefer not to answer']]),{ include_blank: '' }, {class: "form-select"}) %>
                       </div>
                     </div>
                     
@@ -113,7 +113,7 @@
                             </em>
                           </label>
                         </div>
-                        <%= f.select(:underRepresented, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', '']]),{ include_blank: '' }, {class: "form-select"}) %>
+                        <%= f.select(:underRepresented, options_for_select([['Yes', 'Yes'], ['No', 'No'], ['Prefer not to answer', 'Prefer not to answer']]),{ include_blank: '' }, {class: "form-select"}) %>
                       </div>
                     </div>
 
