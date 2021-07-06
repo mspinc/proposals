@@ -198,10 +198,12 @@
                         <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 
                       <div class="row mt-20">&nbsp;</div>
-                      <div class="d-flex">
-                        <span class="me-auto p-2 btn btn-primary" data-action="click->proposal-form#latex" data-value="all" data-propid="<%= @proposal&.id %>">Print Proposal</span>
-                        <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
-                        <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                      <div class="d-flex justify-content-between">
+                        <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
+                        <div>
+                          <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                          <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                        </div>
                       </div>
                     </div>
                     
