@@ -5,6 +5,7 @@ class ProposalType < ApplicationRecord
   has_many :proposal_forms, dependent: :destroy
   has_many :proposal_type_locations, dependent: :destroy
   has_many :locations, through: :proposal_type_locations
+  validate :not_closed_date_greater
 
   scope :active_forms, -> { joins(:proposal_forms).where('proposal_forms.status =?', 1).distinct }
 
@@ -18,7 +19,15 @@ class ProposalType < ApplicationRecord
              .where('roles.name =?', 'lead_organizer').empty?
   end
   
-  def greater_closed_date
-    unless open_date.to_date < closed_date.to_date
+  def not_closed_date_greater
+    if open_date.to_date > closed_date.to_date
+      errors.add("Open Date ", "#{open_date.to_date} - cannot be greater than
+          Closed Date #{closed_date.to_date}".squish)
+    elsif open_date.to_date == closed_date.to_date
+      errors.add("Open Date ", "#{open_date.to_date} - cannot be same as
+          Closed Date #{closed_date.to_date}".squish)
+    else
+      return
+    end
   end
 end

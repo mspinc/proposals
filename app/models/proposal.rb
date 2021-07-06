@@ -72,15 +72,10 @@ class Proposal < ApplicationRecord
   private
 
   def not_before_opening
-    if DateTime.current.to_date < proposal_type.closed_date.to_date
-      errors.add("Early submission - ", "proposal submissions are not allowed
-        until #{proposal_type.closed_date.to_date}".squish)
-    elsif DateTime.current.to_date > proposal_type.closed_date.to_date
-      errors.add("Late submission - ", "proposal submissions are not allowed
+    return unless DateTime.current.to_date > proposal_type.closed_date.to_date
+    
+    errors.add("Late submission - ", "proposal submissions are not allowed
         because of due date #{proposal_type.closed_date.to_date}".squish)
-    else
-      return
-    end
   end
 
   def minimum_organizers
