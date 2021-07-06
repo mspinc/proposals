@@ -2,7 +2,7 @@ module PeopleHelper
   def academic_status_options
     academic = [['Graduate Student', 'Graduate Student'],
                 ['Post Doctoral', 'Post Doctoral'],
-                ['Tenure Track Faculty', 'Tenure Track Faculty'],
+                ['Tenure-Track Faculty', 'Tenure-Track Faculty'],
                 ['Tenured Faculty', 'Tenured Faculty'],
                 ['Professor Emeritus', 'Professor Emeritus'],
                 ['Industry Scientist', 'Industry Scientist'], %w[Other Other]]
