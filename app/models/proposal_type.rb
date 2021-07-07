@@ -20,14 +20,14 @@ class ProposalType < ApplicationRecord
   end
   
   def not_closed_date_greater
+    return if open_date.nil? || closed_date.nil?
+
     if open_date.to_date > closed_date.to_date
       errors.add("Open Date ", "#{open_date.to_date} - cannot be greater than
           Closed Date #{closed_date.to_date}".squish)
     elsif open_date.to_date == closed_date.to_date
       errors.add("Open Date ", "#{open_date.to_date} - cannot be same as
           Closed Date #{closed_date.to_date}".squish)
-    else
-      return
     end
   end
 end
