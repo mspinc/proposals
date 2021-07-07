@@ -39,4 +39,38 @@ RSpec.describe Invite, type: :model do
       expect(invite.invited_as?).to eq('Supporting Organizer')
     end
   end
+
+  describe '#proposal_title' do
+   context 'when proposal title present' do
+    let(:invite) { create(:invite ,firstname:'New',lastname:'Proposal',email:'test@tes.com',invited_as:'coorganizer') }
+    before  do
+      invite.proposal.update(title: "New")
+    end
+
+    it{ expect(invite.proposal.title).to eq 'New'}
+   end
+  end
+
+  describe '#deadline_not_in_past' do
+    context 'when deadline date is not in past' do
+      let(:invite) { create(:invite ,firstname:'New',lastname:'Proposal',email:'test@test.com',invited_as:'coorganizer') }
+     
+      it{ expect(invite.deadline_date).to be > DateTime.now }
+    end
+
+    context 'when deadline date is in past' do
+      let(:invite) { create(:invite ,firstname:'New',lastname:'Proposal',email:'test@test.com',invited_as:'coorganizer') }
+     before do
+       invite.update(deadline_date: DateTime.now - 2.week)
+     end
+      it{ expect(invite.errors.full_messages).to include("Deadline can't be in past") }
+    end
+  end
+
+  describe '#generate_code' do
+    context 'when code is present' do
+      let(:invite) { create(:invite, firstname:'New', lastname:'Proposal', email:'test@test.com', invited_as:'coorganizer') }
+      it { expect(invite.code).to be_present }
+    end
+  end
 end
