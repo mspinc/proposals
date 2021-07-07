@@ -78,12 +78,12 @@
 
         <% if !current_user&.staff_member? && current_user.feedback.empty? %>
           <div class="card-body">
-            <h4>You have not added any feeback yet</h4>
+            <h4>You have not added any feedback yet</h4>
           </div>
         <% end %>
         <% if current_user&.staff_member? && @feedback.empty? %>
           <div class="card-body">
-            <h4>No applicant has added any feeback yet</h4>
+            <h4>No applicant has added any feedback yet</h4>
           </div>
         <% end %>
       </div>
