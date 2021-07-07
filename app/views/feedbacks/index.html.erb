@@ -16,7 +16,7 @@
         <div class="card-header">
           <% if !current_user&.staff_member? %>
             <div class="mb-3 d-flex justify-content-between">
-              <h3>Your Feedbacks</h3>
+              <h3>Your Feedback</h3>
               <div class="float-end">
                 <%= link_to "Add Feedback", new_feedback_url, class: "btn btn-lg btn-primary" %>
               </div>
