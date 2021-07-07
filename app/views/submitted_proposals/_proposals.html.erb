@@ -28,6 +28,7 @@
       </td>
       <td><%= proposal.updated_at.to_date %></td>
       <td class="table-action">
+        <%= link_to "View PDF", rendered_proposal_proposal_path(proposal.id, :format => :pdf), target: '_blank' %>
         <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>Show'.html_safe, submitted_proposal_url(proposal) %>
       </td>
     </tr>
