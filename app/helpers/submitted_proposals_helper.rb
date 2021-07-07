@@ -1,4 +1,7 @@
 module SubmittedProposalsHelper
+  def all_proposal_types
+    ProposalType.all.map { |pt| [pt.name, pt.id] }
+  end
 
   def submitted_graph_data(param, param2, proposals)
     @data = Hash.new(0)

@@ -19,6 +19,6 @@ class SubmittedProposalsController < ApplicationController
   def query_params?
     params[:firstname].present? || params[:lastname].present? || 
     params[:subject_area].present? || params[:keywords].present? || 
-    params[:workshop_year].present?
+    params[:workshop_year].present? || params[:proposal_type].present?
   end
 end
