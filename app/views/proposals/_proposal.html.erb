@@ -144,11 +144,10 @@
                             <div class="mt-4">
                               <div class="mb-3">
                                 <h3>Confirmed Participants:</h3>
-                                <% if @proposal.invites %>
-                                  <% @proposal.participants.each do |invite|%>
-                                    <%= render partial: 'confirm_participant', locals: { invite: invite } %>
+                                  <% @careers.uniq.each do |career| %>
+                                    <h4><%= career %></h4>
+                                      <%= render partial: 'confirm_participant', locals: { confirmed_participants: @proposal.participants_career(career) } %>
                                   <% end %>
-                                <% end %>
                               </div>
                             </div>
                           </div>

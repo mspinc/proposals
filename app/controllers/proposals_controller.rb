@@ -32,6 +32,7 @@ class ProposalsController < ApplicationController
   def show; end
 
   def edit
+    @careers = Person.where(id: @proposal.participants.pluck(:person_id)).pluck(:academic_status)
     @invite = @proposal.invites.new
   end
 
