@@ -1,14 +1,9 @@
 class InvitesController < ApplicationController
   before_action :authenticate_user!, except: %i[show inviter_response thanks expired]
   skip_before_action :verify_authenticity_token, only: %i[create]
-  before_action :set_proposal, only: %i[new create index invite_reminder invite_email]
+  before_action :set_proposal, only: %i[new create invite_reminder invite_email]
   before_action :set_invite, only: %i[show inviter_response cancel invite_reminder invite_email]
   before_action :set_invite_proposal, only: %i[show]
-
-  def index
-    @invites = @proposal.invites
-    redirect_to new_proposal_invite_path and return if @invites.blank?
-  end
 
   def show
     redirect_to root_path and return if @invite.confirmed?
@@ -23,7 +18,6 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-
     if @invite.email == @proposal.lead_organizer&.email
       redirect_to edit_proposal_path(@proposal),
                     alert: 'You cannot invite yourself!'
@@ -77,6 +71,8 @@ class InvitesController < ApplicationController
       @co_organizers = @invite.proposal.list_of_co_organizers
       InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_reminder.deliver_later
       redirect_to edit_proposal_path(@proposal), notice: "Invite reminder has been sent to #{@invite.person.fullname}!"
+    else
+      redirect_to edit_proposal_path(@proposal), notice: "You have already responded to the invite."
     end
   end
 
