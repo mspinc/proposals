@@ -5,14 +5,6 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   let(:proposal) { create(:proposal, proposal_type: proposal_type) }
   let(:invite) { create(:invite, proposal: proposal) }
 
-  describe "GET /index" do
-    before do
-      authenticate_for_controllers
-      get proposal_invites_url(proposal_id: invite.proposal.id)
-    end
-    it { expect(response).to have_http_status(:ok) }
-  end
-
   describe "GET /new" do
     before do
       authenticate_for_controllers
@@ -92,12 +84,60 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
       let(:invite1) { create(:invite, status: 'confirmed') }
       it { expect(response).to redirect_to(root_path) }
     end
+
+    context 'when status is cancelled' do
+      let(:invite1) { create(:invite, status: 'cancelled') }
+      it { expect(response).to redirect_to(expired_path) }
+    end
   end
 
   describe "GET /thanks" do
     it "render a successful response" do
       get thanks_proposal_invites_url(invite.proposal)
       expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "GET /expired" do
+    it "render a message when an invite has been expired" do
+      get expired_path
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  describe "POST /cancel" do
+    let(:invite1) { create(:invite, status: 'cancelled') }
+    before do
+      authenticate_for_controllers
+      post cancel_path(code: invite.code), params: { invite: invite1 }
+    end
+    
+    it "updates the invite status" do
+      expect(invite1.reload.status).to eq('cancelled')
+      expect(response).to redirect_to(edit_proposal_path(invite.proposal))
+    end
+  end
+
+  describe "POST /inviter_reminder" do
+    before do
+      authenticate_for_controllers
+      post invite_reminder_proposal_invite_path(proposal_id: proposal.id, id: invite1.id, code: invite1.code)
+    end
+
+    context 'when status is pending' do
+      let(:invite1) { create(:invite, status: 'pending') }
+      it "sends invite reminder when invite status is pending" do
+        expect(response).to have_http_status(:found)
+        expect(response).to redirect_to(edit_proposal_path(proposal.id))
+      end
+    end
+    
+    context 'when status is confirmed' do
+      let(:invite1) { create(:invite, status: 'confirmed') }
+      it "does not send invite reminder when invite status is pending" do
+        expect(response).to have_http_status(:found)
+        expect(response).to redirect_to(edit_proposal_path(proposal.id))
+      end
     end
   end
 end
