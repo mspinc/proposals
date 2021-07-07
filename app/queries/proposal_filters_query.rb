@@ -12,6 +12,7 @@ class ProposalFiltersQuery
     @result = filter_by_subject_area(params[:subject_area])
     @result = filter_by_keyword(params[:keywords])
     @result = filter_by_workshop_year(params[:workshop_year])
+    @result = filter_by_proposal_type(params[:proposal_type])
 
     @result
   end
@@ -50,5 +51,11 @@ class ProposalFiltersQuery
     return @result unless workshop_year.present?
 
     @result.search_proposals(workshop_year)
+  end
+
+  def filter_by_proposal_type(proposal_type)
+    return @result unless proposal_type.present?
+
+    @result.search_proposals(proposal_type)
   end
 end

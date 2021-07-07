@@ -1,6 +1,6 @@
 class Proposal < ApplicationRecord
   include PgSearch::Model
-  pg_search_scope :search_proposals, :against => [:year, :title, :status, :subject_id], 
+  pg_search_scope :search_proposals, :against => [:year, :title, :status, :subject_id, :proposal_type_id], 
   associated_against: {
     people: [:firstname, :lastname]
   }
