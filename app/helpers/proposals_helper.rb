@@ -79,6 +79,10 @@ module ProposalsHelper
     end
   end
 
+  def invite_deadline_date_color(invite)
+    'text-danger' if invite.status == 'pending' && invite.deadline_date.to_date < DateTime.now.to_date
+  end
+
   def graph_data(param, param2, proposal)
     citizenships = proposal.demographics_data.pluck(:result).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
     @data = Hash.new(0)
