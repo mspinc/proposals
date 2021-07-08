@@ -1,5 +1,6 @@
 class ProposalsController < ApplicationController
   before_action :set_proposal, only: %w[show edit destroy ranking locations]
+  before_action :set_careers, only: %w[show edit]
   before_action :authenticate_user!
   
   def index
@@ -32,7 +33,6 @@ class ProposalsController < ApplicationController
   def show; end
 
   def edit
-    @careers = Person.where(id: @proposal.participants.pluck(:person_id)).pluck(:academic_status)
     @invite = @proposal.invites.new
   end
 
@@ -137,5 +137,9 @@ class ProposalsController < ApplicationController
       error_output = ProposalPdfService.format_errors(error)
       render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
     end
+  end
+
+  def set_careers
+    @careers = Person.where(id: @proposal.participants.pluck(:person_id)).pluck(:academic_status)
   end
 end
