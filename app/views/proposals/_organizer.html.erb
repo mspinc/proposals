@@ -34,7 +34,7 @@
       <label for="created_at">Invitation Date: </label>
       <label for="created_at"><%= invite.created_at.to_date %></label>
     </div>
-    <div class="mb-3">
+    <div class="mb-3 <%= invite_deadline_date_color(invite) %>">
       <label for="deadline_date">Deadline Date: </label>
       <label for="deadline_date"><%= invite.deadline_date.to_date %></label>
     </div>
