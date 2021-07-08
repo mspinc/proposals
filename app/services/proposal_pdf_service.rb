@@ -68,7 +68,7 @@ class ProposalPdfService
 
     @text << "\\subsection*{Supporting Organisers}\n\n"
     proposal.supporting_organizers.each do |organiser|
-      @text << "#{organiser.firstname} #{organiser.lastname}\n\n"
+      @text << "\\noindent #{organiser.firstname} #{organiser.lastname}\n\n"
     end
   end
 
@@ -119,12 +119,17 @@ class ProposalPdfService
   def proposal_participants
     return if proposal.participants.count.zero?
 
-    @text << "\\subsection*{Participants}\n\n"
-    @text << "\\begin{enumerate}\n\n"
-    proposal.participants.each do |participant|
-      @text << "\\item #{participant.firstname} #{participant.lastname} \n"
+    @careers = Person.where(id: @proposal.participants.pluck(:person_id)).pluck(:academic_status)    
+    @text << "\\section*{Participants}\n\n"
+    @careers.uniq.each do |career|
+      @text << "\\noindent #{career}\n\n"
+      @participants = proposal.participants_career(career)      
+      @text << "\\begin{enumerate}\n\n"
+      @participants.each do |participant|
+        @text << "\\item #{participant.firstname} #{participant.lastname} \\\\ \\break Affiliation: #{participant.affiliation} \\ \n"
+      end
+      @text << "\\end{enumerate}\n\n"
     end
-    @text << "\\end{enumerate}\n\n"
   end
 
   def preferred_impossible_dates(field)
