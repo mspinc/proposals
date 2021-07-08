@@ -143,10 +143,11 @@
                             <% end %>
                             <div class="mt-4">
                               <div class="mb-3">
-                                <h3>Confirmed Participants:</h3>
-                                <% if @proposal.invites %>
-                                  <% @proposal.participants.each do |invite|%>
-                                    <%= render partial: 'confirm_participant', locals: { invite: invite } %>
+                                <% if @careers %>
+                                  <h3>Confirmed Participants:</h3>
+                                  <% @careers.uniq.each do |career| %>
+                                    <h4><%= career %></h4>
+                                      <%= render partial: 'confirm_participant', locals: { confirmed_participants: @proposal.participants_career(career) } %>
                                   <% end %>
                                 <% end %>
                               </div>
@@ -154,7 +155,7 @@
                           </div>
                           <div>
                             <% if params[:action] == 'show' %>
-                            <%= render partial: 'lead_organizer' %>
+                              <%= render partial: 'lead_organizer' %>
                               <div>
                                 <h3>Supporting Organizers:</h3>
                                 <%= organizer_intro(@proposal) %>
@@ -174,6 +175,17 @@
                                       <% if invite.invited_as == 'Participant' %>
                                         <%= render partial: 'organizer', locals: { invite: invite } %>
                                       <% end %>
+                                    <% end %>
+                                  <% end %>
+                                </div>
+                              </div>
+                              <div class="mt-4">
+                                <div class="mb-3">
+                                  <% if @careers %>
+                                    <h3>Confirmed Participants:</h3>
+                                    <% @careers.uniq.each do |career| %>
+                                      <h4><%= career %></h4>
+                                        <%= render partial: 'confirm_participant', locals: { confirmed_participants: @proposal.participants_career(career) } %>
                                     <% end %>
                                   <% end %>
                                 </div>
