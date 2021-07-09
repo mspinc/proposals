@@ -77,6 +77,18 @@ class Proposal < ApplicationRecord
     Person.where(id: person_ids).where(academic_status: career)
   end
 
+  def self.to_csv
+    attributes = ["Code", "Proposal Title", "Proposal Type", "Lead Organizer", "Preffered Locations", "Status",
+                  "Updated"]
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      all.each do |proposal|
+        csv << [proposal.code, proposal.title, proposal.proposal_type.name, proposal.lead_organizer.fullname,
+                proposal.the_locations, proposal.status, proposal.updated_at.to_date]
+      end
+    end
+  end
+
   private
 
   def not_before_opening
