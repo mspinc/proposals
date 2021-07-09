@@ -96,8 +96,8 @@ class Proposal < ApplicationRecord
 
   def subjects
     errors.add('Subject Area:', "please select a subject area") if subject.nil?
-    unless ams_subjects.pluck(:code).count == 2
-      errors.add('AMS Subjects:', 'please select 2 AMS Subjects')
+    unless ams_subjects.pluck(:code).include? "code1"
+      errors.add('AMS Subjects:', 'please select AMS Subject Code 1')
     end
   end
 
