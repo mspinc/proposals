@@ -72,13 +72,14 @@ class ProposalsController < ApplicationController
 
   # GET /proposals/:id/rendered_field.pdf
   def latex_field
-    prop_id = session[:proposal_id]
+    prop_id = params[:id]
     return if prop_id.blank?
 
     @proposal = Proposal.find_by_id(prop_id)
     @year = @proposal&.year || Date.current.year.to_i + 2
+    temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
 
-    fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
+    fh = File.open("#{Rails.root}/tmp/#{temp_file}")
     @latex_input = fh.read
 
     render_latex

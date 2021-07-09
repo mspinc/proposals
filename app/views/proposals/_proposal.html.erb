@@ -97,11 +97,8 @@
                             </div>
 
                             <div class="mb-3">
-                              <label class="required">AMS Subject Code 2</label>
+                              <label>AMS Subject Code 2</label>
                               <%= f.select :ams_subjects, options_for_select(ams_subjects_code, proposal_ams_subjects_code(@proposal, 'code2')), { include_blank: '' }, disabled: action, class: "form-select", name:'ams_subjects[code2]', data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
-                              <% if @submission && proposal_ams_subjects_code(@proposal, 'code2').blank? %>
-                                <p class="field-validation">AMS Subject Code 2 is required</p>
-                              <% end %>
                             </div>
                           </div>
                           <div>
@@ -203,9 +200,9 @@
                           <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
                         </div>
                         <!-- <h4 class="tab-title">Common Fields</h4> -->
-                        <div class="form-group" align="right">
+                        <div class="form-group">
                           <%= f.check_box :no_latex, data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
-                          <%= f.label "No Latex", class: "form-label" %>
+                          <%= f.label :no_latex, "No LaTeX", class: "form-label" %>
                         </div>
                         <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 

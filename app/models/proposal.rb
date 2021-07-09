@@ -77,6 +77,18 @@ class Proposal < ApplicationRecord
     Person.where(id: person_ids).where(academic_status: career)
   end
 
+  def self.to_csv
+    attributes = ["Code", "Proposal Title", "Proposal Type", "Lead Organizer", "Preffered Locations", "Status",
+                  "Updated"]
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      all.each do |proposal|
+        csv << [proposal.code, proposal.title, proposal.proposal_type.name, proposal.lead_organizer.fullname,
+                proposal.the_locations, proposal.status, proposal.updated_at.to_date]
+      end
+    end
+  end
+
   private
 
   def not_before_opening
@@ -96,8 +108,8 @@ class Proposal < ApplicationRecord
 
   def subjects
     errors.add('Subject Area:', "please select a subject area") if subject.nil?
-    unless ams_subjects.pluck(:code).count == 2
-      errors.add('AMS Subjects:', 'please select 2 AMS Subjects')
+    unless ams_subjects.pluck(:code).include? "code1"
+      errors.add('AMS Subjects:', 'please select AMS Subject Code 1')
     end
   end
 
