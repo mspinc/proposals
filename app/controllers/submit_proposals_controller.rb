@@ -6,6 +6,20 @@ class SubmitProposalsController < ApplicationController
 
   def create
     @proposal.update(proposal_params)
+    params[:invites_attributes].values.each do |invite|
+      debugger
+      @invite = @proposal.invites.new(invite)
+      @invite.person = Person.find_or_create_by!(firstname: @invite.firstname,
+                              lastname: @invite.lastname, email: @invite.email)
+      @invite.update(invited_as: params[:invited_as])
+      # if @invite.update(invited_as: params[:invited_as])
+      #   respond_to do |format|
+      #     format.html do
+      #     end
+      #     format.js {}
+      #   end
+      # end
+    end
     update_ams_subject_code
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
@@ -63,7 +77,8 @@ class SubmitProposalsController < ApplicationController
   end
 
   def proposal_params
-    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex)
+    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex,
+                  invites_attributes: %i[id firstname lastname email deadline_date _destroy])
           .merge(ams_subject_ids: proposal_ams_subjects)
   end
 
