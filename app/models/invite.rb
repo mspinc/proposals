@@ -8,6 +8,7 @@ class Invite < ApplicationRecord
   belongs_to :proposal
 
   before_save :generate_code
+  before_validation :assign_person
   validate :deadline_not_in_past
 
   # rubocop:disable Rails/UniqueValidationWithoutIndex
@@ -16,6 +17,7 @@ class Invite < ApplicationRecord
                                   invited organizers or participants.".squish,
                                   conditions: -> { where.not(response: :no) } }
   # rubocop:enable Rails/UniqueValidationWithoutIndex
+
 
   def generate_code
     self.code = SecureRandom.urlsafe_base64(37) if code.blank?
@@ -38,5 +40,18 @@ class Invite < ApplicationRecord
 
   def invited_as?
     invited_as == 'Co Organizer' ? 'Supporting Organizer' : 'Participant'
+  end
+
+  def assign_person
+    errors.add(:base, 'You cannot invite yourself!') if email == proposal.lead_organizer&.email
+
+    add_person
+  end
+
+   def add_person
+    return if firstname.blank? || lastname.blank? || email.blank?
+
+    self.person = Person.find_or_create_by!(firstname: firstname,
+                              lastname: lastname, email: email)
   end
 end

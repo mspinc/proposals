@@ -5,39 +5,28 @@ class SubmitProposalsController < ApplicationController
   end
 
   def create
-    @proposal.update(proposal_params)
-    params[:invites_attributes].values.each do |invite|
-      debugger
-      @invite = @proposal.invites.new(invite)
-      @invite.person = Person.find_or_create_by!(firstname: @invite.firstname,
-                              lastname: @invite.lastname, email: @invite.email)
-      @invite.update(invited_as: params[:invited_as])
-      # if @invite.update(invited_as: params[:invited_as])
-      #   respond_to do |format|
-      #     format.html do
-      #     end
-      #     format.js {}
-      #   end
-      # end
-    end
-    update_ams_subject_code
-    submission = SubmitProposalService.new(@proposal, params)
-    submission.save_answers
-    session[:is_submission] = @proposal.is_submission = submission.is_final?
+    if @proposal.update(proposal_params)
+      update_ams_subject_code
+      submission = SubmitProposalService.new(@proposal, params)
+      submission.save_answers
+      session[:is_submission] = @proposal.is_submission = submission.is_final?
 
-    unless @proposal.is_submission
-      redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
-      return
-    end
+      unless @proposal.is_submission
+        redirect_to edit_proposal_path(@proposal), notice: params[:commit] == 'Invite' ? 'Invite has been sent' : 'Draft saved.'
+        return
+      end
 
-    if submission.has_errors?
-      redirect_to edit_proposal_path(@proposal), alert: "Your submission has
-          errors: #{submission.error_messages}.".squish
-      return
-    end
+      if submission.has_errors?
+        redirect_to edit_proposal_path(@proposal), alert: "Your submission has
+            errors: #{submission.error_messages}.".squish
+        return
+      end
 
-    attachment = generate_proposal_pdf || return
-    confirm_submission(attachment)
+      attachment = generate_proposal_pdf || return
+      confirm_submission(attachment)
+    else
+      redirect_to edit_proposal_path(@proposal), alert: @proposal.errors.full_messages
+    end
   end
 
   def thanks; end
@@ -78,7 +67,7 @@ class SubmitProposalsController < ApplicationController
 
   def proposal_params
     params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex,
-                  invites_attributes: %i[id firstname lastname email deadline_date _destroy])
+                  invites_attributes: %i[id firstname lastname email deadline_date invited_as _destroy])
           .merge(ams_subject_ids: proposal_ams_subjects)
   end
 

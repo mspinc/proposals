@@ -2,29 +2,42 @@ import { Controller } from 'stimulus'
 
 export default class extends Controller {
 
-  static targets = ['target', 'template', 'targetOne', 'templateOne', 'firstForm', 'formParticipant']
+  static targets = ['target', 'template', 'targetOne', 'templateOne']
   static values = {
-    wrapperSelector: String
+    wrapperSelector: String,
+    maxOrganizer: Number,
+    maxParticipant: Number,
+    organizer: Number,
+    participant: Number
   }
 
   initialize () {
     this.wrapperSelector = this.wrapperSelectorValue || '.nested-invites-wrapper'
-    this.firstFormTarget.innerHTML = this.firstFormTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime().toString())
-    this.formParticipantTarget.innerHTML = this.formParticipantTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime().toString())
   }
 
   addCoOrganizers (e) {
     e.preventDefault()
-    
+
     let content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime().toString())
-    this.targetTarget.insertAdjacentHTML('beforebegin', content)
+    if(this.organizerValue < this.maxOrganizerValue) {
+      this.targetTarget.insertAdjacentHTML('beforebegin', content)
+      this.organizerValue += 1
+    }
+
+    else
+      toastr.error("You can't add more because the maximum number of Co Organizer invitations has been sent.")
   }
 
   addParticipants (e) {
     e.preventDefault()
 
     let contentOne = this.templateOneTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime().toString())
-    this.targetOneTarget.insertAdjacentHTML('beforebegin', contentOne)
+    if (this.participantValue < this.maxParticipantValue) {
+      this.targetOneTarget.insertAdjacentHTML('beforebegin', contentOne)
+      this.participantValue += 1
+    }
+    else
+      toastr.error("You can't add more because the maximum number of Participant invitations has been sent.")
   }
 
   remove (e) {

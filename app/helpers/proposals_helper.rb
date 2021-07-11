@@ -146,4 +146,8 @@ module ProposalsHelper
     stem_graph_data(proposal)
     @data.values
   end
+
+  def invite_role(invited_as)
+    invited_as == 'Co Organizer' ? 'organizer' : 'participant' 
+  end
 end
