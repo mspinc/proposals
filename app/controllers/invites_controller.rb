@@ -1,16 +1,13 @@
 class InvitesController < ApplicationController
-  before_action :authenticate_user!, except: %i[show inviter_response thanks]
+  before_action :authenticate_user!, except: %i[show inviter_response thanks expired]
   skip_before_action :verify_authenticity_token, only: %i[create]
-  before_action :set_proposal, only: %i[new create index show]
-  before_action :set_invite, only: %i[show inviter_response]
-
-  def index
-    @invites = @proposal.invites
-    redirect_to new_proposal_invite_path and return if @invites.blank?
-  end
+  before_action :set_proposal, only: %i[new create invite_reminder invite_email]
+  before_action :set_invite, only: %i[show inviter_response cancel invite_reminder invite_email]
+  before_action :set_invite_proposal, only: %i[show]
 
   def show
     redirect_to root_path and return if @invite.confirmed?
+    redirect_to expired_path and return if @invite.cancelled?
 
     render layout: 'devise'
   end
@@ -21,7 +18,6 @@ class InvitesController < ApplicationController
 
   def create
     @invite = Invite.new(invite_params)
-
     if @invite.email == @proposal.lead_organizer&.email
       redirect_to edit_proposal_path(@proposal),
                     alert: 'You cannot invite yourself!'
@@ -39,6 +35,14 @@ class InvitesController < ApplicationController
                   alert: "The maximum number of #{@invite.invited_as}
                           invitations has been sent.".squish
     end
+  end
+
+  def invite_email
+    @co_organizers = @proposal.list_of_co_organizers
+    InviteMailer.with(invite: @invite, co_organizers: @co_organizers)
+                  .invite_email.deliver_later
+    redirect_to edit_proposal_path(@proposal, code: @invite.code),
+                    notice: "Invitation sent to #{@invite.person.fullname}"
   end
 
   def inviter_response
@@ -62,11 +66,34 @@ class InvitesController < ApplicationController
     end
   end
 
+  def invite_reminder
+    if @invite.pending?
+      @co_organizers = @invite.proposal.list_of_co_organizers
+      InviteMailer.with(invite: @invite, co_organizers: @co_organizers).invite_reminder.deliver_later
+      redirect_to edit_proposal_path(@proposal), notice: "Invite reminder has been sent to #{@invite.person.fullname}!"
+    else
+      redirect_to edit_proposal_path(@proposal), notice: "You have already responded to the invite."
+    end
+  end
+
   def thanks
     render layout: 'devise'
   end
 
+  def expired
+    render layout: 'devise'
+  end
+
+  def cancel
+    @invite.update(status: 'cancelled')
+    redirect_to edit_proposal_path(@invite.proposal), notice: 'Invite has been cancelled!'
+  end
+
   private
+
+  def set_invite_proposal
+    @proposal = Proposal.find_by(id: @invite.proposal)
+  end
 
   def response_params
     params.require(:commit)&.downcase
@@ -82,8 +109,6 @@ class InvitesController < ApplicationController
     add_person if @invite.person.nil?
 
     if @invite.save
-      InviteMailer.with(invite: @invite, co_organizers: @co_organizers)
-                  .invite_email.deliver_later
       respond_to do |format|
         format.html do
           redirect_to edit_proposal_path(@proposal, code: @invite.code),

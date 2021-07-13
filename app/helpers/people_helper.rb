@@ -2,9 +2,9 @@ module PeopleHelper
   def academic_status_options
     academic = [['Graduate Student', 'Graduate Student'],
                 ['Post Doctoral', 'Post Doctoral'],
-                ['Tenure Track Faculty', 'Tenure Track Faculty'],
+                ['Tenure-Track Faculty', 'Tenure-Track Faculty'],
                 ['Tenured Faculty', 'Tenured Faculty'],
-                ['Prefessor Emeritus', 'Prefessor Emeritus'],
+                ['Professor Emeritus', 'Professor Emeritus'],
                 ['Industry Scientist', 'Industry Scientist'], %w[Other Other]]
     academic.map { |disp, _value| disp }
   end
@@ -49,7 +49,7 @@ module PeopleHelper
                  %w[Lithuania Lithuania], %w[Luxembourg Luxembourg], %w[Madagascar Madagascar], %w[Malawi Malawi],
                  %w[Malaysia Malaysia], %w[Maldives Maldives], %w[Mali Mali], %w[Malta Malta], %w[Marshall Islands Marshall Islands],
                  %w[Mauritania Mauritania], %w[Mauritius Mauritius], %w[Mexico Mexico], %w[Micronesia Micronesia],
-                 %w[oldova oldova], %w[Monaco Monaco], %w[Mongolia Mongolia], %w[Montenegro Montenegro], %w[Morocco Morocco],
+                 %w[Moldova Moldova], %w[Monaco Monaco], %w[Mongolia Mongolia], %w[Montenegro Montenegro], %w[Morocco Morocco],
                  %w[Mozambique Mozambique], ['Myanmar (formerly Burma)', 'Myanmar (formerly Burma)'], %w[Namibia Namibia],
                  %w[Nauru Nauru], %w[Nepal Nepal], %w[Netherlands Netherlands], ['New Zealand', 'New Zealand'],
                  %w[Nicaragua Nicaragua], %w[Niger Niger], %w[Nigeria Nigeria], ['North Korea', 'North Korea'],
@@ -89,10 +89,10 @@ module PeopleHelper
                                         %w[Iowa Iowa], %w[Kansas Kansas], %w[Kentucky Kentucky], %w[Louisiana Louisiana], %w[Maine Maine],
                                         %w[Maryland Maryland], %w[Massachusetts Massachusetts], %w[Michigan Michigan], %w[Minnesota Minnesota],
                                         %w[Mississippi Mississippi], %w[Missouri Missouri], %w[Montana Montana], %w[Nebraska Nebraska],
-                                        %w[Nevada Nevada], %w[Ohio Ohio], ['New Hampshire', 'New Hampshire'], ['New Jersey', 'New Jersey'],
+                                        %w[Nevada Nevada], ['New Hampshire', 'New Hampshire'], ['New Jersey', 'New Jersey'],
                                         ['New Mexico', 'New Mexico'], ['New York', 'New York'], ['North Carolina', 'North Carolina'],
-                                        ['North Dakota', 'North Dakota'], %w[Oklahoma Oklahoma], %w[Oregon Oregon], %w[Pennsylvania Pennsylvania],
-                                        ['Rhode Island', 'Rhode Island'], ['outh Carolina', 'outh Carolina'], ['South Dakota', 'South Dakota'],
+                                        ['North Dakota', 'North Dakota'], %w[Ohio Ohio], %w[Oklahoma Oklahoma], %w[Oregon Oregon], %w[Pennsylvania Pennsylvania],
+                                        ['Rhode Island', 'Rhode Island'], ['South Carolina', 'South Carolina'], ['South Dakota', 'South Dakota'],
                                         %w[Tennessee Tennessee], %w[Texas Texas], %w[Utah Utah], %w[Vermont Vermont], %w[Virginia Virginia],
                                         %w[Washington Washington], ['West Virginia', 'West Virginia'], %w[Wisconsin Wisconsin],
                                         %w[Wyoming Wyoming], ['District of Columbia', 'District of Columbia'], ['American Samoa', 'American Samoa'],

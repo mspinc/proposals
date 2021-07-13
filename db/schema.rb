@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_24_204008) do
+ActiveRecord::Schema.define(version: 2021_07_05_101129) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -46,6 +46,8 @@ ActiveRecord::Schema.define(version: 2021_06_24_204008) do
   create_table "feedbacks", force: :cascade do |t|
     t.string "content"
     t.bigint "user_id"
+    t.text "reply"
+    t.boolean "reviewed"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
@@ -203,6 +205,7 @@ ActiveRecord::Schema.define(version: 2021_06_24_204008) do
     t.bigint "proposal_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "position"
     t.index ["location_id"], name: "index_proposal_locations_on_location_id"
     t.index ["proposal_id"], name: "index_proposal_locations_on_proposal_id"
   end
@@ -234,6 +237,10 @@ ActiveRecord::Schema.define(version: 2021_06_24_204008) do
     t.string "year"
     t.integer "participant"
     t.integer "co_organizer"
+    t.string "code"
+    t.datetime "open_date"
+    t.datetime "closed_date"
+    t.index ["code"], name: "index_proposal_types_on_code", unique: true
   end
 
   create_table "proposals", force: :cascade do |t|
@@ -247,6 +254,7 @@ ActiveRecord::Schema.define(version: 2021_06_24_204008) do
     t.bigint "proposal_form_id"
     t.bigint "subject_id"
     t.string "code"
+    t.boolean "no_latex", default: false
     t.index ["code"], name: "index_proposals_on_code", unique: true
     t.index ["proposal_form_id"], name: "index_proposals_on_proposal_form_id"
     t.index ["proposal_type_id"], name: "index_proposals_on_proposal_type_id"

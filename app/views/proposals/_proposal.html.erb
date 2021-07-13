@@ -39,105 +39,73 @@
                     <% end %>
                   <% end %>
                 </div>
-              <div class="col-12 col-lg-12">
-                <div class="tab">
-                  <ul id="tabs" class="nav nav-tabs row" role="tablist">
-                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'one') %>" href="#tab-1" data-bs-toggle="tab" role="tab" data-target='submit-proposals.tabs'>Step 1</a></li>
-                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'two') %>" href="#tab-2" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 2</a></li>
-                    <li class="nav-item col-4" data-target='submit-proposals.tabs'><a class="nav-link <%= active_tab(@proposal, 'three') %>" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a></li>
-                  </ul>
-                  <div class="tab-content">
-                    <div class="tab-pane <%= active_tab(@proposal, 'one') %>" id="tab-1" role="tabpanel">
-                      <h4 class="tab-title"></h4>
-                      <div class="mb-3">
-                        <p><%= @proposal.proposal_form.introduction&.html_safe %></p>
-                      </div>
-                      <div class="mb-3">
-                        <%= f.label :title, class: "required" %>
-                        <%= f.text_field :title, class: 'form-control', disabled: action, value: @proposal.title %>
-                        <% if @submission && @proposal.title.blank? %>
-                          <p class="field-validation">Title is required</p>
-                        <% end %>
-                      </div>
-
-                      <div class="mb-3">
-                        <label>Type of Meeting</label>
-                        <p class="form-select w-25"><%= @proposal.proposal_type.name.titleize %></p>
-                      </div>
-
-                      <div class="mb-3">
-                        <%= f.label :year %>
-                        <%= f.select :year, options_for_select(proposal_type_year(@proposal.proposal_type),  @proposal.year), {}, disabled: action, class: "form-select w-25"%>
-                      </div>
-                      <div class="mb-3 row">
-                        <h4>Subject Areas</h4>
-                        <div class="col-6 mt-2">
-                          <label class="required">Subject Area</label>
-                          <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), { include_blank: '' }, disabled: action, class: "form-select"%>
-                          <% if @submission && @proposal.subject&.id.nil? %>
-                            <p class="field-validation">Subject is required</p>
+                <div class="col-12 col-lg-12">
+                  <div class="tab">
+                    <ul id="tabs" class="nav nav-tabs row" role="tablist">
+                      <li class="nav-item col-3" data-target='submit-proposals.tabs'>
+                        <a class="nav-link <%= active_tab(@proposal, 'one') %>" href="#tab-1" data-bs-toggle="tab" role="tab" data-target='submit-proposals.tabs'>Step 1</a>
+                      </li>
+                      <li class="nav-item col-3" data-target='submit-proposals.tabs'>
+                        <a class="nav-link <%= active_tab(@proposal, 'two') %>" href="#tab-2" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 2</a>
+                      </li>
+                      <li class="nav-item col-3" data-target='submit-proposals.tabs'>
+                        <a class="nav-link <%= active_tab(@proposal, 'three') %>" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a>
+                      </li>
+                      <li class="nav-item col-3" data-target='submit-proposals.tabs'>
+                        <a class="nav-link" href="#tab-4" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Demographic Graphs and charts</a>
+                      </li>
+                    </ul>
+                    <div class="tab-content">
+                      <div class="tab-pane <%= active_tab(@proposal, 'one') %>" id="tab-1" role="tabpanel">
+                        <h4 class="tab-title"></h4>
+                        <div class="mb-3">
+                          <p><%= @proposal.proposal_form.introduction&.html_safe %></p>
+                        </div>
+                        <div class="mb-3">
+                          <%= f.label :title, class: "required" %>
+                          <%= f.text_field :title, class: 'form-control', disabled: action, value: @proposal.title, data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
+                          <% if @submission && @proposal.title.blank? %>
+                            <p class="field-validation">Title is required</p>
                           <% end %>
                         </div>
-                        <div class="col-6 mt-2">
-                          <div class="mb-3">
-                            <label class="required">AMS Subject Code 1</label>
-                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, proposal_ams_subjects_code(@proposal, 'code1')), { include_blank: '' }, disabled: action, class: "form-select", name:'ams_subjects[code1]'%>
-                            <% if @submission && proposal_ams_subjects_code(@proposal, 'code1').blank? %>
-                              <p class="field-validation">AMS Subject Code 1 is required</p>
-                            <% end %>
-                          </div>
 
-                          <div class="mb-3">
-                            <label class="required">AMS Subject Code 2</label>
-                            <%= f.select :ams_subjects, options_for_select(ams_subjects_code, proposal_ams_subjects_code(@proposal, 'code2')), { include_blank: '' }, disabled: action, class: "form-select", name:'ams_subjects[code2]'%>
-                            <% if @submission && proposal_ams_subjects_code(@proposal, 'code2').blank? %>
-                              <p class="field-validation">AMS Subject Code 2 is required</p>
-                            <% end %>
-                          </div>
+                        <div class="mb-3">
+                          <label>Type of Meeting</label>
+                          <p class="form-select w-25"><%= @proposal.proposal_type.name.titleize %></p>
                         </div>
-                        <div>
-                          <% if params[:action] == 'edit' %>
-                          <%= render partial: 'lead_organizer' %>
-                          <div>
-                            <h3>Add Supporting Organizers:</h3>
-                            <%= organizer_intro(@proposal) %>
-                            <% if @proposal.invites %>
-                              <% @proposal.invites.each do |invite|%>
-                                <% if invite.invited_as == 'Co Organizer' %>
-                                  <%= render partial: 'organizer', locals: { invite: invite } %>
-                                <% end %>
-                              <% end %>
+
+                        <div class="mb-3">
+                          <%= f.label :year %>
+                          <%= f.select :year, options_for_select(proposal_type_year(@proposal.proposal_type),  @proposal.year), {}, disabled: action, class: "form-select w-25", data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
+                        </div>
+                        <div class="mb-3 row">
+                          <h4>Subject Areas</h4>
+                          <div class="col-6 mt-2">
+                            <label class="required">Subject Area</label>
+                            <%= f.select :subject_id, options_for_select(subjects_area, @proposal.subject&.id), { include_blank: '' }, disabled: action, class: "form-select", data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
+                            <% if @submission && @proposal.subject&.id.nil? %>
+                              <p class="field-validation">Subject is required</p>
                             <% end %>
-                            <div>
-                              <% if max_invitations(@proposal, 'Co Organizer') %>
-                                <%= render partial: 'invite', locals: {invited_as: 'organizer', date: @proposal.invites.where(invited_as: 'Co Organizer').first&.deadline_date&.to_date } %>
-                              <% end %>
-                            </div>
                           </div>
-                          <div class="mt-4">
+                          <div class="col-6 mt-2">
                             <div class="mb-3">
-                              <h3>Add Participants:</h3>
-                              <% if @proposal.invites %>
-                                <% @proposal.invites.each do |invite|%>
-                                  <% if invite.invited_as == 'Participant' %>
-                                    <%= render partial: 'organizer', locals: { invite: invite } %>
-                                  <% end %>
-                                <% end %>
+                              <label class="required">AMS Subject Code 1</label>
+                              <%= f.select :ams_subjects, options_for_select(ams_subjects_code, proposal_ams_subjects_code(@proposal, 'code1')), { include_blank: '' }, disabled: action, class: "form-select", name:'ams_subjects[code1]', data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
+                              <% if @submission && proposal_ams_subjects_code(@proposal, 'code1').blank? %>
+                                <p class="field-validation">AMS Subject Code 1 is required</p>
                               <% end %>
-                              <div>
-                                <% if max_invitations(@proposal, 'Participant') %>
-                                  <%= render partial: 'invite', locals: {invited_as: 'participant', date: @proposal.invites.where(invited_as: 'Participant').first&.deadline_date&.to_date } %>
-                                <% end %>
-                              </div>
+                            </div>
+
+                            <div class="mb-3">
+                              <label>AMS Subject Code 2</label>
+                              <%= f.select :ams_subjects, options_for_select(ams_subjects_code, proposal_ams_subjects_code(@proposal, 'code2')), { include_blank: '' }, disabled: action, class: "form-select", name:'ams_subjects[code2]', data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
                             </div>
                           </div>
-                          <% end %>
-                        </div>
-                        <div>
-                          <% if params[:action] == 'show' %>
-                          <%= render partial: 'lead_organizer' %>
+                          <div>
+                            <% if params[:action] == 'edit' %>
+                            <%= render partial: 'lead_organizer' %>
                             <div>
-                              <h3>Supporting Organizers:</h3>
+                              <h3>Add Supporting Organizers:</h3>
                               <%= organizer_intro(@proposal) %>
                               <% if @proposal.invites %>
                                 <% @proposal.invites.each do |invite|%>
@@ -146,10 +114,15 @@
                                   <% end %>
                                 <% end %>
                               <% end %>
+                              <div>
+                                <% if max_invitations(@proposal, 'Co Organizer') %>
+                                  <%= render partial: 'invite', locals: {invited_as: 'organizer', date: @proposal.invites.where(invited_as: 'Co Organizer').first&.deadline_date&.to_date } %>
+                                <% end %>
+                              </div>
                             </div>
                             <div class="mt-4">
                               <div class="mb-3">
-                                <h3>Participants:</h3>
+                                <h3>Add Participants:</h3>
                                 <% if @proposal.invites %>
                                   <% @proposal.invites.each do |invite|%>
                                     <% if invite.invited_as == 'Participant' %>
@@ -157,29 +130,90 @@
                                     <% end %>
                                   <% end %>
                                 <% end %>
+                                <div>
+                                  <% if max_invitations(@proposal, 'Participant') %>
+                                    <%= render partial: 'invite', locals: {invited_as: 'participant', date: @proposal.invites.where(invited_as: 'Participant').first&.deadline_date&.to_date } %>
+                                  <% end %>
+                                </div>
                               </div>
                             </div>
-                          <% end %>
+                            <% end %>
+                            <div class="mt-4">
+                              <div class="mb-3">
+                                <% if @careers %>
+                                  <h3>Confirmed Participants:</h3>
+                                  <% @careers.uniq.each do |career| %>
+                                    <h4><%= career %></h4>
+                                      <%= render partial: 'confirm_participant', locals: { confirmed_participants: @proposal.participants_career(career) } %>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <% if params[:action] == 'show' %>
+                              <%= render partial: 'lead_organizer' %>
+                              <div>
+                                <h3>Supporting Organizers:</h3>
+                                <%= organizer_intro(@proposal) %>
+                                <% if @proposal.invites %>
+                                  <% @proposal.invites.each do |invite|%>
+                                    <% if invite.invited_as == 'Co Organizer' %>
+                                      <%= render partial: 'organizer', locals: { invite: invite } %>
+                                    <% end %>
+                                  <% end %>
+                                <% end %>
+                              </div>
+                              <div class="mt-4">
+                                <div class="mb-3">
+                                  <h3>Participants:</h3>
+                                  <% if @proposal.invites %>
+                                    <% @proposal.invites.each do |invite|%>
+                                      <% if invite.invited_as == 'Participant' %>
+                                        <%= render partial: 'organizer', locals: { invite: invite } %>
+                                      <% end %>
+                                    <% end %>
+                                  <% end %>
+                                </div>
+                              </div>
+                              <div class="mt-4">
+                                <div class="mb-3">
+                                  <% if @careers %>
+                                    <h3>Confirmed Participants:</h3>
+                                    <% @careers.uniq.each do |career| %>
+                                      <h4><%= career %></h4>
+                                        <%= render partial: 'confirm_participant', locals: { confirmed_participants: @proposal.participants_career(career) } %>
+                                    <% end %>
+                                  <% end %>
+                                </div>
+                              </div>
+                            <% end %>
+                          </div>
+                          <div class="d-flex flex-row-reverse">
+                            <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                          </div>
                         </div>
-                        <div class="d-flex flex-row-reverse">
+                      </div>
+
+                      <div class="tab-pane <%= active_tab(@proposal, 'two') %> overflow-hidden" id="tab-2" role="tabpanel">
+                        <div class="mb-3">
+                          <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
+                        </div>
+                        <!-- <h4 class="tab-title">Common Fields</h4> -->
+                        <div class="form-group">
+                          <%= f.check_box :no_latex, data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
+                          <%= f.label :no_latex, "No LaTeX", class: "form-label" %>
+                        </div>
+                        <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
+
+                      <div class="row mt-20">&nbsp;</div>
+                      <div class="d-flex justify-content-between">
+                        <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
+                        <div>
+                          <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
                           <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
                         </div>
                       </div>
-                    </div>
-
-                    <div class="tab-pane <%= active_tab(@proposal, 'two') %> overflow-hidden" id="tab-2" role="tabpanel">
-                      <div class="mb-3">
-                        <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
-                      </div>
-                      <!-- <h4 class="tab-title">Common Fields</h4> -->
-                      <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
-
-                      <div class="row mt-20">&nbsp;</div>
-                      <div class="d-flex">
-                        <span class="me-auto p-2 btn btn-primary" data-action="click->proposal-form#latex" data-value="all" data-propid="<%= @proposal&.id %>">Print Proposal</span>
-                        <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
-                        <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
-                       </div>
                     </div>
                     
                     <div class="tab-pane <%= active_tab(@proposal, 'three') %>" id="tab-3" role="tabpanel">
@@ -187,19 +221,129 @@
                         <p><%= @proposal.proposal_form.introduction3&.html_safe %></p>
                       </div>
                       <!-- <h4 class="tab-title">Location Fields</h4> -->
-                      <div class="mb-3">
-                        <%= f.label :location, "Select your preferred location for this event:", class: 'form-label lead' %>
-                        <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, disabled: action, class: 'form-select w-50', multiple: true, name: 'location_ids[]' %>
-                      </div>
-                      <div data-submit-proposals-target='locationSpecificQuestions'></div>
+                        <div class="mb-3">
+                          <%= f.label :location, "Select your preferred location for this event:", class: 'form-label lead' %>
+                        </div>
+                        <div class="d-flex flex-row">
+                          <%= f.select "locations", options_for_select(proposal_type_locations(@proposal.proposal_type), location_in_answers(@proposal)),{ include_blank: '' }, data: {proposal_type: @proposal&.proposal_type&.id, 'submit-proposals-target': 'locationIds',action: 'change->submit-proposals#handleLocationChange'}, disabled: action, class: 'form-select w-50', multiple: true, name: 'location_ids[]' %>
+                            <div data-submit-proposals-target="dragLocations" class="ms-5"></div>
+                        </div>
+                        <div data-submit-proposals-target='locationSpecificQuestions'></div>
 
-                      <div class="row mt-20">&nbsp;</div>
-                      <div class="d-flex">
-                        <span class="me-auto p-2 btn btn-primary" data-action="click->proposal-form#latex" data-value="all" data-propid="<%= @proposal&.id %>">Print Proposal</span>
-                        <button class="ms-auto p-2 btn btn-primary" id="changeTab" data-action='click->submit-proposals#previousTab'>Back</button>
+                        <div class="row mt-20">&nbsp;</div>
+                        <div class="mb-3">
+                          <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
+                          <div class="float-end">
+                            <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
+                            <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane" id="tab-4" role="tabpanel">
+                      <div class="mb-3">Charts</div>
+
+                      <div class="row">
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Nationality</h5>
+                            </div>
+                            <div class="card-body">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Nationality</th>
+                                    <th>No.</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <% nationality_data(@proposal).each do |key, value| %>
+                                  <tr>
+                                    <td><%= key %></td>
+                                    <td><%=  value %></td>
+                                  </tr>
+                                  <% end %>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Ethnicity</h5>
+                            </div>
+                            <div class="card-body">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Ethnicity</th>
+                                    <th>No.</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <% ethnicity_data(@proposal).each do |key, value| %>
+                                  <tr>
+                                    <td><%= key %></td>
+                                    <td><%=  value %></td>
+                                  </tr>
+                                  <% end %>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Gender</h5>
+                              <!-- <h6 class="card-subtitle text-muted">A line chart is a way of plotting data points on a line.</h6> -->
+                            </div>
+                            <div class="card-body">
+                              <div class="chart">
+                                <canvas id="chartjs-gender"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Under-represented minority in STEM</h5>
+                              <!-- <h6 class="card-subtitle text-muted">A line chart is a way of plotting data points on a line.</h6> -->
+                            </div>
+                            <div class="card-body">
+                              <div class="chart">
+                                <canvas id="chartjs-stem"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-12 col-lg-6">
+                          <div class="card flex-fill w-100">
+                            <div class="card-header">
+                              <h5 class="card-title">Career Stage</h5>
+                            </div>
+                            <div class="card-body">
+                              <div class="chart">
+                                <canvas id="chartjs-career"></canvas>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                        <div class="row mt-20">&nbsp;</div>
+                        <div class="d-flex">
+                          <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
+                          <button class="ms-auto p-2 btn btn-primary" id="changeTab" data-action='click->submit-proposals#previousTab'>Back</button>
+                        </div>
                       </div>
                     </div>
-                  </div>
                   </div>
                 </div>
               </div> 
@@ -210,3 +354,154 @@
     <%end%>
   </div>
 </main>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    new Chart(document.getElementById("chartjs-gender"), {
+      type: "bar",
+      data: {
+        labels: <%= gender_labels(@proposal).to_json.html_safe %>,
+        datasets: [{
+          fill: true,
+          backgroundColor: "rgba(50, 83, 168)",
+          borderColor: window.theme.primary,
+          data: <%= gender_values(@proposal) %>
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 500
+            },
+            display: true,
+            borderDash: [5, 5],
+            gridLines: {
+              color: "rgba(0,0,0,0)",
+              fontColor: "#fff"
+            }
+          }]
+        }
+      }
+    });
+
+    new Chart(document.getElementById("chartjs-stem"), {
+      type: "bar",
+      data: {
+        labels: <%= stem_labels(@proposal).to_json.html_safe %>,
+        datasets: [{
+          fill: true,
+          backgroundColor: "rgba(50, 83, 168)",
+          borderColor: window.theme.primary,
+          data: <%= stem_values(@proposal) %>
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 500
+            },
+            display: true,
+            borderDash: [5, 5],
+            gridLines: {
+              color: "rgba(0,0,0,0)",
+              fontColor: "#fff"
+            }
+          }]
+        }
+      }
+    });
+
+    new Chart(document.getElementById("chartjs-career"), {
+      type: "bar",
+      data: {
+        labels: <%= career_labels(@proposal).to_json.html_safe %>,
+        datasets: [{
+          fill: true,
+          backgroundColor: "rgba(50, 83, 168)",
+          borderColor: window.theme.primary,
+          data: <%= career_values(@proposal) %>
+        }]
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: false
+        },
+        tooltips: {
+          intersect: false
+        },
+        hover: {
+          intersect: true
+        },
+        plugins: {
+          filler: {
+            propagate: false
+          }
+        },
+        scales: {
+          xAxes: [{
+            reverse: true,
+            gridLines: {
+              color: "rgba(0,0,0,0.05)"
+            }
+          }],
+          yAxes: [{
+            ticks: {
+              stepSize: 500
+            },
+            display: true,
+            borderDash: [5, 5],
+            gridLines: {
+              color: "rgba(0,0,0,0)",
+              fontColor: "#fff"
+            }
+          }]
+        }
+      }
+    });
+  });
+</script>

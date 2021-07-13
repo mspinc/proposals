@@ -1,8 +1,14 @@
 class Proposal < ApplicationRecord
+  include PgSearch::Model
+  pg_search_scope :search_proposals, :against => [:year, :title, :status, :subject_id, :proposal_type_id], 
+  associated_against: {
+    people: [:firstname, :lastname]
+  }
+
   attr_accessor :is_submission
 
   has_many :proposal_locations, dependent: :destroy
-  has_many :locations, through: :proposal_locations
+  has_many :locations, -> { order 'proposal_locations.position' }, through: :proposal_locations
   belongs_to :proposal_type
   has_many :proposal_roles, dependent: :destroy
   has_many :people, through: :proposal_roles
@@ -22,6 +28,10 @@ class Proposal < ApplicationRecord
 
   enum status: { draft: 0, active: 1 }
 
+  scope :active_proposals, -> {
+    where(status: 'active')
+  }
+
   scope :no_of_participants, -> (id, invited_as) {
     joins(:invites).where('invites.invited_as = ?
       AND invites.proposal_id = ?', invited_as, id)
@@ -31,6 +41,10 @@ class Proposal < ApplicationRecord
     where(status: 1)
     .joins(:proposal_type).where('name = ?', type)
   }
+
+  def demographics_data
+    DemographicData.where(person_id: invites.pluck(:person_id))
+  end
 
   def create_organizer_role(person, organizer)
     proposal_roles.create!(person: person, role: organizer)
@@ -58,15 +72,30 @@ class Proposal < ApplicationRecord
     invites.where(invited_as: 'Participant').where(response: %w[yes maybe])
   end
 
+  def participants_career(career)
+    person_ids = participants.map(&:person_id)
+    Person.where(id: person_ids).where(academic_status: career)
+  end
+
+  def self.to_csv
+    attributes = ["Code", "Proposal Title", "Proposal Type", "Lead Organizer", "Preffered Locations", "Status",
+                  "Updated"]
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      all.each do |proposal|
+        csv << [proposal.code, proposal.title, proposal.proposal_type.name, proposal.lead_organizer.fullname,
+                proposal.the_locations, proposal.status, proposal.updated_at.to_date]
+      end
+    end
+  end
 
   private
 
-  # Temporary, until open/close feature is added
   def not_before_opening
-    return unless DateTime.current < DateTime.parse('2021-07-15 00:00:01')
-
-    errors.add('Early submission - ', 'proposal submissions are not allowed
-        until July 15th, 2021'.squish)
+    return unless DateTime.current.to_date > proposal_type.closed_date.to_date
+    
+    errors.add("Late submission - ", "proposal submissions are not allowed
+        because of due date #{proposal_type.closed_date.to_date}".squish)
   end
 
   def minimum_organizers
@@ -79,8 +108,8 @@ class Proposal < ApplicationRecord
 
   def subjects
     errors.add('Subject Area:', "please select a subject area") if subject.nil?
-    unless ams_subjects.pluck(:code).count == 2
-      errors.add('AMS Subjects:', 'please select 2 AMS Subjects')
+    unless ams_subjects.pluck(:code).include? "code1"
+      errors.add('AMS Subjects:', 'please select AMS Subject Code 1')
     end
   end
 
@@ -94,17 +123,8 @@ class Proposal < ApplicationRecord
 
   def create_code
     return unless self.code.blank?
-    # temporary, until type-code feature is added to ProposalTypes
-    type_codes = {
-      '5 Day Workshop' => 'w5',
-      '2 Day Workshop' => 'w2',
-      'Summer School' => 'ss',
-      'Focussed Research Group' => 'frg',
-      'Research in Teams' => 'rit',
-      'Hybrid Thematic Program' => 'htp'
-    }
 
-    tc = type_codes[proposal_type.name] || 'xx'
+    tc = proposal_type.code || 'xx'
     self.code = year.to_s[-2..-1] + tc + next_number
   end
 

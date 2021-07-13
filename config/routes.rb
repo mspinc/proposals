@@ -8,19 +8,37 @@ Rails.application.routes.draw do
   end
 
   get :guidelines, to: 'pages#guidelines'
-  resources :feedbacks, path: :feedback
+  resources :feedbacks, path: :feedback do 
+    member do
+      patch :add_reply
+    end
+  end
   get 'dashboards', to: 'proposal_types#index'
+
+  resources :submitted_proposals do
+    collection do
+      get :download_csv
+    end
+  end
+
+  get :invite, to: 'invites#show'
+  get 'expired' => 'invites#expired'
+  post 'cancel' => 'invites#cancel'
 
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
-    collection do
-      get :latex, to: 'proposals#latex_output'
-      get :'rendered_proposal', to: 'proposals#latex_output'
+    member do 
+      get :rendered_proposal, to: 'proposals#latex_output'
+      get :rendered_field, to: 'proposals#latex_field'
+      patch :ranking
+      get :locations
     end
 
-    resources :invites do
+    resources :invites, :except => [:show] do
       member do
         post :inviter_response
+        post :invite_reminder
+        post :invite_email
       end
       collection do
         get :thanks
@@ -31,6 +49,7 @@ Rails.application.routes.draw do
   resources :survey do
     collection do
       get :survey_questionnaire
+      get :faq
       post :submit_survey
     end
   end
@@ -65,4 +84,8 @@ Rails.application.routes.draw do
       get :proposal_types
     end
   end
+
+  get 'profile/' => 'profile#edit'
+  patch 'update' => 'profile#update'
+  post 'demographic_data' => 'profile#demographic_data'
 end

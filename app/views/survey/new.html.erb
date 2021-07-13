@@ -8,6 +8,7 @@
               <div data-controller="survey">
                 <%= form_with(url: survey_questionnaire_survey_index_path(code: params[:code]), method: :get) do |f| %>
                   <div class="col-lg-12">
+                    <%= f.hidden_field :code, value: params[:code] %>
                     <div class="mb-3"> 
                       <div>
                         <h2>Diversity and Inclusivity Survey</h2>

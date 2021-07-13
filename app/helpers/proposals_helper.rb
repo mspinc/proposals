@@ -1,6 +1,10 @@
 module ProposalsHelper
   def proposal_types
-    ProposalType.active_forms.map { |pt| [pt.name, pt.id] }
+    today = DateTime.now
+    proposal_type = ProposalType.active_forms.where('open_date <= ?', today)
+    today = today.to_date
+    proposal_type = proposal_type.where('closed_date >= ?', today)
+    proposal_type.map { |pt| [pt.name, pt.id] }
   end
 
   def proposal_type_year(proposal_type)
@@ -47,8 +51,10 @@ module ProposalsHelper
     co_organizers.strip.delete_suffix(",")
   end
 
-  def invite_status(status)
-    case status
+  def invite_status(response, status)
+    return "Invite has been cancelled" if status == 'cancelled'
+
+    case response
     when "yes", "maybe"
       "Invitation accepted"
     when nil
@@ -56,5 +62,92 @@ module ProposalsHelper
     when "no"
       "Invitation declined"
     end
+  end
+
+  def proposal_status(status)
+    status == 'draft' ? "text-primary" : "text-success"
+  end
+
+  def invite_response_color(status)
+    case status
+    when "yes", "maybe"
+      "text-success"
+    when nil
+      "text-primary"
+    when "no"
+      "text-danger"
+    end
+  end
+
+  def invite_deadline_date_color(invite)
+    'text-danger' if invite.status == 'pending' && invite.deadline_date.to_date < DateTime.now.to_date
+  end
+
+  def graph_data(param, param2, proposal)
+    citizenships = proposal.demographics_data.pluck(:result).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    citizenships.each do |c|
+      @data[c] += 1
+    end
+  end
+
+  def nationality_data(proposal)
+    graph_data("citizenships", "citizenships_other", proposal)
+    @data
+  end
+
+  def ethnicity_data(proposal)
+    graph_data("ethnicity", "ethnicity_other", proposal)
+    @data
+  end
+
+  def gender_labels(proposal)
+    graph_data("gender", "gender_other", proposal)
+    @data.keys
+  end
+
+  def gender_values(proposal)
+    graph_data("gender", "gender_other", proposal)
+    @data.values
+  end
+
+  def career_data(param, param2, proposal)
+    person = Person.where.not(id: proposal.lead_organizer.id)
+    careerStage = person.where(id: proposal.person_ids).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    careerStage.each do |s|
+      @data[s] += 1
+    end
+  end
+
+  def career_labels(proposal)
+    career_data("academic_status", "other_academic_status", proposal)
+    @data.keys
+  end
+
+  def career_values(proposal)
+    career_data("academic_status", "other_academic_status", proposal)
+    @data.values
+  end
+
+  def stem_graph_data(proposal)
+    citizenships = proposal.demographics_data.pluck(:result).pluck("stem").flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    @data = Hash.new(0)
+
+    citizenships.each do |c|
+      @data[c] += 1
+    end
+  end
+
+  def stem_labels(proposal)
+    stem_graph_data(proposal)
+    @data.keys
+  end
+
+  def stem_values(proposal)
+    stem_graph_data(proposal)
+    @data.values
   end
 end
