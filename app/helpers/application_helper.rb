@@ -32,4 +32,8 @@ module ApplicationHelper
   def feedback_menu 
     return 'active' if request.path.in?(['/feedback/new'])
   end
+
+  def faq_menu 
+    return 'active' if request.path.in?(['/faqs/new'])
+  end
 end
