@@ -12,7 +12,7 @@ class ProposalsController < ApplicationController
 
   def create
     @proposal = start_new_proposal
-    limit_of_one_per_type and return unless already_has_proposal?
+    limit_of_one_per_type and return if already_has_proposal?
 
     if @proposal.save
       @proposal.create_organizer_role(current_user.person, organizer)
@@ -95,12 +95,12 @@ class ProposalsController < ApplicationController
   def start_new_proposal
     prop = Proposal.new(proposal_params)
     prop.status = :draft
-    prop.proposal_form = ProposalForm.active_form(prop.proposal_type_id)
+    prop.proposal_form = ProposalForm.active_form(prop.proposal_type_id).last
     prop
   end
 
   def already_has_proposal?
-    @proposal.proposal_type.lead_organizer?(current_user.person)
+    !@proposal.proposal_type.lead_organizer?(current_user.person)
   end
 
   def limit_of_one_per_type
