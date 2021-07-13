@@ -12,9 +12,9 @@ class SubmitProposalsController < ApplicationController
       session[:is_submission] = @proposal.is_submission = submission.is_final?
 
       unless @proposal.is_submission
-        redirect_to edit_proposal_path(@proposal), notice: params[:commit] == 'Invite' ? 'Invite has been sent' : 'Draft saved.'
+        redirect_to edit_proposal_path(@proposal), 'Draft saved.'
         return
-      end
+       end
 
       if submission.has_errors?
         redirect_to edit_proposal_path(@proposal), alert: "Your submission has
@@ -25,7 +25,11 @@ class SubmitProposalsController < ApplicationController
       attachment = generate_proposal_pdf || return
       confirm_submission(attachment)
     else
-      redirect_to edit_proposal_path(@proposal), alert: @proposal.errors.full_messages
+      if request.xhr?
+        render json: @proposal.errors.full_messages, status: 422
+      else
+        redirect_to edit_proposal_path(@proposal), alert: @proposal.errors.full_messages
+      end
     end
   end
 

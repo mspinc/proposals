@@ -53,4 +53,20 @@ export default class extends Controller {
       input.value = '1'
     }
   }
+
+  sendInvite ()  {
+    event.preventDefault()
+
+    let id = event.currentTarget.dataset.id;
+    $.post(`/submit_proposals?proposal=${id}.js`,
+      $('form#submit_proposal').serialize(), function(data) {
+        $("#exampleModal").modal('show')
+    }) 
+    .fail(function(response) {
+      let errors = response.responseJSON
+      $.each(errors, function(index, error) {
+        toastr.error(error)
+      })
+    });
+  }
 }

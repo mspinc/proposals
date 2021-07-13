@@ -139,8 +139,7 @@
                                       </button>
                                   </div>
                                   <div class="mb-3">
-                                    <%= f.submit "Invite", class: 'btn btn-primary' %>
-                                    <!-- <span class='btn btn-primary' id="organizer">Invite</span> -->
+                                    <button data-action="click->nested-invites#sendInvite" data-id="<%= @proposal.id %>" class="btn btn-primary">Invite</button>
                                   </div>
                                 <% end %>
                               </div>
