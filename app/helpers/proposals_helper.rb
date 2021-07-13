@@ -7,6 +7,10 @@ module ProposalsHelper
     proposal_type.map { |pt| [pt.name, pt.id] }
   end
 
+  def no_of_participants(id, invited_as)
+    Invite.where('invited_as = ? AND proposal_id = ?', invited_as, id)
+  end
+
   def proposal_type_year(proposal_type)
     return [Date.current.year + 2] if proposal_type.year.blank?
 

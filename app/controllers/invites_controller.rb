@@ -12,37 +12,18 @@ class InvitesController < ApplicationController
     render layout: 'devise'
   end
 
-  def new
-    @invite = Invite.new
-  end
-
-  def create
-    @invite = Invite.new(invite_params)
-    if @invite.email == @proposal.lead_organizer&.email
-      redirect_to edit_proposal_path(@proposal),
-                    alert: 'You cannot invite yourself!'
-      return
-    end
-    max_invitations = Proposal.no_of_participants(@proposal.id,
-                                                  @invite.invited_as).count
-
-    if max_invitations < @proposal.proposal_type[@invite.invited_as
-                                  .downcase.split(" ").join('_')]
-      @co_organizers = @proposal.list_of_co_organizers
-      create_invite
-    else
-      redirect_to edit_proposal_path(@proposal),
-                  alert: "The maximum number of #{@invite.invited_as}
-                          invitations has been sent.".squish
-    end
-  end
-
   def invite_email
-    @co_organizers = @proposal.list_of_co_organizers
-    InviteMailer.with(invite: @invite, co_organizers: @co_organizers)
-                  .invite_email.deliver_later
-    redirect_to edit_proposal_path(@proposal, code: @invite.code),
-                    notice: "Invitation sent to #{@invite.person.fullname}"
+    if params[:id].eql?("0")
+      inviters = Invite.where(proposal_id: @proposal.id, invited_as: params[:invited_as])
+    else
+      inviters = Invite.where(proposal_id: @proposal.id, invited_as: params[:invited_as]).where('id > ?', params[:id])
+    end
+
+    inviters.each do |invite|
+      InviteMailer.with(invite: invite).invite_email.deliver_later
+    end
+
+    head :ok
   end
 
   def inviter_response
@@ -102,24 +83,6 @@ class InvitesController < ApplicationController
   def add_person
     @invite.person = Person.find_or_create_by!(firstname: @invite.firstname,
                               lastname: @invite.lastname, email: @invite.email)
-  end
-
-  def create_invite
-    @invite.proposal = @proposal 
-    add_person if @invite.person.nil?
-
-    if @invite.save
-      respond_to do |format|
-        format.html do
-          redirect_to edit_proposal_path(@proposal, code: @invite.code),
-                    notice: "Invitation sent to #{@invite.person.fullname}"
-        end
-        format.js {}
-      end
-    else
-      redirect_to edit_proposal_path(@proposal),
-                  alert: "Errors: #{@invite.errors.full_messages.join(', ')}."
-    end 
   end
 
   def create_user

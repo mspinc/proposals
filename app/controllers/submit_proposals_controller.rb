@@ -11,19 +11,22 @@ class SubmitProposalsController < ApplicationController
       submission.save_answers
       session[:is_submission] = @proposal.is_submission = submission.is_final?
 
-      unless @proposal.is_submission
-        redirect_to edit_proposal_path(@proposal), 'Draft saved.'
-        return
-       end
+      if request.xhr?
+        render json: {invited_as: @proposal.invites.last.invited_as.downcase}, status: :ok
+      else
+        unless @proposal.is_submission
+          redirect_to edit_proposal_path(@proposal), 'Draft saved.'
+          return
+         end
 
-      if submission.has_errors?
-        redirect_to edit_proposal_path(@proposal), alert: "Your submission has
-            errors: #{submission.error_messages}.".squish
-        return
+        if submission.has_errors?
+          redirect_to edit_proposal_path(@proposal), alert: "Your submission has
+              errors: #{submission.error_messages}.".squish
+          return
+        end
+        attachment = generate_proposal_pdf || return
+        confirm_submission(attachment)
       end
-
-      attachment = generate_proposal_pdf || return
-      confirm_submission(attachment)
     else
       if request.xhr?
         render json: @proposal.errors.full_messages, status: 422

@@ -1,7 +1,6 @@
 import { Controller } from 'stimulus'
 
 export default class extends Controller {
-
   static targets = ['target', 'template', 'targetOne', 'templateOne']
   static values = {
     wrapperSelector: String,
@@ -10,7 +9,7 @@ export default class extends Controller {
     organizer: Number,
     participant: Number
   }
-
+ 
   initialize () {
     this.wrapperSelector = this.wrapperSelectorValue || '.nested-invites-wrapper'
   }
@@ -54,13 +53,24 @@ export default class extends Controller {
     }
   }
 
-  sendInvite ()  {
+  invitePreview ()  {
     event.preventDefault()
 
     let id = event.currentTarget.dataset.id;
+    let invited_as = ''
     $.post(`/submit_proposals?proposal=${id}.js`,
       $('form#submit_proposal').serialize(), function(data) {
-        $("#exampleModal").modal('show')
+        if(data.invited_as == 'participant') {
+          $('#invited_as_pre').text(data.invited_as)
+          invited_as = 'Participant'
+          $('#invited_as_title').text(invited_as)
+        } else {
+          invited_as = 'supporting organizer'
+          $('#invited_as_pre').text(invited_as)
+          invited_as = 'Supporting Organizer'
+          $('#invited_as_title').text(invited_as)
+        }
+        $("#email-preview").modal('show')
     }) 
     .fail(function(response) {
       let errors = response.responseJSON
@@ -68,5 +78,24 @@ export default class extends Controller {
         toastr.error(error)
       })
     });
+  }
+
+  sendInvite () {
+    let id = event.currentTarget.dataset.id;
+    let invited_as = $('#invited_as_pre').text()
+    let invite_id = 0
+    if (invited_as == 'participant') {
+      invited_as = 'Participant'
+      invite_id = event.currentTarget.dataset.participant || 0
+    } else {
+      invited_as = 'Co Organizer'
+      invite_id = event.currentTarget.dataset.organizer || 0
+    }
+    $.post(`/proposals/${id}/invites/${invite_id}/invite_email?invited_as=${invited_as}`, function() {
+      toastr.success("Invitation sent!")
+      setTimeout(function() {
+        window.location.reload();
+      }, 1000)
+    })
   }
 }

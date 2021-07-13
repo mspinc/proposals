@@ -28,8 +28,6 @@
                 data-submit-proposals-proposal-value="<%= @proposal.id %>"data-nested-invites-wrapper-selector-value=".nested-invites-wrapper"
                 data-nested-invites-max-participant-value="<%= @proposal.proposal_type.participant %>"
                 data-nested-invites-max-organizer-value="<%= @proposal.proposal_type.co_organizer %>"
-                data-nested-invites-organizer-value="<%= Proposal.no_of_participants(@proposal.id, 'Co Organizer').count %>"
-                data-nested-invites-participant-value="<%= Proposal.no_of_participants(@proposal.id, 'Participant').count %>"
                 >
                 <div class="mb-3 d-flex flex-row-reverse">
                   <% if params[:action] == 'edit' %>
@@ -139,7 +137,7 @@
                                       </button>
                                   </div>
                                   <div class="mb-3">
-                                    <button data-action="click->nested-invites#sendInvite" data-id="<%= @proposal.id %>" class="btn btn-primary">Invite</button>
+                                    <button data-action="click->nested-invites#invitePreview" data-id="<%= @proposal.id %>" class="btn btn-primary">Invite</button>
                                   </div>
                                 <% end %>
                               </div>
@@ -172,8 +170,7 @@
                                         </button>
                                     </div>
                                     <div class="mb-3">
-                                      <%= f.submit "Invite", class: 'btn btn-primary', id:"participant" %>
-                                      <!-- <span class='btn btn-primary' id="participant">Invite</span> -->
+                                      <button data-action="click->nested-invites#invitePreview" data-id="<%= @proposal.id %>" class="btn btn-primary">Invite</button>
                                     </div>
                                   <% end %>
                                 </div>
