@@ -27,8 +27,8 @@ class ProposalPdfService
 
     error_output = "<h2 class=\"text-danger\">LaTeX Error Log:</h2>\n\n"
     error_output << "<pre>\n" + error + "\n</pre>\n\n"
-    error_output << "<pre class=\"collapse\" id=\"latex-error\">\n"
     error_output << "<h2 class=\"text-danger\">LaTeX Source File:</h2>\n\n"
+    error_output << "<pre class=\"collapse\" id=\"latex-error\">\n"
 
     line_num = 1
     error_object.src.each_line do |line|
