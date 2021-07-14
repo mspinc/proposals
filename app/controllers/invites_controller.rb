@@ -80,11 +80,6 @@ class InvitesController < ApplicationController
     params.require(:commit)&.downcase
   end
 
-  def add_person
-    @invite.person = Person.find_or_create_by!(firstname: @invite.firstname,
-                              lastname: @invite.lastname, email: @invite.email)
-  end
-
   def create_user
     user = User.new(email: @invite.person.email,
                     password: SecureRandom.urlsafe_base64(20))

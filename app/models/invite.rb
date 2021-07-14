@@ -43,15 +43,17 @@ class Invite < ApplicationRecord
   end
 
   def assign_person
-    errors.add(:base, 'You cannot invite yourself!') if email == proposal.lead_organizer&.email
+    errors.add(:base, 'You cannot invite yourself!') if email == proposal&.lead_organizer&.email
 
     add_person
   end
 
-   def add_person
+  def add_person
     return if firstname.blank? || lastname.blank? || email.blank?
 
-    self.person = Person.find_or_create_by!(firstname: firstname,
-                              lastname: lastname, email: email)
+    person = Person.find_by(email: email)
+    person = Person.create(email: email, firstname: firstname, lastname: lastname) unless person
+
+    self.person = person
   end
 end

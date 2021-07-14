@@ -7,26 +7,11 @@ class SubmitProposalsController < ApplicationController
   def create
     if @proposal.update(proposal_params)
       update_ams_subject_code
-      submission = SubmitProposalService.new(@proposal, params)
-      submission.save_answers
-      session[:is_submission] = @proposal.is_submission = submission.is_final?
+      @submission = SubmitProposalService.new(@proposal, params)
+      @submission.save_answers
+      session[:is_submission] = @proposal.is_submission = @submission.is_final?
 
-      if request.xhr?
-        render json: {invited_as: @proposal.invites.last.invited_as.downcase}, status: :ok
-      else
-        unless @proposal.is_submission
-          redirect_to edit_proposal_path(@proposal), 'Draft saved.'
-          return
-         end
-
-        if submission.has_errors?
-          redirect_to edit_proposal_path(@proposal), alert: "Your submission has
-              errors: #{submission.error_messages}.".squish
-          return
-        end
-        attachment = generate_proposal_pdf || return
-        confirm_submission(attachment)
-      end
+      response_to_format
     else
       if request.xhr?
         render json: @proposal.errors.full_messages, status: 422
@@ -39,6 +24,25 @@ class SubmitProposalsController < ApplicationController
   def thanks; end
 
   private
+
+  def response_to_format
+    if request.xhr?
+      render json: {invited_as: @proposal.invites.last.invited_as.downcase}, status: :ok
+    else
+      unless @proposal.is_submission
+        redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
+        return
+       end
+
+      if @submission.has_errors?
+        redirect_to edit_proposal_path(@proposal), alert: "Your submission has
+            errors: #{@submission.error_messages}.".squish
+        return
+      end
+      attachment = generate_proposal_pdf || return
+      confirm_submission(attachment)
+    end
+  end
 
   def confirm_submission(attachment)
     @proposal.update(status: :active)
