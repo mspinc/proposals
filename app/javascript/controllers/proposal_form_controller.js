@@ -92,7 +92,7 @@ export default class extends Controller {
     let _this = this
     let textField
     for (var i = 0; i < this.textFieldTargets.length; i++) {
-      textField = this.textFieldTargets[i]
+      textField = this.textFieldTargets [`${i}`]
       if(textField.dataset.value === data.value) {
         $.post("/proposals/" + data.propid + "/latex",
           { latex: textField.value },

@@ -75,7 +75,7 @@ export default class extends Controller {
     let currentTab
     let tab
     for (var i = 0; i < this.tabsTargets.length; i++) {
-      tab = this.tabsTargets[i]
+      tab = this.tabsTargets [`${i}`]
       if (tab.classList.contains('active')) {
         currentTab = this.tabsTargets[i]
       }
@@ -91,7 +91,7 @@ export default class extends Controller {
     let tab
     let currentTab
     for (var i = 0; i < this.tabsTargets.length; i++) {
-      tab = this.tabsTargets[i]
+      tab = this.tabsTargets [`${i}`]
       if (tab.classList.contains('active')) {
         currentTab = this.tabsTargets[i]
       }
