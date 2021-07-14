@@ -77,7 +77,7 @@ export default class extends Controller {
     for (var i = 0; i < this.tabsTargets.length; i++) {
       tab = this.tabsTargets [`${i}`]
       if (tab.classList.contains('active')) {
-        currentTab = this.tabsTargets[i]
+        currentTab = tab
       }
     }
     let next = currentTab.parentElement.nextElementSibling
@@ -93,7 +93,7 @@ export default class extends Controller {
     for (var i = 0; i < this.tabsTargets.length; i++) {
       tab = this.tabsTargets [`${i}`]
       if (tab.classList.contains('active')) {
-        currentTab = this.tabsTargets[i]
+        currentTab = tab
       }
     }
     let previous = currentTab.parentElement.previousElementSibling
