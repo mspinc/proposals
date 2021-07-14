@@ -7,7 +7,6 @@
       id="<%=  invite_role(invited_as) %>_firstname"
       data-role="<%= invite_role(invited_as) %>"
       data-action="change->proposal-form#disableOtherInvites"
-      required
     >
   </div>
   <div class="mb-3">
@@ -16,7 +15,6 @@
       class="form-control" id="<%=  invite_role(invited_as) %>_lastname"
       data-role="<%= invite_role(invited_as) %>"
       data-action="change->proposal-form#disableOtherInvites"
-      required
     >
   </div>
 
@@ -26,7 +24,6 @@
       class="form-control" id="<%=  invite_role(invited_as) %>_email"
       data-role="<%= invite_role(invited_as) %>"
       data-action="change->proposal-form#disableOtherInvites"
-      required
     >
   </div>
   <div class="mb-3">
@@ -35,7 +32,6 @@
       class="form-control" id="<%= invite_role(invited_as) %>_deadline"
       value="<%= date %>"
       data-action="click->proposal-form#presentDate"
-      required
     >
   </div>
   <input type="hidden" name="invites_attributes[NEW_RECORD][invited_as]" 

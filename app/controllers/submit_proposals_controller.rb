@@ -14,7 +14,7 @@ class SubmitProposalsController < ApplicationController
       response_to_format
     else
       if request.xhr?
-        render json: @proposal.errors.full_messages, status: 422
+        render json: @proposal.errors.full_messages, status: :unprocessable_entity
       else
         redirect_to edit_proposal_path(@proposal), alert: @proposal.errors.full_messages
       end
@@ -27,21 +27,25 @@ class SubmitProposalsController < ApplicationController
 
   def response_to_format
     if request.xhr?
-      render json: {invited_as: @proposal.invites.last.invited_as.downcase}, status: :ok
+      render json: { invited_as: @proposal.invites.last.invited_as.downcase }, status: :ok
     else
-      unless @proposal.is_submission
-        redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
-        return
-       end
-
-      if @submission.has_errors?
-        redirect_to edit_proposal_path(@proposal), alert: "Your submission has
-            errors: #{@submission.error_messages}.".squish
-        return
-      end
-      attachment = generate_proposal_pdf || return
-      confirm_submission(attachment)
+      proposal_submission
     end
+  end
+
+  def proposal_submission
+    unless @proposal.is_submission
+      redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
+      return
+    end
+
+    if @submission.has_errors?
+      redirect_to edit_proposal_path(@proposal), alert: "Your submission has
+          errors: #{@submission.error_messages}.".squish
+      return
+    end
+    attachment = generate_proposal_pdf || return
+    confirm_submission(attachment)
   end
 
   def confirm_submission(attachment)

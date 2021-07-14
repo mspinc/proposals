@@ -18,13 +18,12 @@ export default class extends Controller {
     e.preventDefault()
 
     let content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime().toString())
-    if(this.organizerValue < this.maxOrganizerValue) {
+    if (this.organizerValue < this.maxOrganizerValue) {
       this.targetTarget.insertAdjacentHTML('beforebegin', content)
       this.organizerValue += 1
-    }
-
-    else
+    } else {
       toastr.error("You can't add more because the maximum number of Co Organizer invitations has been sent.")
+    }
   }
 
   addParticipants (e) {
@@ -34,9 +33,9 @@ export default class extends Controller {
     if (this.participantValue < this.maxParticipantValue) {
       this.targetOneTarget.insertAdjacentHTML('beforebegin', contentOne)
       this.participantValue += 1
-    }
-    else
+    } else {
       toastr.error("You can't add more because the maximum number of Participant invitations has been sent.")
+    }
   }
 
   remove (e) {
@@ -57,18 +56,18 @@ export default class extends Controller {
     event.preventDefault()
 
     let id = event.currentTarget.dataset.id;
-    let invited_as = ''
+    let invitedAs = ''
     $.post(`/submit_proposals?proposal=${id}.js`,
       $('form#submit_proposal').serialize(), function(data) {
-        if(data.invited_as == 'participant') {
+        if(data.invited_as === 'participant') {
           $('#invited_as_pre').text(data.invited_as)
-          invited_as = 'Participant'
-          $('#invited_as_title').text(invited_as)
+          invitedAs = 'Participant'
+          $('#invited_as_title').text(invitedAs)
         } else {
-          invited_as = 'supporting organizer'
-          $('#invited_as_pre').text(invited_as)
-          invited_as = 'Supporting Organizer'
-          $('#invited_as_title').text(invited_as)
+          invitedAs = 'supporting organizer'
+          $('#invited_as_pre').text(invitedAs)
+          invitedAs = 'Supporting Organizer'
+          $('#invited_as_title').text(invitedAs)
         }
         $("#email-preview").modal('show')
     }) 
@@ -83,15 +82,15 @@ export default class extends Controller {
   sendInvite () {
     let id = event.currentTarget.dataset.id;
     let invited_as = $('#invited_as_pre').text()
-    let invite_id = 0
-    if (invited_as == 'participant') {
+    let inviteId = 0
+    if (invited_as === 'participant') {
       invited_as = 'Participant'
-      invite_id = event.currentTarget.dataset.participant || 0
+      inviteId = event.currentTarget.dataset.participant || 0
     } else {
       invited_as = 'Co Organizer'
-      invite_id = event.currentTarget.dataset.organizer || 0
+      inviteId = event.currentTarget.dataset.organizer || 0
     }
-    $.post(`/proposals/${id}/invites/${invite_id}/invite_email?invited_as=${invited_as}`, function() {
+    $.post(`/proposals/${id}/invites/${inviteId}/invite_email?invited_as=${invited_as}`, function() {
       toastr.success("Invitation sent!")
       setTimeout(function() {
         window.location.reload();

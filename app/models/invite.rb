@@ -1,4 +1,5 @@
 class Invite < ApplicationRecord
+  before_validation :assign_person
   validates :firstname, :lastname, :email, :invited_as, :deadline_date, presence: true
   validate :proposal_title
   enum status: { pending: 0, confirmed: 1, cancelled: 2 }
@@ -8,7 +9,6 @@ class Invite < ApplicationRecord
   belongs_to :proposal
 
   before_save :generate_code
-  before_validation :assign_person
   validate :deadline_not_in_past
 
   # rubocop:disable Rails/UniqueValidationWithoutIndex
@@ -17,7 +17,6 @@ class Invite < ApplicationRecord
                                   invited organizers or participants.".squish,
                                   conditions: -> { where.not(response: :no) } }
   # rubocop:enable Rails/UniqueValidationWithoutIndex
-
 
   def generate_code
     self.code = SecureRandom.urlsafe_base64(37) if code.blank?
@@ -52,7 +51,7 @@ class Invite < ApplicationRecord
     return if firstname.blank? || lastname.blank? || email.blank?
 
     person = Person.find_by(email: email)
-    person = Person.create(email: email, firstname: firstname, lastname: lastname) unless person
+    person ||= Person.create(email: email, firstname: firstname, lastname: lastname)
 
     self.person = person
   end

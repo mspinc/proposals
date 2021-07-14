@@ -152,6 +152,6 @@ module ProposalsHelper
   end
 
   def invite_role(invited_as)
-    invited_as == 'Co Organizer' ? 'organizer' : 'participant' 
+    invited_as == 'Co Organizer'? 'organizer': 'participant' 
   end
 end
