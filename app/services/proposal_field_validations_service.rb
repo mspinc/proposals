@@ -36,6 +36,8 @@ class ProposalFieldValidationsService
         @errors << val.error_message unless @answer.to_i == val.value.to_i
       when 'equal (float matcher)'
         @errors << val.error_message unless @answer.to_f == val.value.to_f
+      when 'set limit'
+        @errors << val.error_message unless LatexToPdf.escape_latex(@answer).size < val.value.to_i
       when '5-day workshop preferred/Impossible dates'
         preferred_impossible_dates_validation
       end
