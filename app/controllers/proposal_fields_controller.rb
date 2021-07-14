@@ -3,7 +3,7 @@ class ProposalFieldsController < ApplicationController
   before_action :set_proposal_field, only: %i[edit update]
 
   def new
-    if %w(Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate).include?(params[:field_type])
+    if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate].include?(params[:field_type])
       type = "ProposalFields::#{params[:field_type]}".safe_constantize.new
     end
     @proposal_field = @proposal_form.proposal_fields.new(fieldable: type)
@@ -12,7 +12,7 @@ class ProposalFieldsController < ApplicationController
   end
 
   def create
-    if %w(Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate).include?(params[:type])
+    if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate].include?(params[:type])
       @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new(date_field_params)
     end
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)

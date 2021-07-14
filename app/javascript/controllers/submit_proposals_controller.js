@@ -72,15 +72,15 @@ export default class extends Controller {
 
   nextTab() {
     event.preventDefault();
-    let current_tab
+    let currentTab
     let tab
     for (var i = 0; i < this.tabsTargets.length; i++) {
       tab = this.tabsTargets[i]
       if (tab.classList.contains('active')) {
-        current_tab = this.tabsTargets[i]
+        currentTab = this.tabsTargets[i]
       }
     }
-    let next = current_tab.parentElement.nextElementSibling
+    let next = currentTab.parentElement.nextElementSibling
     if (next) {
       next.firstElementChild.click()
     }
@@ -89,15 +89,14 @@ export default class extends Controller {
   previousTab() {
     event.preventDefault();
     let tab
-    let current_tab
+    let currentTab
     for (var i = 0; i < this.tabsTargets.length; i++) {
       tab = this.tabsTargets[i]
-      console.log(tab)
       if (tab.classList.contains('active')) {
-        current_tab = this.tabsTargets[i]
+        currentTab = this.tabsTargets[i]
       }
     }
-    let previous = current_tab.parentElement.previousElementSibling
+    let previous = currentTab.parentElement.previousElementSibling
     if (previous) {
       previous.firstElementChild.click()
     }
