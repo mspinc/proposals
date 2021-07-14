@@ -90,10 +90,12 @@ export default class extends Controller {
   latex () {
     let data = event.target.dataset
     let _this = this
+    let textField
     for (var i = 0; i < this.textFieldTargets.length; i++) {
-      if(this.textFieldTargets[i].dataset.value === data.value) {
+      textField = this.textFieldTargets [`${i}`]
+      if(textField.dataset.value === data.value) {
         $.post("/proposals/" + data.propid + "/latex",
-          { latex: this.textFieldTargets[i].value },
+          { latex: textField.value },
           function(data, status) {});
       }
     }
