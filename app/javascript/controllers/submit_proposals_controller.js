@@ -73,8 +73,10 @@ export default class extends Controller {
   nextTab() {
     event.preventDefault();
     let current_tab
+    let tab
     for (var i = 0; i < this.tabsTargets.length; i++) {
-      if (this.tabsTargets[i].classList.contains('active')) {
+      tab = this.tabsTargets[i]
+      if (tab.classList.contains('active')) {
         current_tab = this.tabsTargets[i]
       }
     }
@@ -86,9 +88,12 @@ export default class extends Controller {
 
   previousTab() {
     event.preventDefault();
+    let tab
     let current_tab
     for (var i = 0; i < this.tabsTargets.length; i++) {
-      if (this.tabsTargets[i].classList.contains('active')) {
+      tab = this.tabsTargets[i]
+      console.log(tab)
+      if (tab.classList.contains('active')) {
         current_tab = this.tabsTargets[i]
       }
     }
