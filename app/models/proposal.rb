@@ -19,7 +19,7 @@ class Proposal < ApplicationRecord
   has_many :ams_subjects, through: :proposal_ams_subjects
   belongs_to :subject, optional: true
 
-  validates_presence_of :year, :title, if: :is_submission
+  validates :year, :title, presence: true, if: :is_submission
   validate :subjects, if: :is_submission
   validate :minimum_organizers, if: :is_submission
   validate :preferred_locations, if: :is_submission
@@ -82,7 +82,7 @@ class Proposal < ApplicationRecord
                   "Updated"]
     CSV.generate(headers: true) do |csv|
       csv << attributes
-      all.each do |proposal|
+      all.find_each do |proposal|
         csv << [proposal.code, proposal.title, proposal.proposal_type.name, proposal.lead_organizer.fullname,
                 proposal.the_locations, proposal.status, proposal.updated_at.to_date]
       end
@@ -122,7 +122,7 @@ class Proposal < ApplicationRecord
   end
 
   def create_code
-    return unless self.code.blank?
+    return if self.code.present?
 
     tc = proposal_type.code || 'xx'
     self.code = year.to_s[-2..-1] + tc + next_number
