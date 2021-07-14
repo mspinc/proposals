@@ -12,12 +12,10 @@ class SubmitProposalsController < ApplicationController
       session[:is_submission] = @proposal.is_submission = @submission.is_final?
 
       response_to_format
+    elsif request.xhr?
+      render json: @proposal.errors.full_messages, status: :unprocessable_entity
     else
-      if request.xhr?
-        render json: @proposal.errors.full_messages, status: :unprocessable_entity
-      else
-        redirect_to edit_proposal_path(@proposal), alert: @proposal.errors.full_messages
-      end
+      redirect_to edit_proposal_path(@proposal), alert: @proposal.errors.full_messages
     end
   end
 
@@ -44,6 +42,7 @@ class SubmitProposalsController < ApplicationController
           errors: #{@submission.error_messages}.".squish
       return
     end
+
     attachment = generate_proposal_pdf || return
     confirm_submission(attachment)
   end

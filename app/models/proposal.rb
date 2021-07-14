@@ -28,7 +28,9 @@ class Proposal < ApplicationRecord
 
   enum status: { draft: 0, active: 1 }
 
-  accepts_nested_attributes_for :invites, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :invites, reject_if: proc { |atr|
+   atr[:firstname].blank? && atr[:lastname].blank? && atr[:email].blank?
+  }, allow_destroy: true
 
   scope :active_proposals, -> {
     where(status: 'active')

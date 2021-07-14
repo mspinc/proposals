@@ -81,16 +81,16 @@ export default class extends Controller {
 
   sendInvite () {
     let id = event.currentTarget.dataset.id;
-    let invited_as = $('#invited_as_pre').text()
+    let invitedAs = $('#invited_as_pre').text()
     let inviteId = 0
-    if (invited_as === 'participant') {
-      invited_as = 'Participant'
+    if (invitedAs === 'participant') {
+      invitedAs = 'Participant'
       inviteId = event.currentTarget.dataset.participant || 0
     } else {
-      invited_as = 'Co Organizer'
+      invitedAs = 'Co Organizer'
       inviteId = event.currentTarget.dataset.organizer || 0
     }
-    $.post(`/proposals/${id}/invites/${inviteId}/invite_email?invited_as=${invited_as}`, function() {
+    $.post(`/proposals/${id}/invites/${inviteId}/invite_email?invited_as=${invitedAs}`, function() {
       toastr.success("Invitation sent!")
       setTimeout(function() {
         window.location.reload();
