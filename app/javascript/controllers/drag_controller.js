@@ -9,8 +9,7 @@ export default class extends Controller {
     })
   }
 
-  end(event)
-  {
+  end(event) {
     let id = event.item.dataset.id
     let data = new FormData()
     data.append("position", event.newIndex + 1)
@@ -19,7 +18,7 @@ export default class extends Controller {
     Rails.ajax({
       url,
       type: 'PATCH',
-      data: data
+      data
     })
   }
 }
