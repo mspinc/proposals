@@ -83,8 +83,13 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
 
   describe "POST /inviter_response" do
     before do
-      post inviter_response_proposal_invite_path(proposal_id: proposal.id,
-            id: invite.id, code: invite.code, commit: commit)
+      params = {
+        proposal_id: proposal.id,
+        id: invite.id,
+        code: invite.code,
+        commit: commit
+      }
+      post inviter_response_proposal_invite_path(params)
     end
 
     context 'when response is yes/maybe' do
@@ -153,8 +158,8 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   describe "POST /inviter_reminder" do
     before do
       authenticate_for_controllers
-      post invite_reminder_proposal_invite_path(proposal_id: proposal.id,
-            id: invite1.id, code: invite1.code)
+      params = { proposal_id: proposal.id, id: invite1.id, code: invite1.code }
+      post invite_reminder_proposal_invite_path(params)
     end
 
     context 'when status is pending' do
