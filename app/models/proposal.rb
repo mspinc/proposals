@@ -19,7 +19,7 @@ class Proposal < ApplicationRecord
   has_many :ams_subjects, through: :proposal_ams_subjects
   belongs_to :subject, optional: true
 
-  validates :year, :title, presence: { if: :is_submission }
+  validates :year, :title, presence: true, if: :is_submission
   validate :subjects, if: :is_submission
   validate :minimum_organizers, if: :is_submission
   validate :preferred_locations, if: :is_submission
@@ -70,6 +70,23 @@ class Proposal < ApplicationRecord
 
   def participants
     invites.where(invited_as: 'Participant').where(response: %w[yes maybe])
+  end
+
+  def participants_career(career)
+    person_ids = participants.map(&:person_id)
+    Person.where(id: person_ids).where(academic_status: career)
+  end
+
+  def self.to_csv
+    attributes = ["Code", "Proposal Title", "Proposal Type", "Lead Organizer", "Preffered Locations", "Status",
+                  "Updated"]
+    CSV.generate(headers: true) do |csv|
+      csv << attributes
+      all.find_each do |proposal|
+        csv << [proposal.code, proposal.title, proposal.proposal_type.name, proposal.lead_organizer.fullname,
+                proposal.the_locations, proposal.status, proposal.updated_at.to_date]
+      end
+    end
   end
 
   private

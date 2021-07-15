@@ -1,5 +1,6 @@
 class ProposalsController < ApplicationController
   before_action :set_proposal, only: %w[show edit destroy ranking locations]
+  before_action :set_careers, only: %w[show edit]
   before_action :authenticate_user!
   
   def index
@@ -71,13 +72,14 @@ class ProposalsController < ApplicationController
 
   # GET /proposals/:id/rendered_field.pdf
   def latex_field
-    prop_id = session[:proposal_id]
+    prop_id = params[:id]
     return if prop_id.blank?
 
     @proposal = Proposal.find_by_id(prop_id)
     @year = @proposal&.year || Date.current.year.to_i + 2
+    temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
 
-    fh = File.open("#{Rails.root}/tmp/#{session[:latex_file]}")
+    fh = File.open("#{Rails.root}/tmp/#{temp_file}")
     @latex_input = fh.read
 
     render_latex
@@ -136,5 +138,9 @@ class ProposalsController < ApplicationController
       error_output = ProposalPdfService.format_errors(error)
       render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
     end
+  end
+
+  def set_careers
+    @careers = Person.where(id: @proposal.participants.pluck(:person_id)).pluck(:academic_status)
   end
 end

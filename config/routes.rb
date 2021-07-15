@@ -15,7 +15,11 @@ Rails.application.routes.draw do
   end
   get 'dashboards', to: 'proposal_types#index'
 
-  resources :submitted_proposals
+  resources :submitted_proposals do
+    collection do
+      get :download_csv
+    end
+  end
 
   get :invite, to: 'invites#show'
   get 'expired' => 'invites#expired'
