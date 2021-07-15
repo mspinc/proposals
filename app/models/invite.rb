@@ -18,17 +18,18 @@ class Invite < ApplicationRecord
                                   conditions: -> { where.not(response: :no) } }
   # rubocop:enable Rails/UniqueValidationWithoutIndex
 
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }
   def generate_code
     self.code = SecureRandom.urlsafe_base64(37) if code.blank?
   end
 
   def proposal_title
-    return if self.proposal.nil?
+    return if proposal.nil?
 
-    if proposal.title.blank?
-      errors.add('Proposal Title:', 'Please add a title, and click
+    return if proposal.title.present?
+
+    errors.add('Proposal Title:', 'Please add a title, and click
         "Save as Draft", before adding people.'.squish)
-    end
   end
 
   def deadline_not_in_past

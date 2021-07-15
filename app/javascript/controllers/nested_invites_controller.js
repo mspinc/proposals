@@ -1,4 +1,5 @@
 import { Controller } from 'stimulus'
+import toastr from 'toastr'
 
 export default class extends Controller {
   static targets = ['target', 'template', 'targetOne', 'templateOne']
@@ -59,18 +60,21 @@ export default class extends Controller {
     let invitedAs = ''
     $.post(`/submit_proposals?proposal=${id}.js`,
       $('form#submit_proposal').serialize(), function(data) {
-        if(data.invited_as === 'participant') {
-          $('#invited_as_pre').text(data.invited_as)
-          invitedAs = 'Participant'
-          $('#invited_as_title').text(invitedAs)
-        } else {
-          invitedAs = 'supporting organizer'
-          $('#invited_as_pre').text(invitedAs)
-          invitedAs = 'Supporting Organizer'
-          $('#invited_as_title').text(invitedAs)
+        if ( data.invited_as ) {
+          if(data.invited_as === 'participant') {
+            $('#invited_as_pre').text(data.invited_as)
+            invitedAs = 'Participant'
+            $('#invited_as_title').text(invitedAs)
+          } else {
+            invitedAs = 'supporting organizer'
+            $('#invited_as_pre').text(invitedAs)
+            invitedAs = 'Supporting Organizer'
+            $('#invited_as_title').text(invitedAs)
+          }
+          $("#email-preview").modal('show')
         }
-        $("#email-preview").modal('show')
-    }) 
+      }
+    ) 
     .fail(function(response) {
       let errors = response.responseJSON
       $.each(errors, function(index, error) {
@@ -91,10 +95,10 @@ export default class extends Controller {
       inviteId = event.currentTarget.dataset.organizer || 0
     }
     $.post(`/proposals/${id}/invites/${inviteId}/invite_email?invited_as=${invitedAs}`, function() {
-      toastr.success("Invitation sent!")
+      toastr.success("Invitation has been sent!")
       setTimeout(function() {
         window.location.reload();
-      }, 1000)
+      }, 2000)
     })
   }
 }
