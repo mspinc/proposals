@@ -13,6 +13,7 @@
 ActiveRecord::Schema.define(version: 2021_07_13_075543) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -91,10 +92,10 @@ ActiveRecord::Schema.define(version: 2021_07_13_075543) do
   create_table "feedbacks", force: :cascade do |t|
     t.string "content"
     t.bigint "user_id"
-    t.text "reply"
-    t.boolean "reviewed"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "reply"
+    t.boolean "reviewed"
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 

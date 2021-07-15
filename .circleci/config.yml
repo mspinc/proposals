@@ -62,11 +62,6 @@ jobs:
             cd /home/app/proposals
             SECRET_KEY_BASE=token DB_USER=$DB_USER DB_PASS=$DB_PASS bin/rails db:migrate RAILS_ENV=test
       - run:
-          name: Setup ActionText
-          command: |
-            cd /home/app/proposals
-            bin/rails action_text:install
-      - run:
           name: Run the tests
           command: |
             chown -R app:app /home/app/proposals
