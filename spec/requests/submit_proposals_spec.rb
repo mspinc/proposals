@@ -44,8 +44,8 @@ RSpec.describe "/submit_proposals", type: :request do
     end
     let(:params) do
       { proposal: proposal.id, title: 'Test proposal', year: '2023', subject_id: subject.id,
-        ams_subjects: {code1: ams_subjects.first.id, code2: ams_subjects.last.id}, invites_attributes: invites_attributes,
-        location_ids: location.id, no_latex: false }
+        ams_subjects: { code1: ams_subjects.first.id, code2: ams_subjects.last.id },
+        invites_attributes: invites_attributes, location_ids: location.id, no_latex: false }
     end
 
     before do

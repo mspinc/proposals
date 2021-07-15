@@ -42,8 +42,8 @@ class SubmitProposalsController < ApplicationController
     return unless request.xhr?
 
     count = 0
-    params[:invites_attributes].values.each do |invite|
-      @invite = @proposal.invites.new(invite)
+    params[:invites_attributes].each_value do |invite|
+      @invite = @proposal.invites.new(invite_params(invite))
       count += 1 if @invite.save
     end
     if count >= 1
@@ -113,5 +113,9 @@ class SubmitProposalsController < ApplicationController
   def update_ams_subject_code
     @proposal.ams_subjects.where(id: @code1)&.update(code: 'code1')
     @proposal.ams_subjects.where(id: @code2)&.update(code: 'code2')
+  end
+
+  def invite_params(invite)
+    invite.permit(:firstname, :lastname, :email, :deadline_date, :invited_as)
   end
 end
