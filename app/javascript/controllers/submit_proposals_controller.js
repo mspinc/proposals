@@ -166,4 +166,19 @@ export default class extends Controller {
       this.SendInvite (id, firstname, lastname, email, deadline, invited)
     }
   }
+
+  uploadFile() {
+    var data = new FormData()
+    if(event.target.files[0])
+    {
+      data.append('file',event.target.files[0])
+      data.append("field_id", event.target.dataset.fieldId)
+      let url = "/submit_proposals/" + event.target.dataset.proposalFormId + "/upload_file"
+      Rails.ajax({
+        url,
+        type: "POST",
+        data
+      })
+    }  
+  }
 }

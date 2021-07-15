@@ -28,6 +28,11 @@ class SubmitProposalsController < ApplicationController
 
   def thanks; end
 
+  def upload_file
+    @answer = Answer.find_by(proposal_field_id: params[:field_id], proposal_id: params[:id])
+    @answer.file.attach(params[:file])
+  end
+  
   private
 
   def confirm_submission(attachment)
@@ -85,4 +90,6 @@ class SubmitProposalsController < ApplicationController
     @proposal.ams_subjects.where(id: @code1)&.update(code: 'code1')
     @proposal.ams_subjects.where(id: @code2)&.update(code: 'code2')
   end
+
+
 end

@@ -20,8 +20,12 @@ class ProposalFieldValidationsService
     validations.each do |val|
       case val.validation_type
       when 'mandatory'
-        @errors << val.error_message if @answer == ""
-        @errors << val.error_message unless @answer
+        if val.proposal_field.fieldable_type == 'ProposalFields::File'
+          @errors << val.error_message unless attaced_file
+        else
+          @errors << val.error_message if @answer == ""
+          @errors << val.error_message unless @answer
+        end
       when 'less than (integer matcher)'
         @errors << val.error_message unless @answer.to_i < val.value.to_i
       when 'less than (float matcher)'
@@ -51,5 +55,11 @@ class ProposalFieldValidationsService
 
     @errors << 'At least 2 preferred dates must be selected' if preferred_dates.count < 2
     @errors << "You can't select the same date twice" unless uniq_dates.uniq.count == uniq_dates.count
+  end
+
+  def attaced_file
+    return unless @answer
+
+    Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.file&.attached?
   end
 end

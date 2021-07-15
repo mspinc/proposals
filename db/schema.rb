@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_05_101129) do
+ActiveRecord::Schema.define(version: 2021_07_14_064439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -198,6 +198,12 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
+  end
+
+  create_table "proposal_fields_files", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "proposal_locations", force: :cascade do |t|
