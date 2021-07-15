@@ -105,7 +105,7 @@ class InvitesController < ApplicationController
   end
 
   def find_or_create_person(invite)
-    Person.find_by_email(invite.email) ||
+    Person.find_by(email: invite.email) ||
       Person.create(firstname: invite.firstname, lastname: invite.lastname,
                     email: invite.email)
   end
