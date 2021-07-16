@@ -14,10 +14,10 @@
                 <% @faqs.each do |faq| %>
                   <div class="mb-3">
                     <h4>
-                      <%= faq.question %>
+                      <%= faq.question&.html_safe %>
                     </h4>
                     <p>
-                      <%= faq.answer&.html_safe %>
+                      <%= faq.answer %>
                     </p>
                   </div>
                 <% end %>
