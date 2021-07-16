@@ -81,6 +81,7 @@ class ProposalsController < ApplicationController
 
     fh = File.open("#{Rails.root}/tmp/#{temp_file}")
     @latex_input = fh.read
+    @latex_input = LatexToPdf.escape_latex(@latex_input) if @proposal.no_latex
 
     render_latex
   end
