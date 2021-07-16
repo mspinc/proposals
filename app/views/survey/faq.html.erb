@@ -17,7 +17,7 @@
                       <%= faq.question %>
                     </h4>
                     <p>
-                      <%= faq.answer %>
+                      <%= faq.answer&.html_safe %>
                     </p>
                   </div>
                 <% end %>

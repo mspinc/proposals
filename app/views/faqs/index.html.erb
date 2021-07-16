@@ -28,7 +28,7 @@
               <h3 class="card-title mb-0">Question: <%= faq.question %></h3>
             </div>
             <div class="card-body">
-              <%= faq.answer %>
+              <%= faq.answer&.html_safe %>
             </div>
             <div class="text-end m-2">
               <%= link_to 'Edit', edit_faq_url(faq.id), class: "btn btn-primary" %>
