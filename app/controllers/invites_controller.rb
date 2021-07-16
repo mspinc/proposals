@@ -2,7 +2,8 @@ class InvitesController < ApplicationController
   before_action :authenticate_user!, except: %i[show inviter_response thanks expired]
   skip_before_action :verify_authenticity_token, only: %i[create]
   before_action :set_proposal, only: %i[new create invite_reminder invite_email]
-  before_action :set_invite, only: %i[show inviter_response cancel invite_reminder invite_email]
+  before_action :set_invite, only: %i[show inviter_response cancel
+                                      invite_reminder invite_email add_person]
   before_action :set_invite_proposal, only: %i[show]
 
   def show
@@ -100,8 +101,13 @@ class InvitesController < ApplicationController
   end
 
   def add_person
-    @invite.person = Person.find_or_create_by!(firstname: @invite.firstname,
-                              lastname: @invite.lastname, email: @invite.email)
+    @invite.person = find_or_create_person(@invite)
+  end
+
+  def find_or_create_person(invite)
+    Person.find_by(email: invite.email) ||
+      Person.create(firstname: invite.firstname, lastname: invite.lastname,
+                    email: invite.email)
   end
 
   def create_invite
