@@ -21,7 +21,7 @@ class ProposalFieldValidationsService
       case val.validation_type
       when 'mandatory'
         if val.proposal_field.fieldable_type == 'ProposalFields::File'
-          @errors << val.error_message unless attaced_file
+          @errors << val.error_message unless attached_file
         else
           @errors << val.error_message if @answer == ""
           @errors << val.error_message unless @answer
@@ -57,7 +57,7 @@ class ProposalFieldValidationsService
     @errors << "You can't select the same date twice" unless uniq_dates.uniq.count == uniq_dates.count
   end
 
-  def attaced_file
+  def attached_file
     return unless @answer
 
     Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.file&.attached?
