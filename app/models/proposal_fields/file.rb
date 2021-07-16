@@ -5,4 +5,3 @@ module ProposalFields
     has_many :proposal_fields, as: :fieldable, dependent: :destroy
   end
 end
-
