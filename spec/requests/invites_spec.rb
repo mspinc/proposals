@@ -20,6 +20,7 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
     before do
       authenticate_for_controllers
     end
+
     context "with valid parameters" do
       let(:params) do
         { firstname: 'Ben',
@@ -28,9 +29,11 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
           invited_as: 'Participant',
           deadline_date: Time.current.to_date }
       end
+
       it "creates a new invite" do
         expect do
-          post proposal_invites_url(proposal_id: proposal.id), params: { invite: params }
+          post proposal_invites_url(proposal_id: proposal.id),
+               params: { invite: params }
         end.to change(Invite, :count).by(1)
       end
     end
@@ -39,29 +42,63 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
       before do
         proposal.proposal_type.update(participant: 0)
       end
+
       let(:params) do
         { firstname: 'Handree',
           lastname: 'Tan',
           email: 'ben@tan.com',
           invited_as: 'Participant' }
       end
+
       it "does not create a new invite" do
         expect do
-          post proposal_invites_url(proposal_id: proposal.id), params: { invite: params }
+          post proposal_invites_url(proposal_id: proposal.id),
+               params: { invite: params }
         end.to change(Invite, :count).by(0)
+      end
+    end
+
+    context "with previously existing person record" do
+      before do
+        @person = create(:person)
+      end
+
+      let(:params) do
+        { firstname: 'Handree',
+          lastname: 'Tan',
+          email: @person.email,
+          invited_as: 'Participant',
+          deadline_date: Time.current.to_date }
+      end
+
+      it "creates a new invite for existing person record" do
+        expect do
+          post proposal_invites_url(proposal_id: proposal.id),
+               params: { invite: params }
+        end.to change(Invite, :count).by(1)
+        expect(Invite.last.person).to eq(@person)
       end
     end
   end
 
   describe "POST /inviter_response" do
     before do
-      post inviter_response_proposal_invite_path(proposal_id: proposal.id, id: invite.id, code: invite.code, commit: commit)
+      params = {
+        proposal_id: proposal.id,
+        id: invite.id,
+        code: invite.code,
+        commit: commit
+      }
+      post inviter_response_proposal_invite_path(params)
     end
 
     context 'when response is yes/maybe' do
       let(:commit) { 'YES' }
-      it { expect(invite.proposal.proposal_roles.last.role.name).to eq(invite.invited_as) }
       it { expect(response).to redirect_to(new_person_path(code: invite.code)) }
+      it "assigns given role" do
+        role_name = invite.proposal.proposal_roles.last.role.name
+        expect(role_name).to eq(invite.invited_as)
+      end
     end
 
     context 'when response is no' do
@@ -121,7 +158,8 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   describe "POST /inviter_reminder" do
     before do
       authenticate_for_controllers
-      post invite_reminder_proposal_invite_path(proposal_id: proposal.id, id: invite1.id, code: invite1.code)
+      params = { proposal_id: proposal.id, id: invite1.id, code: invite1.code }
+      post invite_reminder_proposal_invite_path(params)
     end
 
     context 'when status is pending' do
