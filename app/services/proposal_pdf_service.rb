@@ -22,7 +22,7 @@ class ProposalPdfService
 
   def self.format_errors(error)
     error_object = error.cause # RailsLatex::ProcessingError
-    start_index = error_object.log.index("! LaTeX Error:")
+    start_index = error_object.log.index("!")
     error = error_object.log[start_index...]
 
     error_output = "<h2 class=\"text-danger\">LaTeX Error Log:</h2>\n\n"
