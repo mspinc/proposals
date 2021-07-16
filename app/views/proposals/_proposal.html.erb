@@ -33,7 +33,6 @@
                       <% if @proposal.draft? %>
                         <div class="float-end">
                           <%= f.submit 'Save as draft', class:'btn btn-primary' %>
-                          <%= f.submit 'Submit Proposal', data: {confirm: "This step is final and cannot be reversed. You cannot edit your proposal after submission. Proceed?"}, class:'btn btn-primary' %>
                         </div>
                       <% end %>
                     <% end %>
@@ -235,7 +234,7 @@
                           <%= link_to "Print Proposal", rendered_proposal_proposal_path(@proposal.id, :format => :pdf), target: '_blank', class: 'p-2 mx-2 btn btn-primary' %>
                           <div class="float-end">
                             <button id="changeTab" class="p-2 mx-2 btn btn-primary" data-action='click->submit-proposals#previousTab'>Back</button>
-                            <button id="changeTab" class="p-2 btn btn-primary" data-action='click->submit-proposals#nextTab'>Next</button>
+                            <%= f.submit 'Submit Proposal', data: {confirm: "This step is final and cannot be reversed. You cannot edit your proposal after submission. Proceed?"}, class:'btn btn-primary p-2' %>
                           </div>
                         </div>
                       </div>
