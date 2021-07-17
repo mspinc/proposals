@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_05_101129) do
+ActiveRecord::Schema.define(version: 2021_07_17_060323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -87,6 +87,12 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.string "value"
     t.bigint "proposal_field_id", null: false
     t.index ["proposal_field_id"], name: "index_options_on_proposal_field_id"
+  end
+
+  create_table "page_contents", force: :cascade do |t|
+    t.text "guideline"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "people", force: :cascade do |t|

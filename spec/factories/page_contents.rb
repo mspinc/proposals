@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :site_setting do
+  factory :page_content do
     guideline { Faker::Lorem.paragraph }
   end
 end

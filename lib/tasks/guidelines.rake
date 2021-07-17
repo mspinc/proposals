@@ -202,6 +202,6 @@ namespace :birs do
         </table>
       </div>'
 
-    guide = SiteSetting.create(guideline: guideline)
+    guide = PageContent.create(guideline: guideline)
   end
 end

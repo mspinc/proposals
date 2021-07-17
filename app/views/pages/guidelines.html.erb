@@ -19,7 +19,7 @@
         <div class="card-body">
           <div>
             <% if current_user&.staff_member? %>
-              <%= link_to "Edit guidelines", edit_site_setting_path(@guideline), class:'btn btn-primary mb-3' %>
+              <%= link_to "Edit guidelines", edit_page_content_path(@guideline), class:'btn btn-primary mb-3' %>
             <% end %>
             <%= @guideline.guideline.html_safe %><br>
           </div>

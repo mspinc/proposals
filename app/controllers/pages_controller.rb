@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
   def guidelines
-    @guideline = SiteSetting.first
+    @guideline = PageContent.first
   end
 end
