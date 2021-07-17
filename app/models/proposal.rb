@@ -43,7 +43,7 @@ class Proposal < ApplicationRecord
   }
 
   def demographics_data
-    DemographicData.where(person_id: invites.pluck(:person_id))
+    DemographicData.where(person_id: invites.where(invited_as: 'Participant').pluck(:person_id))
   end
 
   def create_organizer_role(person, organizer)
@@ -98,11 +98,11 @@ class Proposal < ApplicationRecord
   end
 
   def minimum_organizers
-    if invites.select { |i| i.status == 'confirmed' }.count < 1
-      errors.add('Supporting Organizers: ', 'At least one supporting organizer
-        must confirm their participation by following the link in the email
-        that was sent to them.'.squish)
-    end
+    return unless invites.select { |i| i.status == 'confirmed' }.count < 1
+    
+    errors.add('Supporting Organizers: ', 'At least one supporting organizer
+      must confirm their participation by following the link in the email
+      that was sent to them.'.squish)
   end
 
   def subjects

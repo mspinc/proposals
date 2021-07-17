@@ -55,7 +55,7 @@
                         <a class="nav-link <%= active_tab(@proposal, 'three') %>" href="#tab-3" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Step 3</a>
                       </li>
                       <li class="nav-item col-3" data-target='submit-proposals.tabs'>
-                        <a class="nav-link" href="#tab-4" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Demographic Graphs and charts</a>
+                        <a class="nav-link" href="#tab-4" data-target='submit-proposals.tabs' data-bs-toggle="tab" role="tab">Demographic Charts</a>
                       </li>
                     </ul>
                     <div class="tab-content">
@@ -278,8 +278,9 @@
                       </div>
 
                       <div class="tab-pane" id="tab-4" role="tabpanel">
-                      <div class="mb-3">Charts</div>
-
+                        <div class="mb-3">
+                          <p><%= @proposal.proposal_form.introduction_charts&.html_safe %></p>
+                        </div>
                       <div class="row">
                         <div class="col-12 col-lg-6">
                           <div class="card flex-fill w-100">
