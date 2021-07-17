@@ -60,6 +60,9 @@ Rails.application.routes.draw do
     collection do 
       get :thanks
     end
+    member do
+      post :upload_file
+    end
   end
   resources :proposal_types do
     resources :proposal_forms do
@@ -82,6 +85,12 @@ Rails.application.routes.draw do
   resources :locations do
     member do
       get :proposal_types
+    end
+  end
+
+  resources :faqs do
+    member do
+      patch :move
     end
   end
 

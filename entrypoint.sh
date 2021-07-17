@@ -92,6 +92,13 @@ if [ ! -e /home/app/proposals/config/webpacker.yml ]; then
   echo
 fi
 
+if [ ! -e /home/app/proposals/app/assets/stylesheets/actiontext.scss ]; then
+  echo "Setting up ActionText..."
+  su - app -c "cd /home/app/proposals; bin/rails action_text:install"
+  echo
+  echo "Done!"
+fi
+
 if [ $RAILS_ENV = "production" ]; then
   echo
   echo "Updating file permissions..."

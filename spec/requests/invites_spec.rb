@@ -7,13 +7,22 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   
   describe "POST /inviter_response" do
     before do
-      post inviter_response_proposal_invite_path(proposal_id: proposal.id, id: invite.id, code: invite.code, commit: commit)
+      params = {
+        proposal_id: proposal.id,
+        id: invite.id,
+        code: invite.code,
+        commit: commit
+      }
+      post inviter_response_proposal_invite_path(params)
     end
 
     context 'when response is yes/maybe' do
       let(:commit) { 'YES' }
-      it { expect(invite.proposal.proposal_roles.last.role.name).to eq(invite.invited_as) }
       it { expect(response).to redirect_to(new_person_path(code: invite.code)) }
+      it "assigns given role" do
+        role_name = invite.proposal.proposal_roles.last.role.name
+        expect(role_name).to eq(invite.invited_as)
+      end
     end
 
     context 'when response is no' do
@@ -73,7 +82,8 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   describe "POST /inviter_reminder" do
     before do
       authenticate_for_controllers
-      post invite_reminder_proposal_invite_path(proposal_id: proposal.id, id: invite1.id, code: invite1.code)
+      params = { proposal_id: proposal.id, id: invite1.id, code: invite1.code }
+      post invite_reminder_proposal_invite_path(params)
     end
 
     context 'when status is pending' do

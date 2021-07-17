@@ -136,4 +136,10 @@ module ProposalFieldsHelper
     end
     false
   end
+
+  def answer_obj(field, proposal)
+    return unless proposal
+
+    Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)
+  end
 end
