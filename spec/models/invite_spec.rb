@@ -61,7 +61,7 @@ RSpec.describe Invite, type: :model do
     context 'when deadline date is in past' do
       let(:invite) { create(:invite ,firstname:'New',lastname:'Proposal',email:'test@test.com',invited_as:'coorganizer') }
      before do
-       invite.update(deadline_date: DateTime.now - 2.week)
+       invite.update(deadline_date: DateTime.now - 2.weeks)
      end
       it{ expect(invite.errors.full_messages).to include("Deadline can't be in past") }
     end

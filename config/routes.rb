@@ -60,6 +60,9 @@ Rails.application.routes.draw do
     collection do 
       get :thanks
     end
+    member do
+      post :upload_file
+    end
   end
   resources :proposal_types do
     resources :proposal_forms do
@@ -85,6 +88,12 @@ Rails.application.routes.draw do
     end
   end
   resources :page_contents
+
+  resources :faqs do
+    member do
+      patch :move
+    end
+  end
 
   get 'profile/' => 'profile#edit'
   patch 'update' => 'profile#update'

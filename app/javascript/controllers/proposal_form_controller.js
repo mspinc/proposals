@@ -14,13 +14,13 @@ export default class extends Controller {
     let disable_value = true
     let role_values = []
 
-    $.each(['firstname', 'lastname', 'email'], function(index, element) {
+    $.each(['firstname', 'lastname', 'email', 'invited_as', 'deadline'], function(index, element) {
       let length = $('#' + role + '_' + element)[0].value.length
       role_values.push(length)
     })
-    if( role_values.every( e => e == 0 ) ) { disable_value = false }
+    if( role_values.every( e => e === 0 ) ) { disable_value = false }
 
-    $.each(['firstname', 'lastname', 'email', 'deadline'],
+    $.each(['firstname', 'lastname', 'email', 'deadline', 'invited_as'],
       function(index, element) {
         $('#' + disable_role + '_' + element).prop("disabled", disable_value);
     })
@@ -90,10 +90,12 @@ export default class extends Controller {
   latex () {
     let data = event.target.dataset
     let _this = this
+    let textField
     for (var i = 0; i < this.textFieldTargets.length; i++) {
-      if(this.textFieldTargets[i].dataset.value === data.value) {
+      textField = this.textFieldTargets [`${i}`]
+      if(textField.dataset.value === data.value) {
         $.post("/proposals/" + data.propid + "/latex",
-          { latex: this.textFieldTargets[i].value },
+          { latex: textField.value },
           function(data, status) {});
       }
     }
