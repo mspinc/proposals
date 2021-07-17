@@ -20,9 +20,9 @@ class ProposalFieldValidationsService
     validations.each do |val|
       case val.validation_type
       when 'mandatory'
-        if val.proposal_field.fieldable_type == 'ProposalFields::File'
-          @errors << val.error_message unless attached_file
-        else
+        if val.proposal_field.fieldable_type == 'ProposalFields::File' && attached_file
+          @errors << val.error_message
+        elsif !val.proposal_field.fieldable_type == 'ProposalFields::File'
           @errors << val.error_message if @answer == ""
           @errors << val.error_message unless @answer
         end
@@ -58,8 +58,6 @@ class ProposalFieldValidationsService
   end
 
   def attached_file
-    return unless @answer
-
-    Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.file&.attached?
+    !Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)&.file&.attached?
   end
 end
