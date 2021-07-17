@@ -99,7 +99,7 @@ class Proposal < ApplicationRecord
 
   def minimum_organizers
     return unless invites.select { |i| i.status == 'confirmed' }.count < 1
-    
+
     errors.add('Supporting Organizers: ', 'At least one supporting organizer
       must confirm their participation by following the link in the email
       that was sent to them.'.squish)
