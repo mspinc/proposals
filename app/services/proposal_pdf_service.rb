@@ -22,13 +22,22 @@ class ProposalPdfService
 
   def self.format_errors(error)
     error_object = error.cause # RailsLatex::ProcessingError
-    start_index = error_object.log.index("! LaTeX Error:")
-    error = error_object.log[start_index...]
+    error_summary = error_object.log.lines.last(20).join("\n")
 
     error_output = "<h2 class=\"text-danger\">LaTeX Error Log:</h2>\n\n"
-    error_output << "<pre>\n" + error + "\n</pre>\n\n"
-    error_output << "<h2 class=\"text-danger\">LaTeX Source File:</h2>\n\n"
+    error_output << "<h4>Last 20 lines:</h4>\n\n"
+    error_output << "<pre>\n" + error_summary + "\n</pre>\n\n"
+    error_output << %q[
+      <button class="btn btn-primary mb-4 latex-show-more" type="button"
+                     data-bs-toggle="collapse" data-bs-target="#latex-error"
+                     aria-expanded="false" aria-controls="latex-error">
+              Show full error log
+      </button>]
     error_output << "<pre class=\"collapse\" id=\"latex-error\">\n"
+    error_output << error_object.log + "\n</pre>\n\n"
+
+    error_output << "<h2 class=\"text-danger p-4\">LaTeX Source File:</h2>\n\n"
+    error_output << "<pre id=\"latex-source\">\n"
 
     line_num = 1
     error_object.src.each_line do |line|
