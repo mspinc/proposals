@@ -87,7 +87,8 @@ RSpec.describe Person, type: :model do
       end
       it '' do
         expect(person.errors.full_messages).to eq(["Main affiliation/institution can't be blank",
-          "Academic status can't be blank", "Year of PhD can't be blank", "Country can't be blank"])
+                                                   "Academic status can't be blank", "Year of PhD can't be blank",\
+                                                   "Country can't be blank"])
       end
     end
     context 'when first phD yaer is N/A' do
