@@ -7,10 +7,14 @@ module ProposalsHelper
     proposal_type.map { |pt| [pt.name, pt.id] }
   end
 
+  def no_of_participants(id, invited_as)
+    Invite.where('invited_as = ? AND proposal_id = ?', invited_as, id)
+  end
+
   def proposal_type_year(proposal_type)
     return [Date.current.year + 2] if proposal_type.year.blank?
 
-    proposal_type.year&.split(",").map { |year| year }
+    proposal_type.year&.split(",")&.map { |year| year }
   end
 
   def locations
@@ -35,14 +39,22 @@ module ProposalsHelper
   end
 
   def proposal_ams_subjects_code(proposal, code)
-    proposal.ams_subjects.find_by_code(code)&.id
+    proposal.ams_subjects.find_by(code: code)&.id
   end
 
   def organizer_intro(proposal)
     types_with_intro = ['5 Day Workshop', 'Summer School']
     return '' unless types_with_intro.include? proposal.proposal_type.name
 
-    %q(<p>5-Day Workshops and Summer Schools require a minimum of 2, and a maximum of 4 total organizers per proposal. In accordance with BIRS' commitment to equity, diversity and inclusion (EDI), the organizing committee should contain at least one early-career researcher within ten years of their doctoral degree. For applications with two organizers, at least one member of the organizing committee must be from an under-represented community in STEM disciplines. For applications with three or more organizers, at least two members of the organizing committee must be from an under-represented community in STEM disciplines.</p>).html_safe
+    "<p>5-Day Workshops and Summer Schools require a minimum of 2, and a maximum
+     of 4 total organizers per proposal. In accordance with BIRS' commitment to
+     equity, diversity and inclusion (EDI), the organizing committee should
+     contain at least one early-career researcher within ten years of their
+     doctoral degree. For applications with two organizers, at least one member
+     of the organizing committee must be from an under-represented community in
+     STEM disciplines. For applications with three or more organizers, at least
+     two members of the organizing committee must be from an under-represented
+     community in STEM disciplines.</p>".html_safe
   end
 
   def existing_co_organizers(invite)
@@ -84,7 +96,9 @@ module ProposalsHelper
   end
 
   def graph_data(param, param2, proposal)
-    citizenships = proposal.demographics_data.pluck(:result).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    citizenships = proposal.demographics_data.pluck(:result).pluck(param, param2).flatten.reject do |s|
+      s.blank? || s.eql?("Other")
+    end
     data = Hash.new(0)
 
     citizenships.each do |c|
@@ -113,10 +127,13 @@ module ProposalsHelper
 
   def career_data(param, param2, proposal)
     person = Person.where.not(id: proposal.lead_organizer.id)
-    careerStage = person.where(id: proposal.person_ids).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    career_stage = person.where(id: proposal.invites.where(invited_as:
+      'Participant').pluck(:person_id)).pluck(param, param2).flatten.reject do |s|
+      s.blank? || s.eql?("Other")
+    end
     data = Hash.new(0)
 
-    careerStage.each do |s|
+    career_stage.each do |s|
       data[s] += 1
     end
     data
@@ -133,7 +150,9 @@ module ProposalsHelper
   end
 
   def stem_graph_data(proposal)
-    citizenships = proposal.demographics_data.pluck(:result).pluck("stem").flatten.reject{ |s| s.blank? || s.eql?("Other")}
+    citizenships = proposal.demographics_data.pluck(:result).pluck("stem").flatten.reject do |s|
+      s.blank? || s.eql?("Other")
+    end
     data = Hash.new(0)
 
     citizenships.each do |c|
@@ -150,5 +169,9 @@ module ProposalsHelper
   def stem_values(proposal)
     data = stem_graph_data(proposal)
     data.values
+  end
+
+  def invite_role(invited_as)
+    invited_as == 'Co Organizer' ? 'organizer' : 'participant'
   end
 end

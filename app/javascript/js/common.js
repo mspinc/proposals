@@ -7,13 +7,15 @@ $(document).ready(function() {
     var $this = $(this);
     $this.toggleClass('latex-show-more');
     if($this.hasClass('latex-show-more')) {
-      $this.text('Show more');
+      $this.text('Show full error log');
     } else {
-      $this.text('Show less');
+      $this.text('Hide full error log');
     }
   });
 
   $('[id^="chartjs"]').each(function(index, el) {
     this.style.height = '200px'
   })
+
+  $('#add-more-participant, #add-more-organizer').click();
 });

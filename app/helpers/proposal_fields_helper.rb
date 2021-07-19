@@ -107,7 +107,7 @@ module ProposalFieldsHelper
       'three'
     end
 
-    return 'one'
+    'one'
   end
 
   def tab_one(proposal)
@@ -135,5 +135,11 @@ module ProposalFieldsHelper
       return true if errors.flatten.count == 1
     end
     false
+  end
+
+  def answer_obj(field, proposal)
+    return unless proposal
+
+    Answer.find_by(proposal_field_id: field.id, proposal_id: proposal.id)
   end
 end

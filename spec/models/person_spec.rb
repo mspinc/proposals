@@ -41,7 +41,7 @@ RSpec.describe Person, type: :model do
       person.is_lead_organizer = true
       person.update(street_1: nil, city: nil)
     end
-    it '' do 
+    it '' do
       expect(person.errors.full_messages).to eq(["Street 1 can't be blank", "City can't be blank"])
     end
   end
@@ -83,57 +83,59 @@ RSpec.describe Person, type: :model do
     context 'when multiple fields are blank' do
       let(:person) { create(:person) }
       before do
-        person.update(affiliation: nil, academic_status: nil, first_phd_year: nil, country:nil)
+        person.update(affiliation: nil, academic_status: nil, first_phd_year: nil, country: nil)
       end
-      it '' do 
-        expect(person.errors.full_messages).to eq(["Main affiliation/institution can't be blank", "Academic status can't be blank", "Year of PhD can't be blank", "Country can't be blank"])
+      it '' do
+        expect(person.errors.full_messages).to eq(["Main affiliation/institution can't be blank",
+                                                   "Academic status can't be blank", "Year of PhD can't be blank",\
+                                                   "Country can't be blank"])
       end
     end
     context 'when first phD yaer is N/A' do
       let(:person) { create(:person) }
 
       before do
-        person.update(first_phd_year: :'N/A')        
-      end 
+        person.update(first_phd_year: :'N/A')
+      end
       it '' do
-        expect(person.first_phd_year).to eq nil 
+        expect(person.first_phd_year).to eq nil
       end
     end
     context 'When other academic status is blank' do
-     let(:person) { create(:person, academic_status: 'Other') }
+      let(:person) { create(:person, academic_status: 'Other') }
       before do
         person.update(other_academic_status: nil)
       end
-      it '' do 
+      it '' do
         expect(person.errors.full_messages).to eq(["Other academic status Please indicate your academic status."])
-      end 
+      end
     end
     context 'When region is blank' do
       let(:person) { create(:person) }
       before do
         person.update(region: nil, country: 'Canada')
       end
-      it '' do 
+      it '' do
         expect(person.errors.full_messages).to eq(["Missing data:  You must select a Province"])
       end
     end
-    context 'When State is blank' do
+    context 'When State is present' do
       let(:person) { create(:person, country: 'Canada') }
       before do
-        person.update(state: nil, province: "xyz")   
+        person.update(state: "xyz", province: nil)
       end
       it '' do
         expect(person.region).to eq(person.province)
       end
-    end  
-    context 'When Province is blank' do
+    end
+    context 'When Province is present' do
       let(:person) { create(:person, country: 'United States of America') }
       before do
-        person.update(state: "xyz", province: nil)   
+        person.update(state: nil, province: "xyz")
       end
       it '' do
         expect(person.region).to eq(person.state)
       end
-    end     
+    end
   end
 end
