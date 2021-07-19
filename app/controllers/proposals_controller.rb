@@ -113,7 +113,6 @@ class ProposalsController < ApplicationController
     prop
   end
 
-
   def no_proposal?
     @proposal.proposal_type.not_lead_organizer?(current_user.person)
   end

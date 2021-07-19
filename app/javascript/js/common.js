@@ -9,7 +9,7 @@ $(document).ready(function() {
     if($this.hasClass('latex-show-more')) {
       $this.text('Show full error log');
     } else {
-      $this.text('Show error summary');
+      $this.text('Hide full error log');
     }
   });
 
