@@ -248,6 +248,7 @@ ActiveRecord::Schema.define(version: 2021_07_17_060323) do
     t.integer "version", default: 0
     t.text "introduction2"
     t.text "introduction3"
+    t.text "introduction_charts"
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
