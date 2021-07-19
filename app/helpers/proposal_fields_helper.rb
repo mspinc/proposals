@@ -107,7 +107,7 @@ module ProposalFieldsHelper
       'three'
     end
 
-    return 'one'
+    'one'
   end
 
   def tab_one(proposal)

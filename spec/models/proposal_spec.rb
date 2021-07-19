@@ -44,11 +44,11 @@ RSpec.describe Proposal, type: :model do
 
   describe '#lead_organizer' do
     let(:proposal) { create(:proposal) }
-    let(:proposal_roles) { create_list(:proposal_role, 3, proposal: proposal)}
+    let(:proposal_roles) { create_list(:proposal_role, 3, proposal: proposal) }
     before do
       proposal_roles.last.role.update(name: 'lead_organizer')
     end
-    it 'returns person who is lead_organizer in proposal' do 
+    it 'returns person who is lead_organizer in proposal' do
       expect(proposal.lead_organizer).to eq(proposal.people.last)
     end
   end

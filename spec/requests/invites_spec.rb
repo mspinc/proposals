@@ -4,7 +4,7 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
   let(:proposal_type) { create(:proposal_type) }
   let(:proposal) { create(:proposal, proposal_type: proposal_type) }
   let(:invite) { create(:invite, proposal: proposal) }
-  
+
   describe "POST /inviter_response" do
     before do
       params = {
@@ -72,7 +72,7 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
       authenticate_for_controllers
       post cancel_path(code: invite.code), params: { invite: invite1 }
     end
-    
+
     it "updates the invite status" do
       expect(invite1.reload.status).to eq('cancelled')
       expect(response).to redirect_to(edit_proposal_path(invite.proposal))
@@ -93,7 +93,7 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
         expect(response).to redirect_to(edit_proposal_path(proposal.id))
       end
     end
-    
+
     context 'when status is confirmed' do
       let(:invite1) { create(:invite, status: 'confirmed') }
       it "does not send invite reminder when invite status is pending" do
