@@ -2,7 +2,7 @@ class ProposalsController < ApplicationController
   before_action :set_proposal, only: %w[show edit destroy ranking locations]
   before_action :set_careers, only: %w[show edit]
   before_action :authenticate_user!
-  
+
   def index
     @proposals = current_user&.person&.proposals
   end
@@ -33,7 +33,7 @@ class ProposalsController < ApplicationController
   def show; end
 
   def edit
-    @invite = @proposal.invites.new
+    @proposal.invites.build
   end
 
   def locations
@@ -56,7 +56,7 @@ class ProposalsController < ApplicationController
     proposal_id = params[:id]
     ProposalPdfService.new(proposal_id, latex_temp_file, 'all').pdf
 
-    @proposal = Proposal.find_by_id(proposal_id)
+    @proposal = Proposal.find_by(id: proposal_id)
     @year = @proposal&.year || Date.current.year.to_i + 2
 
     fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
@@ -70,11 +70,12 @@ class ProposalsController < ApplicationController
     prop_id = params[:id]
     return if prop_id.blank?
 
-    @proposal = Proposal.find_by_id(prop_id)
+    @proposal = Proposal.find_by(id: prop_id)
     @year = @proposal&.year || Date.current.year.to_i + 2
 
     fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
     @latex_input = fh.read
+    @latex_input = LatexToPdf.escape_latex(@latex_input) if @proposal.no_latex
 
     render_latex
   end
@@ -128,15 +129,15 @@ class ProposalsController < ApplicationController
   end
 
   def render_latex
-    begin
-      render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
-    rescue ActionView::Template::Error => error
-      flash[:alert] = "There are errors in your LaTeX code. Please see the
+    # rubocop:disable all
+    render layout: "application", inline: @latex_input.to_s, formats: [:pdf]
+  rescue ActionView::Template::Error => e
+    flash[:alert] = "There are errors in your LaTeX code. Please see the
                         output from the compiler, and the LaTeX document,
                         below".squish
-      error_output = ProposalPdfService.format_errors(error)
-      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
-    end
+    error_output = ProposalPdfService.format_errors(e)
+    render layout: "latex_errors", inline: error_output.to_s, formats: [:html]
+    # rubocop:enable all
   end
 
   def set_careers

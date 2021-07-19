@@ -22,7 +22,7 @@ RSpec.describe ProposalsHelper, type: :helper do
   describe "#proposal_type_year" do
     let(:proposal_type) { create(:proposal_type) }
     it "return array of year comma separated [year]" do
-      expect(proposal_type_year(proposal_type)).to match_array(["2021", "2022", "2023"])
+      expect(proposal_type_year(proposal_type)).to match_array(%w[2021 2022 2023])
     end
   end
 
@@ -53,8 +53,8 @@ RSpec.describe ProposalsHelper, type: :helper do
       proposal.ams_subjects << ams_subject
     end
 
-    it 'returns id of proposal ams subject with provided code' do 
-      expect(proposal_ams_subjects_code(proposal, 'code2')).to eq(ams_subject.id) 
+    it 'returns id of proposal ams subject with provided code' do
+      expect(proposal_ams_subjects_code(proposal, 'code2')).to eq(ams_subject.id)
     end
   end
 end

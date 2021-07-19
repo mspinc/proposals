@@ -41,35 +41,43 @@ RSpec.describe Invite, type: :model do
   end
 
   describe '#proposal_title' do
-   context 'when proposal title present' do
-    let(:invite) { create(:invite ,firstname:'New',lastname:'Proposal',email:'test@tes.com',invited_as:'coorganizer') }
-    before  do
-      invite.proposal.update(title: "New")
-    end
+    context 'when proposal title present' do
+      let(:invite) do
+        create(:invite, firstname: 'New', lastname: 'Proposal', email: 'test@tes.com', invited_as: 'coorganizer')
+      end
+      before do
+        invite.proposal.update(title: "New")
+      end
 
-    it{ expect(invite.proposal.title).to eq 'New'}
-   end
+      it { expect(invite.proposal.title).to eq 'New' }
+    end
   end
 
   describe '#deadline_not_in_past' do
     context 'when deadline date is not in past' do
-      let(:invite) { create(:invite ,firstname:'New',lastname:'Proposal',email:'test@test.com',invited_as:'coorganizer') }
-     
-      it{ expect(invite.deadline_date).to be > DateTime.now }
+      let(:invite) do
+        create(:invite, firstname: 'New', lastname: 'Proposal', email: 'test@test.com', invited_as: 'coorganizer')
+      end
+
+      it { expect(invite.deadline_date).to be > DateTime.now }
     end
 
     context 'when deadline date is in past' do
-      let(:invite) { create(:invite ,firstname:'New',lastname:'Proposal',email:'test@test.com',invited_as:'coorganizer') }
-     before do
-       invite.update(deadline_date: DateTime.now - 2.weeks)
-     end
-      it{ expect(invite.errors.full_messages).to include("Deadline can't be in past") }
+      let(:invite) do
+        create(:invite, firstname: 'New', lastname: 'Proposal', email: 'test@test.com', invited_as: 'coorganizer')
+      end
+      before do
+        invite.update(deadline_date: DateTime.now - 2.weeks)
+      end
+      it { expect(invite.errors.full_messages).to include("Deadline can't be in past") }
     end
   end
 
   describe '#generate_code' do
     context 'when code is present' do
-      let(:invite) { create(:invite, firstname:'New', lastname:'Proposal', email:'test@test.com', invited_as:'coorganizer') }
+      let(:invite) do
+        create(:invite, firstname: 'New', lastname: 'Proposal', email: 'test@test.com', invited_as: 'coorganizer')
+      end
       it { expect(invite.code).to be_present }
     end
   end

@@ -1,5 +1,5 @@
 class ProposalType < ApplicationRecord
-  validates :name, :participant, :co_organizer, :code, :open_date, :closed_date,  presence: true
+  validates :name, :participant, :co_organizer, :code, :open_date, :closed_date, presence: true
   validates :code, uniqueness: true
   has_many :proposals, dependent: :destroy
   has_many :proposal_forms, dependent: :destroy
@@ -18,7 +18,7 @@ class ProposalType < ApplicationRecord
              .where("proposal_roles.person_id =?", person_id)
              .where('roles.name =?', 'lead_organizer').empty?
   end
-  
+
   def not_closed_date_greater
     return if open_date.nil? || closed_date.nil?
 

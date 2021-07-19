@@ -1,12 +1,12 @@
 class ProfileController < ApplicationController
   before_action :person, only: %i[edit update demographic_data]
 
-	def edit
+  def edit
     @person.is_lead_organizer = true if @person.city
     @result = @person.demographic_data.result
-	end
+  end
 
-	 def update
+  def update
     if @person.update(person_params)
       redirect_to profile_path, notice: "Your Personal data is updated!"
     else

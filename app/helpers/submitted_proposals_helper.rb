@@ -36,7 +36,6 @@ module SubmittedProposalsHelper
   end
 
   # rubocop:disable Metrics/AbcSize
-  # rubocop:disable Metrics/MethodLength
   def submitted_career_data(param, param2, proposals)
     data = Hash.new(0)
     proposals&.each do |proposal|
@@ -51,9 +50,8 @@ module SubmittedProposalsHelper
     end
     data
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
+  # rubocop:enable Metrics/AbcSize
   def submitted_career_labels(proposals)
     data = submitted_career_data("academic_status", "other_academic_status", proposals)
     data.keys

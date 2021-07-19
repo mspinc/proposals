@@ -3,7 +3,7 @@ class ProposalFieldsController < ApplicationController
   before_action :set_proposal_field, only: %i[edit update]
 
   def new
-    if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate].include?(params[:field_type])
+    if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate File].include?(params[:field_type])
       type = "ProposalFields::#{params[:field_type]}".safe_constantize.new
     end
     @proposal_field = @proposal_form.proposal_fields.new(fieldable: type)
@@ -12,16 +12,18 @@ class ProposalFieldsController < ApplicationController
   end
 
   def create
-    if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate].include?(params[:type])
+    if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate File].include?(params[:type])
       @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new(date_field_params)
     end
     @proposal_field = @proposal_form.proposal_fields.new(proposal_field_params)
     @proposal_field.fieldable = @fieldable
     if @proposal_field.insert_at(@proposal_field.position)
       @proposal_form.update(updated_by: current_user)
-      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), notice: "Field was successfully created."
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form),
+                  notice: "Field was successfully created."
     else
-      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), alert: @proposal_form.errors
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form),
+                  alert: @proposal_form.errors
     end
   end
 
@@ -33,9 +35,11 @@ class ProposalFieldsController < ApplicationController
   def update
     if @proposal_field.update(proposal_field_params) && @proposal_field.fieldable.update(date_field_params)
       @proposal_form.update(updated_by: current_user)
-      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), notice: "Field was successfully updated."
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form),
+                  notice: "Field was successfully updated."
     else
-      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form), alert: @proposal_form.errors
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form),
+                  alert: @proposal_form.errors
     end
   end
 

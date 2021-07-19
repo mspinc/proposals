@@ -10,6 +10,6 @@ class ProposalField < ApplicationRecord
 
   accepts_nested_attributes_for :validations, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :options, reject_if: :all_blank, allow_destroy: true
-  
-  FIELD_TYPES = %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate].freeze
+
+  FIELD_TYPES = %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate File].freeze
 end

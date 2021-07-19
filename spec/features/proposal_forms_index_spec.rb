@@ -28,7 +28,10 @@ RSpec.feature "Proposal_Form index", type: :feature do
 
   scenario "there is a link to proposal_form_#edit" do
     ProposalForm.all.each do |proposal_form|
-      expect(page).to have_link(href: edit_proposal_type_proposal_form_url(@proposal_type, proposal_form)) if proposal_form.draft?
+      if proposal_form.draft?
+        expect(page).to have_link(href: edit_proposal_type_proposal_form_url(@proposal_type,
+                                                                             proposal_form))
+      end
     end
   end
 end
