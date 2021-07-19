@@ -1,7 +1,7 @@
 namespace :birs do
-  task default: 'birs:birs_subjects'
+  task default: 'birs:birs_faqs'
 
-  desc "Add BIRS Subjects to database"
+  desc "Add BIRS Faqs to database"
   task birs_faqs: :environment do
     faqs = [
       {

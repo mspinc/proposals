@@ -38,7 +38,7 @@ module SurveyHelper
                   'Southeast Asian (including Brunei, Burma, Cambodia, Timor-Leste, Indonesia, Laos, Malaysia, the Philippines, Singapore, Thailand and Vietnam)'],
                  ['West Asian (including Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip, Georgia, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syrian Arab Republic, Turkey, United Arab Emirates, West Bank and Yemen)',
                   'West Asian (including Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip, Georgia, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syrian Arab Republic, Turkey, United Arab Emirates, West Bank and Yemen)'],
-                 ['Other', 'Other'], ['Prefer not to answer', 'Prefer not to answer']]
+                 %w[Other Other], ['Prefer not to answer', 'Prefer not to answer']]
     ethnicity.map { |disp, _value| disp }
   end
 
@@ -49,7 +49,7 @@ module SurveyHelper
   end
 
   def indigenous_person_options
-    indigenous = [['Yes', 'Yes'], %w[No No], ['Prefer not to answer', 'Prefer not to answer']]
+    indigenous = [%w[Yes Yes], %w[No No], ['Prefer not to answer', 'Prefer not to answer']]
     indigenous.map { |disp, _value| disp }
   end
 

@@ -1,7 +1,7 @@
 class FeedbacksController < ApplicationController
   before_action :authenticate_user!
   before_action :set_feedback, only: %w[update add_reply]
-  
+
   def index
     @feedback = Feedback.all
   end
@@ -30,7 +30,7 @@ class FeedbacksController < ApplicationController
     if @feedback.update(reply: params[:feedback_reply])
       render json: {}, status: :ok
     else
-      render json: {erros: @feedback.errors.full_messages }, status: 500
+      render json: { erros: @feedback.errors.full_messages }, status: :internal_server_error
     end
   end
 

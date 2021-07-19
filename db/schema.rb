@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_13_075543) do
+ActiveRecord::Schema.define(version: 2021_07_17_065007) do
 
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "action_text_rich_texts", force: :cascade do |t|
@@ -159,6 +160,7 @@ ActiveRecord::Schema.define(version: 2021_07_13_075543) do
     t.string "first_phd_year"
     t.string "postal_code"
     t.string "other_academic_status"
+    t.index ["email"], name: "index_people_on_email", unique: true
   end
 
   create_table "proposal_ams_subjects", force: :cascade do |t|
@@ -240,9 +242,16 @@ ActiveRecord::Schema.define(version: 2021_07_13_075543) do
     t.integer "version", default: 0
     t.text "introduction2"
     t.text "introduction3"
+    t.text "introduction_charts"
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
+  end
+
+  create_table "proposal_fields_files", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "proposal_locations", force: :cascade do |t|
