@@ -2,26 +2,26 @@ class ProposalFormsController < ApplicationController
   before_action :set_proposal_type
   before_action :set_proposal_form, only: %i[edit update show clone
                                              proposal_field]
-  
+
   def index
     @proposal_forms = @proposal_type&.proposal_forms
   end
 
   def new
-    forms = @proposal_type.proposal_forms.where(status: [:active, :draft])
+    forms = @proposal_type.proposal_forms.where(status: %i[active draft])
     forms.update_all(status: :inactive)
     @proposal_form = ProposalForm.new
   end
 
   def edit
-    if @proposal_form.active?
-      @proposal_form.update(status: :inactive)
-      form = @proposal_form.deep_clone include: { proposal_fields:
-                                                  %i[options validations] }
-      form.status = :draft
-      form.save
-      redirect_to edit_proposal_type_proposal_form_path(@proposal_type, form)
-    end
+    return unless @proposal_form.active?
+
+    @proposal_form.update(status: :inactive)
+    form = @proposal_form.deep_clone include: { proposal_fields:
+                                                %i[options validations] }
+    form.status = :draft
+    form.save
+    redirect_to edit_proposal_type_proposal_form_path(@proposal_type, form)
   end
 
   def show
@@ -91,7 +91,7 @@ class ProposalFormsController < ApplicationController
   def proposal_form_params
     params.require(:proposal_form).permit(:title, :status, :introduction,
                                           :introduction2, :introduction3,
-                                          :proposal_type_id)
+                                          :introduction_charts, :proposal_type_id)
           .merge(updated_by: current_user)
   end
 
