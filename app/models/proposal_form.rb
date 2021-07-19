@@ -7,7 +7,7 @@ class ProposalForm < ApplicationRecord
            -> { order(position: :asc) },
            inverse_of: :proposal_form, dependent: :destroy)
   enum status: { draft: 0, active: 1, inactive: 2 }
-  
-  scope :active_form, -> (id) { where(proposal_type_id: id, status: :active)&.last }
-  default_scope {order(created_at: :desc)}
+
+  scope :active_form, ->(id) { where(proposal_type_id: id, status: :active)&.last }
+  default_scope { order(created_at: :desc) }
 end

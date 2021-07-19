@@ -4,7 +4,6 @@ class SubmitProposalsController < ApplicationController
     @proposals = ProposalForm.new
   end
 
-  # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def create
     @proposal.update(proposal_params)
@@ -29,9 +28,8 @@ class SubmitProposalsController < ApplicationController
     attachment = generate_proposal_pdf || return
     confirm_submission(attachment)
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
+  # rubocop:enable Metrics/AbcSize
   def thanks; end
 
   def upload_file
@@ -41,7 +39,6 @@ class SubmitProposalsController < ApplicationController
 
   private
 
-  # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def create_invite
     return unless request.xhr?
@@ -57,9 +54,8 @@ class SubmitProposalsController < ApplicationController
       render json: @invite.errors.full_messages, status: :unprocessable_entity
     end
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
+  # rubocop:enable Metrics/AbcSize
   def confirm_submission(attachment)
     @proposal.update(status: :active)
     session[:is_submission] = nil
@@ -72,7 +68,6 @@ class SubmitProposalsController < ApplicationController
         you.'.squish
   end
 
-  # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def generate_proposal_pdf
     temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
@@ -93,9 +88,8 @@ class SubmitProposalsController < ApplicationController
       nil
     end
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
+  # rubocop:enable Metrics/AbcSize
   def proposal_params
     params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex)
           .merge(ams_subject_ids: proposal_ams_subjects)

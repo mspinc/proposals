@@ -16,8 +16,8 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
 
   describe "#proposal_field_options" do
     let(:radio_field) { create(:proposal_field, :radio_field) }
-    let(:option) { create(:option, proposal_field: radio_field)}
-   
+    let(:option) { create(:option, proposal_field: radio_field) }
+
     it "returns array of options value and text" do
       option
       expect(proposal_field_options(radio_field)).to match_array([%w[Male M]])
@@ -30,8 +30,8 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
 
   describe "#options_for_field" do
     let(:single_choice_field) { create(:proposal_field, :single_choice_field) }
-    let(:option_1) { create(:option, proposal_field: single_choice_field)}
-    let(:option_2) { create(:option, proposal_field: single_choice_field, text: 'Female')}
+    let(:option_1) { create(:option, proposal_field: single_choice_field) }
+    let(:option_2) { create(:option, proposal_field: single_choice_field, text: 'Female') }
 
     it 'returns array of option values' do
       option_1
@@ -97,7 +97,7 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
     end
   end
 
-  describe '#location_name' do 
+  describe '#location_name' do
     let(:field) { create :proposal_field, :radio_field, :location_based }
     it 'returns location detail' do
       loc = "#{field.location&.name} (#{field.location&.city}, #{field.location&.country})"
@@ -105,4 +105,4 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
       expect(location_name(field)).to eq(location)
     end
   end
- end
+end

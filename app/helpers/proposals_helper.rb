@@ -14,7 +14,7 @@ module ProposalsHelper
   def proposal_type_year(proposal_type)
     return [Date.current.year + 2] if proposal_type.year.blank?
 
-    proposal_type.year&.split(",").map { |year| year }
+    proposal_type.year&.split(",")&.map { |year| year }
   end
 
   def locations

@@ -19,7 +19,8 @@ class SurveyController < ApplicationController
     if demographic_data.save
       redirect_to @redirect_path, notice: 'Questionnaire was successfully submitted'
     else
-      redirect_to survey_questionnaire_survey_index_path(id: @invite.id), alert: demographic_data.errors.full_messages.join(', ')
+      redirect_to survey_questionnaire_survey_index_path(id: @invite.id),
+                  alert: demographic_data.errors.full_messages.join(', ')
     end
   end
 

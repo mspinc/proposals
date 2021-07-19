@@ -10,7 +10,7 @@ class Person < ApplicationRecord
   before_save :downcase_email
 
   def downcase_email
-    self.email.downcase!
+    email.downcase!
   end
 
   def fullname
@@ -28,6 +28,7 @@ class Person < ApplicationRecord
   def region_type
     return "Province" if country == 'Canada'
     return "State" if country == 'United States of America'
+
     "Region"
   end
 
@@ -39,18 +40,15 @@ class Person < ApplicationRecord
 
     self.first_phd_year = nil if first_phd_year == "N/A"
 
-    if academic_status == 'Other'
-      if other_academic_status.blank?
-        errors.add(:other_academic_status, "Please indicate your academic status.")
-      end
+    if academic_status == 'Other' && other_academic_status.blank?
+      errors.add(:other_academic_status, "Please indicate your academic status.")
     end
 
     return unless country == 'Canada' || country == 'United States of America'
-    self.region = province unless province.blank?
-    self.region = state unless state.blank?
-    if region.blank?
-      errors.add("Missing data: ", "You must select a #{region_type}")
-    end
+
+    self.region = province if province.present?
+    self.region = state if state.blank?
+    errors.add("Missing data: ", "You must select a #{region_type}") if region.blank?
   end
 
   def draft_proposals?
