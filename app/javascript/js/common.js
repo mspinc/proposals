@@ -7,9 +7,9 @@ $(document).ready(function() {
     var $this = $(this);
     $this.toggleClass('latex-show-more');
     if($this.hasClass('latex-show-more')) {
-      $this.text('Show more');
+      $this.text('Show full error log');
     } else {
-      $this.text('Show less');
+      $this.text('Show error summary');
     }
   });
 
