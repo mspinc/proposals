@@ -41,6 +41,7 @@ class SubmitProposalsController < ApplicationController
 
   def create_invite
     return unless request.xhr?
+
     count = save_invites
 
     if count >= 1
