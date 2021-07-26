@@ -111,9 +111,11 @@ module ProposalFieldsHelper
   end
 
   def tab_one(proposal)
-    proposal.title.blank? || proposal.subject.blank? || !proposal.ams_subjects.count.eql?(2) || proposal.invites.count do |i|
-      i.status == 'confirmed'
-    end.zero?
+    proposal.title.blank? || proposal.subject.blank? ||
+      !proposal.ams_subjects.count.eql?(2) ||
+      proposal.invites.count do |i|
+        i.status == 'confirmed'
+      end.zero?
   end
 
   def tab_two(proposal)

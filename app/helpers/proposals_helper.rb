@@ -125,6 +125,7 @@ module ProposalsHelper
     data.values
   end
 
+  # rubocop:disable Metrics/AbcSize
   def career_data(param, param2, proposal)
     person = Person.where.not(id: proposal.lead_organizer.id)
     career_stage = person.where(id: proposal.invites.where(invited_as:
@@ -138,6 +139,7 @@ module ProposalsHelper
     end
     data
   end
+  # rubocop:enable Metrics/AbcSize
 
   def career_labels(proposal)
     data = career_data("academic_status", "other_academic_status", proposal)

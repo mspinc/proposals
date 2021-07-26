@@ -9,7 +9,7 @@ class ProposalFormsController < ApplicationController
 
   def new
     forms = @proposal_type.proposal_forms.where(status: %i[active draft])
-    forms.update_all(status: :inactive)
+    forms.update_all(status: :inactive) # rubocop:disable Rails/SkipsModelValidations
     @proposal_form = ProposalForm.new
   end
 
@@ -46,7 +46,7 @@ class ProposalFormsController < ApplicationController
     @proposal_form = ProposalForm.new(proposal_form_params)
     forms = @proposal_form.proposal_type.proposal_forms.where(status:
                                                               %i[active draft])
-    forms.update_all(status: :inactive)
+    forms.update_all(status: :inactive) # rubocop:disable Rails/SkipsModelValidations
     @proposal_form.created_by = current_user
     @proposal_form.version = highest_version
     if @proposal_form.save
@@ -67,7 +67,7 @@ class ProposalFormsController < ApplicationController
   end
 
   def clone
-    @proposal_type.proposal_forms.update_all(status: :inactive)
+    @proposal_type.proposal_forms.update_all(status: :inactive) # rubocop:disable Rails/SkipsModelValidations
     proposal_form = @proposal_form.deep_clone include:
                                   { proposal_fields: %i[options validations] }
     proposal_form.version = highest_version
