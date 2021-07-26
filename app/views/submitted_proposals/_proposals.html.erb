@@ -24,7 +24,7 @@
         <% end %>
       </td>
       <td class=<%= proposal_status(proposal.status) %> >
-        <%= proposal.status %>
+        <%= proposal.status.split('_').map(&:capitalize).join(' ') %>
       </td>
       <td><%= proposal.updated_at.to_date %></td>
       <td class="table-action">
