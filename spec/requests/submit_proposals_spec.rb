@@ -15,12 +15,14 @@ RSpec.describe "/submit_proposals", type: :request do
     let(:ams_subject) { create(:ams_subject) }
     let(:location) { create(:location) }
     let(:invites_attributes) do
-      { '0' => { firstname: 'First', lastname: 'organizer', email: 'organizer@gmail.com', deadline_date: DateTime.now,
+      { '0' => { firstname: 'First', lastname: 'organizer',
+                 email: 'organizer@gmail.com', deadline_date: DateTime.now,
                  invited_as: 'Co Organizer' } }
     end
     let(:params) do
-      { proposal: proposal.id, title: 'Test proposal', year: '2023', subject_id: subject.id,
-        ams_subject_ids: ams_subject.id, invites_attributes: invites_attributes,
+      { proposal: proposal.id, title: 'Test proposal', year: '2023',
+        subject_id: subject.id, ams_subject_ids: ams_subject.id,
+        invites_attributes: invites_attributes,
         location_ids: location.id, no_latex: false }
     end
 
@@ -39,13 +41,16 @@ RSpec.describe "/submit_proposals", type: :request do
     let(:ams_subjects) { create_list(:ams_subject, 2) }
     let(:location) { create(:location) }
     let(:invites_attributes) do
-      { '0' => { firstname: 'First', lastname: 'organizer', deadline_date: DateTime.now,
-                 invited_as: 'Co Organizer' } }
+      { '0' => { firstname: 'First', lastname: 'organizer',
+                 deadline_date: DateTime.now, invited_as: 'Co Organizer' } }
     end
     let(:params) do
-      { proposal: proposal.id, title: 'Test proposal', year: '2023', subject_id: subject.id,
-        ams_subjects: { code1: ams_subjects.first.id, code2: ams_subjects.last.id },
-        invites_attributes: invites_attributes, location_ids: location.id, no_latex: false }
+      { proposal: proposal.id, title: 'Test proposal', year: '2023',
+        subject_id: subject.id,
+        ams_subjects: { code1: ams_subjects.first.id,
+                        code2: ams_subjects.last.id },
+        invites_attributes: invites_attributes,
+        location_ids: location.id, no_latex: false }
     end
 
     before do

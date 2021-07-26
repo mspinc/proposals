@@ -87,6 +87,7 @@ Rails.application.routes.draw do
       get :proposal_types
     end
   end
+  resources :page_contents
 
   resources :faqs do
     member do

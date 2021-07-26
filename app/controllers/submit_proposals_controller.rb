@@ -28,8 +28,8 @@ class SubmitProposalsController < ApplicationController
     attachment = generate_proposal_pdf || return
     confirm_submission(attachment)
   end
-
   # rubocop:enable Metrics/AbcSize
+
   def thanks; end
 
   def upload_file
@@ -39,15 +39,11 @@ class SubmitProposalsController < ApplicationController
 
   private
 
-  # rubocop:disable Metrics/AbcSize
   def create_invite
     return unless request.xhr?
 
-    count = 0
-    params[:invites_attributes].each_value do |invite|
-      @invite = @proposal.invites.new(invite_params(invite))
-      count += 1 if @invite.save
-    end
+    count = save_invites
+
     if count >= 1
       render json: { invited_as: @proposal.invites.last.invited_as.downcase }, status: :ok
     else
@@ -55,7 +51,15 @@ class SubmitProposalsController < ApplicationController
     end
   end
 
-  # rubocop:enable Metrics/AbcSize
+  def save_invites
+    count = 0
+    params[:invites_attributes].each_value do |invite|
+      @invite = @proposal.invites.new(invite_params(invite))
+      count += 1 if @invite.save
+    end
+    count
+  end
+
   def confirm_submission(attachment)
     @proposal.update(status: :active)
     session[:is_submission] = nil
@@ -88,8 +92,8 @@ class SubmitProposalsController < ApplicationController
       nil
     end
   end
-
   # rubocop:enable Metrics/AbcSize
+
   def proposal_params
     params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex)
           .merge(ams_subject_ids: proposal_ams_subjects)
