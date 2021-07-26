@@ -26,7 +26,7 @@ class Proposal < ApplicationRecord
   validate :not_before_opening, if: :is_submission
   before_save :create_code, if: :is_submission
 
-  enum status: { 
+  enum status: {
     draft: 0,
     submitted: 1,
     initial_review: 2,
