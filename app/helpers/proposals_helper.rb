@@ -78,14 +78,14 @@ module ProposalsHelper
 
   def proposal_status(status)
     proposals = {
-      "draft"  => "text-muted",
-      "submitted"  => "text-proposal-submitted",
-      "initial_review"  => "text-warning",
-      "revision_requested"  => "text-danger",
-      "revision_submitted"  => "text-revision-submitted",
-      "in_progress"  => "text-success",
-      "decision_pending"  => "text-info",
-      "decision_email_sent"  => "text-primary"
+      "draft" => "text-muted",
+      "submitted" => "text-proposal-submitted",
+      "initial_review" => "text-warning",
+      "revision_requested" => "text-danger",
+      "revision_submitted" => "text-revision-submitted",
+      "in_progress" => "text-success",
+      "decision_pending" => "text-info",
+      "decision_email_sent" => "text-primary"
     }
     proposals[status]
   end
