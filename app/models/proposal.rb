@@ -26,10 +26,19 @@ class Proposal < ApplicationRecord
   validate :not_before_opening, if: :is_submission
   before_save :create_code, if: :is_submission
 
-  enum status: { draft: 0, active: 1 }
+  enum status: { 
+    draft: 0,
+    submitted: 1,
+    initial_review: 2,
+    revision_requested: 3,
+    revision_submitted: 4,
+    in_progress: 5,
+    decision_pending: 6,
+    decision_email_sent: 7
+  }
 
   scope :active_proposals, lambda {
-    where(status: 'active')
+    where(status: 'submitted')
   }
 
   scope :no_of_participants, lambda { |id, invited_as|

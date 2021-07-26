@@ -77,7 +77,24 @@ module ProposalsHelper
   end
 
   def proposal_status(status)
-    status == 'draft' ? "text-primary" : "text-success"
+    case status
+    when "draft"
+      "text-muted"
+    when "submitted"
+      "text-proposal-submitted"
+    when "initial_review"
+      "text-warning"
+    when "revision_requested"
+      "text-danger"
+    when "revision_submitted"
+      "text-revision-submitted"
+    when "in_progress"
+      "text-success"
+    when "decision_pending"
+      "text-info"
+    when "decision_email_sent"
+      "text-primary"
+    end
   end
 
   def invite_response_color(status)
