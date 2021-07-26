@@ -29,7 +29,7 @@ RSpec.describe Person, type: :model do
 
   describe '#fullname' do
     let(:person) { create(:person) }
-    let(:fullname) { person.firstname + ' ' + person.lastname }
+    let(:fullname) { "#{person.firstname} #{person.lastname}" }
     it 'returns fullname of person' do
       expect(person.fullname).to eq(fullname)
     end

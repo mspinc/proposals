@@ -10,20 +10,20 @@ export default class extends Controller {
 
   connect() {
     if(this.hasLocationIdsTarget) {
-      this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
+      this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map((x) => x.value))
       this.showSelectedLocations()
     }
   }
 
   handleLocationChange(locations) {
     if(event && event.type === 'change') {
-      locations = [...event.target.selectedOptions].map(opt => opt.value)
+      locations = [...event.target.selectedOptions].map((opt) => opt.value)
       this.saveLocations()
     }
 
     fetch(`/proposal_types/${this.proposalTypeIdValue}/location_based_fields?ids=${locations}&proposal_id=${this.proposalValue}`)
-      .then(response => response.text())
-      .then(html => {
+      .then((response) => response.text())
+      .then((html) => {
         this.locationSpecificQuestionsTarget.innerHTML = html
       });
   }

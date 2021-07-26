@@ -65,6 +65,7 @@ class ProposalsController < ApplicationController
     render_latex
   end
 
+  # rubocop:disable Metrics/AbcSize
   # GET /proposals/:id/rendered_field.pdf
   def latex_field
     prop_id = params[:id]
@@ -79,6 +80,7 @@ class ProposalsController < ApplicationController
 
     render_latex
   end
+  # rubocop:enable Metrics/AbcSize
 
   def destroy
     @proposal.destroy

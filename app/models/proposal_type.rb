@@ -19,6 +19,7 @@ class ProposalType < ApplicationRecord
              .where('roles.name =?', 'lead_organizer').empty?
   end
 
+  # rubocop:disable Metrics/AbcSize
   def not_closed_date_greater
     return if open_date.nil? || closed_date.nil?
 
@@ -30,4 +31,5 @@ class ProposalType < ApplicationRecord
           Closed Date #{closed_date.to_date}".squish)
     end
   end
+  # rubocop:enable Metrics/AbcSize
 end

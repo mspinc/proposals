@@ -30,12 +30,12 @@ RSpec.describe ProposalFieldsHelper, type: :helper do
 
   describe "#options_for_field" do
     let(:single_choice_field) { create(:proposal_field, :single_choice_field) }
-    let(:option_1) { create(:option, proposal_field: single_choice_field) }
-    let(:option_2) { create(:option, proposal_field: single_choice_field, text: 'Female') }
+    let(:option1) { create(:option, proposal_field: single_choice_field) }
+    let(:option2) { create(:option, proposal_field: single_choice_field, text: 'Female') }
 
     it 'returns array of option values' do
-      option_1
-      option_2
+      option1
+      option2
       expect(options_for_field(single_choice_field)).to match_array(%w[Female Male])
     end
 

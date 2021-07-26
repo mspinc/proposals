@@ -98,7 +98,7 @@ class Proposal < ApplicationRecord
   end
 
   def minimum_organizers
-    return unless invites.select { |i| i.status == 'confirmed' }.count < 1
+    return unless invites.where(status: 'confirmed').count < 1
 
     errors.add('Supporting Organizers: ', 'At least one supporting organizer
       must confirm their participation by following the link in the email
@@ -116,14 +116,14 @@ class Proposal < ApplicationRecord
 
     return '001' if last_code.blank?
 
-    (last_code[-3..-1].to_i + 1).to_s.rjust(3, '0')
+    (last_code[-3..].to_i + 1).to_s.rjust(3, '0')
   end
 
   def create_code
     return if code.present?
 
     tc = proposal_type.code || 'xx'
-    self.code = year.to_s[-2..-1] + tc + next_number
+    self.code = year.to_s[-2..] + tc + next_number
   end
 
   def preferred_locations
