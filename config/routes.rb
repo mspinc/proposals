@@ -49,7 +49,7 @@ Rails.application.routes.draw do
   resources :survey do
     collection do
       get :survey_questionnaire
-      get :faqs
+      get :faq
       post :submit_survey
     end
   end

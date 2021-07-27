@@ -8,7 +8,7 @@ class SurveyController < ApplicationController
 
   def survey_questionnaire; end
 
-  def faqs
+  def faq
     @faqs = Faq.all
   end
 
