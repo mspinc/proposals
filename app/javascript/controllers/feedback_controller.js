@@ -39,12 +39,12 @@ export default class extends Controller {
       url,
       type: "PATCH",
       data,
-      success: function(data) {
+      success() {
         toastr.success('Your reply has been added.')
         _this.containerTarget.remove();
 
       },
-      error: function(data) {
+      error() {
         toastr.error('Your reply could not be added.')
       },
     })

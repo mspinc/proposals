@@ -61,7 +61,7 @@ class SubmitProposalsController < ApplicationController
   end
 
   def confirm_submission(attachment)
-    @proposal.update(status: :active)
+    @proposal.update(status: :submitted)
     session[:is_submission] = nil
 
     ProposalMailer.with(proposal: @proposal, file: attachment)

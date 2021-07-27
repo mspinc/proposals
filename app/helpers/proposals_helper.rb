@@ -77,7 +77,17 @@ module ProposalsHelper
   end
 
   def proposal_status(status)
-    status == 'draft' ? "text-primary" : "text-success"
+    proposals = {
+      "draft" => "text-muted",
+      "submitted" => "text-proposal-submitted",
+      "initial_review" => "text-warning",
+      "revision_requested" => "text-danger",
+      "revision_submitted" => "text-revision-submitted",
+      "in_progress" => "text-success",
+      "decision_pending" => "text-info",
+      "decision_email_sent" => "text-primary"
+    }
+    proposals[status]
   end
 
   def invite_response_color(status)
@@ -125,6 +135,7 @@ module ProposalsHelper
     data.values
   end
 
+  # rubocop:disable Metrics/AbcSize
   def career_data(param, param2, proposal)
     person = Person.where.not(id: proposal.lead_organizer.id)
     career_stage = person.where(id: proposal.invites.where(invited_as:
@@ -138,6 +149,7 @@ module ProposalsHelper
     end
     data
   end
+  # rubocop:enable Metrics/AbcSize
 
   def career_labels(proposal)
     data = career_data("academic_status", "other_academic_status", proposal)

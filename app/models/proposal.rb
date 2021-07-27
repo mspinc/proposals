@@ -26,10 +26,19 @@ class Proposal < ApplicationRecord
   validate :not_before_opening, if: :is_submission
   before_save :create_code, if: :is_submission
 
-  enum status: { draft: 0, active: 1 }
+  enum status: {
+    draft: 0,
+    submitted: 1,
+    initial_review: 2,
+    revision_requested: 3,
+    revision_submitted: 4,
+    in_progress: 5,
+    decision_pending: 6,
+    decision_email_sent: 7
+  }
 
   scope :active_proposals, lambda {
-    where(status: 'active')
+    where(status: 'submitted')
   }
 
   scope :no_of_participants, lambda { |id, invited_as|
@@ -98,7 +107,7 @@ class Proposal < ApplicationRecord
   end
 
   def minimum_organizers
-    return unless invites.select { |i| i.status == 'confirmed' }.count < 1
+    return unless invites.where(status: 'confirmed').count < 1
 
     errors.add('Supporting Organizers: ', 'At least one supporting organizer
       must confirm their participation by following the link in the email
@@ -116,14 +125,14 @@ class Proposal < ApplicationRecord
 
     return '001' if last_code.blank?
 
-    (last_code[-3..-1].to_i + 1).to_s.rjust(3, '0')
+    (last_code[-3..].to_i + 1).to_s.rjust(3, '0')
   end
 
   def create_code
     return if code.present?
 
     tc = proposal_type.code || 'xx'
-    self.code = year.to_s[-2..-1] + tc + next_number
+    self.code = year.to_s[-2..] + tc + next_number
   end
 
   def preferred_locations

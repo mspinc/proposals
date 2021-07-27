@@ -11,6 +11,7 @@ class ProposalFieldsController < ApplicationController
            locals: { proposal_field: @proposal_field, proposal_form: @proposal_form }
   end
 
+  # rubocop:disable Metrics/AbcSize
   def create
     if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate File].include?(params[:type])
       @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new(date_field_params)
@@ -26,6 +27,7 @@ class ProposalFieldsController < ApplicationController
                   alert: @proposal_form.errors
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   def edit
     render partial: 'proposal_fields/fields_form',

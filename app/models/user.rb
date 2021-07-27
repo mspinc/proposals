@@ -29,6 +29,6 @@ class User < ApplicationRecord
   def fullname
     return 'Unknown User' if person.nil?
 
-    person.firstname + ' ' + person.lastname
+    "#{person.firstname} #{person.lastname}"
   end
 end
