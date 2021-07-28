@@ -1,5 +1,6 @@
 import { Controller } from "stimulus"
 import Rails from '@rails/ujs'
+import toastr from 'toastr'
 
 export default class extends Controller {
   static targets = [ "files" , "collector" ]
@@ -8,7 +9,8 @@ export default class extends Controller {
     if(event.target.files) {
       var data = new FormData()
       for (let i = 0; i < event.target.files.length; i++) {
-        data.append('files[]', event.target.files[i])
+        var f = event.target.files[`${i}`]
+        data.append('files[]', f)
       }
       let url = "/proposals/" + event.target.dataset.proposalFormId + "/upload_file"
       Rails.ajax({
