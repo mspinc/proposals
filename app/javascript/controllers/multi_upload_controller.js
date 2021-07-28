@@ -15,10 +15,10 @@ export default class extends Controller {
         url,
         type: "POST",
         data,
-        success: function(data) {
+        success() {
             toastr.success("File/s uploaded.")
         },
-        error: function(data) {
+        error() {
             toastr.error("File/s format not supported.")
         }
       })

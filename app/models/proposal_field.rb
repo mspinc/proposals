@@ -13,5 +13,4 @@ class ProposalField < ApplicationRecord
 
   # FIELD_TYPES = %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate File].freeze
   FIELD_TYPES = %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate].freeze
-
 end
