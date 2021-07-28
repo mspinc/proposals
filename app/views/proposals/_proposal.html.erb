@@ -199,7 +199,12 @@
                               <% if @proposal&.files&.attached? %>
                                 <p>
                                   <% @proposal.files.each do |file| %>
-                                    <%= link_to file.filename, rails_blob_path(file, disposition: 'preview') %>
+                                    <div>
+                                      <%= link_to file.filename, rails_blob_path(file, disposition: 'preview') %>
+                                      <span data-proposal-id="<%= @proposal.id %>" data-attachment-id="<%= file.id %>" data-action="click->multi-upload#removeFile" class="btn btn-sm btn-primary m-3">
+                                        Remove file
+                                      </span>
+                                    </div>
                                     <br>
                                   <% end %>
                                 <p>

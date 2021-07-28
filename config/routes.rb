@@ -33,6 +33,7 @@ Rails.application.routes.draw do
       patch :ranking
       get :locations
       post :upload_file
+      post :remove_file
     end
 
     resources :invites, :except => [:show] do

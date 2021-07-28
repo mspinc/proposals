@@ -102,6 +102,20 @@ class ProposalsController < ApplicationController
     end
   end
 
+  def remove_file
+    @proposal = Proposal.find(params[:id])
+    file = @proposal.files.where(id: params[:attachment_id])
+    file.purge_later
+
+    flash[:notice] = 'File has been removed!'
+
+    if request.xhr?
+      render js: "window.location='#{edit_proposal_path(@proposal)}'"
+    else
+      redirect_to edit_proposal_path(@proposal)
+    end
+  end
+
   private
 
   def proposal_params
