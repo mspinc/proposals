@@ -49,7 +49,7 @@ class Proposal < ApplicationRecord
 
   scope :submitted, lambda { |type|
     where(status: 1)
-      .joins(:proposal_type).where('name = ?', type)
+      .joins(:proposal_type).where(name: type)
   }
 
   def demographics_data
@@ -99,7 +99,7 @@ class Proposal < ApplicationRecord
   end
 
   def pdf_file_type(file)
-    return file.content_type.in?(%w(application/pdf))
+    file.content_type.in?(%w[application/pdf])
   end
 
   private

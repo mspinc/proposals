@@ -5,8 +5,7 @@ export default class extends Controller {
   static targets = [ "files" , "collector" ]
 
   uploadFile(event) {
-    if(event.target.files)
-    {
+    if(event.target.files) {
       var data = new FormData()
       for (let i = 0; i < event.target.files.length; i++) {
         data.append('files[]', event.target.files[i])
@@ -16,10 +15,10 @@ export default class extends Controller {
         url,
         type: "POST",
         data,
-        success: function(data, status) {
+        success: function(data) {
             toastr.success("File/s uploaded.")
         },
-        error: function(data, status) {
+        error: function(data) {
             toastr.error("File/s format not supported.")
         }
       })

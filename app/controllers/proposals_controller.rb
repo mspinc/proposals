@@ -91,13 +91,13 @@ class ProposalsController < ApplicationController
   end
 
   def upload_file
-    @proposal = Proposal.find_by!(id: params[:id])
+    @proposal = Proposal.find(params[:id])
     params[:files].each do |file|
       if @proposal.pdf_file_type(file)
         @proposal.files.attach(file)
-        render json: "File successfully uploaded", status: 200
+        render json: "File successfully uploaded", status: :ok
       else
-        render json: "File format not supported", status: 400
+        render json: "File format not supported", status: :bad_request
       end
     end
   end
