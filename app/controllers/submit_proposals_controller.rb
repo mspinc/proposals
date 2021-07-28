@@ -28,7 +28,7 @@ class SubmitProposalsController < ApplicationController
     attachment = generate_proposal_pdf || return
     confirm_submission(attachment)
   end
-  # rubocop:disable Metrics/AbcSize
+  # rubocop:enable Metrics/AbcSize
 
   def thanks; end
 
