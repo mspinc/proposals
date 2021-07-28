@@ -186,6 +186,25 @@
                                 <% end %>
                               </div>
                             </div>
+                            <div class="mt-4" data-controller="multi-upload">
+                              <h3>Question Description:</h3>
+                              <p>
+                                The files uploaded in this section are considered supplementary documentation, and not part of the main body of the proposal.
+                                <br>
+                                Supported file types: *.pdf
+                              </p>
+                              <div>
+                                <input type="file" multiple accept="application/pdf" name="file", data-action="multi-upload#uploadFile" data-proposal-form-id="<%= @proposal&.id %>">
+                              </div>
+                              <% if @proposal&.files&.attached? %>
+                                <p>
+                                  <% @proposal.files.each do |file| %>
+                                    <%= link_to file.filename, rails_blob_path(file, disposition: 'preview') %>
+                                    <br>
+                                  <% end %>
+                                <p>
+                              <% end %>
+                            </div>
                           </div>
                           <div>
                             <% if params[:action] == 'show' %>
