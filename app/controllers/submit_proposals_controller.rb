@@ -32,10 +32,6 @@ class SubmitProposalsController < ApplicationController
 
   def thanks; end
 
-  def upload_file
-    @answer = Answer.find_or_create_by!(proposal_field_id: params[:field_id], proposal_id: params[:id])
-    @answer.file.attach(params[:file])
-  end
 
   private
 

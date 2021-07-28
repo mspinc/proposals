@@ -90,6 +90,32 @@ class ProposalsController < ApplicationController
     end
   end
 
+  def upload_file
+    @proposal = Proposal.find(params[:id])
+    params[:files].each do |file|
+      if @proposal.pdf_file_type(file)
+        @proposal.files.attach(file)
+        render json: "File successfully uploaded", status: :ok
+      else
+        render json: "File format not supported", status: :bad_request
+      end
+    end
+  end
+
+  def remove_file
+    @proposal = Proposal.find(params[:id])
+    file = @proposal.files.where(id: params[:attachment_id])
+    file.purge_later
+
+    flash[:notice] = 'File has been removed!'
+
+    if request.xhr?
+      render js: "window.location='#{edit_proposal_path(@proposal)}'"
+    else
+      redirect_to edit_proposal_path(@proposal)
+    end
+  end
+
   private
 
   def proposal_params

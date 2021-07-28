@@ -12,7 +12,9 @@ class InviteMailer < ApplicationMailer
     @invite = params[:invite]
     @existing_co_organizers = params[:co_organizers]
 
-    @existing_co_organizers.prepend(" and ") if @existing_co_organizers.present?
+    @existing_co_organizers.prepend(", ") if @existing_co_organizers.present?
+    @existing_co_organizers = @existing_co_organizers.strip.delete_suffix(",")
+    @existing_co_organizers = @existing_co_organizers.sub(/.*\K,/, ' and') if @existing_co_organizers.present?
     @proposal = @invite.proposal
     @person = @invite.person
 
@@ -31,7 +33,8 @@ class InviteMailer < ApplicationMailer
     @invite = params[:invite]
     @existing_co_organizers = params[:co_organizers]
 
-    @existing_co_organizers.prepend(" and ") if @existing_co_organizers.present?
+    @existing_co_organizers.prepend(", ") if @existing_co_organizers.present?
+    @existing_co_organizers = @existing_co_organizers.sub(/.*\K,/, ' and') if @existing_co_organizers.present?
     @proposal = @invite.proposal
     @person = @invite.person
 
