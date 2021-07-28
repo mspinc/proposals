@@ -28,14 +28,10 @@ class SubmitProposalsController < ApplicationController
     attachment = generate_proposal_pdf || return
     confirm_submission(attachment)
   end
-  # rubocop:enable Metrics/AbcSize
+  # rubocop:disable Metrics/AbcSize
 
   def thanks; end
 
-  # def upload_file
-  #   @answer = Answer.find_or_create_by!(proposal_field_id: params[:field_id], proposal_id: params[:id])
-  #   @answer.file.attach(params[:file])
-  # end
 
   private
 

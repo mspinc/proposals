@@ -18,10 +18,10 @@ export default class extends Controller {
         type: "POST",
         data,
         success() {
-            toastr.success("File/s uploaded.")
+            toastr.success("Upload successful.")
         },
         error() {
-            toastr.error("File/s format not supported.")
+            toastr.error("Upload of PDF file failed.")
         }
       })
     }
