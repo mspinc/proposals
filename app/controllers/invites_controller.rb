@@ -5,6 +5,7 @@ class InvitesController < ApplicationController
   before_action :set_invite_proposal, only: %i[show]
 
   def show
+    redirect_to root_path, alert: "Invite code is invalid" and return if @invite.nil? 
     redirect_to root_path and return if @invite.confirmed?
     redirect_to expired_path and return if @invite.cancelled?
 
@@ -59,7 +60,7 @@ class InvitesController < ApplicationController
   private
 
   def set_invite_proposal
-    @proposal = Proposal.find_by(id: @invite.proposal)
+    @proposal = Proposal.find_by(id: @invite&.proposal)
   end
 
   def response_params
