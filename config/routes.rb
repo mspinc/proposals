@@ -32,6 +32,8 @@ Rails.application.routes.draw do
       get :rendered_field, to: 'proposals#latex_field'
       patch :ranking
       get :locations
+      post :upload_file
+      post :remove_file
     end
 
     resources :invites, :except => [:show] do
@@ -60,9 +62,9 @@ Rails.application.routes.draw do
     collection do 
       get :thanks
     end
-    member do
-      post :upload_file
-    end
+    # member do
+    #   post :upload_file
+    # end
   end
   resources :proposal_types do
     resources :proposal_forms do
