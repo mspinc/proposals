@@ -18,6 +18,7 @@ export default class extends Controller {
         type: "POST",
         data,
         success() {
+            location.reload(true)
             toastr.success("Upload successful.")
         },
         error() {
