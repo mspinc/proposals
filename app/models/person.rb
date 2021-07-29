@@ -53,10 +53,10 @@ class Person < ApplicationRecord
     #   self.region = state if state.present?
     # end
     case country
-      when "Canada"
-        self.region = province if province.present?
-      when "United States of America"
-        self.region = state if state.present?
+    when "Canada"
+      self.region = province if province.present?
+    when "United States of America"
+      self.region = state if state.present?
     end
     errors.add("Missing data: ", "You must select a #{region_type}") if region.blank?
   end
