@@ -14,7 +14,7 @@
                 <% @faqs.each do |faq| %>
                   <div class="mb-3">
                     <h4>
-                      <%= faq.question %>
+                      <%= faq.question&.html_safe %>
                     </h4>
                     <p>
                       <%= faq.answer %>

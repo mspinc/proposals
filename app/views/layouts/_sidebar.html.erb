@@ -84,8 +84,8 @@
         </ul>
         <% if !current_user&.staff_member? %>
           <ul id="pages" class="sidebar-dropdown list-unstyled collapse <%= pages_menu %>" data-bs-parent="#sidebar">
-            <li class="sidebar-item <%= active_menu(faq_survey_index_path) %>">
-              <%= link_to faq_survey_index_path, class: "sidebar-link" do %>
+            <li class="sidebar-item <%= active_menu(faqs_survey_index_path) %>">
+              <%= link_to faqs_survey_index_path, class: "sidebar-link" do %>
                 <i class="fas fa-book"></i> FAQs
               <% end %>
             </li>
