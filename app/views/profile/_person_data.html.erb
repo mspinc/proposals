@@ -51,15 +51,15 @@
 
       <div class="form-group mb-2">
         <%= f.label :country, "Country" , class: 'form-label required' %><br>
-        <%= f.select :country, country_options, {include_blank: true}, data: {action: 'change->person#handleCountryOptions'} , class:'form-select' %>
+        <%= f.select :country, country_options, {include_blank: true}, data: {'person-target': 'countryOption',action: 'change->person#handleCountryOptions'} , class:'form-select' %>
       </div>
       <div class="hidden form-group mt-3" data-person-target="province">
           <%= f.label :province, "Province", class:"form-label required" %>
-          <%= f.select :province, options_for_select(country_canada_options), {include_blank: true}, class: "form-select" %>
+          <%= f.select :province, options_for_select(country_canada_options, @person.region), {include_blank: true}, class: "form-select" %>
       </div>
       <div class="hidden form-group mt-3" data-person-target="state">
         <%= f.label :state, "State", class:"form-label required" %>
-        <%= f.select :state , options_for_select(country_united_states_of_america_options), {include_blank: true}, class: "form-select" %>
+        <%= f.select :state , options_for_select(country_united_states_of_america_options, @person.region), {include_blank: true}, class: "form-select" %>
       </div>
     </div>
     <div class="form-group mt-3">
