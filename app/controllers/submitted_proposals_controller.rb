@@ -21,6 +21,7 @@ class SubmittedProposalsController < ApplicationController
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
   def send_emails
     @email = Email.new
     status_update if params[:revision].to_i == 1
@@ -32,9 +33,11 @@ class SubmittedProposalsController < ApplicationController
       redirect_to submitted_proposal_url(@proposal), alert: @email.errors.full_messages
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
+  # rubocop:disable Metrics/AbcSize
   def email_send
     email = @proposal.lead_organizer.email
     @organizer = @proposal.lead_organizer.fullname
@@ -47,6 +50,7 @@ class SubmittedProposalsController < ApplicationController
       ProposalMailer.with(email_data: @email, email: email, organizer: @organizer).staff_send_emails.deliver_later
     end
   end
+  # rubocop:enable Metrics/AbcSize
 
   # rubocop:disable Metrics/AbcSize
   def query_params?
