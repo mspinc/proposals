@@ -7,6 +7,7 @@ class Proposal < ApplicationRecord
 
   attr_accessor :is_submission
 
+  has_many_attached :files
   has_many :proposal_locations, dependent: :destroy
   has_many :locations, -> { order 'proposal_locations.position' }, through: :proposal_locations
   belongs_to :proposal_type
@@ -50,7 +51,7 @@ class Proposal < ApplicationRecord
 
   scope :submitted, lambda { |type|
     where(status: 1)
-      .joins(:proposal_type).where('name = ?', type)
+      .joins(:proposal_type).where(name: type)
   }
 
   def demographics_data
@@ -97,6 +98,10 @@ class Proposal < ApplicationRecord
                 proposal.the_locations, proposal.status, proposal.updated_at.to_date]
       end
     end
+  end
+
+  def pdf_file_type(file)
+    file.content_type.in?(%w[application/pdf])
   end
 
   private
