@@ -19,6 +19,8 @@ class Proposal < ApplicationRecord
   has_many :proposal_ams_subjects, dependent: :destroy
   has_many :ams_subjects, through: :proposal_ams_subjects
   belongs_to :subject, optional: true
+  has_many :staff_discussions, dependent: :destroy
+  has_many :emails, dependent: :destroy
 
   validates :year, :title, presence: true, if: :is_submission
   validate :subjects, if: :is_submission
