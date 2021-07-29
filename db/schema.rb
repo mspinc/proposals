@@ -11,7 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2021_07_28_061859) do
-  
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -72,14 +72,6 @@ ActiveRecord::Schema.define(version: 2021_07_28_061859) do
     t.integer "version", default: 1
     t.index ["proposal_field_id"], name: "index_answers_on_proposal_field_id"
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
-  end
-
-  create_table "birs_discussions", force: :cascade do |t|
-    t.text "discussion"
-    t.bigint "proposal_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["proposal_id"], name: "index_birs_discussions_on_proposal_id"
   end
 
   create_table "demographic_data", force: :cascade do |t|
@@ -219,6 +211,12 @@ ActiveRecord::Schema.define(version: 2021_07_28_061859) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "proposal_fields_files", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "proposal_fields_multi_choices", force: :cascade do |t|
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
@@ -271,12 +269,6 @@ ActiveRecord::Schema.define(version: 2021_07_28_061859) do
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
-  end
-
-  create_table "proposal_fields_files", force: :cascade do |t|
-    t.string "statement"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "proposal_locations", force: :cascade do |t|
@@ -353,6 +345,14 @@ ActiveRecord::Schema.define(version: 2021_07_28_061859) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "staff_discussions", force: :cascade do |t|
+    t.text "discussion"
+    t.bigint "proposal_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["proposal_id"], name: "index_staff_discussions_on_proposal_id"
   end
 
   create_table "subject_categories", force: :cascade do |t|
@@ -441,7 +441,6 @@ ActiveRecord::Schema.define(version: 2021_07_28_061859) do
   add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "answers", "proposal_fields"
   add_foreign_key "answers", "proposals"
-  add_foreign_key "birs_discussions", "proposals"
   add_foreign_key "demographic_data", "people"
   add_foreign_key "emails", "proposals"
   add_foreign_key "invites", "people"
@@ -462,6 +461,7 @@ ActiveRecord::Schema.define(version: 2021_07_28_061859) do
   add_foreign_key "proposals", "proposal_types"
   add_foreign_key "proposals", "subjects"
   add_foreign_key "role_privileges", "roles"
+  add_foreign_key "staff_discussions", "proposals"
   add_foreign_key "subjects", "subject_categories"
   add_foreign_key "survey_answers", "people"
   add_foreign_key "survey_answers", "survey_questions"

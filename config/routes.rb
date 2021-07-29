@@ -20,7 +20,7 @@ Rails.application.routes.draw do
       get :download_csv
     end
     member do
-      post :birs_discussion
+      post :staff_discussion
       post :send_emails
     end
   end

@@ -1,6 +1,6 @@
-class CreateBirsDiscussion < ActiveRecord::Migration[6.1]
+class CreateStaffDiscussions < ActiveRecord::Migration[6.1]
   def change
-    create_table :birs_discussions do |t|
+    create_table :staff_discussions do |t|
       t.text :discussion
 
       t.references :proposal, null: false, foreign_key: true
