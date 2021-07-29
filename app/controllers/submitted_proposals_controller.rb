@@ -38,8 +38,8 @@ class SubmittedProposalsController < ApplicationController
   private
 
   def query_params?
-    params.any? %i[firstname lastname subject_area keywords workshop_year
-                   proposal_type]
+    (params.keys & %i[firstname lastname subject_area keywords workshop_year
+                      proposal_type]).any?
   end
 
   def email_params
