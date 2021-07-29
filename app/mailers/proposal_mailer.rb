@@ -11,4 +11,11 @@ class ProposalMailer < ApplicationMailer
 
     mail(to: email, subject: "BIRS Proposal #{proposal.code}: #{proposal.title}")
   end
+
+  def staff_send_emails
+    @email_data = params[:email_data]
+    email = params[:email]
+    @organizer = params[:organizer]
+    mail(to: email, subject: @email_data.subject)
+  end
 end
