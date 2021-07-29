@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_17_065007) do
+ActiveRecord::Schema.define(version: 2021_07_28_061859) do
   
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -69,8 +69,17 @@ ActiveRecord::Schema.define(version: 2021_07_17_065007) do
     t.string "answer"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "version", default: 1
     t.index ["proposal_field_id"], name: "index_answers_on_proposal_field_id"
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
+  end
+
+  create_table "birs_discussions", force: :cascade do |t|
+    t.text "discussion"
+    t.bigint "proposal_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["proposal_id"], name: "index_birs_discussions_on_proposal_id"
   end
 
   create_table "demographic_data", force: :cascade do |t|
@@ -79,6 +88,16 @@ ActiveRecord::Schema.define(version: 2021_07_17_065007) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["person_id"], name: "index_demographic_data_on_person_id"
+  end
+
+  create_table "emails", force: :cascade do |t|
+    t.string "subject"
+    t.text "body"
+    t.boolean "revision", default: false
+    t.bigint "proposal_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["proposal_id"], name: "index_emails_on_proposal_id"
   end
 
   create_table "faqs", force: :cascade do |t|
@@ -422,7 +441,9 @@ ActiveRecord::Schema.define(version: 2021_07_17_065007) do
   add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "answers", "proposal_fields"
   add_foreign_key "answers", "proposals"
+  add_foreign_key "birs_discussions", "proposals"
   add_foreign_key "demographic_data", "people"
+  add_foreign_key "emails", "proposals"
   add_foreign_key "invites", "people"
   add_foreign_key "invites", "proposals"
   add_foreign_key "options", "proposal_fields"

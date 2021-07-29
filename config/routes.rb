@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   end
 
   get :guidelines, to: 'pages#guidelines'
-  resources :feedbacks, path: :feedback do 
+  resources :feedbacks, path: :feedback do
     member do
       patch :add_reply
     end
@@ -19,6 +19,10 @@ Rails.application.routes.draw do
     collection do
       get :download_csv
     end
+    member do
+      post :birs_discussion
+      post :send_emails
+    end
   end
 
   get :invite, to: 'invites#show'
@@ -27,14 +31,14 @@ Rails.application.routes.draw do
 
   resources :proposals do
     post :latex, to: 'proposals#latex_input'
-    member do 
+    member do
       get :rendered_proposal, to: 'proposals#latex_output'
       get :rendered_field, to: 'proposals#latex_field'
       patch :ranking
       get :locations
     end
 
-    resources :invites, :except => [:show] do
+    resources :invites, except: [:show] do
       member do
         post :inviter_response
         post :invite_reminder
@@ -57,7 +61,7 @@ Rails.application.routes.draw do
   resources :people, path: :person
 
   resources :submit_proposals do
-    collection do 
+    collection do
       get :thanks
     end
     member do
