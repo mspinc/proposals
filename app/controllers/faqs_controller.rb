@@ -21,11 +21,16 @@ class FaqsController < ApplicationController
   def edit; end
 
   def update
-    redirect_to faqs_path, notice: "Faq has been updated!" if @faq.update(faq_params)
+    if @faq.update(faq_params)
+      redirect_to faqs_path, notice: "Faq has been updated!"
+    else
+      redirect_to faqs_path, alert: "Faq has not been updated!"
+    end
   end
 
   def destroy
-    redirect_to faqs_path, notice: "Faq has been deleted!" if @faq.destroy
+    @faq.destroy
+    redirect_to faqs_path, notice: "Faq has been deleted!"
   end
 
   def move

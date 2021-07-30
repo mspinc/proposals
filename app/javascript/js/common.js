@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $(document).on('hide.bs.modal', '#email-preview', function() {
+  $(document).on('hide.bs.modal', '#email-preview', function(event) {
     window.location.reload()
   });
 
@@ -13,7 +13,7 @@ $(document).ready(function() {
     }
   });
 
-  $('[id^="chartjs"]').each(function(index) {
+  $('[id^="chartjs"]').each(function(index, el) {
     this.style.height = '200px'
   })
 

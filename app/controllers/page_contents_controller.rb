@@ -4,7 +4,11 @@ class PageContentsController < ApplicationController
   def edit; end
 
   def update
-    redirect_to guidelines_path, notice: "Guidelines was successfully updated" if @guideline.update(page_params)
+    if @guideline.update(page_params)
+      redirect_to guidelines_path, notice: "Guidelines was successfully updated"
+    else
+      redirect_to guidelines_path, alert: "Guidelines was not updated"
+    end
   end
 
   private

@@ -24,7 +24,7 @@ export default class extends Controller {
     fetch(`/proposal_types/${this.proposalTypeIdValue}/location_based_fields?ids=${locations}&proposal_id=${this.proposalValue}`)
       .then((response) => response.text())
       .then((html) => {
-        this.locationSpecificQuestionsTarget&.innerHTML = html
+        this.locationSpecificQuestionsTarget.innerHTML = html
       });
   }
 
@@ -44,10 +44,10 @@ export default class extends Controller {
     .then((res) => {
       res.forEach(function (location) {
         locationList +=  `<p data-id='${location.id}'>${location.name}</p>`;
-        _this.dragLocationsTarget&.innerHTML = locationList
+        _this.dragLocationsTarget.innerHTML = locationList
       })
       if(res.length === 0) {
-        _this.dragLocationsTarget&.innerHTML = ''
+        _this.dragLocationsTarget.innerHTML = ''
       }
     })
 
