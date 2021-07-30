@@ -21,7 +21,7 @@ class Person < ApplicationRecord
   validate :common_fields, on: :update
 
   def lead_organizer_attributes
-    errors.add('Street 1', "can't be blank") if street_1.blank?
+    errors.add('Street 1', "can't be blank") if street1.blank?
     errors.add('City', "can't be blank") if city.blank?
   end
 

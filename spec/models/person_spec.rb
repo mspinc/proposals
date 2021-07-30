@@ -39,7 +39,7 @@ RSpec.describe Person, type: :model do
     let(:person) { create(:person) }
     before do
       person.is_lead_organizer = true
-      person.update(street_1: nil, city: nil)
+      person.update(street1: nil, city: nil)
     end
     it '' do
       expect(person.errors.full_messages).to eq(["Street 1 can't be blank", "City can't be blank"])

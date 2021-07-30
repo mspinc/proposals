@@ -15,7 +15,7 @@ export default class extends Controller {
     e.preventDefault()
 
     let content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime().toString())
-    this.targetTarget.insertAdjacentHTML('beforebegin', content)
+    this.targetTarget&.insertAdjacentHTML('beforebegin', content)
   }
 
   remove (e) {

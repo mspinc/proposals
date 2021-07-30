@@ -29,7 +29,7 @@ class ProfileController < ApplicationController
   def person_params
     params.require(:person).permit(:affiliation, :department, :academic_status,
                                    :title, :first_phd_year, :country, :region,
-                                   :city, :street_1, :street_2, :postal_code,
+                                   :city, :street1, :street2, :postal_code,
                                    :other_academic_status, :province, :state)
   end
 
