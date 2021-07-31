@@ -84,11 +84,11 @@ module ProposalsHelper
     status&.split('_')&.map(&:capitalize)&.join(' ')
   end
 
+  # rubocop:disable Metrics/MethodLength
   def proposal_status_class(status)
+    status = "submitted" if %w[approved declined].include?(status)
     proposals = {
       "draft" => "text-muted",
-      "approved" => "text-proposal-submitted",
-      "declined" => "text-proposal-submitted",
       "submitted" => "text-proposal-submitted",
       "initial_review" => "text-warning",
       "revision_requested" => "text-danger",
@@ -99,6 +99,7 @@ module ProposalsHelper
     }
     proposals[status]
   end
+  # rubocop:enable Metrics/MethodLength
 
   def invite_response_color(status)
     case status
