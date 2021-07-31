@@ -104,7 +104,6 @@ export default class extends Controller {
   }
 
   latexField(targetValue) {
-    debugger
     if($('#no_latex').is(':checked') || targetValue) {
     this.fieldLatexTarget.classList.remove("hidden")
    } else {
