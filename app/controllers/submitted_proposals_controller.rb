@@ -39,13 +39,13 @@ class SubmittedProposalsController < ApplicationController
   def approve_status
     @proposal.update(status: 'approved')
     redirect_to submitted_proposals_url(@proposal),
-                  notice: "Proposal has been approved."
+                notice: "Proposal has been approved."
   end
 
   def decline_status
     @proposal.update(status: 'declined')
     redirect_to submitted_proposals_url(@proposal),
-                  notice: "Proposal has been declined."
+                notice: "Proposal has been declined."
   end
 
   private
