@@ -23,13 +23,15 @@
          <%= loc.name %><br>
         <% end %>
       </td>
-      <td class=<%= proposal_status(proposal.status) %> >
+      <td class=<%= proposal_status_class(proposal.status) %> >
         <%= proposal.status&.split('_')&.map(&:capitalize)&.join(' ') %>
       </td>
       <td><%= proposal.updated_at.to_date %></td>
       <td class="table-action">
         <%= link_to "View PDF", rendered_proposal_proposal_path(proposal.id, :format => :pdf), target: '_blank' %>
         <%= link_to '<i class="align-middle fas fa-fw fa-eye"></i>Show'.html_safe, submitted_proposal_url(proposal) %>
+        <%= link_to "Approve", approve_status_submitted_proposal_url(proposal), method: :post %>
+        <%= link_to "Decline", decline_status_submitted_proposal_url(proposal), method: :post %>
       </td>
     </tr>
     <% end %>

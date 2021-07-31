@@ -42,8 +42,8 @@
                    <%= loc.name %><br>
                   <% end %>
                 </td>
-                <td class=<%= proposal_status(proposal.status) %> >
-                  <%= proposal.status&.split('_')&.map(&:capitalize)&.join(' ') %>
+                <td class=<%= proposal_status_class(proposal.status) %> >
+                  <%= proposal_status(proposal.status) %>
                 </td>
                 <td><%= proposal.updated_at.to_date %></td>
                 <td class="table-action">

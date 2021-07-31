@@ -1,7 +1,8 @@
 class SubmittedProposalsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_proposals, only: %i[index download_csv]
-  before_action :set_proposal, only: %i[show staff_discussion send_emails]
+  before_action :set_proposal, only: %i[show staff_discussion send_emails approve_status
+                                        decline_status]
 
   def index; end
 
@@ -33,6 +34,18 @@ class SubmittedProposalsController < ApplicationController
       redirect_to submitted_proposal_url(@proposal),
                   alert: @email.errors.full_messages
     end
+  end
+
+  def approve_status
+    @proposal.update(status: 'approved')
+    redirect_to submitted_proposals_url(@proposal),
+                  notice: "Proposal has been approved."
+  end
+
+  def decline_status
+    @proposal.update(status: 'declined')
+    redirect_to submitted_proposals_url(@proposal),
+                  notice: "Proposal has been declined."
   end
 
   private
