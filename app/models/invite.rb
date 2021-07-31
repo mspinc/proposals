@@ -48,12 +48,19 @@ class Invite < ApplicationRecord
     add_person
   end
 
+  # rubocop:disable Metrics/AbcSize
   def add_person
     return if firstname.blank? || lastname.blank? || email.blank?
 
-    person = Person.find_by(email: email)
+    email_person = email.downcase!
+    person = if email_person
+               Person.find_by(email: email_person)
+             else
+               Person.find_by(email: email)
+             end
     person ||= Person.create(email: email, firstname: firstname, lastname: lastname)
 
     self.person = person
   end
+  # rubocop:enable Metrics/AbcSize
 end
