@@ -2,8 +2,12 @@ class ProfileController < ApplicationController
   before_action :person, only: %i[edit update demographic_data]
 
   def edit
-    @person.is_lead_organizer = true if @person.city
-    @result = @person.demographic_data.result
+    if @person.city
+      @person.is_lead_organizer = true
+      @result = @person.demographic_data.result
+    else
+      @person.is_lead_organizer = false
+    end
   end
 
   def update
@@ -34,6 +38,7 @@ class ProfileController < ApplicationController
   end
 
   def questionnaire_answers
+    debugger
     params.require(:profile_survey)
   end
 

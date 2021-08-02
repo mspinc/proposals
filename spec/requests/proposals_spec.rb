@@ -4,6 +4,7 @@ RSpec.describe "Proposals", type: :request do
   let(:user) { create(:user) }
   let(:person) { create(:person, :with_proposals, user: user) }
   let(:proposal) { person.proposals.first }
+  let(:proposal_location) { create(:proposal_location, proposal: proposal ) }
 
   before { authenticate_for_controllers(person) }
 
@@ -76,5 +77,13 @@ RSpec.describe "Proposals", type: :request do
     end
 
     it { expect(Proposal.all.count).to eq(2) }
+  end
+
+  describe "PATCH /ranking" do
+    before { patch ranking_proposal_url(proposal), params: { location_id: proposal_location.location.id, position: 2 } }
+
+    it "updates proposal locations" do
+      expect(proposal_location.reload.position).to eq(2)
+    end
   end
 end

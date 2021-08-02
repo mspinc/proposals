@@ -5,10 +5,13 @@ class ProposalFieldsController < ApplicationController
   def new
     if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate File].include?(params[:field_type])
       type = "ProposalFields::#{params[:field_type]}".safe_constantize.new
+      @proposal_field = @proposal_form.proposal_fields.new(fieldable: type)
+      render partial: 'proposal_fields/fields_form',
+             locals: { proposal_field: @proposal_field, proposal_form: @proposal_form }
+    else
+      redirect_to edit_proposal_type_proposal_form_url(@proposal_form.proposal_type, @proposal_form),
+                  alert: "Invalid field type"
     end
-    @proposal_field = @proposal_form.proposal_fields.new(fieldable: type)
-    render partial: 'proposal_fields/fields_form',
-           locals: { proposal_field: @proposal_field, proposal_form: @proposal_form }
   end
 
   # rubocop:disable Metrics/AbcSize

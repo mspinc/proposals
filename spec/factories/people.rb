@@ -20,6 +20,7 @@ FactoryBot.define do
     f.country { Faker::Address.country }
     f.academic_status { Faker::Educator.degree }
     f.first_phd_year { Date.current.year - 5 }
+    f.city { Faker::Address.city }
   end
 
   trait :with_proposals do

@@ -102,4 +102,29 @@ RSpec.describe "/proposals/:proposal_id/invites", type: :request do
       end
     end
   end
+
+  describe "POST /invite_email" do
+    let(:invite1) { create(:invite, status: 'pending') }
+    before do
+      authenticate_for_controllers
+      params = { proposal_id: proposal.id, id: invite1.id}
+      post invite_email_proposal_invite_path(params)
+    end
+
+    context 'when id is not equal to zero' do
+      it "sends invite email when invite id is not equal to zero" do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+
+    context 'when id is equal to zero' do
+      before do
+        params = { proposal_id: proposal.id, id: 0}
+        post invite_email_proposal_invite_path(params)
+      end
+      it "sends invite email when invite id is equal to zero" do
+        expect(response).to have_http_status(:ok)
+      end
+    end
+  end
 end

@@ -9,6 +9,10 @@ RSpec.describe "/proposal_forms/:id/proposal_fields", type: :request do
       get new_proposal_type_proposal_form_proposal_field_path(proposal_type, proposal_form, field_type: 'Text')
       expect(response).to have_http_status(:ok)
     end
+    it "does not render a successful response" do
+      get new_proposal_type_proposal_form_proposal_field_path(proposal_type, proposal_form, field_type: 'Invalid')
+      expect(response).to redirect_to(edit_proposal_type_proposal_form_url(proposal_form.proposal_type, proposal_form))
+    end
   end
 
   describe "POST /create" do
