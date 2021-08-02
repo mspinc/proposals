@@ -1,0 +1,40 @@
+<main class="content" data-controller="proposal-types">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Role
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"> <%= link_to "Roles", roles_path %> </li>
+          <li class="breadcrumb-item active" aria-current="page"><%= @role.name %></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h2>Role: <%= @role.name&.split('_')&.map(&:capitalize)&.join(' ') %></h2>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="width:40%;">Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @role.users.each do |user|%>                     
+                <tr>
+                  <td><%= user.fullname %></td>
+                  <td><%= user.email %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

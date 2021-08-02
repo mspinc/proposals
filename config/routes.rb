@@ -101,4 +101,6 @@ Rails.application.routes.draw do
   get 'profile/' => 'profile#edit'
   patch 'update' => 'profile#update'
   post 'demographic_data' => 'profile#demographic_data'
+
+  resources :roles
 end
