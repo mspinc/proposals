@@ -7,7 +7,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"> <%= link_to "Roles", roles_path %> </li>
-          <li class="breadcrumb-item active" aria-current="page"><%= @role.name %></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= @role.name&.split('_')&.map(&:capitalize)&.join(' ') %></li>
         </ol>
       </nav>
     </div>
@@ -25,11 +25,20 @@
               </tr>
             </thead>
             <tbody>
-              <% @role.users.each do |user|%>                     
+              <% if @role.name == "Staff" %>
+                <% @role.users.each do |user|%>
                 <tr>
                   <td><%= user.fullname %></td>
                   <td><%= user.email %></td>
                 </tr>
+                <% end %>                     
+              <% else %>
+                <% @role.proposal_roles.map(&:person).each do |user|%>
+                <tr>
+                  <td><%= user.fullname %></td>
+                  <td><%= user.email %></td>
+                </tr>
+                <% end %>
               <% end %>
             </tbody>
           </table>
