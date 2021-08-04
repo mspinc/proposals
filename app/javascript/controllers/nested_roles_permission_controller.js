@@ -12,7 +12,17 @@ export default class extends Controller {
     e.preventDefault()
 
     let contentOne = this.templateOneTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime().toString())
-    console.log(contentOne)
     this.targetOneTarget.insertAdjacentHTML('beforebegin', contentOne)
+  }
+
+  usersPreview() {
+    event.preventDefault()
+
+    let id = event.currentTarget.dataset.id;
+    $.post(`/roles/${id}/new_user.js`,
+      $('form#role').serialize(), function(data) {
+          $("#user-window").modal('show')
+      }
+    )
   }
 }
