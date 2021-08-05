@@ -6,7 +6,8 @@ module SubmittedProposalsHelper
   def submitted_graph_data(param, param2, proposals)
     data = Hash.new(0)
     proposals&.each do |proposal|
-      citizenships = proposal.demographics_data.pluck(:result).pluck(param, param2).flatten.reject do |s|
+      citizenships = proposal.demographics_data.pluck(:result)
+                             .pluck(param, param2).flatten.reject do |s|
         s.blank? || s.eql?("Other")
       end
 
@@ -39,8 +40,9 @@ module SubmittedProposalsHelper
   def submitted_career_data(param, param2, proposals)
     data = Hash.new(0)
     proposals&.each do |proposal|
-      person = Person.where.not(id: proposal.lead_organizer.id)
-      career_stage = person.where(id: proposal.person_ids).pluck(param, param2).flatten.reject do |s|
+      person = Person.where.not(id: proposal.lead_organizer&.id)
+      career_stage = person.where(id: proposal.person_ids).pluck(param, param2)
+                           .flatten.reject do |s|
         s.blank? || s.eql?("Other")
       end
 
@@ -53,12 +55,14 @@ module SubmittedProposalsHelper
 
   # rubocop:enable Metrics/AbcSize
   def submitted_career_labels(proposals)
-    data = submitted_career_data("academic_status", "other_academic_status", proposals)
+    data = submitted_career_data("academic_status", "other_academic_status",
+                                 proposals)
     data.keys
   end
 
   def submitted_career_values(proposals)
-    data = submitted_career_data("academic_status", "other_academic_status", proposals)
+    data = submitted_career_data("academic_status", "other_academic_status",
+                                 proposals)
     data.values
   end
 

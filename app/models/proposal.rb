@@ -15,12 +15,12 @@ class Proposal < ApplicationRecord
   has_many_attached :files
   has_many :proposal_locations, dependent: :destroy
   has_many :locations, -> { order 'proposal_locations.position' },
-                            through: :proposal_locations
+                       through: :proposal_locations
   belongs_to :proposal_type
   has_many :proposal_roles, dependent: :destroy
   has_many :people, through: :proposal_roles
   has_many(:answers, -> { order 'answers.proposal_field_id' },
-                          inverse_of: :proposal, dependent: :destroy)
+                     inverse_of: :proposal, dependent: :destroy)
   has_many :invites, dependent: :destroy
   belongs_to :proposal_form
   has_many :proposal_ams_subjects, dependent: :destroy
@@ -121,20 +121,20 @@ class Proposal < ApplicationRecord
     return unless DateTime.current.to_date > proposal_type.closed_date.to_date
 
     errors.add("Late submission - ", "proposal submissions are not allowed
-        because of due date #{proposal_type.closed_date.to_date}".squish)
+               because of due date #{proposal_type.closed_date.to_date}".squish)
   end
 
   def minimum_organizers
     return unless invites.where(status: 'confirmed').count < 1
 
     errors.add('Supporting Organizers: ', 'At least one supporting organizer
-      must confirm their participation by following the link in the email
-      that was sent to them.'.squish)
+               must confirm their participation by following the link in the
+               email that was sent to them.'.squish)
   end
 
   def subjects
     errors.add('Subject Area:', "please select a subject area") if subject.nil?
-    unless ams_subjects.pluck(:code).count == 2
+    if ams_subjects.pluck(:code).count < 2
       errors.add('AMS Subjects:', 'please select 2 AMS Subjects')
     end
   end
@@ -156,9 +156,7 @@ class Proposal < ApplicationRecord
   end
 
   def preferred_locations
-    if locations.empty?
-      errors.add('Preferred Locations:', "Please select at least one preferred
-                 location".squish)
-    end
+    errors.add('Preferred Locations:', "Please select at least one preferred
+               location".squish) if locations.empty?
   end
 end
