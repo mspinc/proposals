@@ -265,9 +265,12 @@
                           <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
                         </div>
                         <!-- <h4 class="tab-title">Common Fields</h4> -->
-                        <div class="form-group">
-                          <%= f.check_box :no_latex, {checked: @proposal.no_latex}, data: {'action': 'focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur'} %>
+                        <div class="form-group mb-3">
+                          <input type="checkbox" name="no_latex" data-action="click->submit-proposals#latexField focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur" id="no_latex" data-value="<%= @proposal.no_latex %>" <%= @proposal.no_latex ? 'checked' : '' %>>
                           <%= f.label :no_latex, "No LaTeX", class: "form-label" %>
+                          <div class="hidden form-group mb-2" data-submit-proposals-target="fieldLatex">
+                            <%= f.text_area(:preamble, size: '5x5', class:'form-control', value: @proposal.preamble)%>
+                          </div>
                         </div>
                         <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 

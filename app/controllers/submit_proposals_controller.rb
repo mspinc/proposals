@@ -7,12 +7,14 @@ class SubmitProposalsController < ApplicationController
   # rubocop:disable Metrics/AbcSize
   def create
     @proposal.update(proposal_params)
+    @proposal.update(no_latex: false) if params[:no_latex].nil?
+    @proposal.update(no_latex: true) if params[:no_latex] == 'on'
     update_ams_subject_code
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
     session[:is_submission] = @proposal.is_submission = submission.is_final?
 
-    create_invite and return
+    create_invite and return if params[:create_invite]
 
     unless @proposal.is_submission
       redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
@@ -31,7 +33,6 @@ class SubmitProposalsController < ApplicationController
   # rubocop:enable Metrics/AbcSize
 
   def thanks; end
-
 
   private
 
@@ -91,7 +92,7 @@ class SubmitProposalsController < ApplicationController
   # rubocop:enable Metrics/AbcSize
 
   def proposal_params
-    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex)
+    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex, :preamble)
           .merge(ams_subject_ids: proposal_ams_subjects)
   end
 

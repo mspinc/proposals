@@ -13,6 +13,7 @@ class ProposalFiltersQuery
     @result = filter_by_keyword(params[:keywords])
     @result = filter_by_workshop_year(params[:workshop_year])
     @result = filter_by_proposal_type(params[:proposal_type])
+    @result = filter_by_status(params[:status])
 
     @result
   end
@@ -32,7 +33,7 @@ class ProposalFiltersQuery
   def filter_by_subject_area(subject_area)
     return @result unless subject_area.present?
 
-    @result.search_proposals(subject_area)
+    @result.search_proposal_subject(subject_area)
   end
 
   def filter_by_keyword(keywords)
@@ -50,12 +51,35 @@ class ProposalFiltersQuery
   def filter_by_workshop_year(workshop_year)
     return @result unless workshop_year.present?
 
-    @result.search_proposals(workshop_year)
+    @result.search_proposal_year(workshop_year)
   end
 
   def filter_by_proposal_type(proposal_type)
     return @result unless proposal_type.present?
 
-    @result.search_proposals(proposal_type)
+    @result.search_proposal_type(proposal_type)
+  end
+
+  def filter_by_status(status)
+    return @result unless status.present?
+
+    case status.downcase
+    when 'draft'
+      @result.search_proposal_status(0)
+    when 'submitted'
+      @result.search_proposal_status(1)
+    when 'initial_review'
+      @result.search_proposal_status(2)
+    when 'revision_requested'
+      @result.search_proposal_status(3)
+    when 'revision_submitted'
+      @result.search_proposal_status(4)
+    when 'in_progress'
+      @result.search_proposal_status(5)
+    when 'decision_pending'
+      @result.search_proposal_status(6)
+    when 'decision_email_sent'
+      @result.search_proposal_status(7)
+    end
   end
 end

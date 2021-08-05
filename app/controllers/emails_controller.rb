@@ -1,4 +1,4 @@
-class EmailController < ApplicationController
+class EmailsController < ApplicationController
   def new
     @email = Email.new
   end
