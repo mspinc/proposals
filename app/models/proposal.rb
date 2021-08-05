@@ -14,11 +14,13 @@ class Proposal < ApplicationRecord
 
   has_many_attached :files
   has_many :proposal_locations, dependent: :destroy
-  has_many :locations, -> { order 'proposal_locations.position' }, through: :proposal_locations
+  has_many :locations, -> { order 'proposal_locations.position' },
+                            through: :proposal_locations
   belongs_to :proposal_type
   has_many :proposal_roles, dependent: :destroy
   has_many :people, through: :proposal_roles
-  has_many(:answers, -> { order 'answers.proposal_field_id' }, inverse_of: :proposal, dependent: :destroy)
+  has_many(:answers, -> { order 'answers.proposal_field_id' },
+                          inverse_of: :proposal, dependent: :destroy)
   has_many :invites, dependent: :destroy
   belongs_to :proposal_form
   has_many :proposal_ams_subjects, dependent: :destroy
@@ -56,11 +58,12 @@ class Proposal < ApplicationRecord
 
   scope :submitted, lambda { |type|
     where(status: 1)
-      .joins(:proposal_type).where('name = ?', type)
+      .joins(:proposal_type).where(name: type)
   }
 
   def demographics_data
-    DemographicData.where(person_id: invites.where(invited_as: 'Participant').pluck(:person_id))
+    DemographicData.where(person_id: invites.where(invited_as: 'Participant')
+                   .pluck(:person_id))
   end
 
   def create_organizer_role(person, organizer)
@@ -77,7 +80,8 @@ class Proposal < ApplicationRecord
   end
 
   def list_of_co_organizers
-    invites.where(invites: { invited_as: 'Co Organizer' }).map(&:person).map(&:fullname).join(', ')
+    invites.where(invites: { invited_as: 'Co Organizer' }).map(&:person)
+           .map(&:fullname).join(', ')
   end
 
   def supporting_organizers
@@ -94,13 +98,15 @@ class Proposal < ApplicationRecord
   end
 
   def self.to_csv
-    attributes = ["Code", "Proposal Title", "Proposal Type", "Lead Organizer", "Preffered Locations", "Status",
+    attributes = ["Code", "Proposal Title", "Proposal Type", "Lead Organizer",
+                  "Preffered Locations", "Status",
                   "Updated"]
     CSV.generate(headers: true) do |csv|
       csv << attributes
       all.find_each do |proposal|
-        csv << [proposal.code, proposal.title, proposal.proposal_type.name, proposal.lead_organizer.fullname,
-                proposal.the_locations, proposal.status, proposal.updated_at.to_date]
+        csv << [proposal.code, proposal.title, proposal.proposal_type.name,
+                proposal.lead_organizer.fullname, proposal.the_locations,
+                proposal.status, proposal.updated_at.to_date]
       end
     end
   end
@@ -128,7 +134,9 @@ class Proposal < ApplicationRecord
 
   def subjects
     errors.add('Subject Area:', "please select a subject area") if subject.nil?
-    errors.add('AMS Subjects:', 'please select 2 AMS Subjects') unless ams_subjects.pluck(:code).count == 2
+    unless ams_subjects.pluck(:code).count == 2
+      errors.add('AMS Subjects:', 'please select 2 AMS Subjects')
+    end
   end
 
   def next_number
@@ -148,6 +156,9 @@ class Proposal < ApplicationRecord
   end
 
   def preferred_locations
-    errors.add('Preferred Locations:', "Please select at least one preferred location") if locations.empty?
+    if locations.empty?
+      errors.add('Preferred Locations:', "Please select at least one preferred
+                 location".squish)
+    end
   end
 end
