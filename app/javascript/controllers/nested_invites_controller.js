@@ -58,7 +58,7 @@ export default class extends Controller {
 
     let id = event.currentTarget.dataset.id;
     let invitedAs = ''
-    $.post(`/submit_proposals?proposal=${id}.js`,
+    $.post(`/submit_proposals?proposal=${id}&create_invite=true.js`,
       $('form#submit_proposal').serialize(), function(data) {
         if ( data.invited_as ) {
           if(data.invited_as === 'participant') {

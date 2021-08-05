@@ -49,11 +49,11 @@ class Invite < ApplicationRecord
   end
 
   def add_person
-    return if firstname.blank? || lastname.blank? || email.blank?
-
-    person = Person.find_by(email: email)
-    person ||= Person.create(email: email, firstname: firstname, lastname: lastname)
-
+    return if [firstname, lastname, email].map(&:blank?).any?
+    
+    person = Person.find_by(email: email.downcase)
+    person ||= Person.create(email: email, firstname: firstname,
+                             lastname: lastname)
     self.person = person
   end
 end
