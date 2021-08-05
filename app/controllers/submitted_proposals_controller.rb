@@ -61,10 +61,10 @@ class SubmittedProposalsController < ApplicationController
 
   def set_proposals
     if query_params?
-      query = ProposalFiltersQuery.new(Proposal.active_proposals)
+      query = ProposalFiltersQuery.new(Proposal.order(:created_at))
       @proposals = query.find(params)
     else
-      @proposals = Proposal.active_proposals
+      @proposals = Proposal.order(:created_at)
     end
   end
 
