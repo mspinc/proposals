@@ -1,9 +1,14 @@
 class Proposal < ApplicationRecord
   include PgSearch::Model
-  pg_search_scope :search_proposals, against: %i[year title status subject_id proposal_type_id],
+  pg_search_scope :search_proposals, against: %i[title],
                                      associated_against: {
                                        people: %i[firstname lastname]
                                      }
+
+  pg_search_scope :search_proposal_type, against: %i[proposal_type_id]
+  pg_search_scope :search_proposal_status, against: %i[status]
+  pg_search_scope :search_proposal_subject, against: %i[subject_id]
+  pg_search_scope :search_proposal_year, against: %i[year]
 
   attr_accessor :is_submission
 
@@ -51,7 +56,7 @@ class Proposal < ApplicationRecord
 
   scope :submitted, lambda { |type|
     where(status: 1)
-      .joins(:proposal_type).where(name: type)
+      .joins(:proposal_type).where('name = ?', type)
   }
 
   def demographics_data
