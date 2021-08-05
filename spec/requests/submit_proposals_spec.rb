@@ -23,7 +23,7 @@ RSpec.describe "/submit_proposals", type: :request do
       { proposal: proposal.id, title: 'Test proposal', year: '2023',
         subject_id: subject.id, ams_subject_ids: ams_subject.id,
         invites_attributes: invites_attributes,
-        location_ids: location.id, no_latex: false }
+        location_ids: location.id, no_latex: false, create_invite: true }
     end
 
     before do

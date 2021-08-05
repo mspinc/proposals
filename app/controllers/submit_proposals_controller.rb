@@ -14,7 +14,7 @@ class SubmitProposalsController < ApplicationController
     submission.save_answers
     session[:is_submission] = @proposal.is_submission = submission.is_final?
 
-    create_invite and return
+    create_invite and return if params[:create_invite]
 
     unless @proposal.is_submission
       redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
@@ -33,7 +33,6 @@ class SubmitProposalsController < ApplicationController
   # rubocop:enable Metrics/AbcSize
 
   def thanks; end
-
 
   private
 
