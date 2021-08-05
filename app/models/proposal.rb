@@ -37,7 +37,9 @@ class Proposal < ApplicationRecord
     revision_submitted: 4,
     in_progress: 5,
     decision_pending: 6,
-    decision_email_sent: 7
+    decision_email_sent: 7,
+    approved: 8,
+    declined: 9
   }
 
   scope :active_proposals, lambda {

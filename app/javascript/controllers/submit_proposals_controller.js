@@ -5,13 +5,14 @@ import Rails from '@rails/ujs'
 export default class extends Controller {
 
   static targets = [ 'proposalType', 'locationSpecificQuestions', 'locationIds', 'text', 'tabs', 
-                    'dragLocations' ]
+                    'dragLocations', 'fieldLatex' ]
   static values = { proposalTypeId: Number, proposal: Number }
 
   connect() {
-    if(this.hasLocationIdsTarget) {
+    if(this.hasLocationIdsTarget || $('#no_latex').is(':checked')) {
       this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map((x) => x.value))
       this.showSelectedLocations()
+      this.latexField($('#no_latex').is(':checked'))
     }
   }
 
@@ -100,5 +101,13 @@ export default class extends Controller {
     if (previous) {
       previous.firstElementChild.click()
     }
+  }
+
+  latexField(targetValue) {
+    if($('#no_latex').is(':checked') || targetValue) {
+    this.fieldLatexTarget.classList.remove("hidden")
+   } else {
+     this.fieldLatexTarget.classList.add("hidden")
+   }
   }
 }
