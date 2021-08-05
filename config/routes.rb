@@ -22,6 +22,8 @@ Rails.application.routes.draw do
     member do
       post :staff_discussion
       post :send_emails
+      post :approve_status
+      post :decline_status
     end
   end
 
