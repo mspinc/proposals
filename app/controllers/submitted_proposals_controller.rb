@@ -51,7 +51,7 @@ class SubmittedProposalsController < ApplicationController
       query = ProposalFiltersQuery.new(Proposal.active_proposals)
       @proposals = query.find(params)
     else
-      @proposals = Proposal.active_proposals
+      @proposals = Proposal.all
     end
   end
 
