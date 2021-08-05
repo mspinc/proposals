@@ -1,7 +1,7 @@
 class SubmittedProposalsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_proposals, only: %i[index download_csv]
-  before_action :set_proposal, only: %i[show staff_discussion send_emails]
+  before_action :set_proposal, only: %i[show staff_discussion send_emails destroy]
 
   def index; end
 
@@ -32,6 +32,14 @@ class SubmittedProposalsController < ApplicationController
     else
       redirect_to submitted_proposal_url(@proposal),
                   alert: @email.errors.full_messages
+    end
+  end
+
+  def destroy
+    @proposal.destroy
+    respond_to do |format|
+      format.html { redirect_to submitted_proposals_url, notice: "Proposal was successfully destroyed." }
+      format.json { head :no_content }
     end
   end
 
