@@ -1,9 +1,8 @@
 class SubmittedProposalsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_proposals, only: %i[index download_csv]
-  before_action :set_proposal, only: %i[show staff_discussion send_emails approve_status
-                                        decline_status]
-
+  before_action :set_proposal, except: %i[index download_csv]
+  
   def index; end
 
   def show; end
@@ -15,7 +14,8 @@ class SubmittedProposalsController < ApplicationController
   def staff_discussion
     @staff_discussion = StaffDiscussion.new
     discussion = params[:discussion]
-    if @staff_discussion.update(discussion: discussion, proposal_id: @proposal.id)
+    if @staff_discussion.update(discussion: discussion,
+                                proposal_id: @proposal.id)
       redirect_to submitted_proposal_url(@proposal),
                   notice: "Your comment was added!"
     else
@@ -34,6 +34,14 @@ class SubmittedProposalsController < ApplicationController
       redirect_to submitted_proposal_url(@proposal),
                   alert: @email.errors.full_messages
     end
+  end
+
+  def destroy
+    @proposal.destroy
+    respond_to do |format|
+      format.html { redirect_to submitted_proposals_url,
+                    notice: "Proposal was successfully deleted." }
+      format.json { head :no_content }
   end
 
   def approve_status
