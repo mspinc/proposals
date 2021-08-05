@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.feature "Proposal New", type: :feature do
   before do
     proposal_type = create(:proposal_type)
-    form = create(:proposal_form, status: :active, proposal_type: proposal_type)
+    create(:proposal_form, status: :active, proposal_type: proposal_type)
     authenticate_user
     visit new_proposal_path
   end
@@ -13,7 +13,7 @@ RSpec.feature "Proposal New", type: :feature do
       expect(page).to have_text(proposal_type.name)
     end
   end
- 
+
   scenario "creating a new proposal " do
     find('input[name="commit"]').click
     expect(Proposal.count).to eq(1)

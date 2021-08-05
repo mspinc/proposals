@@ -5,7 +5,7 @@ FactoryBot.define do
     f.firstname
     f.lastname
     f.email
-    
+
     invited_as { %w[participant coorganizer].sample }
     status { %w[pending confirmed].sample }
     response { %w[yes maybe no].sample }

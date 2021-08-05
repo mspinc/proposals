@@ -43,6 +43,10 @@
                   <%= form.label :introduction_for_step_3, class:'mb-2' %>
                   <%=form.text_area(:introduction3, size: '3x5', class:'form-control') %>
                </div>
+               <div class="form-group mb-2">
+                  <%= form.label :introduction_for_Demographic_Charts, class:'mb-2' %>
+                  <%=form.text_area(:introduction_charts, size: '3x5', class:'form-control') %>
+               </div>
                <div class="form-group">
                  <%= form.submit class:'btn btn-primary my-2', disabled: @proposal_form&.inactive? %>
                </div>

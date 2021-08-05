@@ -1,5 +1,6 @@
 class ProposalTypesController < ApplicationController
-  before_action :set_proposal_type, only: %i[show location_based_fields proposal_forms destroy update edit proposal_type_locations]
+  before_action :set_proposal_type,
+                only: %i[show location_based_fields proposal_forms destroy update edit proposal_type_locations]
 
   def index
     @proposal_types = ProposalType.all
@@ -14,7 +15,7 @@ class ProposalTypesController < ApplicationController
     @proposal_type = ProposalType.new(proposal_type_params)
 
     if @proposal_type.save
-      redirect_to proposal_types_path,  notice: 'Proposal Type successfully created'
+      redirect_to proposal_types_path, notice: 'Proposal Type successfully created'
     else
       redirect_to new_proposal_type_path(@proposal_type), alert: @proposal_type.errors.full_messages
     end
@@ -48,10 +49,13 @@ class ProposalTypesController < ApplicationController
 
   def proposal_forms; end
 
+  def show; end
+
   private
 
   def proposal_type_params
-   params.require(:proposal_type).permit(:name, :year, :co_organizer, :participant, :code, :open_date, :closed_date, location_ids: [])
+    params.require(:proposal_type).permit(:name, :year, :co_organizer, :participant, :code, :open_date, :closed_date,
+                                          location_ids: [])
   end
 
   def set_proposal_type

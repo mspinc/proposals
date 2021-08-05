@@ -2,7 +2,7 @@ class ProposalsController < ApplicationController
   before_action :set_proposal, only: %w[show edit destroy ranking locations]
   before_action :set_careers, only: %w[show edit]
   before_action :authenticate_user!
-  
+
   def index
     @proposals = current_user&.person&.proposals
   end
@@ -33,7 +33,7 @@ class ProposalsController < ApplicationController
   def show; end
 
   def edit
-    @invite = @proposal.invites.new
+    @proposal.invites.build
   end
 
   def locations
@@ -45,11 +45,8 @@ class ProposalsController < ApplicationController
     proposal_id = latex_params[:proposal_id]
     session[:proposal_id] = proposal_id
 
-    temp_file = "propfile-#{current_user.id}-#{proposal_id}.tex"
-    session[:latex_file] = temp_file
     input = latex_params[:latex]
-
-    ProposalPdfService.new(proposal_id, temp_file, input).pdf
+    ProposalPdfService.new(proposal_id, latex_temp_file, input).pdf
 
     head :ok
   end
@@ -57,39 +54,65 @@ class ProposalsController < ApplicationController
   # GET /proposals/:id/rendered_proposal.pdf
   def latex_output
     proposal_id = params[:id]
+    ProposalPdfService.new(proposal_id, latex_temp_file, 'all').pdf
 
-    temp_file = "propfile-#{current_user.id}-#{proposal_id}.tex"
-    ProposalPdfService.new(proposal_id, temp_file, 'all').pdf
-
-    @proposal = Proposal.find_by_id(proposal_id)
+    @proposal = Proposal.find_by(id: proposal_id)
     @year = @proposal&.year || Date.current.year.to_i + 2
 
-    fh = File.open("#{Rails.root}/tmp/#{temp_file}")
+    fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
     @latex_input = fh.read
 
     render_latex
   end
 
+  # rubocop:disable Metrics/AbcSize
   # GET /proposals/:id/rendered_field.pdf
   def latex_field
     prop_id = params[:id]
     return if prop_id.blank?
 
-    @proposal = Proposal.find_by_id(prop_id)
+    @proposal = Proposal.find_by(id: prop_id)
     @year = @proposal&.year || Date.current.year.to_i + 2
-    temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
 
-    fh = File.open("#{Rails.root}/tmp/#{temp_file}")
+    fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
     @latex_input = fh.read
+    @latex_input = LatexToPdf.escape_latex(@latex_input) if @proposal.no_latex
 
     render_latex
   end
+  # rubocop:enable Metrics/AbcSize
 
   def destroy
     @proposal.destroy
     respond_to do |format|
       format.html { redirect_to proposals_url, notice: "Proposal was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def upload_file
+    @proposal = Proposal.find(params[:id])
+    params[:files].each do |file|
+      if @proposal.pdf_file_type(file)
+        @proposal.files.attach(file)
+        render json: "File successfully uploaded", status: :ok
+      else
+        render json: "File format not supported", status: :bad_request
+      end
+    end
+  end
+
+  def remove_file
+    @proposal = Proposal.find(params[:id])
+    file = @proposal.files.where(id: params[:attachment_id])
+    file.purge_later
+
+    flash[:notice] = 'File has been removed!'
+
+    if request.xhr?
+      render js: "window.location='#{edit_proposal_path(@proposal)}'"
+    else
+      redirect_to edit_proposal_path(@proposal)
     end
   end
 
@@ -104,7 +127,7 @@ class ProposalsController < ApplicationController
   end
 
   def set_proposal
-    @proposal = Proposal.find_by_id(params[:id])
+    @proposal = Proposal.find_by(id: params[:id])
     @submission = session[:is_submission]
   end
 
@@ -128,16 +151,21 @@ class ProposalsController < ApplicationController
       #{@proposal.proposal_type.name} proposal per lead organizer.".squish
   end
 
+  def latex_temp_file
+    proposal_id = latex_params[:proposal_id] || params[:id]
+    "propfile-#{current_user.id}-#{proposal_id}.tex"
+  end
+
   def render_latex
-    begin
-      render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
-    rescue ActionView::Template::Error => error
-      flash[:alert] = "There are errors in your LaTeX code. Please see the
+    # rubocop:disable all
+    render layout: "application", inline: @latex_input.to_s, formats: [:pdf]
+  rescue ActionView::Template::Error => e
+    flash[:alert] = "There are errors in your LaTeX code. Please see the
                         output from the compiler, and the LaTeX document,
                         below".squish
-      error_output = ProposalPdfService.format_errors(error)
-      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
-    end
+    error_output = ProposalPdfService.format_errors(e)
+    render layout: "latex_errors", inline: error_output.to_s, formats: [:html]
+    # rubocop:enable all
   end
 
   def set_careers

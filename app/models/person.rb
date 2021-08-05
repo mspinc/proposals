@@ -1,11 +1,17 @@
 class Person < ApplicationRecord
   attr_accessor :is_lead_organizer, :province, :state
 
-  validates :firstname, :lastname, :email, presence: true
+  validates :firstname, :lastname, presence: true
+  validates :email, presence: true, uniqueness: true
   belongs_to :user, optional: true
   has_many :proposal_roles, dependent: :destroy
   has_many :proposals, through: :proposal_roles
   has_one :demographic_data, dependent: :destroy
+  before_save :downcase_email
+
+  def downcase_email
+    email.downcase!
+  end
 
   def fullname
     "#{firstname} #{lastname}"
@@ -22,9 +28,11 @@ class Person < ApplicationRecord
   def region_type
     return "Province" if country == 'Canada'
     return "State" if country == 'United States of America'
+
     "Region"
   end
 
+  # rubocop:disable Metrics/AbcSize
   def common_fields
     errors.add('Main Affiliation/Institution', "can't be blank") if affiliation.blank?
     errors.add('Academic Status', "can't be blank") if academic_status.blank?
@@ -33,19 +41,26 @@ class Person < ApplicationRecord
 
     self.first_phd_year = nil if first_phd_year == "N/A"
 
-    if academic_status == 'Other'
-      if other_academic_status.blank?
-        errors.add(:other_academic_status, "Please indicate your academic status.")
-      end
+    if academic_status == 'Other' && other_academic_status.blank?
+      errors.add(:other_academic_status, "Please indicate your academic status.")
     end
 
     return unless country == 'Canada' || country == 'United States of America'
-    self.region = province unless province.blank?
-    self.region = state unless state.blank?
-    if region.blank?
-      errors.add("Missing data: ", "You must select a #{region_type}")
+
+    # if (country == 'Canada')
+    #   self.region = province if province.present?
+    # elsif (country == 'United States of America')
+    #   self.region = state if state.present?
+    # end
+    case country
+    when "Canada"
+      self.region = province if province.present?
+    when "United States of America"
+      self.region = state if state.present?
     end
+    errors.add("Missing data: ", "You must select a #{region_type}") if region.blank?
   end
+  # rubocop:enable Metrics/AbcSize
 
   def draft_proposals?
     proposals.where(status: :draft).present?

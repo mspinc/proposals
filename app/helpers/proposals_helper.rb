@@ -7,10 +7,14 @@ module ProposalsHelper
     proposal_type.map { |pt| [pt.name, pt.id] }
   end
 
+  def no_of_participants(id, invited_as)
+    Invite.where('invited_as = ? AND proposal_id = ?', invited_as, id)
+  end
+
   def proposal_type_year(proposal_type)
     return [Date.current.year + 2] if proposal_type.year.blank?
 
-    proposal_type.year&.split(",").map { |year| year }
+    proposal_type.year&.split(",")&.map { |year| year }
   end
 
   def locations
@@ -35,14 +39,22 @@ module ProposalsHelper
   end
 
   def proposal_ams_subjects_code(proposal, code)
-    proposal.ams_subjects.find_by_code(code)&.id
+    proposal.ams_subjects.find_by(code: code)&.id
   end
 
   def organizer_intro(proposal)
     types_with_intro = ['5 Day Workshop', 'Summer School']
     return '' unless types_with_intro.include? proposal.proposal_type.name
 
-    %q(<p>5-Day Workshops and Summer Schools require a minimum of 2, and a maximum of 4 total organizers per proposal. In accordance with BIRS' commitment to equity, diversity and inclusion (EDI), the organizing committee should contain at least one early-career researcher within ten years of their doctoral degree. For applications with two organizers, at least one member of the organizing committee must be from an under-represented community in STEM disciplines. For applications with three or more organizers, at least two members of the organizing committee must be from an under-represented community in STEM disciplines.</p>).html_safe
+    "<p>5-Day Workshops and Summer Schools require a minimum of 2, and a maximum
+     of 4 total organizers per proposal. In accordance with BIRS' commitment to
+     equity, diversity and inclusion (EDI), the organizing committee should
+     contain at least one early-career researcher within ten years of their
+     doctoral degree. For applications with two organizers, at least one member
+     of the organizing committee must be from an under-represented community in
+     STEM disciplines. For applications with three or more organizers, at least
+     two members of the organizing committee must be from an under-represented
+     community in STEM disciplines.</p>".html_safe
   end
 
   def existing_co_organizers(invite)
@@ -65,7 +77,17 @@ module ProposalsHelper
   end
 
   def proposal_status(status)
-    status == 'draft' ? "text-primary" : "text-success"
+    proposals = {
+      "draft" => "text-muted",
+      "submitted" => "text-proposal-submitted",
+      "initial_review" => "text-warning",
+      "revision_requested" => "text-danger",
+      "revision_submitted" => "text-revision-submitted",
+      "in_progress" => "text-success",
+      "decision_pending" => "text-info",
+      "decision_email_sent" => "text-primary"
+    }
+    proposals[status]
   end
 
   def invite_response_color(status)
@@ -84,70 +106,84 @@ module ProposalsHelper
   end
 
   def graph_data(param, param2, proposal)
-    citizenships = proposal.demographics_data.pluck(:result).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
-    @data = Hash.new(0)
+    citizenships = proposal.demographics_data.pluck(:result).pluck(param, param2).flatten.reject do |s|
+      s.blank? || s.eql?("Other")
+    end
+    data = Hash.new(0)
 
     citizenships.each do |c|
-      @data[c] += 1
+      data[c] += 1
     end
+    data
   end
 
   def nationality_data(proposal)
     graph_data("citizenships", "citizenships_other", proposal)
-    @data
   end
 
   def ethnicity_data(proposal)
     graph_data("ethnicity", "ethnicity_other", proposal)
-    @data
   end
 
   def gender_labels(proposal)
-    graph_data("gender", "gender_other", proposal)
-    @data.keys
+    data = graph_data("gender", "gender_other", proposal)
+    data.keys
   end
 
   def gender_values(proposal)
-    graph_data("gender", "gender_other", proposal)
-    @data.values
+    data = graph_data("gender", "gender_other", proposal)
+    data.values
   end
 
+  # rubocop:disable Metrics/AbcSize
   def career_data(param, param2, proposal)
     person = Person.where.not(id: proposal.lead_organizer.id)
-    careerStage = person.where(id: proposal.person_ids).pluck(param, param2).flatten.reject{ |s| s.blank? || s.eql?("Other")}
-    @data = Hash.new(0)
-
-    careerStage.each do |s|
-      @data[s] += 1
+    career_stage = person.where(id: proposal.invites.where(invited_as:
+      'Participant').pluck(:person_id)).pluck(param, param2).flatten.reject do |s|
+      s.blank? || s.eql?("Other")
     end
+    data = Hash.new(0)
+
+    career_stage.each do |s|
+      data[s] += 1
+    end
+    data
   end
+  # rubocop:enable Metrics/AbcSize
 
   def career_labels(proposal)
-    career_data("academic_status", "other_academic_status", proposal)
-    @data.keys
+    data = career_data("academic_status", "other_academic_status", proposal)
+    data.keys
   end
 
   def career_values(proposal)
-    career_data("academic_status", "other_academic_status", proposal)
-    @data.values
+    data = career_data("academic_status", "other_academic_status", proposal)
+    data.values
   end
 
   def stem_graph_data(proposal)
-    citizenships = proposal.demographics_data.pluck(:result).pluck("stem").flatten.reject{ |s| s.blank? || s.eql?("Other")}
-    @data = Hash.new(0)
+    citizenships = proposal.demographics_data.pluck(:result).pluck("stem").flatten.reject do |s|
+      s.blank? || s.eql?("Other")
+    end
+    data = Hash.new(0)
 
     citizenships.each do |c|
-      @data[c] += 1
+      data[c] += 1
     end
+    data
   end
 
   def stem_labels(proposal)
-    stem_graph_data(proposal)
-    @data.keys
+    data = stem_graph_data(proposal)
+    data.keys
   end
 
   def stem_values(proposal)
-    stem_graph_data(proposal)
-    @data.values
+    data = stem_graph_data(proposal)
+    data.values
+  end
+
+  def invite_role(invited_as)
+    invited_as == 'Co Organizer' ? 'organizer' : 'participant'
   end
 end

@@ -10,11 +10,49 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_05_101129) do
+ActiveRecord::Schema.define(version: 2021_07_28_061859) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "action_text_rich_texts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "body"
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["record_type", "record_id", "name"], name: "index_action_text_rich_texts_uniqueness", unique: true
+  end
+
+  create_table "active_storage_attachments", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "record_type", null: false
+    t.bigint "record_id", null: false
+    t.bigint "blob_id", null: false
+    t.datetime "created_at", null: false
+    t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
+    t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
+  end
+
+  create_table "active_storage_blobs", force: :cascade do |t|
+    t.string "key", null: false
+    t.string "filename", null: false
+    t.string "content_type"
+    t.text "metadata"
+    t.string "service_name", null: false
+    t.bigint "byte_size", null: false
+    t.string "checksum", null: false
+    t.datetime "created_at", null: false
+    t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
 
   create_table "ams_subjects", force: :cascade do |t|
     t.string "code"
@@ -31,6 +69,7 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.string "answer"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "version", default: 1
     t.index ["proposal_field_id"], name: "index_answers_on_proposal_field_id"
     t.index ["proposal_id"], name: "index_answers_on_proposal_id"
   end
@@ -43,13 +82,31 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.index ["person_id"], name: "index_demographic_data_on_person_id"
   end
 
+  create_table "emails", force: :cascade do |t|
+    t.string "subject"
+    t.text "body"
+    t.boolean "revision", default: false
+    t.bigint "proposal_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["proposal_id"], name: "index_emails_on_proposal_id"
+  end
+
+  create_table "faqs", force: :cascade do |t|
+    t.string "question"
+    t.text "answer"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "position"
+  end
+
   create_table "feedbacks", force: :cascade do |t|
     t.string "content"
     t.bigint "user_id"
-    t.text "reply"
-    t.boolean "reviewed"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "reply"
+    t.boolean "reviewed"
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
@@ -89,6 +146,12 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.index ["proposal_field_id"], name: "index_options_on_proposal_field_id"
   end
 
+  create_table "page_contents", force: :cascade do |t|
+    t.text "guideline"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "people", force: :cascade do |t|
     t.string "firstname"
     t.string "lastname"
@@ -114,6 +177,7 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.string "first_phd_year"
     t.string "postal_code"
     t.string "other_academic_status"
+    t.index ["email"], name: "index_people_on_email", unique: true
   end
 
   create_table "proposal_ams_subjects", force: :cascade do |t|
@@ -142,6 +206,12 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
   end
 
   create_table "proposal_fields_dates", force: :cascade do |t|
+    t.string "statement"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "proposal_fields_files", force: :cascade do |t|
     t.string "statement"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -195,6 +265,7 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.integer "version", default: 0
     t.text "introduction2"
     t.text "introduction3"
+    t.text "introduction_charts"
     t.index ["created_by_id"], name: "index_proposal_forms_on_created_by_id"
     t.index ["proposal_type_id"], name: "index_proposal_forms_on_proposal_type_id"
     t.index ["updated_by_id"], name: "index_proposal_forms_on_updated_by_id"
@@ -274,6 +345,14 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "staff_discussions", force: :cascade do |t|
+    t.text "discussion"
+    t.bigint "proposal_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["proposal_id"], name: "index_staff_discussions_on_proposal_id"
   end
 
   create_table "subject_categories", force: :cascade do |t|
@@ -357,10 +436,13 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
     t.index ["proposal_field_id"], name: "index_validations_on_proposal_field_id"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "answers", "proposal_fields"
   add_foreign_key "answers", "proposals"
   add_foreign_key "demographic_data", "people"
+  add_foreign_key "emails", "proposals"
   add_foreign_key "invites", "people"
   add_foreign_key "invites", "proposals"
   add_foreign_key "options", "proposal_fields"
@@ -379,6 +461,7 @@ ActiveRecord::Schema.define(version: 2021_07_05_101129) do
   add_foreign_key "proposals", "proposal_types"
   add_foreign_key "proposals", "subjects"
   add_foreign_key "role_privileges", "roles"
+  add_foreign_key "staff_discussions", "proposals"
   add_foreign_key "subjects", "subject_categories"
   add_foreign_key "survey_answers", "people"
   add_foreign_key "survey_answers", "survey_questions"
