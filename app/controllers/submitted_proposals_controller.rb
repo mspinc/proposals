@@ -28,9 +28,11 @@ class SubmittedProposalsController < ApplicationController
     @email = Email.new(email_params.merge(proposal_id: @proposal.id))
     if @email.save
       @email.email_organizers
-      redirect_to submitted_proposal_url(@proposal), notice: "Sent email to proposal organizers."
+      redirect_to submitted_proposal_url(@proposal),
+                  notice: "Sent email to proposal organizers."
     else
-      redirect_to submitted_proposal_url(@proposal), alert: @email.errors.full_messages
+      redirect_to submitted_proposal_url(@proposal),
+                  alert: @email.errors.full_messages
     end
   end
 
