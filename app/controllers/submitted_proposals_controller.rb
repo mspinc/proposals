@@ -42,6 +42,7 @@ class SubmittedProposalsController < ApplicationController
       format.html { redirect_to submitted_proposals_url,
                     notice: "Proposal was successfully deleted." }
       format.json { head :no_content }
+    end
   end
 
   def approve_status
