@@ -102,12 +102,4 @@ export default class extends Controller {
       previous.firstElementChild.click()
     }
   }
-
-  latexField(targetValue) {
-    if($('#no_latex').is(':checked') || targetValue) {
-    this.fieldLatexTarget.classList.remove("hidden")
-   } else {
-     this.fieldLatexTarget.classList.add("hidden")
-   }
-  }
 }
