@@ -12,30 +12,30 @@ class SubmittedProposalsController < ApplicationController
   end
 
   def staff_discussion
-    if @ability.can?(:manage, Email)
-      @staff_discussion = StaffDiscussion.new
-      discussion = params[:discussion]
-      if @staff_discussion.update(discussion: discussion, proposal_id: @proposal.id)
-        redirect_to submitted_proposal_url(@proposal),
-                    notice: "Your comment was added!"
-      else
-        redirect_to submitted_proposal_url(@proposal),
-                    alert: @staff_discussion.errors.full_messages
-      end
+    return unless @ability.can?(:manage, Email)
+
+    @staff_discussion = StaffDiscussion.new
+    discussion = params[:discussion]
+    if @staff_discussion.update(discussion: discussion, proposal_id: @proposal.id)
+      redirect_to submitted_proposal_url(@proposal),
+                  notice: "Your comment was added!"
+    else
+      redirect_to submitted_proposal_url(@proposal),
+                  alert: @staff_discussion.errors.full_messages
     end
   end
 
   def send_emails
-    if @ability.can?(:manage, Email)
-      @email = Email.new(email_params.merge(proposal_id: @proposal.id))
-      if @email.save
-        @email.email_organizers
-        redirect_to submitted_proposal_url(@proposal),
-                    notice: "Sent email to proposal organizers."
-      else
-        redirect_to submitted_proposal_url(@proposal),
-                    alert: @email.errors.full_messages
-      end
+    return unless @ability.can?(:manage, Email)
+
+    @email = Email.new(email_params.merge(proposal_id: @proposal.id))
+    if @email.save
+      @email.email_organizers
+      redirect_to submitted_proposal_url(@proposal),
+                  notice: "Sent email to proposal organizers."
+    else
+      redirect_to submitted_proposal_url(@proposal),
+                  alert: @email.errors.full_messages
     end
   end
 

@@ -5,7 +5,10 @@ RSpec.feature "Locations show", type: :feature do
   let(:person) { create(:person) }
   let(:role) { create(:role, name: 'Staff') }
   let(:user) { create(:user, person: person) }
-  let(:role_privilege) { create(:role_privilege, permission_type: "Manage", privilege_name: "Location", role_id: role.id) }
+  let(:role_privilege) do
+    create(:role_privilege,
+           permission_type: "Manage", privilege_name: "Location", role_id: role.id)
+  end
 
   before do
     role_privilege

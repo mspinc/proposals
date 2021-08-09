@@ -22,10 +22,10 @@ class FeedbacksController < ApplicationController
   end
 
   def update
-    if can? :manage, @feedback
-      @feedback.toggle!(:reviewed) # rubocop:disable Rails/SkipsModelValidations
-      redirect_to feedback_path
-    end
+    return unless can? :manage, @feedback
+
+    @feedback.toggle!(:reviewed) # rubocop:disable Rails/SkipsModelValidations
+    redirect_to feedback_path
   end
 
   def add_reply

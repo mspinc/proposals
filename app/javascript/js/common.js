@@ -3,7 +3,7 @@ $(document).ready(function() {
     window.location.reload()
   });
 
-  $(document).on('hide.bs.modal', '#user-window', function(event) {
+  $(document).on('hide.bs.modal', '#user-window', function() {
     window.location.reload()
   });
 

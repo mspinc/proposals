@@ -20,7 +20,7 @@ export default class extends Controller {
 
     let id = event.currentTarget.dataset.id;
     $.post(`/roles/${id}/new_user.js`,
-      $('form#role').serialize(), function(data) {
+      $('form#role').serialize(), function() {
           $("#user-window").modal('show')
       }
     )
