@@ -10,7 +10,8 @@ RSpec.describe "/proposal_forms", type: :request do
   let(:user) { create(:user, person: person) }
   let(:role_privilege) {
     create(:role_privilege,
-    permission_type: "Manage", privilege_name: "ProposalForm", role_id: role.id)
+           permission_type: "Manage", privilege_name: "ProposalForm",
+           role_id: role.id)
   }
 
   before do
