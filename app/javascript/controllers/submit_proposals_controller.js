@@ -12,7 +12,7 @@ export default class extends Controller {
     if(this.hasLocationIdsTarget || $('#no_latex').is(':checked')) {
       this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map((x) => x.value))
       this.showSelectedLocations()
-      this.latexField($('#no_latex').is(':checked'))
+      this.hidePreamble($('#no_latex').is(':checked'))
     }
   }
 
@@ -100,6 +100,14 @@ export default class extends Controller {
     let previous = currentTab.parentElement.previousElementSibling
     if (previous) {
       previous.firstElementChild.click()
+    }
+  }
+
+  hidePreamble(targetValue) {
+    if($('#no_latex').is(':checked') || targetValue) {
+      this.latexPreambleTarget.classList.add("hidden")
+    } else {
+      this.latexPreambleTarget.classList.remove("hidden")
     }
   }
 }

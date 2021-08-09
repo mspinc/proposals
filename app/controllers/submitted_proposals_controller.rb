@@ -102,7 +102,7 @@ class SubmittedProposalsController < ApplicationController
     pdf = render_to_string layout: "application", inline: "#{@latex_input}", formats: [:pdf]
 
     @pdf_path = "#{Rails.root}/tmp/submit-#{DateTime.now.to_i}.pdf"
-    upload = File.open(@pdf_path, 'w:binary') do |file|
+    File.open(@pdf_path, 'w:binary') do |file|
       file.write(pdf)
     end
   end
@@ -120,7 +120,7 @@ class SubmittedProposalsController < ApplicationController
                   email: "#{@proposal.lead_organizer.email}"
                   givenName: "#{@proposal.lead_organizer.firstname}"
                   familyName: "#{@proposal.lead_organizer.lastname}"
-                  nameInOriginalScript: "日暮 ひぐらし かごめ"
+                  nameInOriginalScript: "#{@proposal.lead_organizer.fullname}"
                   institution: "#{@proposal.lead_organizer.affiliation}"
                   countryCode: "#{country_code.alpha2}"
                 }, {
@@ -163,6 +163,8 @@ END_STRING
     else
       flash[:notice] = "Request sent successfully!"
     end
+  end
+
   def set_proposal
     @proposal = Proposal.find_by(id: params[:id])
   end
