@@ -22,15 +22,19 @@ class FeedbacksController < ApplicationController
   end
 
   def update
+    return unless can? :manage, @feedback
+
     @feedback.toggle!(:reviewed) # rubocop:disable Rails/SkipsModelValidations
     redirect_to feedback_path
   end
 
   def add_reply
-    if @feedback.update(reply: params[:feedback_reply])
-      render json: {}, status: :ok
-    else
-      render json: { erros: @feedback.errors.full_messages }, status: :internal_server_error
+    if can? :manage, @feedback
+      if @feedback.update(reply: params[:feedback_reply])
+        render json: {}, status: :ok
+      else
+        render json: { erros: @feedback.errors.full_messages }, status: :internal_server_error
+      end
     end
   end
 

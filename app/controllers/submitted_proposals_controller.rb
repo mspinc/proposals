@@ -12,6 +12,8 @@ class SubmittedProposalsController < ApplicationController
   end
 
   def staff_discussion
+    return unless @ability.can?(:manage, Email)
+
     @staff_discussion = StaffDiscussion.new
     discussion = params[:discussion]
     if @staff_discussion.update(discussion: discussion,
@@ -25,6 +27,8 @@ class SubmittedProposalsController < ApplicationController
   end
 
   def send_emails
+    return unless @ability.can?(:manage, Email)
+
     @email = Email.new(email_params.merge(proposal_id: @proposal.id))
     if @email.save
       @email.email_organizers

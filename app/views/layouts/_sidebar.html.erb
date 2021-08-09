@@ -50,6 +50,12 @@
                 <span class="nav-link-text">Feedback</span>
               <% end %>
             </li>
+            <li class="sidebar-item <%= active_menu(roles_path) %>">
+              <%= link_to roles_path, class: "sidebar-link" do %>
+                <i class="far fa-file-alt"></i>
+                <span class="nav-link-text">Roles</span>
+              <% end %>
+            </li>
           </ul>
         </li>
       <% else %>
