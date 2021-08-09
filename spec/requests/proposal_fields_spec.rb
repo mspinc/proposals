@@ -22,8 +22,7 @@ RSpec.describe "/proposal_forms/:id/proposal_fields", type: :request do
 
   describe "GET /new" do
     it "renders a successful response" do
-      get new_proposal_type_proposal_form_proposal_field_path(proposal_type,
-          proposal_form, field_type: 'Text')
+      get new_proposal_type_proposal_form_proposal_field_path(proposal_type, proposal_form, field_type: 'Text')
       expect(response).to have_http_status(:ok)
     end
   end

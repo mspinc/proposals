@@ -35,7 +35,7 @@ class FeedbacksController < ApplicationController
       render json: {}, status: :ok
     else
       render json: { error: @feedback.errors.full_messages },
-                     status: :internal_server_error
+                   status: :internal_server_error
     end
   end
 
