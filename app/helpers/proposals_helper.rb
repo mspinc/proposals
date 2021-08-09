@@ -26,7 +26,7 @@ module ProposalsHelper
   end
 
   def all_statuses
-    Proposal.statuses.map {|k, v| [k.humanize.capitalize, v]}
+    Proposal.statuses.map { |k, v| [k.humanize.capitalize, v] }
   end
 
   def common_proposal_fields(proposal)
