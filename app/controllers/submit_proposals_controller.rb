@@ -4,16 +4,17 @@ class SubmitProposalsController < ApplicationController
     @proposals = ProposalForm.new
   end
 
-  # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def create
     @proposal.update(proposal_params)
+    @proposal.update(no_latex: false) if params[:no_latex].nil?
+    @proposal.update(no_latex: true) if params[:no_latex] == 'on'
     update_ams_subject_code
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
     session[:is_submission] = @proposal.is_submission = submission.is_final?
 
-    create_invite and return
+    create_invite and return if params[:create_invite]
 
     unless @proposal.is_submission
       redirect_to edit_proposal_path(@proposal), notice: 'Draft saved.'
@@ -30,38 +31,34 @@ class SubmitProposalsController < ApplicationController
     confirm_submission(attachment)
   end
   # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
   def thanks; end
 
-  def upload_file
-    @answer = Answer.find_or_create_by!(proposal_field_id: params[:field_id], proposal_id: params[:id])
-    @answer.file.attach(params[:file])
-  end
-
   private
 
-  # rubocop:disable Metrics/MethodLength
-  # rubocop:disable Metrics/AbcSize
   def create_invite
     return unless request.xhr?
 
-    count = 0
-    params[:invites_attributes].each_value do |invite|
-      @invite = @proposal.invites.new(invite_params(invite))
-      count += 1 if @invite.save
-    end
+    count = save_invites
+
     if count >= 1
       render json: { invited_as: @proposal.invites.last.invited_as.downcase }, status: :ok
     else
       render json: @invite.errors.full_messages, status: :unprocessable_entity
     end
   end
-  # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
+
+  def save_invites
+    count = 0
+    params[:invites_attributes].each_value do |invite|
+      @invite = @proposal.invites.new(invite_params(invite))
+      count += 1 if @invite.save
+    end
+    count
+  end
 
   def confirm_submission(attachment)
-    @proposal.update(status: :active)
+    @proposal.update(status: :submitted)
     session[:is_submission] = nil
 
     ProposalMailer.with(proposal: @proposal, file: attachment)
@@ -72,7 +69,6 @@ class SubmitProposalsController < ApplicationController
         you.'.squish
   end
 
-  # rubocop:disable Metrics/MethodLength
   # rubocop:disable Metrics/AbcSize
   def generate_proposal_pdf
     temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
@@ -94,10 +90,9 @@ class SubmitProposalsController < ApplicationController
     end
   end
   # rubocop:enable Metrics/AbcSize
-  # rubocop:enable Metrics/MethodLength
 
   def proposal_params
-    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex)
+    params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex, :preamble)
           .merge(ams_subject_ids: proposal_ams_subjects)
   end
 

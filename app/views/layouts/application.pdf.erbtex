@@ -50,6 +50,7 @@
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{corollary}[theorem]{Corollary}
 
+\fancyhf{}
 \fancyhead[CO,CE]{\bfseries Banff International Research Station <%= @year %> Proposal Submission}
 
 \newenvironment{changemargin}[2]{%
@@ -62,9 +63,10 @@
     \setlength{\parsep}{\parskip}%
   }%
   \item[]}{\end{list}}
-
+ % <%= @proposal.preamble %>
 \begin{document}
 \pagestyle{fancy}
+
 
 <%= yield %>
 

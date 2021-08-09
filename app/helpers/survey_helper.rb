@@ -1,4 +1,5 @@
 module SurveyHelper
+  # rubocop:disable Metrics/MethodLength
   def citizenship_options
     citizenships = [%w[Argentina Argentina], [' Australia', ' Australia'], %w[Austria Austria],
                     %w[Belarus Belarus], %w[Belgium Belgium], %w[Benin Benin], %w[Brazil Brazil],
@@ -32,31 +33,43 @@ module SurveyHelper
                  ['Indigenous from within North America', 'Indigenous from within North America'],
                  ['Indigenous from outside North America', 'Indigenous from outside North America'],
                  ['Latin, South, or Central American', 'Latin, South, or Central American'],
-                 ['South Asian (including Indian sub-continent, Indo-Caribbean, Indo-African, Indo-Fijian, West-Indian)',
-                  'South Asian (including Indian sub-continent, Indo-Caribbean, Indo-African, Indo-Fijian, West-Indian)'],
-                 ['Southeast Asian (including Brunei, Burma, Cambodia, Timor-Leste, Indonesia, Laos, Malaysia, the Philippines, Singapore, Thailand and Vietnam)',
-                  'Southeast Asian (including Brunei, Burma, Cambodia, Timor-Leste, Indonesia, Laos, Malaysia, the Philippines, Singapore, Thailand and Vietnam)'],
-                 ['West Asian (including Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip, Georgia, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syrian Arab Republic, Turkey, United Arab Emirates, West Bank and Yemen)',
-                  'West Asian (including Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip, Georgia, Iran, Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syrian Arab Republic, Turkey, United Arab Emirates, West Bank and Yemen)'],
-                 ['Other', 'Other'], ['Prefer not to answer', 'Prefer not to answer']]
+                 ['South Asian (including Indian sub-continent, Indo-Caribbean,
+                    Indo-African, Indo-Fijian, West-Indian)',
+                  'South Asian (including Indian sub-continent, Indo-Caribbean,
+                    Indo-African, Indo-Fijian, West-Indian)'],
+                 ['Southeast Asian (including Brunei, Burma, Cambodia, Timor-Leste, Indonesia, Laos, Malaysia,
+                    the Philippines, Singapore, Thailand and Vietnam)',
+                  'Southeast Asian (including Brunei, Burma, Cambodia, Timor-Leste, Indonesia, Laos, Malaysia,
+                    the Philippines, Singapore, Thailand and Vietnam)'],
+                 ['West Asian (including Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip, Georgia, Iran,
+                    Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syrian Arab Republic, Turkey,
+                    United Arab Emirates, West Bank and Yemen)',
+                  'West Asian (including Afghanistan, Armenia, Azerbaijan, Bahrain, Cyprus, Gaza Strip, Georgia, Iran,
+                    Iraq, Israel, Jordan, Kuwait, Lebanon, Oman, Qatar, Saudi Arabia, Syrian Arab Republic, Turkey,
+                    United Arab Emirates, West Bank and Yemen)'],
+                 %w[Other Other], ['Prefer not to answer', 'Prefer not to answer']]
     ethnicity.map { |disp, _value| disp }
   end
+  # rubocop:enable Metrics/MethodLength
 
   def gender_options
     gender = [%w[Female Female], %w[Male Male], ['Gender Fluid and/or non-Binary Person',
-                                                 'Gender Fluid and/or non-Binary Person'], %w[Other Other], ['Prefer not to answer', 'Prefer not to answer']]
+                                                 'Gender Fluid and/or non-Binary Person'], %w[Other Other],
+              ['Prefer not to answer', 'Prefer not to answer']]
     gender.map { |disp, _value| disp }
   end
 
   def indigenous_person_options
-    indigenous = [['Yes', 'Yes'], %w[No No], ['Prefer not to answer', 'Prefer not to answer']]
+    indigenous = [%w[Yes Yes], %w[No No], ['Prefer not to answer', 'Prefer not to answer']]
     indigenous.map { |disp, _value| disp }
   end
 
   def indigenouse_person_yes_options
     indigenous_yes = [['First Nation', 'First Nation'], %w[Métis Métis], %w[Inuit Inuit],
-                      ['Native American', 'Native American'], ['Indigenous from outside of what is now known as Canada and the United States',
-                                                               'Indigenous from outside of what is now known as Canada and the United States'], ['Prefer not to answer', 'Prefer not to answer']]
+                      ['Native American', 'Native American'],
+                      ['Indigenous from outside of what is now known as Canada and the United States',
+                       'Indigenous from outside of what is now known as Canada and the United States'],
+                      ['Prefer not to answer', 'Prefer not to answer']]
     indigenous_yes.map { |disp, _value| disp }
   end
 end

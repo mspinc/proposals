@@ -24,7 +24,7 @@ namespace :birs do
       { code: 'REP', title: 'Representation Theory' },
       { code: 'ATOP', title: 'Algebraic Topology' },
       { code: 'TOP', title: 'Topology' },
-      { code: 'ARNT', title: 'Arithmetic Number Theory' },
+      { code: 'ARGEO', title: 'Arithmetic Geometry' },
       { code: 'DS', title: 'Dynamical Systems' },
       { code: 'DGEO', title: 'Differential and Complex Geometry' },
       { code: 'GGT', title: 'Geometric Group Theory' },
@@ -55,6 +55,8 @@ namespace :birs do
       { code: 'STAM', title: 'Statistical Mechanics' },
       { code: 'AIM', title: 'Applied Analysis and Industrial Math' },
       { code: 'SS', title: 'Summer Schools' },
+      { code: 'ANNT', title: 'Analytic Number Theory' },
+      { code: 'ALNT', title: 'Algebraic Number Theory' }
     ]
 
     # TODO: find or create SubjectCategory and assign accordingly

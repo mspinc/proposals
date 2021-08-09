@@ -12,13 +12,14 @@ module Users
       respond_with resource
     end
 
+    # rubocop:disable Metrics/AbcSize
     # POST /resource
     def create
       email = sign_up_params['person_attributes']['email']
       build_resource(sign_up_params.merge(email: email))
 
-      person = Person.find_by_email(email)
-      unless person.blank?
+      person = Person.find_by(email: email)
+      if person.present?
         person.assign_attributes(sign_up_params['person_attributes'])
         resource.person = person
       end
@@ -27,13 +28,13 @@ module Users
       yield resource if block_given?
       if resource.persisted?
         if resource.active_for_authentication?
-         set_flash_message! :notice, :signed_up
-         sign_up(resource_name, resource)
-         respond_with resource, location: after_sign_up_path_for(resource)
+          set_flash_message! :notice, :signed_up
+          sign_up(resource_name, resource)
+          respond_with resource, location: after_sign_up_path_for(resource)
         else
-         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
-         expire_data_after_sign_in!
-         respond_with resource, location: after_inactive_sign_up_path_for(resource)
+          set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+          expire_data_after_sign_in!
+          respond_with resource, location: after_inactive_sign_up_path_for(resource)
         end
       else
         clean_up_passwords resource
@@ -41,7 +42,7 @@ module Users
         respond_with resource
       end
     end
-
+    # rubocop:enable Metrics/AbcSize
 
     # GET /resource/edit
     # def edit
@@ -80,7 +81,7 @@ module Users
     # end
 
     # The path used after sign up.
-    def after_inactive_sign_up_path_for(resource)
+    def after_inactive_sign_up_path_for(_resource)
       new_user_confirmation_path
     end
 
@@ -90,7 +91,7 @@ module Users
     # end
 
     def configure_sign_up_params
-      devise_parameter_sanitizer.permit(:sign_up, keys: [person_attributes: [:firstname, :lastname, :email]])
+      devise_parameter_sanitizer.permit(:sign_up, keys: [person_attributes: %i[firstname lastname email]])
     end
 
     # def person_params

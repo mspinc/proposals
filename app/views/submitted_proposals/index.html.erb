@@ -45,10 +45,12 @@
                   <%= select_tag "proposal_type", options_for_select(all_proposal_types, params[:proposal_type]), { include_blank: '', class: 'p-1' }%>
                 </div>
                 <div class="col-xs-6 col-md-3">
-                  <div class="float-end">
-                    <button class="btn btn-primary">Search</button>
-                  </div>
+                  <label>Status</label><br>
+                    <input type="search" name="status" placeholder="Enter Status" value="<%= params[:status] %>">
                 </div>
+              </div>
+              <div class="text-end m-4">
+                  <button class="btn btn-primary">Search</button>
               </div>
             </form>
           </div>

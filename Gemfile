@@ -19,6 +19,7 @@ gem 'pg_search'
 gem 'rails', '~> 6.1.3'
 gem 'rails-latex'
 gem 'rest-client'
+gem 'rollbar'
 gem 'sass-rails', '>= 6'
 gem 'turbo-rails'
 gem 'webpacker', '~> 5.0'
@@ -41,11 +42,10 @@ end
 group :development do
   gem "capistrano", "~> 3.16", require: false
   gem "capistrano-rails", "~> 1.6", require: false
+  gem 'letter_opener'
   gem 'listen', '~> 3.3'
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'rubocop-rails'
   gem 'spring'
   gem 'web-console', '>= 4.1.0'
-  gem 'letter_opener'
 end
-

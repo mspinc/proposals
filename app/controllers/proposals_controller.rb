@@ -2,7 +2,7 @@ class ProposalsController < ApplicationController
   before_action :set_proposal, only: %w[show edit destroy ranking locations]
   before_action :set_careers, only: %w[show edit]
   before_action :authenticate_user!
-  
+
   def index
     @proposals = current_user&.person&.proposals
   end
@@ -56,7 +56,7 @@ class ProposalsController < ApplicationController
     proposal_id = params[:id]
     ProposalPdfService.new(proposal_id, latex_temp_file, 'all').pdf
 
-    @proposal = Proposal.find_by_id(proposal_id)
+    @proposal = Proposal.find_by(id: proposal_id)
     @year = @proposal&.year || Date.current.year.to_i + 2
 
     fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
@@ -65,25 +65,54 @@ class ProposalsController < ApplicationController
     render_latex
   end
 
+  # rubocop:disable Metrics/AbcSize
   # GET /proposals/:id/rendered_field.pdf
   def latex_field
     prop_id = params[:id]
     return if prop_id.blank?
 
-    @proposal = Proposal.find_by_id(prop_id)
+    @proposal = Proposal.find_by(id: prop_id)
     @year = @proposal&.year || Date.current.year.to_i + 2
 
     fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
     @latex_input = fh.read
+    @latex_input = LatexToPdf.escape_latex(@latex_input) if @proposal.no_latex
 
     render_latex
   end
+  # rubocop:enable Metrics/AbcSize
 
   def destroy
     @proposal.destroy
     respond_to do |format|
       format.html { redirect_to proposals_url, notice: "Proposal was successfully destroyed." }
       format.json { head :no_content }
+    end
+  end
+
+  def upload_file
+    @proposal = Proposal.find(params[:id])
+    params[:files].each do |file|
+      if @proposal.pdf_file_type(file)
+        @proposal.files.attach(file)
+        render json: "File successfully uploaded", status: :ok
+      else
+        render json: "File format not supported", status: :bad_request
+      end
+    end
+  end
+
+  def remove_file
+    @proposal = Proposal.find(params[:id])
+    file = @proposal.files.where(id: params[:attachment_id])
+    file.purge_later
+
+    flash[:notice] = 'File has been removed!'
+
+    if request.xhr?
+      render js: "window.location='#{edit_proposal_path(@proposal)}'"
+    else
+      redirect_to edit_proposal_path(@proposal)
     end
   end
 
@@ -128,15 +157,15 @@ class ProposalsController < ApplicationController
   end
 
   def render_latex
-    begin
-      render layout: "application", inline: "#{@latex_input}", formats: [:pdf]
-    rescue ActionView::Template::Error => error
-      flash[:alert] = "There are errors in your LaTeX code. Please see the
+    # rubocop:disable all
+    render layout: "application", inline: @latex_input.to_s, formats: [:pdf]
+  rescue ActionView::Template::Error => e
+    flash[:alert] = "There are errors in your LaTeX code. Please see the
                         output from the compiler, and the LaTeX document,
                         below".squish
-      error_output = ProposalPdfService.format_errors(error)
-      render layout: "latex_errors", inline: "#{error_output}", formats: [:html]
-    end
+    error_output = ProposalPdfService.format_errors(e)
+    render layout: "latex_errors", inline: error_output.to_s, formats: [:html]
+    # rubocop:enable all
   end
 
   def set_careers

@@ -5,25 +5,26 @@ import Rails from '@rails/ujs'
 export default class extends Controller {
 
   static targets = [ 'proposalType', 'locationSpecificQuestions', 'locationIds', 'text', 'tabs', 
-                    'dragLocations' ]
+                    'dragLocations', 'fieldLatex' ]
   static values = { proposalTypeId: Number, proposal: Number }
 
   connect() {
-    if(this.hasLocationIdsTarget) {
-      this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map(x => x.value))
+    if(this.hasLocationIdsTarget || $('#no_latex').is(':checked')) {
+      this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map((x) => x.value))
       this.showSelectedLocations()
+      this.latexField($('#no_latex').is(':checked'))
     }
   }
 
   handleLocationChange(locations) {
     if(event && event.type === 'change') {
-      locations = [...event.target.selectedOptions].map(opt => opt.value)
+      locations = [...event.target.selectedOptions].map((opt) => opt.value)
       this.saveLocations()
     }
 
     fetch(`/proposal_types/${this.proposalTypeIdValue}/location_based_fields?ids=${locations}&proposal_id=${this.proposalValue}`)
-      .then(response => response.text())
-      .then(html => {
+      .then((response) => response.text())
+      .then((html) => {
         this.locationSpecificQuestionsTarget.innerHTML = html
       });
   }
@@ -102,18 +103,11 @@ export default class extends Controller {
     }
   }
 
-  uploadFile() {
-    var data = new FormData()
-    if(event.target.files[0])
-    {
-      data.append('file',event.target.files[0])
-      data.append("field_id", event.target.dataset.fieldId)
-      let url = "/submit_proposals/" + event.target.dataset.proposalFormId + "/upload_file"
-      Rails.ajax({
-        url,
-        type: "POST",
-        data
-      })
-    }  
+  latexField(targetValue) {
+    if($('#no_latex').is(':checked') || targetValue) {
+    this.fieldLatexTarget.classList.remove("hidden")
+   } else {
+     this.fieldLatexTarget.classList.add("hidden")
+   }
   }
 }
