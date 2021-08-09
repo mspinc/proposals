@@ -46,7 +46,7 @@
                 </div>
                 <div class="col-xs-6 col-md-3">
                   <label>Status</label><br>
-                    <input type="search" name="status" placeholder="Enter Status" value="<%= params[:status] %>">
+                  <%= select_tag :status, options_for_select(all_statuses, params[:status]), { include_blank: '', class: 'p-1' } %>
                 </div>
               </div>
               <div class="text-end m-4">

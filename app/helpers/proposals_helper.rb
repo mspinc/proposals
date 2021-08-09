@@ -25,6 +25,10 @@ module ProposalsHelper
     ProposalType.all.map { |pt| [pt.name, pt.id] }
   end
 
+  def all_statuses
+    Proposal.statuses.map {|k, v| [k.humanize.capitalize, v]}
+  end
+
   def common_proposal_fields(proposal)
     proposal.proposal_form&.proposal_fields&.where(location_id: nil)
   end
