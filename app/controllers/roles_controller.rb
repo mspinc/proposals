@@ -1,5 +1,6 @@
 class RolesController < ApplicationController
   before_action :set_role, only: %i[show new_user new_role remove_role]
+  load_and_authorize_resource
 
   def index
     @roles = Role.where(role_type: 'staff_role')
@@ -10,20 +11,15 @@ class RolesController < ApplicationController
     @role.role_privileges.build
   end
 
-  # rubocop:disable Metrics/AbcSize
   def create
     @role = Role.new(role_params)
-    params[:role_privileges].each_value do |role|
-      @privilege = @role.role_privileges.new(privilege_params(role))
-    end
+    create_privileges
     if @role.save
-      redirect_to roles_path, notice: "Created a new
-                              #{@role.name} role!".squish
+      redirect_to roles_path, notice: "Created a new #{@role.name} role!".squish
     else
       redirect_to new_role_path, alert: @role.errors.full_messages
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def show; end
 
@@ -60,5 +56,11 @@ class RolesController < ApplicationController
 
   def privilege_params(role)
     role.permit(:permission_type, :privilege_name)
+  end
+
+  def create_privileges
+    params[:role_privileges].each_value do |role|
+      @privilege = @role.role_privileges.new(privilege_params(role))
+    end
   end
 end

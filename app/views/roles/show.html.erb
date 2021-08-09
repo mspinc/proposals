@@ -58,9 +58,11 @@
                     <tr>
                       <td><%= user.fullname %></td>
                       <td><%= user.email %></td>
-                      <td class="table-action">
-                        <%= link_to '<i class="align-middle fas fa-fw fa-trash" data-toggle="tooltip" title="Delete"></i>Remove Role'.html_safe, remove_role_role_path(@role, user_id: user.id), method: :post, data: {confirm: "Are you sure you want to delete #{user.fullname} from this #{@role.name} role?"} %>
-                      </td>
+                      <% if current_user.email != user.email %>
+                        <td class="table-action">
+                          <%= link_to '<i class="align-middle fas fa-fw fa-trash" data-toggle="tooltip" title="Delete"></i>Remove Role'.html_safe, remove_role_role_path(@role, user_id: user.id), method: :post, data: {confirm: "Are you sure you want to delete #{user.fullname} from this #{@role.name} role?"} %>
+                        </td>
+                      <% end %>
                     </tr>
                   <% end %>
                 </tbody>

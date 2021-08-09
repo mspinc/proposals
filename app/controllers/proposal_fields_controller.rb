@@ -1,4 +1,5 @@
 class ProposalFieldsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_proposal_form, only: %i[new create edit update]
   before_action :set_proposal_field, only: %i[edit update]
 

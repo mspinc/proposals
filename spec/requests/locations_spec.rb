@@ -2,6 +2,16 @@ require 'rails_helper'
 
 RSpec.describe "/locations", type: :request do
   let(:location) { create(:location) }
+  let(:person) { create(:person) }
+  let(:role) { create(:role, name: 'Staff') }
+  let(:user) { create(:user, person: person) }
+  let(:role_privilege) { create(:role_privilege, permission_type: "Manage", privilege_name: "Location", role_id: role.id) }
+ 
+  before do 
+    role_privilege
+    user.roles << role
+    sign_in user
+  end
 
   describe "GET /index" do
     before do

@@ -1,7 +1,15 @@
 require 'rails_helper'
 
 RSpec.feature "Proposal_Form index", type: :feature do
+  let(:person) { create(:person) }
+  let(:role) { create(:role, name: 'Staff') }
+  let(:user) { create(:user, person: person) }
+  let(:role_privilege) { create(:role_privilege, permission_type: "Manage", privilege_name: "ProposalForm", role_id: role.id) }
+
   before do
+    role_privilege
+    user.roles << role
+    login_as(user)
     @proposal_type = create :proposal_type
     3.times { create(:proposal_form, proposal_type: @proposal_type, status: :draft) }
     visit proposal_type_proposal_forms_path(@proposal_type)
