@@ -63,23 +63,6 @@ class ProposalFiltersQuery
   def filter_by_status(status)
     return @result unless status.present?
 
-    case status.downcase
-    when 'draft'
-      @result.search_proposal_status(0)
-    when 'submitted'
-      @result.search_proposal_status(1)
-    when 'initial_review'
-      @result.search_proposal_status(2)
-    when 'revision_requested'
-      @result.search_proposal_status(3)
-    when 'revision_submitted'
-      @result.search_proposal_status(4)
-    when 'in_progress'
-      @result.search_proposal_status(5)
-    when 'decision_pending'
-      @result.search_proposal_status(6)
-    when 'decision_email_sent'
-      @result.search_proposal_status(7)
-    end
+    @result.search_proposal_status(status)
   end
 end
