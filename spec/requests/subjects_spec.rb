@@ -17,22 +17,23 @@ RSpec.describe "/subjects", type: :request do
         { code: '02-XX',
           title: 'Subject',
           subject_category_id: subject_category.id }
-      end
-      context "with valid parameters" do
-        it "creates a new Subject" do
-          expect do
-            post subject_category_subjects_url(subject_category), params: { subject: subject_params }
-          end.to change(Subject, :count).by(1)
-        end
-      end
+    end
 
-      context "with invalid parameters" do
-        it "does not create a new Subject" do
-          expect do
-            get new_subject_category_subject_url(subject_category), params: { subject: subject_params }
-          end.to change(Subject, :count).by(0)
-        end
+    context "with valid parameters" do
+      it "creates a new Subject" do
+        expect do
+          post subject_category_subjects_url(subject_category), params: { subject: subject_params }
+        end.to change(Subject, :count).by(1)
       end
+    end
+
+    context "with invalid parameters" do
+      it "does not create a new Subject" do
+        expect do
+          get new_subject_category_subject_url(subject_category), params: { subject: subject_params }
+        end.to change(Subject, :count).by(0)
+      end
+    end
   end
 
   describe "GET /edit" do

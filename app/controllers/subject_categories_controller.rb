@@ -1,5 +1,5 @@
 class SubjectCategoriesController < ApplicationController
-  before_action :set_category, only: %i[ show edit update destroy ]
+  before_action :set_category, only: %i[show edit update destroy]
 
   def index
     @subject_categories = SubjectCategory.all
@@ -45,5 +45,4 @@ class SubjectCategoriesController < ApplicationController
   def set_category
     @subject_category = SubjectCategory.find_by(id: params[:id])
   end
-
 end

@@ -1,6 +1,6 @@
 class SubjectsController < ApplicationController
   before_action :set_subject_category
-  before_action :set_subject, only: %i[ edit update destroy ]
+  before_action :set_subject, only: %i[edit update destroy]
 
   def new
     @subject = Subject.new
@@ -50,5 +50,4 @@ class SubjectsController < ApplicationController
   def subject_params
     params.require(:subject).permit(:code, :title)
   end
-
 end
