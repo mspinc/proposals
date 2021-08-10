@@ -120,7 +120,7 @@ class SubmittedProposalsController < ApplicationController
                   email: "#{@proposal.lead_organizer.email}"
                   givenName: "#{@proposal.lead_organizer.firstname}"
                   familyName: "#{@proposal.lead_organizer.lastname}"
-                  nameInOriginalScript: "日暮 ひぐらし かごめ"
+                  nameInOriginalScript: ""
                   institution: "#{@proposal.lead_organizer.affiliation}"
                   countryCode: "#{country_code.alpha2}"
                 }, {
@@ -154,15 +154,15 @@ class SubmittedProposalsController < ApplicationController
 END_STRING
 
     response = RestClient.post ENV['EDITFLOW_API_URL'],
-      {:query => query, :fileMain => File.open(@pdf_path)},
-      {:x_editflow_api_token => ENV['EDITFLOW_API_TOKEN']}
+      { query: query, fileMain: File.open(@pdf_path) },
+      { x_editflow_api_token: ENV['EDITFLOW_API_TOKEN'] }
     puts response
 
     if response.body.include?("errors")
+      Rails.logger.debug { "\n\n*****************************************\n\n" }
+      Rails.logger.debug { "EditFlow POST error:\n #{response.body.inspect}\n" }
+      Rails.logger.debug { "\n\n*****************************************\n\n" }
       flash[:alert] = "Error sending data!"
-      Rails.logger.debug "\n\n*********************************************\n\n"
-      Rails.logger.debug "EditFlow POST error:\n #{response.body.inspect}\n"
-      Rails.logger.debug "\n\n*********************************************\n\n"
     else
       flash[:notice] = "Data sent to EditFlow!"
     end
