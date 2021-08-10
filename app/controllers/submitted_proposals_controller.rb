@@ -154,8 +154,8 @@ class SubmittedProposalsController < ApplicationController
 END_STRING
 
     response = RestClient.post ENV['EDITFLOW_API_URL'],
-      { query: query, fileMain: File.open(@pdf_path) },
-      { x_editflow_api_token: ENV['EDITFLOW_API_TOKEN'] }
+                               { query: query, fileMain: File.open(@pdf_path) },
+                               { x_editflow_api_token: ENV['EDITFLOW_API_TOKEN'] }
     puts response
 
     if response.body.include?("errors")
