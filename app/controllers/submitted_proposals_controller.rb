@@ -72,8 +72,7 @@ class SubmittedProposalsController < ApplicationController
   private
 
   def query_params?
-    (params.keys & %i[firstname lastname subject_area keywords workshop_year
-                      proposal_type]).any?
+    params.values.any?(&:present?)
   end
 
   def email_params
@@ -81,11 +80,9 @@ class SubmittedProposalsController < ApplicationController
   end
 
   def set_proposals
+    @proposals = Proposal.order(:created_at)
     if query_params?
-      query = ProposalFiltersQuery.new(Proposal.order(:created_at))
-      @proposals = query.find(params)
-    else
-      @proposals = Proposal.order(:created_at)
+      @proposals = ProposalFiltersQuery.new(@proposals).find(params)
     end
   end
 
@@ -163,6 +160,8 @@ END_STRING
     else
       flash[:notice] = "Request sent successfully!"
     end
+  end
+  
   def set_proposal
     @proposal = Proposal.find_by(id: params[:id])
   end
