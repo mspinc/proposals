@@ -72,7 +72,7 @@ class SubmittedProposalsController < ApplicationController
   private
 
   def query_params?
-    params.values.any? { |v| v.present? }
+    params.values.any?(&:present?)
   end
 
   def email_params
