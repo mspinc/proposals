@@ -1,0 +1,37 @@
+<main class="content">
+  <div class="container-fluid">
+    <div class="header">
+      <h1 class="header-title">
+        Subject Categories
+      </h1>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><%= link_to "Dashboard", dashboards_path %> </a></li>
+          <li class="breadcrumb-item active" aria-current="page"><%= link_to "Subject Categories", subject_categories_path %></li>
+          <% if @subject_category.new_record? %>
+            <li class="breadcrumb-item active" aria-current="page">New</li>
+          <% else %>
+             <li class="breadcrumb-item active" aria-current="page">Edit</li>
+          <% end %>
+        </ol>
+      </nav>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+          </div>
+          <div class="card-body">
+            <%= form_for @subject_category do |f| %>
+            <div class="mb-3">
+              <h2>New Subject Category</h2>
+              <%=f.text_field(:name, required: true, class:'form-control', value: @subject_category.name)%>
+            </div>
+            <%= f.submit "Submit", class:  'btn btn-primary' %>
+          <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
