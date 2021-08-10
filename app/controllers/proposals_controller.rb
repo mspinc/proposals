@@ -86,8 +86,9 @@ class ProposalsController < ApplicationController
   def destroy
     @proposal.destroy
     respond_to do |format|
-      format.html { redirect_to proposals_url, notice: "Proposal was
-                    successfully deleted.".squish }
+      format.html do
+        redirect_to proposals_url, notice: "Proposal was successfully deleted."
+      end
       format.json { head :no_content }
     end
   end

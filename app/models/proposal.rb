@@ -118,7 +118,7 @@ class Proposal < ApplicationRecord
   end
 
   def macros
-    self.preamble || ''
+    preamble || ''
   end
 
   private
