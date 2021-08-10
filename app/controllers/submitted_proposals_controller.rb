@@ -72,8 +72,7 @@ class SubmittedProposalsController < ApplicationController
   private
 
   def query_params?
-    (params.keys & %i[firstname lastname subject_area keywords workshop_year
-                      proposal_type]).any?
+    params.values[..-3].any?
   end
 
   def email_params
@@ -163,6 +162,8 @@ END_STRING
     else
       flash[:notice] = "Request sent successfully!"
     end
+  end
+  
   def set_proposal
     @proposal = Proposal.find_by(id: params[:id])
   end
