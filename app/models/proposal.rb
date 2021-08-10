@@ -117,6 +117,10 @@ class Proposal < ApplicationRecord
     file.content_type.in?(%w[application/pdf])
   end
 
+  def macros
+    self.preamble || ''
+  end
+
   private
 
   def not_before_opening

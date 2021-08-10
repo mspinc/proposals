@@ -8,7 +8,8 @@ class ProposalsController < ApplicationController
   end
 
   def ranking
-    @proposal_locations = @proposal.proposal_locations.find_by(location_id: params[:location_id])
+    @proposal_locations = @proposal.proposal_locations
+                                   .find_by(location_id: params[:location_id])
     @proposal_locations.update(position: params[:position].to_i)
     head :ok
   end
@@ -60,7 +61,7 @@ class ProposalsController < ApplicationController
     @year = @proposal&.year || Date.current.year.to_i + 2
 
     fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
-    @latex_input = fh.read
+    @latex_infile = fh.read
 
     render_latex
   end
@@ -75,8 +76,8 @@ class ProposalsController < ApplicationController
     @year = @proposal&.year || Date.current.year.to_i + 2
 
     fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
-    @latex_input = fh.read
-    @latex_input = LatexToPdf.escape_latex(@latex_input) if @proposal.no_latex
+    @latex_infile = fh.read
+    @latex_infile = LatexToPdf.escape_latex(@latex_infile) if @proposal.no_latex
 
     render_latex
   end
@@ -85,7 +86,8 @@ class ProposalsController < ApplicationController
   def destroy
     @proposal.destroy
     respond_to do |format|
-      format.html { redirect_to proposals_url, notice: "Proposal was successfully destroyed." }
+      format.html { redirect_to proposals_url, notice: "Proposal was
+                    successfully deleted.".squish }
       format.json { head :no_content }
     end
   end
@@ -158,7 +160,8 @@ class ProposalsController < ApplicationController
 
   def render_latex
     # rubocop:disable all
-    render layout: "application", inline: @latex_input.to_s, formats: [:pdf]
+    latex = @proposal.macros + "\n\\begin{document}\n" + @latex_infile.to_s
+    render layout: "application", inline: latex, formats: [:pdf]
   rescue ActionView::Template::Error => e
     flash[:alert] = "There are errors in your LaTeX code. Please see the
                         output from the compiler, and the LaTeX document,
@@ -169,6 +172,7 @@ class ProposalsController < ApplicationController
   end
 
   def set_careers
-    @careers = Person.where(id: @proposal.participants.pluck(:person_id)).pluck(:academic_status)
+    @careers = Person.where(id: @proposal.participants.pluck(:person_id))
+                     .pluck(:academic_status)
   end
 end

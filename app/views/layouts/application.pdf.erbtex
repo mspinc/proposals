@@ -63,10 +63,10 @@
     \setlength{\parsep}{\parskip}%
   }%
   \item[]}{\end{list}}
- % <%= @proposal.preamble %>
-\begin{document}
+
 \pagestyle{fancy}
 
+% \begin{document}
 
 <%= yield %>
 
