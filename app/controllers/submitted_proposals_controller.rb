@@ -94,16 +94,16 @@ class SubmittedProposalsController < ApplicationController
   end
 
   def file_path
-    ProposalPdfService.new(@proposal.id, latex_temp_file, 'all').pdf
-    @year = @proposal&.year || Date.current.year.to_i + 2
-    fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
-    @latex_input = fh.read
+    prop_pdf = ProposalPdfService.new(@proposal.id, latex_temp_file, 'all')
+    prop_pdf.pdf
 
-    pdf = render_to_string layout: "application", inline: "#{@latex_input}", formats: [:pdf]
+    @year = @proposal&.year || Date.current.year.to_i + 2
+    pdf_file = render_to_string layout: "application",
+                                inline: prop_pdf.to_s, formats: [:pdf]
 
     @pdf_path = "#{Rails.root}/tmp/submit-#{DateTime.now.to_i}.pdf"
-    upload = File.open(@pdf_path, 'w:binary') do |file|
-      file.write(pdf)
+    File.open(@pdf_path, 'w:binary') do |file|
+      file.write(pdf_file)
     end
   end
 
@@ -163,6 +163,8 @@ END_STRING
     else
       flash[:notice] = "Request sent successfully!"
     end
+  end
+
   def set_proposal
     @proposal = Proposal.find_by(id: params[:id])
   end
