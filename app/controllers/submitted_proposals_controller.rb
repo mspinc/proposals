@@ -72,7 +72,7 @@ class SubmittedProposalsController < ApplicationController
   private
 
   def query_params?
-    params.values[..-3].any?
+    params.values.any? { |v| v.present? }
   end
 
   def email_params
@@ -80,11 +80,9 @@ class SubmittedProposalsController < ApplicationController
   end
 
   def set_proposals
+    @proposals = Proposal.order(:created_at)
     if query_params?
-      query = ProposalFiltersQuery.new(Proposal.order(:created_at))
-      @proposals = query.find(params)
-    else
-      @proposals = Proposal.order(:created_at)
+      @proposals = ProposalFiltersQuery.new(@proposals).find(params)
     end
   end
 
