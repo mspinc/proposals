@@ -15,7 +15,7 @@
             </tr>
           </thead>
           <tbody>
-            <% user_role(@role)&.each do |user| %>
+            <% users_without_role(@role)&.each do |user| %>
               <tr>
                 <td><%= user.fullname %></td>
                 <td><%= user.email %></td>

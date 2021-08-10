@@ -1,10 +1,5 @@
 module RoleHelper
-  def user_role(role)
-    users = User.all
-    user = role.users.ids
-    user&.each do |id|
-      users = users.where.not(id: id)
-    end
-    users
+  def users_without_role(role)
+    User.where.not(id: role.users.ids)
   end
 end
