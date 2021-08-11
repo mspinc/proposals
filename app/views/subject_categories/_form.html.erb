@@ -25,7 +25,14 @@
             <%= form_for @subject_category do |f| %>
             <div class="mb-3">
               <h2>New Subject Category</h2>
-              <%=f.text_field(:name, required: true, class:'form-control', value: @subject_category.name)%>
+              <div class="mb-3">
+                <%= f.label :code, class: 'form-label'%>
+                <%=f.text_field(:code, required: true, class:'form-control', value: @subject_category.code)%>
+              </div>
+              <div class="mb-3">
+                <%= f.label :title, class: 'form-label'%>
+                <%=f.text_field(:name, required: true, class:'form-control', value: @subject_category.name)%>
+              </div>
             </div>
             <%= f.submit "Submit", class:  'btn btn-primary' %>
           <% end %>

@@ -5,14 +5,13 @@ import Rails from '@rails/ujs'
 export default class extends Controller {
 
   static targets = [ 'proposalType', 'locationSpecificQuestions', 'locationIds', 'text', 'tabs', 
-                    'dragLocations', 'fieldLatex' ]
+                    'dragLocations', 'latexPreamble' ]
   static values = { proposalTypeId: Number, proposal: Number }
 
   connect() {
     if(this.hasLocationIdsTarget || $('#no_latex').is(':checked')) {
       this.handleLocationChange(Object.values(this.locationIdsTarget.selectedOptions).map((x) => x.value))
       this.showSelectedLocations()
-      this.latexField($('#no_latex').is(':checked'))
     }
   }
 
@@ -100,6 +99,14 @@ export default class extends Controller {
     let previous = currentTab.parentElement.previousElementSibling
     if (previous) {
       previous.firstElementChild.click()
+    }
+  }
+
+  hidePreamble() {
+    if($('#no_latex').is(':checked')) {
+      this.latexPreambleTarget.classList.add("hidden")
+    } else {
+      this.latexPreambleTarget.classList.remove("hidden")
     }
   }
 }

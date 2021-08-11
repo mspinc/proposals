@@ -140,8 +140,23 @@ namespace :birs do
 
     ams_subject_codes.each do |ams_subject|
       puts "Adding AMS Subject: #{ams_subject[:title]}"
-      AmsSubject.create!(code: ams_subject[:code], title: ams_subject[:title])
+      AmsSubject.create(code: ams_subject[:code], title: ams_subject[:title])
     end
     puts "Done!"
+  end
+
+  desc "Add New Subjects to database"
+  task new_subjects: :environment do
+
+    new_subjects = [
+      { code: "MML", title: "Mathematical Logic" },
+      { code: "CE", title: "Commercialization and Entrepreneurship" }
+    ]
+    
+    category = SubjectCategory.find_or_create_by!(name: 'none')
+    new_subjects.each do |subject|
+      puts "Adding new subject: #{subject[:code]} => #{subject[:title]}"
+      Subject.create(code: subject[:code], title: subject[:title], subject_category: category)
+    end
   end
 end

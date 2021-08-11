@@ -58,7 +58,7 @@ class Proposal < ApplicationRecord
       AND invites.proposal_id = ?', invited_as, id)
   }
 
-  scope :submitted, lambda { |type|
+  scope :submitted_type, lambda { |type|
     where(status: 1)
       .joins(:proposal_type).where(name: type)
   }
@@ -146,7 +146,7 @@ class Proposal < ApplicationRecord
   end
 
   def next_number
-    codes = Proposal.submitted(proposal_type.name).pluck(:code)
+    codes = Proposal.submitted_type(proposal_type.name).pluck(:code)
     last_code = codes.reject { |c| c.to_s.empty? }.max
 
     return '001' if last_code.blank?
