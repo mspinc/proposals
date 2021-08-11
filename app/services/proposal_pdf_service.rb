@@ -20,6 +20,12 @@ class ProposalPdfService
     end
   end
 
+  def to_s
+    fh = File.open("#{Rails.root}/tmp/#{@temp_file}")
+    latex_infile = fh.read
+    @proposal.macros + "\n\\begin{document}\n" + latex_infile.to_s
+  end
+
   def self.format_errors(error)
     error_object = error.cause # RailsLatex::ProcessingError
     error_summary = error_object.log.lines.last(20).join("\n")

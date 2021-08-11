@@ -1,6 +1,7 @@
 <table class="table">
   <thead>
     <tr>
+      <th></th>
       <th>Code</th>
       <th>Proposal Title</th>
       <th>Proposal Type</th>
@@ -14,6 +15,7 @@
   <tbody>
     <% @proposals&.each do |proposal| %>
     <tr>
+      <td><input type="checkbox"  name="reviewed" data-value="<%= proposal.id %>"></td>
       <td><%= proposal.code %></td>
       <td><%= proposal.title %></td>
       <td><%= proposal.proposal_type.name %></td>

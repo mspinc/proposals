@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   resources :submitted_proposals do
     collection do
       get :download_csv
+      post :edit_flow
     end
     member do
       post :staff_discussion
@@ -110,5 +111,8 @@ Rails.application.routes.draw do
       post :new_role
       post :remove_role
     end
+
+  resources :subject_categories do
+    resources :subjects
   end
 end
