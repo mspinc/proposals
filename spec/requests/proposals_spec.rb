@@ -4,7 +4,7 @@ RSpec.describe "Proposals", type: :request do
   let(:user) { create(:user) }
   let(:person) { create(:person, :with_proposals, user: user) }
   let(:proposal) { person.proposals.first }
-  let(:proposal_location) { create(:proposal_location, proposal: proposal ) }
+  let(:proposal_location) { create(:proposal_location, proposal: proposal) }
 
   before { authenticate_for_controllers(person) }
 

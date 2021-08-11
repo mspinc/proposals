@@ -19,7 +19,7 @@ RSpec.describe "/people", type: :request do
 
   describe "PATCH /update" do
     let(:person_params) do
-      { city: 'California', affiliation: 'ABC', academic_status: 'Masters', first_phd_year: '2021', country: 'USA'}
+      { city: 'California', affiliation: 'ABC', academic_status: 'Masters', first_phd_year: '2021', country: 'USA' }
     end
 
     context "with valid parameters" do

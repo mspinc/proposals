@@ -35,14 +35,13 @@ RSpec.describe InvitesHelper, type: :helper do
   describe '#invited_role' do
     let(:invite) { create(:invite, invited_as: 'Co Organizer') }
 
-    it 'return string if invited as Organizer ' do 
+    it 'return string if invited as Organizer ' do
       expect(invited_role(invite)).to eq('to be a supporting organizer for')
     end
 
-    it 'return string if not invited as Organizer ' do 
+    it 'return string if not invited as Organizer ' do
       invite.update(invited_as: 'Participant')
       expect(invited_role(invite)).to eq('participate in')
     end
-
   end
 end

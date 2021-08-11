@@ -35,7 +35,7 @@ RSpec.describe Invite, type: :model do
   describe '#invited_as?' do
     context 'when invited as coorganizer' do
       let(:invite) { create(:invite, invited_as: "Co Organizer") }
-    
+
       it "returns a Supporting Organizer" do
         expect(invite.invited_as?).to eq('Supporting Organizer')
       end
@@ -43,7 +43,7 @@ RSpec.describe Invite, type: :model do
 
     context 'when not invited as coorganizer' do
       let(:invite) { create(:invite, invited_as: "Not Co Organizer") }
-    
+
       it "returns a Participant" do
         expect(invite.invited_as?).to eq('Participant')
       end

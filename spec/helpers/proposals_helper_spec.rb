@@ -76,6 +76,6 @@ RSpec.describe ProposalsHelper, type: :helper do
     it "return participant if not invited as Co Organizer" do
       invite.update(invited_as: 'Participant')
       expect(invite_role(invite.invited_as)).to eq('participant')
-    end    
+    end
   end
 end

@@ -38,7 +38,6 @@ class ProfileController < ApplicationController
   end
 
   def questionnaire_answers
-    debugger
     params.require(:profile_survey)
   end
 
