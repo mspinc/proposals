@@ -117,7 +117,7 @@ class SubmittedProposalsController < ApplicationController
                   email: "#{@proposal.lead_organizer.email}"
                   givenName: "#{@proposal.lead_organizer.firstname}"
                   familyName: "#{@proposal.lead_organizer.lastname}"
-                  nameInOriginalScript: ""
+                  nameInOriginalScript: "#{@proposal.lead_organizer.fullname}"
                   institution: "#{@proposal.lead_organizer.affiliation}"
                   countryCode: "#{country_code.alpha2}"
                 }, {

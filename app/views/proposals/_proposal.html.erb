@@ -266,10 +266,14 @@
                         </div>
                         <!-- <h4 class="tab-title">Common Fields</h4> -->
                         <div class="form-group mb-3">
-                          <input type="checkbox" name="no_latex" data-action="focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur" id="no_latex" data-value="<%= @proposal.no_latex %>" <%= @proposal.no_latex ? 'checked' : '' %>>
-                          <%= f.label :no_latex, "LaTeX Preamble", class: "form-label" %>
-                          <h5>If you have custom LaTeX macros, enter them here to add them to the document preamble.</h5>
-                          <div class="form-group mb-2" data-submit-proposals-target="fieldLatex">
+                          <input type="checkbox" name="no_latex" data-action="focus->auto-save-proposal#onFoucs blur->auto-save-proposal#onBlur click->submit-proposals#hidePreamble" id="no_latex" data-value="<%= @proposal.no_latex %>" <%= @proposal.no_latex ? 'checked' : '' %>>
+                          <%= f.label :no_latex, "Disable LaTeX", class: "form-label" %>
+                        </div>
+
+                        <div class="form-group mb-3" name="latexPreamble" id="latexPreamble" data-submit-proposals-target="latexPreamble">
+                          <h3>LaTeX Preamble</h3>
+                          <p>If you have custom LaTeX macros, enter them here to add them to the document preamble.</p>
+                          <div class="form-group mb-2">
                             <%= f.text_area(:preamble, size: '5x5', class:'form-control', value: @proposal.preamble)%>
                           </div>
                         </div>
