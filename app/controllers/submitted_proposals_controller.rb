@@ -2,7 +2,7 @@ class SubmittedProposalsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_proposals, only: %i[index download_csv]
   before_action :set_proposal, except: %i[index download_csv]
-  
+
   def index; end
 
   def show; end
@@ -51,8 +51,10 @@ class SubmittedProposalsController < ApplicationController
   def destroy
     @proposal.destroy
     respond_to do |format|
-      format.html { redirect_to submitted_proposals_url,
-                    notice: "Proposal was successfully deleted." }
+      format.html do
+        redirect_to submitted_proposals_url,
+                    notice: "Proposal was successfully deleted."
+      end
       format.json { head :no_content }
     end
   end
@@ -81,9 +83,7 @@ class SubmittedProposalsController < ApplicationController
 
   def set_proposals
     @proposals = Proposal.order(:created_at)
-    if query_params?
-      @proposals = ProposalFiltersQuery.new(@proposals).find(params)
-    end
+    @proposals = ProposalFiltersQuery.new(@proposals).find(params) if query_params?
   end
 
   def latex_temp_file
@@ -107,48 +107,7 @@ class SubmittedProposalsController < ApplicationController
   def post_to_editflow
     create_pdf_file
 
-    country_code = Country.find_country_by_name(@proposal.lead_organizer.country)
-    co_organizers = @proposal.invites.where(invited_as: 'Co Organizer')
-    country_code_organizers = Country.find_country_by_name(co_organizers.first.person.country)
-    query = <<END_STRING
-            mutation {
-              article: submitArticle(data: {
-                authors: [{
-                  email: "#{@proposal.lead_organizer.email}"
-                  givenName: "#{@proposal.lead_organizer.firstname}"
-                  familyName: "#{@proposal.lead_organizer.lastname}"
-                  nameInOriginalScript: "#{@proposal.lead_organizer.fullname}"
-                  institution: "#{@proposal.lead_organizer.affiliation}"
-                  countryCode: "#{country_code.alpha2}"
-                }, {
-                  email: "#{co_organizers.first.email}"
-                  givenName: "#{co_organizers.first.firstname}"
-                  familyName: "#{co_organizers.first.lastname}"
-                  institution: "#{co_organizers.first.person.affiliation}"
-                  countryCode: "#{country_code_organizers.alpha2}"
-                  mrAuthorID: 12345
-                }]
-                correspAuthorEmail: "#{@proposal.lead_organizer.email}"
-                title: "#{@proposal.title}"
-                sectionAbbrev: "#{@proposal.subject.code}"
-                primarySubjects: {
-                  scheme: "MSC2020"
-                  codes: ["00-01"]
-                }
-                secondarySubjects: {
-                  scheme: "MSC2020"
-                  codes: ["00B05", "00A07"]
-                }
-                abstract: "#{@proposal.title}"
-                files: [{
-                  role: "main"
-                  key: "fileMain"
-                }]
-              }) {
-                identifier
-              }
-            }
-END_STRING
+    query = EditFlowService.new(@proposal).query
 
     response = RestClient.post ENV['EDITFLOW_API_URL'],
                                { query: query, fileMain: File.open(@pdf_path) },
