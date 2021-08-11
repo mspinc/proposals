@@ -144,4 +144,13 @@ namespace :birs do
     end
     puts "Done!"
   end
+
+  desc "Add New Subject to database"
+  task new_subject: :environment do
+
+    new_subject = { code: "MML", title: "Mathematical Logic" }
+    
+    category = SubjectCategory.find_or_create_by!(name: 'none')
+    new_subject = Subject.create!(code: new_subject[:code], title: new_subject[:title], subject_category: category)
+  end
 end

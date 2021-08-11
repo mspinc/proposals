@@ -9,4 +9,9 @@ RSpec.describe SubjectCategory, type: :model do
     category = build(:subject_category, name: '')
     expect(category.valid?).to be_falsey
   end
+
+  it 'requires a category code' do
+    category = build(:subject_category, code: '')
+    expect(category.valid?).to be_falsey
+  end
 end
