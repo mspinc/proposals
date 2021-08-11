@@ -50,16 +50,17 @@
                 <span class="nav-link-text">Feedback</span>
               <% end %>
             </li>
+            <li class="sidebar-item <%= active_menu(roles_path) %>">
+              <%= link_to roles_path, class: "sidebar-link" do %>
+                <i class="far fa-file-alt"></i>
+                <span class="nav-link-text">User Roles</span>
+              <% end %>
+            </li>
             <li class="sidebar-item <%= subject_category_menu %>">
               <%= link_to subject_categories_path , class: "sidebar-link" do %>
                 <i class="fas fa-fw fa-book-open"></i>
                 <span class="nav-link-text">Subject Categories</span>
               <% end %>
-            </li>
-            <li class="sidebar-item <%= active_menu(roles_path) %>">
-              <%= link_to roles_path, class: "sidebar-link" do %>
-                <i class="far fa-file-alt"></i>
-                <span class="nav-link-text">User Roles</span>
             </li>
           </ul>
         </li>
@@ -82,6 +83,7 @@
           </ul>
         </li>
       <% end %>
+
       <li class="sidebar-item <%= pages_list %>">
         <a data-bs-target="#pages" data-bs-toggle="collapse" class="sidebar-link collapsed">
         <i class="align-middle me-2 fas fa-fw fa-file"></i> <span class="align-middle">Pages</span>

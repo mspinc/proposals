@@ -111,6 +111,7 @@ Rails.application.routes.draw do
       post :new_role
       post :remove_role
     end
+  end
 
   resources :subject_categories do
     resources :subjects
