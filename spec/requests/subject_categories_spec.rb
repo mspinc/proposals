@@ -27,7 +27,8 @@ RSpec.describe "/subject_categories", type: :request do
   describe "POST /create" do
     context "with valid parameters" do
       let(:subject_category_params) do
-        { name: 'Mathematics' }
+        { name: 'Mathematics',
+          code: '01-XX' }
       end
       it "creates a new subject_category" do
         expect do
@@ -38,7 +39,8 @@ RSpec.describe "/subject_categories", type: :request do
 
     context "with invalid parameters" do
       let(:subject_category_params) do
-        { name: ' ' }
+        { name: ' ',
+          code: '01-XX' }
       end
 
       it "does not create a new subject_category" do
@@ -51,7 +53,7 @@ RSpec.describe "/subject_categories", type: :request do
 
   describe "PATCH /update" do
     context "with valid parameters" do
-      let(:subject_category_params) { { name: 'Mathematics' } }
+      let(:subject_category_params) { { name: 'Mathematics', code: '02-XX' } }
 
       before do
         patch subject_category_url(subject_category), params: { subject_category: subject_category_params }
@@ -62,7 +64,7 @@ RSpec.describe "/subject_categories", type: :request do
     end
 
     context "with invalid parameters" do
-      let(:subject_category_params) { { name: ' ' } }
+      let(:subject_category_params) { { name: ' ', code: '02-XX' } }
 
       before do
         patch subject_category_url(subject_category), params: { subject_category: subject_category_params }
