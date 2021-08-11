@@ -14,7 +14,7 @@ class SubmittedProposalsController < ApplicationController
   def edit_flow
     params[:ids]&.split(',')&.each do |id|
       @proposal = Proposal.find_by(id: id.to_i)
-      curl_request
+      post_to_editflow
     end
 
     respond_to do |format|
@@ -72,8 +72,7 @@ class SubmittedProposalsController < ApplicationController
   private
 
   def query_params?
-    (params.keys & %i[firstname lastname subject_area keywords workshop_year
-                      proposal_type]).any?
+    params.values.any?(&:present?)
   end
 
   def email_params
@@ -81,11 +80,9 @@ class SubmittedProposalsController < ApplicationController
   end
 
   def set_proposals
+    @proposals = Proposal.order(:created_at)
     if query_params?
-      query = ProposalFiltersQuery.new(Proposal.order(:created_at))
-      @proposals = query.find(params)
-    else
-      @proposals = Proposal.order(:created_at)
+      @proposals = ProposalFiltersQuery.new(@proposals).find(params)
     end
   end
 
@@ -93,22 +90,22 @@ class SubmittedProposalsController < ApplicationController
     "propfile-#{current_user.id}-#{@proposal.id}.tex"
   end
 
-  def file_path
-    ProposalPdfService.new(@proposal.id, latex_temp_file, 'all').pdf
-    @year = @proposal&.year || Date.current.year.to_i + 2
-    fh = File.open("#{Rails.root}/tmp/#{latex_temp_file}")
-    @latex_input = fh.read
+  def create_pdf_file
+    prop_pdf = ProposalPdfService.new(@proposal.id, latex_temp_file, 'all')
+    prop_pdf.pdf
 
-    pdf = render_to_string layout: "application", inline: "#{@latex_input}", formats: [:pdf]
+    @year = @proposal&.year || Date.current.year.to_i + 2
+    pdf_file = render_to_string layout: "application",
+                                inline: prop_pdf.to_s, formats: [:pdf]
 
     @pdf_path = "#{Rails.root}/tmp/submit-#{DateTime.now.to_i}.pdf"
     File.open(@pdf_path, 'w:binary') do |file|
-      file.write(pdf)
+      file.write(pdf_file)
     end
   end
 
-  def curl_request
-    file_path
+  def post_to_editflow
+    create_pdf_file
 
     country_code = Country.find_country_by_name(@proposal.lead_organizer.country)
     co_organizers = @proposal.invites.where(invited_as: 'Co Organizer')
@@ -153,15 +150,18 @@ class SubmittedProposalsController < ApplicationController
             }
 END_STRING
 
-    response = RestClient.post 'https://ef-demo.msp.org/efdemo_y/api/test/birs/',
-      {:query => query, :fileMain => File.open(@pdf_path)},
-      {:x_editflow_api_token => 'ovmpaE-cR3Kt3qUUY7KAhO20X-XIxslovfPwNY-MUfM='}
+    response = RestClient.post ENV['EDITFLOW_API_URL'],
+                               { query: query, fileMain: File.open(@pdf_path) },
+                               { x_editflow_api_token: ENV['EDITFLOW_API_TOKEN'] }
     puts response
 
     if response.body.include?("errors")
-      flash[:alert] = "Request cannot be sent!"
+      Rails.logger.debug { "\n\n*****************************************\n\n" }
+      Rails.logger.debug { "EditFlow POST error:\n #{response.body.inspect}\n" }
+      Rails.logger.debug { "\n\n*****************************************\n\n" }
+      flash[:alert] = "Error sending data!"
     else
-      flash[:notice] = "Request sent successfully!"
+      flash[:notice] = "Data sent to EditFlow!"
     end
   end
 
