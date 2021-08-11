@@ -4,7 +4,7 @@ RSpec.describe InviteMailer, type: :mailer do
   describe "invite email" do
     let(:invite) { create(:invite) }
     let(:mail) { InviteMailer.with(invite: invite).invite_email.deliver_now }
-    let(:s) { "BIRS Proposal: Invite for #{ invite.invited_as? }" }
+    let(:s) { "BIRS Proposal: Invite for #{invite.invited_as?}" }
     it 'renders the subject' do
       expect(mail.subject).to eq(s)
     end
@@ -40,7 +40,7 @@ RSpec.describe InviteMailer, type: :mailer do
     let(:invite) { create(:invite, invited_as: 'Co Organizer') }
     let(:co_organizers) { invite.proposal.list_of_co_organizers.remove(invite.person&.fullname) }
     let(:mail) { InviteMailer.with(invite: invite, co_organizers: co_organizers).invite_reminder.deliver_now }
-    let(:s) { "Please Respond – BIRS Proposal: Invite for #{ invite.invited_as? }" }
+    let(:s) { "Please Respond – BIRS Proposal: Invite for #{invite.invited_as?}" }
     it 'renders the subject' do
       expect(mail.subject).to eq(s)
     end
