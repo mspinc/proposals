@@ -1,4 +1,5 @@
 class InvitesController < ApplicationController
+  load_and_authorize_resource
   before_action :authenticate_user!, except: %i[show inviter_response thanks expired]
   before_action :set_proposal, only: %i[invite_reminder invite_email]
   before_action :set_invite, only: %i[show inviter_response cancel invite_reminder invite_email]
