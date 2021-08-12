@@ -4,11 +4,8 @@ class SubmitProposalsController < ApplicationController
     @proposals = ProposalForm.new
   end
 
-  # rubocop:disable Metrics/AbcSize
   def create
     @proposal.update(proposal_params)
-    @proposal.update(no_latex: false) if params[:no_latex].nil?
-    @proposal.update(no_latex: true) if params[:no_latex] == 'on'
     update_ams_subject_code
     submission = SubmitProposalService.new(@proposal, params)
     submission.save_answers
@@ -30,7 +27,6 @@ class SubmitProposalsController < ApplicationController
     attachment = generate_proposal_pdf || return
     confirm_submission(attachment)
   end
-  # rubocop:enable Metrics/AbcSize
 
   def thanks; end
 
@@ -69,7 +65,6 @@ class SubmitProposalsController < ApplicationController
         you.'.squish
   end
 
-  # rubocop:disable Metrics/AbcSize
   def generate_proposal_pdf
     temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
     ProposalPdfService.new(@proposal.id, temp_file, 'all').pdf
@@ -78,22 +73,22 @@ class SubmitProposalsController < ApplicationController
     begin
       render_to_string(layout: "application", inline: fh.read.to_s,
                        formats: [:pdf])
-    rescue ActionView::Template::Error => e
-      flash[:alert] = "We were unable to compile your proposal with LaTeX.
+    rescue ActionView::Template::Error
+      error_message = "We were unable to compile your proposal with LaTeX.
                       Please see the error messages, and generated LaTeX
                       docmument, then edit your submission to fix the
                       errors".squish
 
-      error_output = ProposalPdfService.format_errors(e)
-      render layout: "latex_errors", inline: error_output.to_s, formats: [:html]
+      redirect_to rendered_proposal_proposal_path(@proposal, format: :pdf),
+                  alert: error_message
       nil
     end
   end
-  # rubocop:enable Metrics/AbcSize
 
   def proposal_params
     params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex, :preamble)
           .merge(ams_subject_ids: proposal_ams_subjects)
+          .merge(no_latex: params[:no_latex] == 'on' ? true : false)
   end
 
   def proposal_id_param
