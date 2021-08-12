@@ -30,11 +30,3 @@ Style/StringLiterals:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*.rb'
-Metrics/ClassLength:
-  Enabled: false
-Metrics/ModuleLength:
-  Enabled: false
-Lint/EmptyBlock:
-  Enabled: false  
-Naming/VariableNumber:
-  Enabled: false
