@@ -88,7 +88,7 @@ class SubmitProposalsController < ApplicationController
   def proposal_params
     params.permit(:title, :year, :subject_id, :ams_subject_ids, :location_ids, :no_latex, :preamble)
           .merge(ams_subject_ids: proposal_ams_subjects)
-          .merge(no_latex: params[:no_latex] == 'on' ? true : false)
+          .merge(no_latex: params[:no_latex] == 'on')
   end
 
   def proposal_id_param
