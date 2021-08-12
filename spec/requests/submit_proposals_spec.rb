@@ -45,11 +45,11 @@ RSpec.describe "/submit_proposals", type: :request do
     let(:subject) { create(:subject, subject_category_id: subject_category.id) }
     let(:ams_subjects) {
       create_list(:ams_subject, 2, subject_category_ids: subject_category.id,
-                                subject_id: subject.id)
+                                   subject_id: subject.id)
     }
     let(:location) { create(:location) }
-    let(:invites_attributes) do
-    { '0' => { firstname: 'First', lastname: 'organizer',
+    let(:invites_attributes) do {
+      '0' => { firstname: 'First', lastname: 'Organizer',
                deadline_date: DateTime.now, invited_as: 'Co Organizer' }
     }
     end
