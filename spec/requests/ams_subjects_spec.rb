@@ -14,11 +14,13 @@ RSpec.describe "/subjects", type: :request do
 
   describe "PATCH /update" do
     context "with valid parameters" do
-      let(:params) do 
-        { ams_subject: { title: 'category' }, subject_category_ids: subject_category.id } 
+      let(:params) do
+        { ams_subject: { title: 'category' },
+          subject_category_ids: subject_category.id }
       end
       before do
-        patch subject_category_ams_subject_url(subject_category, ams_subject, params: params)
+        patch subject_category_ams_subject_url(subject_category,
+                                               ams_subject, params: params)
       end
 
       it "updates the title to category" do
@@ -28,10 +30,12 @@ RSpec.describe "/subjects", type: :request do
 
     context "with invalid parameters" do
       let(:params) do 
-        { ams_subject: { title: 'category' }, subject_category_ids: subject_category.id } 
+        { ams_subject: { title: 'category' },
+          subject_category_ids: subject_category.id }
       end
       before do
-        patch subject_category_ams_subject_url(subject_category, ams_subject, params: params)
+        patch subject_category_ams_subject_url(subject_category,
+                                               ams_subject, params: params)
       end
 
       it "will not update ams_subject" do
