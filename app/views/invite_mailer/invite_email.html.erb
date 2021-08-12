@@ -3,7 +3,7 @@
     <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
   </head>
   <body>
-    <h1>Dear <%= @person&.fullname %>:</h1>
+    <p>Dear <%= @person&.fullname %>:</p>
     <p>
       <%= @proposal.lead_organizer&.fullname %> is putting together a proposal for a <%= @proposal.proposal_type.name %> titled "<%= @proposal.title %>" for submission to the Banff International Research Station. If successful, the program would take place at some time during the 2023 calendar year.
     </p>
