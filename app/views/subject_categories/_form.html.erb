@@ -24,7 +24,7 @@
           <div class="card-body">
             <%= form_for @subject_category do |f| %>
             <div class="mb-3">
-              <h2>New Subject Category</h2>
+              <h2><%= @subject_category.new_record? ? 'New' : 'Edit' %> Subject Category</h2>
               <div class="mb-3">
                 <%= f.label :code, class: 'form-label'%>
                 <%=f.text_field(:code, required: true, class:'form-control', value: @subject_category.code)%>
@@ -34,6 +34,25 @@
                 <%=f.text_field(:name, required: true, class:'form-control', value: @subject_category.name)%>
               </div>
             </div>
+
+            <% unless @subject_category.new_record? %>
+              <div class="mb-3 row">
+                <h3 class="form-section">BIRS Subjects</h3>
+                <div class="col-6 mt-2 mb-3">
+                  <label class="required">Subject Area</label>
+                  <%= f.select :subject_ids, options_for_select(subjects_area, @subject_category.subject_ids), {}, multiple: true, class: 'form-select' %>
+                </div>
+
+                <h3 class="form-section">AMS Subjects</h3>
+                <div class="col-6 mt-2">
+                  <div class="mb-3">
+                    <label class="required">AMS Subject Code</label>
+                    <%= f.select :ams_subject_ids, options_for_select(ams_subjects_code, @subject_category.ams_subject_ids), {}, class: "form-select",  multiple: true %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
             <%= f.submit "Submit", class:  'btn btn-primary' %>
           <% end %>
           </div>

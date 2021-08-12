@@ -16,35 +16,16 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
-            <h2>Subject name: <em><%= @subject_category.name.capitalize %></em></h2>
+            <h2>Category name: <em><%= @subject_category.name.capitalize %></em></h2>
           </div>
           <div class="card-body">
-            <div class="float-end">
-              <%= link_to "Add new subject", new_subject_category_subject_path(@subject_category), class: "btn btn-primary" %>
-            </div>
             <div class="col-12 col-lg-12">
               <div>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Subject Code</th>
-                      <th>Subject Title</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% @subject_category.subjects&.each do |subject| %>
-                    <tr>
-                      <td><%= subject.code %></td>
-                      <td><%= subject.title %></td>
-                      <td class="table-action">
-                        <%= link_to '<i class="align-middle fas fa-fw fa-pen"></i>Edit'.html_safe, edit_subject_category_subject_path(@subject_category,subject) %>
-                        <%= link_to '<i class="align-middle fas fa-fw fa-trash" data-toggle="tooltip" title="Delete" ></i>Delete'.html_safe,subject_category_subject_url(@subject_category,subject), method: :delete , data: {confirm: "Are you sure you want to delete this subject?"} %>
-                      </td>
-                    </tr>
-                    <% end %>
-                  </tbody>
-                </table>
+                <h3>BIRS Subjects</h3>
+                <%= render partial: 'subjects_table', locals: { subjects: @subject_category.subjects, subject_area: true } %>
+
+                <h3>AMS Subjects</h3>
+                <%= render partial: 'subjects_table', locals: { subjects: @subject_category.ams_subjects, subject_area: false } %>
               </div>
             </div>
           </div>
