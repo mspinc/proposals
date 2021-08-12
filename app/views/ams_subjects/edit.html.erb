@@ -2,17 +2,13 @@
   <div class="container-fluid">
     <div class="header">
       <h1 class="header-title">
-        Subjects
+        AMS Subjects
       </h1>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><%= link_to "Dashboard", dashboards_path %> </a></li>
           <li class="breadcrumb-item active" aria-current="page"><%= link_to "Subjects", subject_category_url(@subject_category) %></li>
-          <% if @subject.new_record? %>
-            <li class="breadcrumb-item active" aria-current="page">New</li>
-          <% else %>
-             <li class="breadcrumb-item active" aria-current="page">Edit</li>
-          <% end %>
+          <li class="breadcrumb-item active" aria-current="page">Edit</li>
         </ol>
       </nav>
     </div>
@@ -22,16 +18,16 @@
           <div class="card-header">
           </div>
           <div class="card-body">
-            <%= form_for ([@subject_category, @subject]) do |f| %>
+            <%= form_for ([@subject_category, @ams_subject]) do |f| %>
             <div class="mb-3">
-              <h2>New Subject</h2>
+              <h2>AMS Subject</h2>
               <div class="mb-3">
                 <%= f.label :code, class: 'form-label'%>
-                <%=f.text_field(:code, required: true, class:'form-control', value: @subject.code)%>
+                <%=f.text_field(:code, required: true, class:'form-control', value: @ams_subject.code)%>
               </div>
               <div class="mb-3">
                 <%= f.label :title, class: 'form-label'%>
-                <%=f.text_field(:title, required: true, class:'form-control', value: @subject.title)%>
+                <%=f.text_field(:title, required: true, class:'form-control', value: @ams_subject.title)%>
               </div>
             </div>
             <%= f.submit "Submit", class:  'btn btn-primary' %>

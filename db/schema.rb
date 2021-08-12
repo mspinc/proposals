@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_08_11_120107) do
+ActiveRecord::Schema.define(version: 2021_08_12_081151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
@@ -52,6 +52,15 @@ ActiveRecord::Schema.define(version: 2021_08_11_120107) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "ams_subject_categories", force: :cascade do |t|
+    t.bigint "subject_category_id", null: false
+    t.bigint "ams_subject_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["ams_subject_id"], name: "index_ams_subject_categories_on_ams_subject_id"
+    t.index ["subject_category_id"], name: "index_ams_subject_categories_on_subject_category_id"
   end
 
   create_table "ams_subjects", force: :cascade do |t|
@@ -358,6 +367,15 @@ ActiveRecord::Schema.define(version: 2021_08_11_120107) do
     t.index ["proposal_id"], name: "index_staff_discussions_on_proposal_id"
   end
 
+  create_table "subject_area_categories", force: :cascade do |t|
+    t.bigint "subject_category_id", null: false
+    t.bigint "subject_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["subject_category_id"], name: "index_subject_area_categories_on_subject_category_id"
+    t.index ["subject_id"], name: "index_subject_area_categories_on_subject_id"
+  end
+
   create_table "subject_categories", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
@@ -442,6 +460,8 @@ ActiveRecord::Schema.define(version: 2021_08_11_120107) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "ams_subject_categories", "ams_subjects"
+  add_foreign_key "ams_subject_categories", "subject_categories"
   add_foreign_key "ams_subjects", "subjects"
   add_foreign_key "answers", "proposal_fields"
   add_foreign_key "answers", "proposals"
@@ -466,6 +486,8 @@ ActiveRecord::Schema.define(version: 2021_08_11_120107) do
   add_foreign_key "proposals", "subjects"
   add_foreign_key "role_privileges", "roles"
   add_foreign_key "staff_discussions", "proposals"
+  add_foreign_key "subject_area_categories", "subject_categories"
+  add_foreign_key "subject_area_categories", "subjects"
   add_foreign_key "subjects", "subject_categories"
   add_foreign_key "survey_answers", "people"
   add_foreign_key "survey_answers", "survey_questions"

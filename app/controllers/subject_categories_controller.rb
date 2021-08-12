@@ -39,7 +39,7 @@ class SubjectCategoriesController < ApplicationController
   private
 
   def subject_category_params
-    params.require(:subject_category).permit(:name, :code)
+    params.require(:subject_category).permit(:name, :code, ams_subject_ids: [], subject_ids: [])
   end
 
   def set_category
