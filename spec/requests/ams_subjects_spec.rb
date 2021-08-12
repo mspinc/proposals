@@ -29,7 +29,7 @@ RSpec.describe "/subjects", type: :request do
     end
 
     context "with invalid parameters" do
-      let(:params) do 
+      let(:params) do
         { ams_subject: { title: 'category' },
           subject_category_ids: subject_category.id }
       end

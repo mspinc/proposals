@@ -15,7 +15,7 @@ RSpec.describe "/subjects", type: :request do
     context "with valid parameters" do
       let(:params) do
         { subject: { title: 'category' },
-                     subject_category_ids: subject_category.id }
+          subject_category_ids: subject_category.id }
       end
       before do
         patch subject_category_subject_url(subject_category,
@@ -28,7 +28,7 @@ RSpec.describe "/subjects", type: :request do
     end
 
     context "with invalid parameters" do
-      let(:params) do 
+      let(:params) do
         { subject: { title: 'category' },
           subject_category_ids: subject_category.id }
       end
