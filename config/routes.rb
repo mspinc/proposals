@@ -115,5 +115,6 @@ Rails.application.routes.draw do
 
   resources :subject_categories do
     resources :subjects
+    resources :ams_subjects
   end
 end
