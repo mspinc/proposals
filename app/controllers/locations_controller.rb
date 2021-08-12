@@ -27,6 +27,7 @@ class LocationsController < ApplicationController
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
   def update
     respond_to do |format|
       if @location.update(location_params)
@@ -34,13 +35,13 @@ class LocationsController < ApplicationController
         format.json { render :show, status: :ok, location: @location }
       else
         format.html do
-          render :edit, status: :unprocessable_entity,
-                        error: "Unable to update location."
+          render :edit, status: :unprocessable_entity, error: "Unable to update location."
         end
         format.json { render json: @location.errors, status: :unprocessable_entity }
       end
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def destroy
     @location.destroy

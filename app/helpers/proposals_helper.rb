@@ -42,6 +42,7 @@ module ProposalsHelper
     proposal.ams_subjects.find_by(code: code)&.id
   end
 
+  # rubocop:disable Metrics/MethodLength
   def organizer_intro(proposal)
     types_with_intro = ['5 Day Workshop', 'Summer School']
     return '' unless types_with_intro.include? proposal.proposal_type.name
@@ -56,6 +57,7 @@ module ProposalsHelper
      two members of the organizing committee must be from an under-represented
      community in STEM disciplines.</p>".html_safe
   end
+  # rubocop:enable Metrics/MethodLength
 
   def existing_co_organizers(invite)
     co_organizers = invite.proposal.list_of_co_organizers.remove(invite.person&.fullname)
@@ -76,6 +78,7 @@ module ProposalsHelper
     end
   end
 
+  # rubocop:disable Metrics/MethodLength
   def proposal_status(status)
     proposals = {
       "draft" => "text-muted",
@@ -89,6 +92,7 @@ module ProposalsHelper
     }
     proposals[status]
   end
+  # rubocop:enable Metrics/MethodLength
 
   def invite_response_color(status)
     case status

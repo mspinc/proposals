@@ -14,6 +14,7 @@ module Users
 
     # rubocop:disable Metrics/AbcSize
     # POST /resource
+    # rubocop:disable Metrics/MethodLength
     def create
       email = sign_up_params['person_attributes']['email']
       build_resource(sign_up_params.merge(email: email))
@@ -42,6 +43,7 @@ module Users
         respond_with resource
       end
     end
+    # rubocop:enable Metrics/MethodLength
     # rubocop:enable Metrics/AbcSize
 
     # GET /resource/edit

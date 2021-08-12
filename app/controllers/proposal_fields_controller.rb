@@ -15,6 +15,7 @@ class ProposalFieldsController < ApplicationController
   end
 
   # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def create
     if %w[Date Radio Text SingleChoice MultiChoice PreferredImpossibleDate File].include?(params[:type])
       @fieldable = "ProposalFields::#{params[:type]}".safe_constantize.new(date_field_params)
@@ -30,6 +31,7 @@ class ProposalFieldsController < ApplicationController
                   alert: @proposal_form.errors
     end
   end
+  # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 
   def edit

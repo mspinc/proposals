@@ -26,6 +26,7 @@ module Users
     #   devise_parameter_sanitizer.permit(:sign_in, keys: [:attribute])
     # end
 
+    # rubocop:disable Metrics/PerceivedComplexity
     def after_sign_in_path_for(resource)
       return proposal_types_path if resource&.staff_member?
 
@@ -39,5 +40,6 @@ module Users
         new_person_path
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity
   end
 end

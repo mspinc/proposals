@@ -28,6 +28,7 @@ class ProposalFormsController < ApplicationController
     redirect_to :index if @proposal_form.nil?
   end
 
+  # rubocop:disable Metrics/MethodLength
   def update
     if @proposal_form.update(proposal_form_params)
       version = @proposal_form.version + 1
@@ -57,6 +58,7 @@ class ProposalFormsController < ApplicationController
                   alert: "Title can't be blank"
     end
   end
+  # rubocop:enable Metrics/MethodLength
 
   def proposal_field
     @proposal_field = ProposalField.find_by(id: params[:field_id])

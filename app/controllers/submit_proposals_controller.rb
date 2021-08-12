@@ -5,6 +5,7 @@ class SubmitProposalsController < ApplicationController
   end
 
   # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def create
     @proposal.update(proposal_params)
     update_ams_subject_code
@@ -28,6 +29,7 @@ class SubmitProposalsController < ApplicationController
     attachment = generate_proposal_pdf || return
     confirm_submission(attachment)
   end
+  # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 
   def thanks; end
@@ -73,6 +75,7 @@ class SubmitProposalsController < ApplicationController
   end
 
   # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def generate_proposal_pdf
     temp_file = "propfile-#{current_user.id}-#{@proposal.id}.tex"
     ProposalPdfService.new(@proposal.id, temp_file, 'all').pdf
@@ -92,6 +95,7 @@ class SubmitProposalsController < ApplicationController
       nil
     end
   end
+  # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 
   def proposal_params

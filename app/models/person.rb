@@ -33,6 +33,9 @@ class Person < ApplicationRecord
   end
 
   # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/CyclomaticComplexity
+  # rubocop:disable Metrics/MethodLength
+  # rubocop:disable Metrics/PerceivedComplexity
   def common_fields
     errors.add('Main Affiliation/Institution', "can't be blank") if affiliation.blank?
     errors.add('Academic Status', "can't be blank") if academic_status.blank?
@@ -51,6 +54,9 @@ class Person < ApplicationRecord
     self.region = state if state.blank?
     errors.add("Missing data: ", "You must select a #{region_type}") if region.blank?
   end
+  # rubocop:enable Metrics/PerceivedComplexity
+  # rubocop:enable Metrics/MethodLength
+  # rubocop:enable Metrics/CyclomaticComplexity
   # rubocop:enable Metrics/AbcSize
 
   def draft_proposals?
