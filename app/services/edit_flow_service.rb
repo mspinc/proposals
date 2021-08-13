@@ -10,6 +10,7 @@ class EditFlowService
     @co_organizers = proposal.invites.where(invited_as: 'Co Organizer')
     @country_code_organizers = Country.find_country_by_name(@co_organizers.first.person.country)
     query = call_query
+    return query
   end
 
   private

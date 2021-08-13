@@ -15,7 +15,7 @@ class ProposalPdfService
       LatexToPdf.config[:arguments].delete('-halt-on-error')
     end
 
-    File.open("#{Rails.root}/tmp/#{temp_file}", 'w:binary') do |io|
+    File.open("#{Rails.root}/tmp/#{temp_file}", "w:UTF-8") do |io|
       io.write(input)
     end
   end
