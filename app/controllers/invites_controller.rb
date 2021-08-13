@@ -70,7 +70,7 @@ class InvitesController < ApplicationController
 
   def create_user
     user = User.new(email: @invite.person.email,
-                    password: SecureRandom.urlsafe_base64(20))
+                    password: SecureRandom.urlsafe_base64(20), confirmed_at: Time.zone.now)
     user.person = @invite.person
     user.save
   end
