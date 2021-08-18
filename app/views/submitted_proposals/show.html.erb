@@ -127,7 +127,7 @@
                             <%= organizer_intro(@proposal) %>
                             <% if @proposal.invites %>
                               <% @proposal.invites.each do |invite|%>
-                                <% if invite.invited_as == 'Co Organizer' %>
+                                <% if invite.invited_as == 'Organizer' %>
                                   <%= render partial: 'proposals/organizer', locals: { invite: invite } %>
                                 <% end %>
                               <% end %>

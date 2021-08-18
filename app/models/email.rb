@@ -24,7 +24,7 @@ class Email < ApplicationRecord
     proposal_mailer(proposal.lead_organizer.email,
                     proposal.lead_organizer.fullname)
 
-    proposal.invites.where(invited_as: 'Co Organizer')&.each do |organizer|
+    proposal.invites.where(invited_as: 'Organizer')&.each do |organizer|
       proposal_mailer(organizer.email, organizer.person.fullname)
     end
   end
