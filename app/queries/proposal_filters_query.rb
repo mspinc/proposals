@@ -1,11 +1,10 @@
 # frozen_string_literal: true
 
 class ProposalFiltersQuery
-
   def initialize(relation)
     @result = relation
   end
-  
+
   def find(params = {})
     @result = filter_by_keyword(params[:keywords])
     @result = filter_by_workshop_year(params[:workshop_year])
@@ -17,31 +16,31 @@ class ProposalFiltersQuery
   end
 
   def filter_by_keyword(keywords)
-    return @result unless keywords.present?
+    return @result if keywords.blank?
 
     @result.search_proposals(keywords)
   end
 
   def filter_by_workshop_year(workshop_year)
-    return @result unless workshop_year.present?
+    return @result if workshop_year.blank?
 
     @result.search_proposal_year(workshop_year)
   end
-  
+
   def filter_by_subject_area(subject_area)
-    return @result unless subject_area.present?
+    return @result if subject_area.blank?
 
     @result.search_proposal_subject(subject_area)
   end
 
   def filter_by_proposal_type(proposal_type)
-    return @result unless proposal_type.present?
+    return @result if proposal_type.blank?
 
     @result.search_proposal_type(proposal_type)
   end
 
   def filter_by_status(status)
-    return @result unless status.present?
+    return @result if status.blank?
 
     @result.search_proposal_status(status)
   end
