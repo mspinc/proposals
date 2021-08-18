@@ -1,5 +1,4 @@
 class InvitesController < ApplicationController
-  load_and_authorize_resource
   before_action :authenticate_user!, except: %i[show inviter_response thanks expired]
   before_action :set_proposal, only: %i[invite_reminder invite_email]
   before_action :set_invite, only: %i[show inviter_response cancel invite_reminder invite_email]
@@ -71,7 +70,7 @@ class InvitesController < ApplicationController
 
   def create_user
     user = User.new(email: @invite.person.email,
-                    password: SecureRandom.urlsafe_base64(20))
+                    password: SecureRandom.urlsafe_base64(20), confirmed_at: Time.zone.now)
     user.person = @invite.person
     user.save
   end
