@@ -125,6 +125,7 @@ class SubmittedProposalsController < ApplicationController
       flash[:alert] = "Error sending data!"
     else
       flash[:notice] = "Data sent to EditFlow!"
+      @proposal.update(edit_flow: Time.now)
     end
   end
 
