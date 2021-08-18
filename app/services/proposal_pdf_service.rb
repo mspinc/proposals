@@ -62,6 +62,7 @@ class ProposalPdfService
     proposal_organizers
     proposal_locations
     proposal_subjects
+    proposal_bibliography
     user_defined_fields
     proposal_participants
     @text
@@ -111,6 +112,11 @@ class ProposalPdfService
 
     ams_subject2 = proposal.ams_subjects.where(code: 'code2').first&.title
     @text << "\\noindent #{ams_subject2} \\\\ \n" unless ams_subject2.blank?
+  end
+
+  def proposal_bibliography
+    @text << "\\subsection*{Bibliography}\n\n"
+    @text << "\\noindent #{LatexToPdf.escape_latex(proposal.bibliography)}\n\n"
   end
 
   def user_defined_fields
