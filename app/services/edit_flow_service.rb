@@ -17,47 +17,77 @@ class EditFlowService
   def call_query
     <<END_STRING
             mutation {
-              article: submitArticle(data: {
-                sectionAbbrev: "#{proposal.subject.code}"
+              article: submitArticle(
+                submission: {
+                  section: {
+                    code: "#{@proposal.subject.code}"
+                  }
 
-                title: "#{proposal.title}"
-                abstract: "#{proposal.title}"
+                  title: "#{@proposal.title}"
+                  abstract: "#{@proposal.title}" # I thought we'd discussed something else going in here... -AJ
 
-                correspAuthorEmail: "#{proposal.lead_organizer.email}"
+                  emailAddressCorrespAuthor: {
+                    address: "#{@proposal.lead_organizer.email}"
+                  }
 
-                # just want to make clear we can do more than two authors -AJ
-                authors: [{
-                  email: "#{proposal.lead_organizer.email}"
-                  givenName: "#{proposal.lead_organizer.firstname}"
-                  familyName: "#{proposal.lead_organizer.lastname}"
-                  nameInOriginalScript: "#{proposal.lead_organizer.fullname}" # clarify: use nameInOriginalScript only for non-latin names, eg, "日暮 ひぐらし かごめ" -AJ
-                  institution: "#{proposal.lead_organizer.affiliation}"
-                  countryCode: "#{@country_code.alpha2}"
-                }, {
-                  email: "#{@co_organizers.first.email}"
-                  givenName: "#{@co_organizers.first.firstname}"
-                  familyName: "#{@co_organizers.first.lastname}"
-                  mrAuthorID: 12345
-                  institution: "#{@co_organizers.first.person.affiliation}"
-                  countryCode: "#{@country_code_organizers.alpha2}"
-                }]
+                  # just want to make clear we can do more than two authors -AJ
+                  authors: [
+                    {
+                      emailAddress: {
+                        address: "#{@proposal.lead_organizer.email}"
+                      }
+                      nameFull: "#{proposal.lead_organizer.fullname}" # I added this field -AJ
+                      nameGiven: "#{proposal.lead_organizer.firstname}"
+                      nameSurname: "#{proposal.lead_organizer.lastname}"
+                      # renamed nameInOriginalScript --> nameInNonLatinScript; use only for non-latin names, eg, "日暮 ひぐらし かごめ" -AJ
+                      institutionAtSubmission: {
+                        name: "#{proposal.lead_organizer.affiliation}"
+                      }
+                      countryAtSubmission: {
+                        codeAlpha2: "#{@country_code.alpha2}"
+                      }
+                    },
+                    {
+                      emailAddress: {
+                        address: "#{@co_organizers.first.email}"
+                      }
+                      nameGiven: "#{@co_organizers.first.firstname}"
+                      nameSurname: "#{@co_organizers.first.lastname}"
+                      mrAuthorID: 12345
+                      institutionAtSubmission: {
+                        name: "#{@co_organizers.first.person.affiliation}"
+                      }
+                      countryAtSubmission: {
+                        codeAlpha2: "#{@country_code_organizers.alpha2}"
+                      }
+                    },
+                  ]
 
-                primarySubjects: {
-                  scheme: "MSC2020"
-                  codes: ["00-01"]
+                  subjectsPrimary: {
+                    scheme: "MSC2020"
+                    subjects: [
+                      {code: "00-01"}
+                    ]
+                  }
+
+                  subjectsSecondary: {
+                    scheme: "MSC2020"
+                    subjects: [
+                      {code: "00B05"}
+                      {code: "00A07"}
+                    ]
+                  }
+
+                  articleDocumentUploads: [
+                    {
+                      role: "main"
+                      multipartFormName: "fileMain"
+                    }
+                  ]
                 }
-
-                secondarySubjects: {
-                  scheme: "MSC2020"
-                  codes: ["00B05", "00A07"]
-                }
-
-                files: [{
-                  role: "main"
-                  key: "fileMain"
-                }]
-              }) {
-                identifier
+              ) {
+                id # new uuid field for article since `identifier` field is only guaranteed to be unique within a given journal; `id` will be used for querying -AJ
+                identifier # human-readable identifier unique within journal -AJ
               }
             }
 END_STRING
