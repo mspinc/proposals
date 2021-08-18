@@ -156,6 +156,15 @@
                       <div class="mb-3">
                         <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
                       </div>
+                      <div>
+                        <h3>LaTeX Preamble</h3>
+                        <p>If you have custom LaTeX macros, enter them here to add them to the document preamble.</p>
+                        <div class="form-group mb-2">
+                          <textarea cols="100" rows="5" class="form-control" name="preamble" disabled=true>
+                             <%= @proposal.preamble %>
+                           </textarea>
+                        </div>
+                      </div>
                       <!-- <h4 class="tab-title">Common Fields</h4> -->
                       <%= render partial: 'proposal_forms/proposal_fields', locals: { proposal_fields: common_proposal_fields(@proposal) } %>
 
