@@ -127,7 +127,7 @@
                             <%= organizer_intro(@proposal) %>
                             <% if @proposal.invites %>
                               <% @proposal.invites.each do |invite|%>
-                                <% if invite.invited_as == 'Co Organizer' %>
+                                <% if invite.invited_as == 'Organizer' %>
                                   <%= render partial: 'proposals/organizer', locals: { invite: invite } %>
                                 <% end %>
                               <% end %>
@@ -155,6 +155,15 @@
                     <div class="tab-pane overflow-hidden" id="tab-2" role="tabpanel">
                       <div class="mb-3">
                         <p><%= @proposal.proposal_form.introduction2&.html_safe %></p>
+                      </div>
+                      <div>
+                        <h3>LaTeX Preamble</h3>
+                        <p>If you have custom LaTeX macros, enter them here to add them to the document preamble.</p>
+                        <div class="form-group mb-2">
+                          <textarea cols="100" rows="5" class="form-control" name="preamble" disabled=true>
+                             <%= @proposal.preamble %>
+                           </textarea>
+                        </div>
                       </div>
                       <div class="form-group mb-3">
                         <h3>Bibliography</h3>

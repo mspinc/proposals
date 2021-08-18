@@ -23,3 +23,13 @@
     </div>
   <% end %>
 </div>
+<br />
+<div class="mt-4 mb-3">
+  <h2> BIRS Emails </h2>
+  <% @proposal.emails&.each do |email| %>
+    <div class="mb-3 row border m-1 p-1">
+      <p> Subject: <%= email.subject %></p>
+      <p> Body: <%= email.body %></p>
+    </div>
+  <% end %>
+</div>

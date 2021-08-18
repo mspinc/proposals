@@ -15,7 +15,7 @@ class ProposalPdfService
       LatexToPdf.config[:arguments].delete('-halt-on-error')
     end
 
-    File.open("#{Rails.root}/tmp/#{temp_file}", 'w:binary') do |io|
+    File.open("#{Rails.root}/tmp/#{temp_file}", "w:UTF-8") do |io|
       io.write(input)
     end
   end
@@ -70,7 +70,7 @@ class ProposalPdfService
 
   def proposal_details
     code = proposal.code.blank? ? '' : "#{proposal.code}: "
-    @text = "\\section*{\\centering #{code} #{proposal.title} }\n\n"
+    @text = "\\section*{\\centering #{code} #{LatexToPdf.escape_latex(proposal.title)} }\n\n"
     @text << "\\subsection*{#{proposal.proposal_type&.name} }\n\n"
     @text << "#{proposal.invites.count} confirmed / #{proposal.proposal_type&.participant} maximum participants\n\n"
 
@@ -150,7 +150,7 @@ class ProposalPdfService
       @participants = proposal.participants_career(career)      
       @text << "\\begin{enumerate}\n\n"
       @participants.each do |participant|
-        @text << "\\item #{participant.firstname} #{participant.lastname} \\\\ \\break Affiliation: #{participant.affiliation} \\ \n"
+        @text << "\\item #{participant.firstname} #{participant.lastname} (#{LatexToPdf.escape_latex(participant.affiliation)}) \\ \n"
       end
       @text << "\\end{enumerate}\n\n"
     end

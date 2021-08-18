@@ -21,7 +21,7 @@ RSpec.describe "/submit_proposals", type: :request do
     let(:invites_attributes) do
       { '0' => { firstname: 'First', lastname: 'organizer',
                  email: 'organizer@gmail.com', deadline_date: DateTime.now,
-                 invited_as: 'Co Organizer' } }
+                 invited_as: 'Organizer' } }
     end
     let(:params) do
       { proposal: proposal.id, title: 'Test proposal', year: '2023',
@@ -50,7 +50,7 @@ RSpec.describe "/submit_proposals", type: :request do
     let(:location) { create(:location) }
     let(:invites_attributes) do {
       '0' => { firstname: 'First', lastname: 'Organizer',
-               deadline_date: DateTime.now, invited_as: 'Co Organizer' }
+               deadline_date: DateTime.now, invited_as: 'Organizer' }
     }
     end
     let(:params) do

@@ -1,5 +1,4 @@
 class ProfileController < ApplicationController
-  load_and_authorize_resource
   before_action :person, only: %i[edit update demographic_data]
 
   def edit
