@@ -103,7 +103,7 @@ class SubmittedProposalsController < ApplicationController
                                 inline: prop_pdf.to_s, formats: [:pdf]
 
     @pdf_path = "#{Rails.root}/tmp/submit-#{DateTime.now.to_i}.pdf"
-    File.open(@pdf_path, 'w:binary') do |file|
+    File.open(@pdf_path, "w:UTF-8") do |file|
       file.write(pdf_file)
     end
   end
@@ -111,10 +111,10 @@ class SubmittedProposalsController < ApplicationController
   def post_to_editflow
     create_pdf_file
 
-    query = EditFlowService.new(@proposal).query
+    query_edit_flow = EditFlowService.new(@proposal).query
 
     response = RestClient.post ENV['EDITFLOW_API_URL'],
-                               { query: query, fileMain: File.open(@pdf_path) },
+                               { query: query_edit_flow, fileMain: File.open(@pdf_path) },
                                { x_editflow_api_token: ENV['EDITFLOW_API_TOKEN'] }
     puts response
 
